@@ -1,0 +1,13 @@
+*.pyo
+*.pyc
+*.tox/*
+/figures/
+/spectra/
+/notebooks/
+/wisps/db/
+/candidates/
+/wisps.egg-info/
+.DS_Store
+.pytest_cache/
+/db/
+/libraries/

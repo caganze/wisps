@@ -1,0 +1,2371 @@
+<!doctype html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+
+    <title>wisps.data_analysis.photometry API documentation</title>
+    <meta name="description" content="This is the main module for  adding photometry information given a spectrum(grism id)
+
+@author: caga..." />
+
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300' rel='stylesheet' type='text/css'>
+  
+  <style type="text/css">
+  
+* {
+  box-sizing: border-box;
+}
+/*! normalize.css v1.1.1 | MIT License | git.io/normalize */
+
+/* ==========================================================================
+   HTML5 display definitions
+   ========================================================================== */
+
+/**
+ * Correct `block` display not defined in IE 6/7/8/9 and Firefox 3.
+ */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+    display: block;
+}
+
+/**
+ * Correct `inline-block` display not defined in IE 6/7/8/9 and Firefox 3.
+ */
+
+audio,
+canvas,
+video {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 7/8/9, Firefox 3, and Safari 4.
+ * Known issue: no IE 6 support.
+ */
+
+[hidden] {
+    display: none;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+/**
+ * 1. Prevent system color scheme's background color being used in Firefox, IE,
+ *    and Opera.
+ * 2. Prevent system color scheme's text color being used in Firefox, IE, and
+ *    Opera.
+ * 3. Correct text resizing oddly in IE 6/7 when body `font-size` is set using
+ *    `em` units.
+ * 4. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+
+html {
+    background: #fff; /* 1 */
+    color: #000; /* 2 */
+    font-size: 100%; /* 3 */
+    -webkit-text-size-adjust: 100%; /* 4 */
+    -ms-text-size-adjust: 100%; /* 4 */
+}
+
+/**
+ * Address `font-family` inconsistency between `textarea` and other form
+ * elements.
+ */
+
+html,
+button,
+input,
+select,
+textarea {
+    font-family: sans-serif;
+}
+
+/**
+ * Address margins handled incorrectly in IE 6/7.
+ */
+
+body {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Links
+   ========================================================================== */
+
+/**
+ * Address `outline` inconsistency between Chrome and other browsers.
+ */
+
+a:focus {
+    outline: thin dotted;
+}
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+/**
+ * Address font sizes and margins set differently in IE 6/7.
+ * Address font sizes within `section` and `article` in Firefox 4+, Safari 5,
+ * and Chrome.
+ */
+
+h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin: 0.83em 0;
+}
+
+h3 {
+    font-size: 1.17em;
+    margin: 1em 0;
+}
+
+h4 {
+    font-size: 1em;
+    margin: 1.33em 0;
+}
+
+h5 {
+    font-size: 0.83em;
+    margin: 1.67em 0;
+}
+
+h6 {
+    font-size: 0.67em;
+    margin: 2.33em 0;
+}
+
+/**
+ * Address styling not present in IE 7/8/9, Safari 5, and Chrome.
+ */
+
+abbr[title] {
+    border-bottom: 1px dotted;
+}
+
+/**
+ * Address style set to `bolder` in Firefox 3+, Safari 4/5, and Chrome.
+ */
+
+b,
+strong {
+    font-weight: bold;
+}
+
+blockquote {
+    margin: 1em 40px;
+}
+
+/**
+ * Address styling not present in Safari 5 and Chrome.
+ */
+
+dfn {
+    font-style: italic;
+}
+
+/**
+ * Address differences between Firefox and other browsers.
+ * Known issue: no IE 6/7 normalization.
+ */
+
+hr {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 6/7/8/9.
+ */
+
+mark {
+    background: #ff0;
+    color: #000;
+}
+
+/**
+ * Address margins set differently in IE 6/7.
+ */
+
+p,
+pre {
+    margin: 1em 0;
+}
+
+/**
+ * Correct font family set oddly in IE 6, Safari 4/5, and Chrome.
+ */
+
+code,
+kbd,
+pre,
+samp {
+    font-family: monospace, serif;
+    _font-family: 'courier new', monospace;
+    font-size: 1em;
+}
+
+/**
+ * Improve readability of pre-formatted text in all browsers.
+ */
+
+pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/**
+ * Address CSS quotes not supported in IE 6/7.
+ */
+
+q {
+    quotes: none;
+}
+
+/**
+ * Address `quotes` property not supported in Safari 4.
+ */
+
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+
+small {
+    font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup {
+    top: -0.5em;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+/* ==========================================================================
+   Lists
+   ========================================================================== */
+
+/**
+ * Address margins set differently in IE 6/7.
+ */
+
+dl,
+menu,
+ol,
+ul {
+    margin: 1em 0;
+}
+
+dd {
+    margin: 0 0 0 40px;
+}
+
+/**
+ * Address paddings set differently in IE 6/7.
+ */
+
+menu,
+ol,
+ul {
+    padding: 0 0 0 40px;
+}
+
+/**
+ * Correct list images handled incorrectly in IE 7.
+ */
+
+nav ul,
+nav ol {
+    list-style: none;
+    list-style-image: none;
+}
+
+/* ==========================================================================
+   Embedded content
+   ========================================================================== */
+
+/**
+ * 1. Remove border when inside `a` element in IE 6/7/8/9 and Firefox 3.
+ * 2. Improve image quality when scaled in IE 7.
+ */
+
+img {
+    border: 0; /* 1 */
+    -ms-interpolation-mode: bicubic; /* 2 */
+}
+
+/**
+ * Correct overflow displayed oddly in IE 9.
+ */
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Figures
+   ========================================================================== */
+
+/**
+ * Address margin not present in IE 6/7/8/9, Safari 5, and Opera 11.
+ */
+
+figure {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+/**
+ * Correct margin displayed oddly in IE 6/7.
+ */
+
+form {
+    margin: 0;
+}
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    padding: 0.35em 0.625em 0.75em;
+}
+
+/**
+ * 1. Correct color not being inherited in IE 6/7/8/9.
+ * 2. Correct text not wrapping in Firefox 3.
+ * 3. Correct alignment displayed oddly in IE 6/7.
+ */
+
+legend {
+    border: 0; /* 1 */
+    padding: 0;
+    white-space: normal; /* 2 */
+    *margin-left: -7px; /* 3 */
+}
+
+/**
+ * 1. Correct font size not being inherited in all browsers.
+ * 2. Address margins set differently in IE 6/7, Firefox 3+, Safari 5,
+ *    and Chrome.
+ * 3. Improve appearance and consistency in all browsers.
+ */
+
+button,
+input,
+select,
+textarea {
+    font-size: 100%; /* 1 */
+    margin: 0; /* 2 */
+    vertical-align: baseline; /* 3 */
+    *vertical-align: middle; /* 3 */
+}
+
+/**
+ * Address Firefox 3+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+
+button,
+input {
+    line-height: normal;
+}
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Chrome, Safari 5+, and IE 6+.
+ * Correct `select` style inheritance in Firefox 4+ and Opera.
+ */
+
+button,
+select {
+    text-transform: none;
+}
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ * 4. Remove inner spacing in IE 7 without affecting normal text inputs.
+ *    Known issue: inner spacing remains in IE 6.
+ */
+
+button,
+html input[type="button"], /* 1 */
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button; /* 2 */
+    cursor: pointer; /* 3 */
+    *overflow: visible;  /* 4 */
+}
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+
+button[disabled],
+html input[disabled] {
+    cursor: default;
+}
+
+/**
+ * 1. Address box sizing set to content-box in IE 8/9.
+ * 2. Remove excess padding in IE 8/9.
+ * 3. Remove excess padding in IE 7.
+ *    Known issue: excess padding remains in IE 6.
+ */
+
+input[type="checkbox"],
+input[type="radio"] {
+    box-sizing: border-box; /* 1 */
+    padding: 0; /* 2 */
+    *height: 13px; /* 3 */
+    *width: 13px; /* 3 */
+}
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome
+ *    (include `-moz` to future-proof).
+ */
+
+input[type="search"] {
+    -webkit-appearance: textfield; /* 1 */
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box; /* 2 */
+    box-sizing: content-box;
+}
+
+/**
+ * Remove inner padding and search cancel button in Safari 5 and Chrome
+ * on OS X.
+ */
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+
+/**
+ * Remove inner padding and border in Firefox 3+.
+ */
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+/**
+ * 1. Remove default vertical scrollbar in IE 6/7/8/9.
+ * 2. Improve readability and alignment in all browsers.
+ */
+
+textarea {
+    overflow: auto; /* 1 */
+    vertical-align: top; /* 2 */
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+/**
+ * Remove most spacing between table cells.
+ */
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+  </style>
+
+  <style type="text/css">
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+  }
+  body {
+    background: #fff;
+    font-family: "Source Sans Pro", "Helvetica Neueue", Helvetica, sans;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.6em;
+  }
+  #content {
+    width: 70%;
+    max-width: 850px;
+    float: left;
+    padding: 30px 60px;
+    border-left: 1px solid #ddd;
+  }
+  #sidebar {
+    width: 25%;
+    float: left;
+    padding: 30px;
+    overflow: hidden;
+  }
+  #nav {
+    font-size: 130%;
+    margin: 0 0 15px 0;
+  }
+
+  #top {
+    display: block;
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+    font-size: .85em;
+    text-transform: uppercase;
+  }
+
+  #footer {
+    font-size: .75em;
+    padding: 5px 30px;
+    border-top: 1px solid #ddd;
+    text-align: right;
+  }
+    #footer p {
+      margin: 0 0 0 30px;
+      display: inline-block;
+    }
+
+  h1, h2, h3, h4, h5 {
+    font-weight: 300;
+  }
+  h1 {
+    font-size: 2.5em;
+    line-height: 1.1em;
+    margin: 0 0 .50em 0;
+  }
+
+  h2 {
+    font-size: 1.75em;
+    margin: 1em 0 .50em 0;
+  }
+
+  h3 {
+    margin: 25px 0 10px 0;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 105%;
+  }
+
+  a {
+    color: #058;
+    text-decoration: none;
+    transition: color .3s ease-in-out;
+  }
+
+  a:hover {
+    color: #e08524;
+    transition: color .3s ease-in-out;
+  }
+
+  pre, code, .mono, .name {
+    font-family: "Ubuntu Mono", "Cousine", "DejaVu Sans Mono", monospace;
+  }
+
+  .title .name {
+    font-weight: bold;
+  }
+  .section-title {
+    margin-top: 2em;
+  }
+  .ident {
+    color: #900;
+  }
+
+  code {
+    background: #f9f9f9;
+  } 
+
+  pre {
+    background: #fefefe;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 0 #f3f3f3;
+    margin: 0 30px;
+    padding: 15px 30px;
+  }
+
+  .codehilite {
+    margin: 0 30px 10px 30px;
+  }
+
+    .codehilite pre {
+      margin: 0;
+    }
+    .codehilite .err { background: #ff3300; color: #fff !important; } 
+
+  table#module-list {
+    font-size: 110%;
+  }
+
+    table#module-list tr td:first-child {
+      padding-right: 10px;
+      white-space: nowrap;
+    }
+
+    table#module-list td {
+      vertical-align: top;
+      padding-bottom: 8px;
+    }
+
+      table#module-list td p {
+        margin: 0 0 7px 0;
+      }
+
+  .def {
+    display: table;
+  }
+
+    .def p {
+      display: table-cell;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .def p:first-child {
+      white-space: nowrap;
+    }
+
+    .def p:last-child {
+      width: 100%;
+    }
+
+
+  #index {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+    ul#index .class_name {
+      /* font-size: 110%; */
+      font-weight: bold;
+    }
+    #index ul {
+      margin: 0;
+    }
+
+  .item {
+    margin: 0 0 15px 0;
+  }
+
+    .item .class {
+      margin: 0 0 25px 30px;
+    }
+
+      .item .class ul.class_list {
+        margin: 0 0 20px 0;
+      }
+
+    .item .name {
+      background: #fafafa;
+      margin: 0;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 3px;
+      display: inline-block;
+      min-width: 40%;
+    }
+      .item .name:hover {
+        background: #f6f6f6;
+      }
+
+    .item .empty_desc {
+      margin: 0 0 5px 0;
+      padding: 0;
+    }
+
+    .item .inheritance {
+      margin: 3px 0 0 30px;
+    }
+
+    .item .inherited {
+      color: #666;
+    }
+
+    .item .desc {
+      padding: 0 8px;
+      margin: 0;
+    }
+
+      .item .desc p {
+        margin: 0 0 10px 0;
+      }
+
+    .source_cont {
+      margin: 0;
+      padding: 0;
+    }
+
+    .source_link a {
+      background: #ffc300;
+      font-weight: 400;
+      font-size: .75em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 1px 1px 0 #f4b700;
+      
+      padding: 3px 8px;
+      border-radius: 2px;
+      transition: background .3s ease-in-out;
+    }
+      .source_link a:hover {
+        background: #FF7200;
+        text-shadow: none;
+        transition: background .3s ease-in-out;
+      }
+
+    .source {
+      display: none;
+      max-height: 600px;
+      overflow-y: scroll;
+      margin-bottom: 15px;
+    }
+
+      .source .codehilite {
+        margin: 0;
+      }
+
+  .desc h1, .desc h2, .desc h3 {
+    font-size: 100% !important;
+  }
+  .clear {
+    clear: both;
+  }
+
+  @media all and (max-width: 950px) {
+    #sidebar {
+      width: 35%;
+    }
+    #content {
+      width: 65%;
+    }
+  }
+  @media all and (max-width: 650px) {
+    #top {
+      display: none;
+    }
+    #sidebar {
+      float: none;
+      width: auto;
+    }
+    #content {
+      float: none;
+      width: auto;
+      padding: 30px;
+    }
+
+    #index ul {
+      padding: 0;
+      margin-bottom: 15px;
+    }
+    #index ul li {
+      display: inline-block;
+      margin-right: 30px;
+    }
+    #footer {
+      text-align: left;
+    }
+    #footer p {
+      display: block;
+      margin: inherit;
+    }
+  }
+
+  /*****************************/
+
+  </style>
+
+  <style type="text/css">
+  .codehilite .hll { background-color: #ffffcc }
+.codehilite  { background: #f8f8f8; }
+.codehilite .c { color: #408080; font-style: italic } /* Comment */
+.codehilite .err { border: 1px solid #FF0000 } /* Error */
+.codehilite .k { color: #008000; font-weight: bold } /* Keyword */
+.codehilite .o { color: #666666 } /* Operator */
+.codehilite .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #BC7A00 } /* Comment.Preproc */
+.codehilite .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #408080; font-style: italic } /* Comment.Special */
+.codehilite .gd { color: #A00000 } /* Generic.Deleted */
+.codehilite .ge { font-style: italic } /* Generic.Emph */
+.codehilite .gr { color: #FF0000 } /* Generic.Error */
+.codehilite .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.codehilite .gi { color: #00A000 } /* Generic.Inserted */
+.codehilite .go { color: #888888 } /* Generic.Output */
+.codehilite .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.codehilite .gs { font-weight: bold } /* Generic.Strong */
+.codehilite .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.codehilite .gt { color: #0044DD } /* Generic.Traceback */
+.codehilite .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #008000 } /* Keyword.Pseudo */
+.codehilite .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #B00040 } /* Keyword.Type */
+.codehilite .m { color: #666666 } /* Literal.Number */
+.codehilite .s { color: #BA2121 } /* Literal.String */
+.codehilite .na { color: #7D9029 } /* Name.Attribute */
+.codehilite .nb { color: #008000 } /* Name.Builtin */
+.codehilite .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.codehilite .no { color: #880000 } /* Name.Constant */
+.codehilite .nd { color: #AA22FF } /* Name.Decorator */
+.codehilite .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.codehilite .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.codehilite .nf { color: #0000FF } /* Name.Function */
+.codehilite .nl { color: #A0A000 } /* Name.Label */
+.codehilite .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.codehilite .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.codehilite .nv { color: #19177C } /* Name.Variable */
+.codehilite .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.codehilite .w { color: #bbbbbb } /* Text.Whitespace */
+.codehilite .mb { color: #666666 } /* Literal.Number.Bin */
+.codehilite .mf { color: #666666 } /* Literal.Number.Float */
+.codehilite .mh { color: #666666 } /* Literal.Number.Hex */
+.codehilite .mi { color: #666666 } /* Literal.Number.Integer */
+.codehilite .mo { color: #666666 } /* Literal.Number.Oct */
+.codehilite .sa { color: #BA2121 } /* Literal.String.Affix */
+.codehilite .sb { color: #BA2121 } /* Literal.String.Backtick */
+.codehilite .sc { color: #BA2121 } /* Literal.String.Char */
+.codehilite .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.codehilite .s2 { color: #BA2121 } /* Literal.String.Double */
+.codehilite .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.codehilite .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.codehilite .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.codehilite .sx { color: #008000 } /* Literal.String.Other */
+.codehilite .sr { color: #BB6688 } /* Literal.String.Regex */
+.codehilite .s1 { color: #BA2121 } /* Literal.String.Single */
+.codehilite .ss { color: #19177C } /* Literal.String.Symbol */
+.codehilite .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #0000FF } /* Name.Function.Magic */
+.codehilite .vc { color: #19177C } /* Name.Variable.Class */
+.codehilite .vg { color: #19177C } /* Name.Variable.Global */
+.codehilite .vi { color: #19177C } /* Name.Variable.Instance */
+.codehilite .vm { color: #19177C } /* Name.Variable.Magic */
+.codehilite .il { color: #666666 } /* Literal.Number.Integer.Long */
+  </style>
+
+  <style type="text/css">
+  
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+    /* Style adjustments for viewports that meet the condition */
+}
+
+@media print,
+       (-o-min-device-pixel-ratio: 5/4),
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 120dpi) {
+    /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid required HTTP connection: h5bp.com/r
+   ========================================================================== */
+
+@media print {
+    * {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster: h5bp.com/s */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    /*
+     * Don't show links for images, or javascript/internal links
+     */
+
+    .ir a:after,
+    a[href^="javascript:"]:after,
+    a[href^="#"]:after {
+        content: "";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group; /* h5bp.com/t */
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    @page {
+        margin: 0.5cm;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
+
+  </style>
+
+  <script type="text/javascript">
+  function toggle(id, $link) {
+    $node = document.getElementById(id);
+    if (!$node)
+    return;
+    if (!$node.style.display || $node.style.display == 'none') {
+    $node.style.display = 'block';
+    $link.innerHTML = 'Hide source &nequiv;';
+    } else {
+    $node.style.display = 'none';
+    $link.innerHTML = 'Show source &equiv;';
+    }
+  }
+  </script>
+</head>
+<body>
+<a href="#" id="top">Top</a>
+
+<div id="container">
+    
+  
+  <div id="sidebar">
+    <h1>Index</h1>
+    <ul id="index">
+    <li class="set"><h3><a href="#header-variables">Module variables</a></h3>
+      
+  <ul>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.COMBINED_PHOTO_SPECTRO_FILE">COMBINED_PHOTO_SPECTRO_FILE</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.INDEX_NAMES">INDEX_NAMES</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.INDICES">INDICES</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.LIBRARIES">LIBRARIES</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.OUTPUT_FIGURES">OUTPUT_FIGURES</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.OUTPUT_FILES">OUTPUT_FILES</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.OUTPUT_TABLES">OUTPUT_TABLES</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.PHOTOMETRY_FILE">PHOTOMETRY_FILE</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.REMOTE_FOLDER">REMOTE_FOLDER</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.REMOTE_PHOT_CATALOGS">REMOTE_PHOT_CATALOGS</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.WISP_PATH">WISP_PATH</a></li>
+  </ul>
+
+    </li>
+
+
+    <li class="set"><h3><a href="#header-classes">Classes</a></h3>
+      <ul>
+        <li class="mono">
+        <span class="class_name"><a href="#wisps.data_analysis.photometry.Source">Source</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.Source.__init__">__init__</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.Source.classify_by_standard">classify_by_standard</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.Source.measure_indices">measure_indices</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.Source.normalize">normalize</a></li>
+    <li class="mono"><a href="#wisps.data_analysis.photometry.Source.plot">plot</a></li>
+  </ul>
+
+        </li>
+      </ul>
+    </li>
+
+    </ul>
+  </div>
+
+    <article id="content">
+      
+  
+
+  
+
+
+  <header id="section-intro">
+  <h1 class="title"><span class="name">wisps.data_analysis.photometry</span> module</h1>
+  <p>This is the main module for  adding photometry information given a spectrum(grism id)</p>
+<p>@author: caganze</p>
+  
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-wisps.data_analysis.photometry', this);">Show source &equiv;</a></p>
+  <div id="source-wisps.data_analysis.photometry" class="source">
+    <div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This is the main module for  adding photometry information given a spectrum(grism id)</span>
+
+<span class="sd">@author: caganze</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.initialize</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">ascii</span>
+<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="kn">import</span> <span class="n">hstack</span><span class="p">,</span> <span class="n">Table</span><span class="p">,</span> <span class="n">vstack</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">from</span> <span class="nn">.spectrum_tools</span> <span class="kn">import</span><span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.image</span> <span class="kn">import</span><span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.plot_spectrum</span> <span class="kn">import</span> <span class="n">plot_source</span>
+<span class="kn">import</span> <span class="nn">splat.core</span> <span class="kn">as</span> <span class="nn">spl</span>
+<span class="kn">import</span> <span class="nn">splat.empirical</span> <span class="kn">as</span> <span class="nn">spe</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="kn">import</span> <span class="n">SkyCoord</span>
+
+
+<span class="k">class</span> <span class="nc">Source</span><span class="p">(</span><span class="n">Spectrum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Source object, inherts from Spectrum but adds photometry and distances</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        name (str): grism id in the photometric catalog</span>
+<span class="sd">        shortname (str): a shortname based on the coordinates</span>
+<span class="sd">        wave (numpy array): the wavelength array i.e for flux, contam, noise</span>
+<span class="sd">        indices (dict): dictionary of spectral indices i.e ratio of fluxes </span>
+<span class="sd">        cdf_snr (str): modified snr </span>
+<span class="sd">        coords (object): astropy.coordinates of the source</span>
+<span class="sd">        mags (dict): dictionary of mags in different filters</span>
+<span class="sd">        distance (dict): dictionary of distances estimated from  different filters</span>
+<span class="sd">        splat_spectrum: a splat spectrum object with all its glory</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt; import wisps</span>
+<span class="sd">        &gt;&gt; s=wisps.Source(name=&#39;uds-25-G141_36758&#39;)</span>
+<span class="sd">        &gt;&gt; s.plot()</span>
+<span class="sd">        &gt;&gt; print (&#39;mags {} distance {} coords {}&#39;.format(s.mags, s.distance, s.coords))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wisp_name</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mags</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spectrum</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;spectral_type&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_star_flag</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_star&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_phot_img_pixel</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pixel_per_img&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;mags&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mags&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_star_flag</span> <span class="ow">and</span>  <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_distance</span><span class="p">()</span>
+            
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wisp_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;Empty photometry object&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wisp_name</span>
+    
+    <span class="c1">#to do : ras, decs &amp; should stuff probably be one property (e.g a big dictionary) </span>
+    <span class="c1">#for simplicity and elegance?</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span>
+	
+    <span class="nd">@ra.setter</span>
+    <span class="k">def</span> <span class="nf">ra</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_ra</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="o">=</span> <span class="n">new_ra</span>
+        
+	
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span>
+        
+    <span class="nd">@dec.setter</span>
+    <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_dec</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="o">=</span><span class="n">new_dec</span>
+       
+            
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coords</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This must be an astropy skycoord object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_star_flag</span> <span class="ow">and</span>  <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_distance</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span>
+        
+    <span class="nd">@coords.setter</span>
+    <span class="k">def</span> <span class="nf">coords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_coords</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="o">=</span><span class="n">new_coords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="o">=</span><span class="n">new_coords</span><span class="o">.</span><span class="n">ra</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="o">=</span><span class="n">new_coords</span><span class="o">.</span><span class="n">dec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="o">=</span><span class="n">splat</span><span class="o">.</span><span class="n">coordinateToDesignation</span><span class="p">(</span><span class="n">new_coords</span><span class="p">)</span>
+        
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wisp_name</span>
+    
+    <span class="nd">@name.setter</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        setting up a source object by searching its grism id throughout the master table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wisp_name</span><span class="o">=</span><span class="n">new_name</span>
+        <span class="k">if</span> <span class="n">new_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.ascii&#39;</span><span class="p">):</span> <span class="n">new_name</span><span class="o">=</span><span class="n">new_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.ascii&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span>  <span class="n">new_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.dat&#39;</span><span class="p">):</span> <span class="n">new_name</span><span class="o">=</span><span class="n">new_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.dat&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">new_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.1D&#39;</span><span class="p">):</span> <span class="n">new_name</span><span class="o">=</span><span class="n">new_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.1D&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+		
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="n">new_name</span>
+        <span class="c1">#get mags from the photometry catalog</span>
+        <span class="c1">#this is the master table that contains everything i.e after the snr cut </span>
+        <span class="c1"># to see how this is created look at pre_processing.py</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">COMBINED_PHOTO_SPECTRO_DATA</span>
+       	<span class="k">try</span><span class="p">:</span>
+        	<span class="n">s</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;grism_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">new_name</span><span class="p">])]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+        	<span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;This source was removed using snr cut&#39;</span><span class="p">,</span>  <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        	<span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">(</span><span class="n">COMBINED_PHOTO_SPECTRO_FILE</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;all_phot_spec_data&#39;</span><span class="p">)</span>
+        	<span class="n">s</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;grism_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">new_name</span><span class="p">])]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1">#print (s)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mags</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;F110W&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">F110</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="o">.</span><span class="n">F110</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                             <span class="s1">&#39;F160W&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">F160</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="o">.</span><span class="n">F160</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                             <span class="s1">&#39;F140W&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">F140</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="o">.</span><span class="n">F140</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
+           
+        <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">=</span><span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">RA</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">DEC</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;deg&#39;</span><span class="p">)</span>
+        <span class="c1">#self.spectral_type=s.Spts</span>
+        
+        <span class="c1">#populate image data </span>
+        <span class="n">img</span><span class="o">=</span><span class="n">Image</span><span class="p">()</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">_ra</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">RA</span> <span class="c1"># i shouldn&#39; be doing this :(</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">_dec</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">DEC</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">new_name</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">pixels_per_imagep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pixels_per_image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">=</span><span class="n">img</span>
+        
+        <span class="c1">#print (self._mags)</span>
+        
+        
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shortname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1">#using splat tricks to create shortnames</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Par&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;WISP &#39;</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;aegis&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;AEGIS &#39;</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;goodss&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;GOODSS &#39;</span><span class="p">)</span>
+            
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;goodsn&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;GOODSN &#39;</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;uds&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;UDS &#39;</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;cosmos&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;COSMOS &#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span>
+    
+    <span class="c1">#again, mags and distance should probably be one property called parameters or something </span>
+        
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        magnitudes dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mags</span>
+    
+    <span class="nd">@mags.setter</span>
+    <span class="k">def</span> <span class="nf">mags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_mags</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mags</span><span class="o">=</span><span class="n">new_mags</span>
+        
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">distances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        distances measured using absmag/spt relations from Dupuy et al</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#return self._distance</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_distance</span><span class="p">()</span>
+            
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Overall distance of the source obtained by averaging all the photomteric distances</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_distance</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ds</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;_er&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">ers</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;_er&#39;</span>  <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            
+            <span class="n">val</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">pc</span>
+            <span class="n">unc</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">ers</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">pc</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;er&#39;</span><span class="p">:</span><span class="n">unc</span><span class="p">}</span>
+    
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">photo_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pixels_per_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number of pixels around the object to show in photometry image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_phot_img_pixel</span>
+    
+    <span class="nd">@pixels_per_image.setter</span>
+    <span class="k">def</span> <span class="nf">pixels_per_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_pixels</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number of pixels around the object to show in photometry image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_phot_img_pixel</span><span class="o">=</span><span class="n">new_pixels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">photo_image</span><span class="o">.</span><span class="n">pixels_per_image</span><span class="o">=</span><span class="n">new_pixels</span>
+
+    
+    <span class="k">def</span> <span class="nf">_calculate_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computing a photo-spectrometric distance of the source </span>
+<span class="sd">        </span>
+<span class="sd">        The spectrum is classified by standard, </span>
+<span class="sd">        I compute a color from the standard and obtain an apparent magnitude in the respective filter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mags</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span>
+    
+        <span class="n">distances</span><span class="o">=</span><span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span> <span class="o">=</span> <span class="n">splat</span><span class="o">.</span><span class="n">classifyByStandard</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">splat_spectrum</span><span class="p">,</span> <span class="n">comprng</span><span class="o">=</span><span class="p">[[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.65</span><span class="p">]])[</span><span class="mi">0</span><span class="p">]</span>
+            
+        <span class="n">std</span><span class="o">=</span><span class="n">splat</span><span class="o">.</span><span class="n">getStandard</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span><span class="p">)</span>
+        
+        <span class="n">t_mass_mags1</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">t_mass_mags_er1</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">t_mass_mags2</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">t_mass_mags_er2</span><span class="o">=</span><span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s1">&#39;2MASS J&#39;</span><span class="p">:</span>
+                <span class="n">fltr</span><span class="o">=</span><span class="s1">&#39;NICMOS &#39;</span><span class="o">+</span><span class="n">key</span>
+    
+                <span class="c1">#obtain color from std ( HST mag - 2MASS J or H mag)</span>
+                <span class="n">color1</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="n">fltr</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="s1">&#39;2MASS J&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">color2</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="n">fltr</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="s1">&#39;2MASS H&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                
+                <span class="n">colorunc1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="n">fltr</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="s1">&#39;2MASS J&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">colorunc2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="n">fltr</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="s1">&#39;2MASS H&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                
+                <span class="c1">#obtain 2MASS apparent magS</span>
+                <span class="n">mass_j</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">color1</span><span class="p">)</span>
+                <span class="n">mass_h</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">color2</span><span class="p">)</span>
+                
+                <span class="c1">#print (&#39;2MASS J&#39;, mko_h)</span>
+                <span class="n">mass_j_unc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">colorunc1</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">mass_h_unc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">colorunc2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                
+            
+                
+                <span class="c1">#calculate the mean distance from both H and J mags</span>
+                <span class="n">d1</span><span class="p">,</span> <span class="n">d_unc1</span><span class="o">=</span><span class="n">spe</span><span class="o">.</span><span class="n">estimateDistance</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="n">spt_e</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">mag_unc</span><span class="o">=</span><span class="n">mass_j_unc</span><span class="p">,</span> <span class="n">spt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span><span class="p">,</span>
+                                              <span class="n">mag</span> <span class="o">=</span> <span class="n">mass_j</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span> <span class="s1">&#39;2MASS J&#39;</span><span class="p">)</span>
+                                              
+                <span class="n">d2</span><span class="p">,</span> <span class="n">d_unc2</span><span class="o">=</span><span class="n">spe</span><span class="o">.</span><span class="n">estimateDistance</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="n">spt_e</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>  <span class="n">mag_unc</span><span class="o">=</span><span class="n">mass_h_unc</span><span class="p">,</span> <span class="n">spt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span><span class="p">,</span>
+                                              <span class="n">mag</span> <span class="o">=</span> <span class="n">mass_h</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span> <span class="s1">&#39;2MASS H&#39;</span><span class="p">)</span>
+                
+            
+                <span class="c1">#print (d1, d2)</span>
+                <span class="n">distances</span><span class="p">[</span><span class="s1">&#39;D_&#39;</span><span class="o">+</span><span class="n">fltr</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">([</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">]))</span>
+                <span class="c1">#remove nans </span>
+                <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">d_unc1</span><span class="p">,</span> <span class="n">d_unc2</span><span class="p">])</span>
+                <span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span><span class="o">=</span><span class="mf">0.0</span>
+                <span class="n">distances</span><span class="p">[</span><span class="s1">&#39;D_&#39;</span><span class="o">+</span><span class="n">fltr</span><span class="o">+</span><span class="s1">&#39;_er&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+                <span class="c1">#distances[&#39;SpT&#39;]=spt[0]</span>
+        
+                <span class="n">t_mass_mags1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mass_j</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">t_mass_mags_er1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mass_j_unc</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">t_mass_mags2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mass_h</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">t_mass_mags_er2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mass_h_unc</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="s1">&#39;2MASS J&#39;</span><span class="p">]</span><span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">t_mass_mags1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">t_mass_mags1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">t_mass_mags1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="s1">&#39;2MASS H&#39;</span><span class="p">]</span><span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">t_mass_mags2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">t_mass_mags2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">t_mass_mags2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span><span class="o">=</span><span class="n">distances</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">=</span><span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="p">,</span>  <span class="n">distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">[</span><span class="s1">&#39;val&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">pc</span><span class="p">)</span>
+        
+        <span class="k">return</span> 
+        
+   
+        
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plotting routine, overwriting Spectrum.plot</span>
+<span class="sd">        This routine includes a 2d image superimposed to the spectrum</span>
+<span class="sd">        </span>
+<span class="sd">        Arguments: </span>
+<span class="sd">        </span>
+<span class="sd">        optional arguments:</span>
+<span class="sd">    </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">plot_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+
+<span class="c1"># def __get_photometric_info(sp):</span>
+<span class="c1"># 	#format catalog names</span>
+<span class="c1"># 	filters=[&#39;F110&#39;, &#39;F140&#39;, &#39;F160&#39;]</span>
+<span class="c1"># 	</span>
+<span class="c1"># 	if sp.name.startswith(&#39;Par&#39;):</span>
+<span class="c1"># 		n1=s1.name</span>
+<span class="c1"># 		number=s1.name.split</span>
+<span class="c1"># 		path_to_cat=wisps.REMOTE_FOLDER+&#39;wisps/&#39;+n1.split(&#39;_&#39;)[0]+&#39;_*&#39;+&#39;/DATA/DIRECT_GRISM/fin_*&#39;+filt+&#39;.cat&#39;</span>
+<span class="c1"># 		filter_file=glob.glob(path_to_cat)[0]</span>
+<span class="c1"># 		cat=ascii.read(filter_file)</span>
+<span class="c1"># 		ra, dec, mag, mager=__read_phot_catalog( cat, number, survey)</span>
+<span class="c1"># 		</span>
+<span class="c1"># 	</span>
+<span class="c1"># 	return </span>
+<span class="c1"># def __read_phot_catalog( cat, number, survey):</span>
+<span class="c1"># 	&quot;&quot;&quot;</span>
+<span class="c1"># 	gets input catalog and number of the object to extract</span>
+<span class="c1"># 	return photometry, ra and dec,</span>
+<span class="c1"># 	</span>
+<span class="c1"># 	this doens&#39;t solve my problem with missing 3d-hst IDS</span>
+<span class="c1"># 	&quot;&quot;&quot;</span>
+<span class="c1"># 	ra=None</span>
+<span class="c1"># 	dec=None</span>
+<span class="c1"># 	mag=None</span>
+<span class="c1"># 	mager=None</span>
+<span class="c1"># 	if survey==&#39;wisps&#39;:</span>
+<span class="c1"># 		select=cat[cat.col2==number]</span>
+<span class="c1"># 		ra=float(select.col1.iloc[0].split(&#39;_&#39;)[1])</span>
+<span class="c1"># 		dec=float(select.col1.iloc[0].split(&#39;_&#39;)[2])</span>
+<span class="c1"># 		mag=float(select.col13.iloc[0])</span>
+<span class="c1"># 		mager=float(select.col14.iloc[0])</span>
+<span class="c1"># 		</span>
+<span class="c1"># 	if survey==&#39;hst-3d&#39;:</span>
+<span class="c1"># 		select=cat[cat.NUMBER==number]</span>
+<span class="c1"># 		</span>
+<span class="c1"># 	return ra, dec, mag, mager</span>
+<span class="c1"># 	</span>
+</pre></div>
+
+  </div>
+
+  </header>
+
+  <section id="section-items">
+    <h2 class="section-title" id="header-variables">Module variables</h2>
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.COMBINED_PHOTO_SPECTRO_FILE" class="name">var <span class="ident">COMBINED_PHOTO_SPECTRO_FILE</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.INDEX_NAMES" class="name">var <span class="ident">INDEX_NAMES</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.INDICES" class="name">var <span class="ident">INDICES</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.LIBRARIES" class="name">var <span class="ident">LIBRARIES</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.OUTPUT_FIGURES" class="name">var <span class="ident">OUTPUT_FIGURES</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.OUTPUT_FILES" class="name">var <span class="ident">OUTPUT_FILES</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.OUTPUT_TABLES" class="name">var <span class="ident">OUTPUT_TABLES</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.PHOTOMETRY_FILE" class="name">var <span class="ident">PHOTOMETRY_FILE</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.REMOTE_FOLDER" class="name">var <span class="ident">REMOTE_FOLDER</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.REMOTE_PHOT_CATALOGS" class="name">var <span class="ident">REMOTE_PHOT_CATALOGS</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.WISP_PATH" class="name">var <span class="ident">WISP_PATH</span></p>
+      
+  
+  <div class="source_cont">
+</div>
+
+      </div>
+
+
+    <h2 class="section-title" id="header-classes">Classes</h2>
+      
+      <div class="item">
+      <p id="wisps.data_analysis.photometry.Source" class="name">class <span class="ident">Source</span></p>
+      
+  
+    <div class="desc"><p>Source object, inherts from Spectrum but adds photometry and distances</p>
+<p>Attributes:
+    name (str): grism id in the photometric catalog
+    shortname (str): a shortname based on the coordinates
+    wave (numpy array): the wavelength array i.e for flux, contam, noise
+    indices (dict): dictionary of spectral indices i.e ratio of fluxes 
+    cdf_snr (str): modified snr 
+    coords (object): astropy.coordinates of the source
+    mags (dict): dictionary of mags in different filters
+    distance (dict): dictionary of distances estimated from  different filters
+    splat_spectrum: a splat spectrum object with all its glory</p>
+<p>Example:
+    &gt;&gt; import wisps
+    &gt;&gt; s=wisps.Source(name='uds-25-G141_36758')
+    &gt;&gt; s.plot()
+    &gt;&gt; print ('mags {} distance {} coords {}'.format(s.mags, s.distance, s.coords))</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-wisps.data_analysis.photometry.Source', this);">Show source &equiv;</a></p>
+  <div id="source-wisps.data_analysis.photometry.Source" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">Source</span><span class="p">(</span><span class="n">Spectrum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Source object, inherts from Spectrum but adds photometry and distances</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        name (str): grism id in the photometric catalog</span>
+<span class="sd">        shortname (str): a shortname based on the coordinates</span>
+<span class="sd">        wave (numpy array): the wavelength array i.e for flux, contam, noise</span>
+<span class="sd">        indices (dict): dictionary of spectral indices i.e ratio of fluxes </span>
+<span class="sd">        cdf_snr (str): modified snr </span>
+<span class="sd">        coords (object): astropy.coordinates of the source</span>
+<span class="sd">        mags (dict): dictionary of mags in different filters</span>
+<span class="sd">        distance (dict): dictionary of distances estimated from  different filters</span>
+<span class="sd">        splat_spectrum: a splat spectrum object with all its glory</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt; import wisps</span>
+<span class="sd">        &gt;&gt; s=wisps.Source(name=&#39;uds-25-G141_36758&#39;)</span>
+<span class="sd">        &gt;&gt; s.plot()</span>
+<span class="sd">        &gt;&gt; print (&#39;mags {} distance {} coords {}&#39;.format(s.mags, s.distance, s.coords))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wisp_name</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mags</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spectrum</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;spectral_type&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_star_flag</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_star&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_phot_img_pixel</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pixel_per_img&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;mags&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mags&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_star_flag</span> <span class="ow">and</span>  <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_distance</span><span class="p">()</span>
+            
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wisp_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;Empty photometry object&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wisp_name</span>
+    
+    <span class="c1">#to do : ras, decs &amp; should stuff probably be one property (e.g a big dictionary) </span>
+    <span class="c1">#for simplicity and elegance?</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span>
+	
+    <span class="nd">@ra.setter</span>
+    <span class="k">def</span> <span class="nf">ra</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_ra</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="o">=</span> <span class="n">new_ra</span>
+        
+	
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">degree</span>
+        
+    <span class="nd">@dec.setter</span>
+    <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_dec</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="o">=</span><span class="n">new_dec</span>
+       
+            
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coords</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This must be an astropy skycoord object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_star_flag</span> <span class="ow">and</span>  <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_distance</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span>
+        
+    <span class="nd">@coords.setter</span>
+    <span class="k">def</span> <span class="nf">coords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_coords</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="o">=</span><span class="n">new_coords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="o">=</span><span class="n">new_coords</span><span class="o">.</span><span class="n">ra</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="o">=</span><span class="n">new_coords</span><span class="o">.</span><span class="n">dec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="o">=</span><span class="n">splat</span><span class="o">.</span><span class="n">coordinateToDesignation</span><span class="p">(</span><span class="n">new_coords</span><span class="p">)</span>
+        
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wisp_name</span>
+    
+    <span class="nd">@name.setter</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        setting up a source object by searching its grism id throughout the master table</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wisp_name</span><span class="o">=</span><span class="n">new_name</span>
+        <span class="k">if</span> <span class="n">new_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.ascii&#39;</span><span class="p">):</span> <span class="n">new_name</span><span class="o">=</span><span class="n">new_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.ascii&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span>  <span class="n">new_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.dat&#39;</span><span class="p">):</span> <span class="n">new_name</span><span class="o">=</span><span class="n">new_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.dat&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">new_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.1D&#39;</span><span class="p">):</span> <span class="n">new_name</span><span class="o">=</span><span class="n">new_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.1D&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+		
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="n">new_name</span>
+        <span class="c1">#get mags from the photometry catalog</span>
+        <span class="c1">#this is the master table that contains everything i.e after the snr cut </span>
+        <span class="c1"># to see how this is created look at pre_processing.py</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">COMBINED_PHOTO_SPECTRO_DATA</span>
+       	<span class="k">try</span><span class="p">:</span>
+        	<span class="n">s</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;grism_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">new_name</span><span class="p">])]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+        	<span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;This source was removed using snr cut&#39;</span><span class="p">,</span>  <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        	<span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_hdf</span><span class="p">(</span><span class="n">COMBINED_PHOTO_SPECTRO_FILE</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;all_phot_spec_data&#39;</span><span class="p">)</span>
+        	<span class="n">s</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;grism_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="n">new_name</span><span class="p">])]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1">#print (s)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mags</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;F110W&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">F110</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="o">.</span><span class="n">F110</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                             <span class="s1">&#39;F160W&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">F160</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="o">.</span><span class="n">F160</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                             <span class="s1">&#39;F140W&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">F140</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">s</span><span class="o">.</span><span class="n">F140</span><span class="p">[</span><span class="mi">1</span><span class="p">])}</span>
+           
+        <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">=</span><span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">RA</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">DEC</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;deg&#39;</span><span class="p">)</span>
+        <span class="c1">#self.spectral_type=s.Spts</span>
+        
+        <span class="c1">#populate image data </span>
+        <span class="n">img</span><span class="o">=</span><span class="n">Image</span><span class="p">()</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">_ra</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">RA</span> <span class="c1"># i shouldn&#39; be doing this :(</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">_dec</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">DEC</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">new_name</span>
+        <span class="n">img</span><span class="o">.</span><span class="n">pixels_per_imagep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pixels_per_image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">=</span><span class="n">img</span>
+        
+        <span class="c1">#print (self._mags)</span>
+        
+        
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shortname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1">#using splat tricks to create shortnames</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Par&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;WISP &#39;</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;aegis&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;AEGIS &#39;</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;goodss&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;GOODSS &#39;</span><span class="p">)</span>
+            
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;goodsn&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;GOODSN &#39;</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;uds&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;UDS &#39;</span><span class="p">)</span>
+                
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;cosmos&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">designationToShortName</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">,</span> <span class="s1">&#39;COSMOS &#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span>
+    
+    <span class="c1">#again, mags and distance should probably be one property called parameters or something </span>
+        
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        magnitudes dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mags</span>
+    
+    <span class="nd">@mags.setter</span>
+    <span class="k">def</span> <span class="nf">mags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_mags</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mags</span><span class="o">=</span><span class="n">new_mags</span>
+        
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">distances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        distances measured using absmag/spt relations from Dupuy et al</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#return self._distance</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_distance</span><span class="p">()</span>
+            
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Overall distance of the source obtained by averaging all the photomteric distances</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_distance</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ds</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;_er&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            <span class="n">ers</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="s1">&#39;_er&#39;</span>  <span class="ow">in</span> <span class="n">k</span><span class="p">]</span>
+            
+            <span class="n">val</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">pc</span>
+            <span class="n">unc</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">ers</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">pc</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val&#39;</span><span class="p">:</span><span class="n">val</span><span class="p">,</span> <span class="s1">&#39;er&#39;</span><span class="p">:</span><span class="n">unc</span><span class="p">}</span>
+    
+    <span class="nd">@property</span> 
+    <span class="k">def</span> <span class="nf">photo_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_image</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">pixels_per_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number of pixels around the object to show in photometry image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_phot_img_pixel</span>
+    
+    <span class="nd">@pixels_per_image.setter</span>
+    <span class="k">def</span> <span class="nf">pixels_per_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_pixels</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number of pixels around the object to show in photometry image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_phot_img_pixel</span><span class="o">=</span><span class="n">new_pixels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">photo_image</span><span class="o">.</span><span class="n">pixels_per_image</span><span class="o">=</span><span class="n">new_pixels</span>
+
+    
+    <span class="k">def</span> <span class="nf">_calculate_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        computing a photo-spectrometric distance of the source </span>
+<span class="sd">        </span>
+<span class="sd">        The spectrum is classified by standard, </span>
+<span class="sd">        I compute a color from the standard and obtain an apparent magnitude in the respective filter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mags</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span>
+    
+        <span class="n">distances</span><span class="o">=</span><span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span> <span class="o">=</span> <span class="n">splat</span><span class="o">.</span><span class="n">classifyByStandard</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">splat_spectrum</span><span class="p">,</span> <span class="n">comprng</span><span class="o">=</span><span class="p">[[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.65</span><span class="p">]])[</span><span class="mi">0</span><span class="p">]</span>
+            
+        <span class="n">std</span><span class="o">=</span><span class="n">splat</span><span class="o">.</span><span class="n">getStandard</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span><span class="p">)</span>
+        
+        <span class="n">t_mass_mags1</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">t_mass_mags_er1</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">t_mass_mags2</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">t_mass_mags_er2</span><span class="o">=</span><span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s1">&#39;2MASS J&#39;</span><span class="p">:</span>
+                <span class="n">fltr</span><span class="o">=</span><span class="s1">&#39;NICMOS &#39;</span><span class="o">+</span><span class="n">key</span>
+    
+                <span class="c1">#obtain color from std ( HST mag - 2MASS J or H mag)</span>
+                <span class="n">color1</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="n">fltr</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="s1">&#39;2MASS J&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">color2</span><span class="o">=</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="n">fltr</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="s1">&#39;2MASS H&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                
+                <span class="n">colorunc1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="n">fltr</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="s1">&#39;2MASS J&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">colorunc2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="n">fltr</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">spl</span><span class="o">.</span><span class="n">filterMag</span><span class="p">(</span><span class="n">std</span><span class="p">,</span><span class="s1">&#39;2MASS H&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                
+                <span class="c1">#obtain 2MASS apparent magS</span>
+                <span class="n">mass_j</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">color1</span><span class="p">)</span>
+                <span class="n">mass_h</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">color2</span><span class="p">)</span>
+                
+                <span class="c1">#print (&#39;2MASS J&#39;, mko_h)</span>
+                <span class="n">mass_j_unc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">colorunc1</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">mass_h_unc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">colorunc2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                
+            
+                
+                <span class="c1">#calculate the mean distance from both H and J mags</span>
+                <span class="n">d1</span><span class="p">,</span> <span class="n">d_unc1</span><span class="o">=</span><span class="n">spe</span><span class="o">.</span><span class="n">estimateDistance</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="n">spt_e</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">mag_unc</span><span class="o">=</span><span class="n">mass_j_unc</span><span class="p">,</span> <span class="n">spt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span><span class="p">,</span>
+                                              <span class="n">mag</span> <span class="o">=</span> <span class="n">mass_j</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span> <span class="s1">&#39;2MASS J&#39;</span><span class="p">)</span>
+                                              
+                <span class="n">d2</span><span class="p">,</span> <span class="n">d_unc2</span><span class="o">=</span><span class="n">spe</span><span class="o">.</span><span class="n">estimateDistance</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="n">spt_e</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>  <span class="n">mag_unc</span><span class="o">=</span><span class="n">mass_h_unc</span><span class="p">,</span> <span class="n">spt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span><span class="p">,</span>
+                                              <span class="n">mag</span> <span class="o">=</span> <span class="n">mass_h</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span> <span class="s1">&#39;2MASS H&#39;</span><span class="p">)</span>
+                
+            
+                <span class="c1">#print (d1, d2)</span>
+                <span class="n">distances</span><span class="p">[</span><span class="s1">&#39;D_&#39;</span><span class="o">+</span><span class="n">fltr</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">([</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">]))</span>
+                <span class="c1">#remove nans </span>
+                <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">d_unc1</span><span class="p">,</span> <span class="n">d_unc2</span><span class="p">])</span>
+                <span class="n">x</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span><span class="o">=</span><span class="mf">0.0</span>
+                <span class="n">distances</span><span class="p">[</span><span class="s1">&#39;D_&#39;</span><span class="o">+</span><span class="n">fltr</span><span class="o">+</span><span class="s1">&#39;_er&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+                <span class="c1">#distances[&#39;SpT&#39;]=spt[0]</span>
+        
+                <span class="n">t_mass_mags1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mass_j</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">t_mass_mags_er1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mass_j_unc</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">t_mass_mags2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mass_h</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">t_mass_mags_er2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mass_h_unc</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="s1">&#39;2MASS J&#39;</span><span class="p">]</span><span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">t_mass_mags1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">t_mass_mags1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">t_mass_mags1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="p">[</span><span class="s1">&#39;2MASS H&#39;</span><span class="p">]</span><span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">t_mass_mags2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">t_mass_mags2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">t_mass_mags2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span><span class="o">=</span><span class="n">distances</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">=</span><span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="p">,</span>  <span class="n">distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">[</span><span class="s1">&#39;val&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">pc</span><span class="p">)</span>
+        
+        <span class="k">return</span> 
+        
+   
+        
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plotting routine, overwriting Spectrum.plot</span>
+<span class="sd">        This routine includes a 2d image superimposed to the spectrum</span>
+<span class="sd">        </span>
+<span class="sd">        Arguments: </span>
+<span class="sd">        </span>
+<span class="sd">        optional arguments:</span>
+<span class="sd">    </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">plot_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#wisps.data_analysis.photometry.Source">Source</a></li>
+          <li>wisps.data_analysis.spectrum_tools.Spectrum</li>
+          <li>builtins.object</li>
+          </ul>
+          <h3>Static methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="wisps.data_analysis.photometry.Source.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Initialize self.  See help(type(self)) for accurate signature.</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-wisps.data_analysis.photometry.Source.__init__', this);">Show source &equiv;</a></p>
+  <div id="source-wisps.data_analysis.photometry.Source.__init__" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_wisp_name</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="o">=</span><span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_ra</span><span class="o">=</span><span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_dec</span><span class="o">=</span><span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_mags</span><span class="o">=</span><span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span><span class="o">=</span><span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_spectrum</span><span class="o">=</span><span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">spectral_type</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;spectral_type&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">designation</span><span class="o">=</span><span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_star_flag</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;is_star&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_shortname</span><span class="o">=</span> <span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_image</span><span class="o">=</span><span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_phot_img_pixel</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pixel_per_img&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;mags&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mags</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mags&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_star_flag</span> <span class="ow">and</span>  <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_distance</span><span class="p">()</span>
+</pre></div>
+
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="wisps.data_analysis.photometry.Source.classify_by_standard">
+    <p>def <span class="ident">classify_by_standard</span>(</p><p>self, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>uses splat.classifyByStandard to classify spectra using spex standards</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-wisps.data_analysis.photometry.Source.classify_by_standard', this);">Show source &equiv;</a></p>
+  <div id="source-wisps.data_analysis.photometry.Source.classify_by_standard" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">classify_by_standard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    uses splat.classifyByStandard to classify spectra using spex standards</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="k">return</span> <span class="n">splat</span><span class="o">.</span><span class="n">classifyByStandard</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_splat_spectrum</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="wisps.data_analysis.photometry.Source.measure_indices">
+    <p>def <span class="ident">measure_indices</span>(</p><p>self, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>measure indices of aa spectrum, calls the measureIndicess function
+Takes kwargs for toSplat()</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-wisps.data_analysis.photometry.Source.measure_indices', this);">Show source &equiv;</a></p>
+  <div id="source-wisps.data_analysis.photometry.Source.measure_indices" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">measure_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    measure indices of aa spectrum, calls the measureIndicess function</span>
+<span class="sd">    Takes kwargs for toSplat()</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">measure_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="wisps.data_analysis.photometry.Source.normalize">
+    <p>def <span class="ident">normalize</span>(</p><p>self, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>:Purpose: Normalize a spectrum to a maximum value of 1 (in its current units)
+:input:
+:ouput:
+:Example:</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-wisps.data_analysis.photometry.Source.normalize', this);">Show source &equiv;</a></p>
+  <div id="source-wisps.data_analysis.photometry.Source.normalize" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :Purpose: Normalize a spectrum to a maximum value of 1 (in its current units)</span>
+<span class="sd">    :input:</span>
+<span class="sd">    :ouput:</span>
+<span class="sd">    :Example:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">splat_spectrum</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_wave</span><span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">wave</span><span class="o">.</span><span class="n">value</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_flux</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">value</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_noise</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">noise</span><span class="o">.</span><span class="n">value</span>
+    
+    <span class="k">return</span> 
+</pre></div>
+
+  </div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="wisps.data_analysis.photometry.Source.plot">
+    <p>def <span class="ident">plot</span>(</p><p>self, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><p>Plotting routine, overwriting Spectrum.plot
+This routine includes a 2d image superimposed to the spectrum</p>
+<p>Arguments: </p>
+<p>optional arguments:</p></div>
+  <div class="source_cont">
+  <p class="source_link"><a href="javascript:void(0);" onclick="toggle('source-wisps.data_analysis.photometry.Source.plot', this);">Show source &equiv;</a></p>
+  <div id="source-wisps.data_analysis.photometry.Source.plot" class="source">
+    <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plotting routine, overwriting Spectrum.plot</span>
+<span class="sd">    This routine includes a 2d image superimposed to the spectrum</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments: </span>
+<span class="sd">    </span>
+<span class="sd">    optional arguments:</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plot_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+
+  </div>
+</div>
+
+  </div>
+  
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.cdf_snr" class="name">var <span class="ident">cdf_snr</span></p>
+            
+
+            
+  
+    <div class="desc"><p>Returns the snr computed form the SNR kde</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.contamination" class="name">var <span class="ident">contamination</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.coords" class="name">var <span class="ident">coords</span></p>
+            
+
+            
+  
+    <div class="desc"><p>This must be an astropy skycoord object</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.dec" class="name">var <span class="ident">dec</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.designation" class="name">var <span class="ident">designation</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.distance" class="name">var <span class="ident">distance</span></p>
+            
+
+            
+  
+    <div class="desc"><p>Overall distance of the source obtained by averaging all the photomteric distances</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.distances" class="name">var <span class="ident">distances</span></p>
+            
+
+            
+  
+    <div class="desc"><p>distances measured using absmag/spt relations from Dupuy et al</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.empty_flag" class="name">var <span class="ident">empty_flag</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.filename" class="name">var <span class="ident">filename</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.filepath" class="name">var <span class="ident">filepath</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.flux" class="name">var <span class="ident">flux</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.grism_id" class="name">var <span class="ident">grism_id</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.indices" class="name">var <span class="ident">indices</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.mags" class="name">var <span class="ident">mags</span></p>
+            
+
+            
+  
+    <div class="desc"><p>magnitudes dictionary</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.name" class="name">var <span class="ident">name</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.noise" class="name">var <span class="ident">noise</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.photo_image" class="name">var <span class="ident">photo_image</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.pixels_per_image" class="name">var <span class="ident">pixels_per_image</span></p>
+            
+
+            
+  
+    <div class="desc"><p>The number of pixels around the object to show in photometry image</p></div>
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.ra" class="name">var <span class="ident">ra</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.sensitivity_curve" class="name">var <span class="ident">sensitivity_curve</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.shortname" class="name">var <span class="ident">shortname</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.snr" class="name">var <span class="ident">snr</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.spectral_type" class="name">var <span class="ident">spectral_type</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.spectrum_image" class="name">var <span class="ident">spectrum_image</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.spectrum_image_path" class="name">var <span class="ident">spectrum_image_path</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.splat_spectrum" class="name">var <span class="ident">splat_spectrum</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.survey_field" class="name">var <span class="ident">survey_field</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+            <div class="item">
+            <p id="wisps.data_analysis.photometry.Source.wave" class="name">var <span class="ident">wave</span></p>
+            
+
+            
+  
+  <div class="source_cont">
+</div>
+
+            </div>
+      </div>
+      </div>
+
+  </section>
+
+    </article>
+  <div class="clear"> </div>
+  <footer id="footer">
+    <p>
+      Documentation generated by
+      <a href="https://github.com/BurntSushi/pdoc">pdoc 0.3.2</a>
+    </p>
+
+    <p>pdoc is in the public domain with the
+      <a href="http://unlicense.org">UNLICENSE</a></p>
+
+    <p>Design by <a href="http://nadh.in">Kailash Nadh</a></p>
+  </footer>
+</div>
+</body>
+</html>
