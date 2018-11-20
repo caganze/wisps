@@ -280,7 +280,8 @@ def replace_nans_with_previous_value(a):
             for i in range(0, len(a)): 
                 if (np.isnan(a[i])) or (a[i]==0.0): a[i]=a[i-1]
             return a
-@memoize_func
+#
+#@memoize_func
 def volume_bins(ra, dec, dist, dds, area):
     """
 	returns volume bins up to a distance 

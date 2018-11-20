@@ -16,7 +16,7 @@ import glob
 import splat.core as spl
 from splat import plot as splat_plot
 from .indices import measure_indices
-from .path_parser import parse_path
+from .path_parser import parse_path,get_image_path
 import statsmodels.nonparametric.kernel_density as kde
 import os
 from astropy.visualization import ZScaleInterval
@@ -180,16 +180,18 @@ class Spectrum(object):
         if self._empty_flag:
             return np.array([np.nan, np.nan, np.nan])
         else:
-            #mask regions between 1.2-1.35 microns and 1.51-1.6 microns
-            msk1=np.where((self.wave<=1.35) &(self.wave>=1.2) | (self.wave>=1.51) &(self.wave<=1.6))[0]
-            msk2=np.where((self.wave<=1.7) &(self.wave>=1.1))[0]
-            msk3=np.where((self.wave<=1.35) &(self.wave>=1.2) )[0]
-            #compute primary snr
+            #use regions of interest to calculate different snrs
+            msk1=np.where((self.wave>=1.2) &(self.wave<=1.3))[0]
+            msk2=np.where(((self.wave>=1.2) &(self.wave<=1.3)) | ((self.wave>=1.52) &(self.wave<=1.65)))[0]
+            msk3=np.where((self.wave<=1.52) &(self.wave>=1.65) )[0]
+            msk4=np.where((self.wave<=1.1) &(self.wave>=1.65) )[0]
+
             snr1= np.nanmedian(self.flux[msk1]/self.noise[msk1])
             snr2=np.nanmedian (self.flux[msk2]/self.noise[msk2])
             snr3=np.nanmedian (self.flux[msk3]/self.noise[msk3])
+            snr4=np.nanmedian (self.flux[msk4]/self.noise[msk4])
 
-            self._snr= {'l_t_snr':snr1, 'median_snr':snr2, 'cdf_snr': self.cdf_snr,'l_snr':snr3}
+            self._snr= {'snr1':snr1, 'snr2':snr2, 'cdf_snr': self.cdf_snr,'snr3':snr3, 'snr4':snr4}
         
     @property
     def indices(self):
@@ -224,12 +226,16 @@ class Spectrum(object):
         data= ascii.read(new_file_path)
         self._filepath=new_file_path
         #this is how I know I have not ran the parser before (I'm trying to avoid duplicating things)
+        #ugh this is annoy
         if self._filename is None:
-            self._filename=self._filepath.split('/')[-1]
+            if not 'wisps' in self._filepath:
+                self._filename=self._filepath.split('/')[-1]
+            if 'wisps' in self._filepath:
+                self._filename=self._filepath.split('/')[-1].split('_wfc3_')[-1].split('a_g102')[0].split('a_g')[0]
             #print (self._filename)
             if self._filename.startswith('hlsp'):
                 self._filename=self._filename.split('_wfc3_')[-1].split('a_g102')[0]
-            survey, spectrum_path, stamp_image_path=parse_path(self._filename, 'v5')
+            survey, stamp_image_path=get_image_path(self._filename)
             self._spectrum_image_path=stamp_image_path
             self._survey=survey
         
