@@ -42,7 +42,7 @@ def _load_and_save_spex_indices(stype, filename):
                'T0', 'T1', 'T2', 'T3', 'T4',
                'T5', 'T6', 'T7', 'T8', 'T9']
     if stype=='spex_sample':
-        db= splat.searchLibrary(spt=[17, 39], vlm=True, subdwarf=False, giant=False )
+        db= splat.searchLibrary(spt=[17, 39], vlm=True, giant=False )
         spectra= [splat.Spectrum(x) for x in db['DATA_FILE']]
         spts=np.array(db['SPTN'])
     if stype=='std':
@@ -71,12 +71,13 @@ def _load_and_save_spex_indices(stype, filename):
     #classifyByStandard
     chis=[ splat.classifyByStandard(s.splat_spectrum, return_statistic=True, plot=False)[1] for s in wisp_spectra]
     #measure indices
-    ids= [s.indices for s in wisp_spectra ]
+    ids= pd.DataFrame([s.indices for s in wisp_spectra ])
     #get different measures of snrs
-    snrs=[s.cdf_snr for s in wisp_spectra ]
+    snrs=[s.snr for s in wisp_spectra ]
     #save the file
-    final_dict={'Names':names, 'Spts': np.array(spts)[nempty], 'Indices':ids, 'Snr':snrs, 'Chis':chis, 'spectra': wisp_spectra}
+    final_dict={'Names':names, 'Spts': np.array(spts)[nempty],  'Snr':snrs, 'Chis':chis, 'spectra': wisp_spectra}
     t= pd.DataFrame(final_dict)
+    for k in ids.columns: t[k]=ids[k]
     t.to_pickle(filename)
     
     return t

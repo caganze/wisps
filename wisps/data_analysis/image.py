@@ -23,6 +23,7 @@ class Image(object):
         self._f160=None
         self.survey=None
         self._phot_img_pixel=40.0
+        self.path=None
         if 'name' in  kwargs: self.name=kwargs.get('name')
         
     def __repr__(self):
@@ -112,7 +113,8 @@ class Image(object):
         n=self.name
         if n.lower().startswith('par'):
             #p=REMOTE_FOLDER+'wisps/'+n.split('_')[0]+'_*/DATA/DIRECT_GRISM/'+filt+'*_sci.fits'
-            p=REMOTE_FOLDER+'wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+n.split('-')[0]+'*/hlsp_wisp_hst_wfc3_*'+filt+'v6.2_drz.fits'
+            p=REMOTE_FOLDER+'wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+n.split('-')[0]+'/hlsp_wisp_hst_wfc3_*-80mas_f*w_v6.2_drz.fits'
+            #print ('glob', glob.glob(p), p)
         if n.lower().startswith('uds') or n.lower().startswith('aeg') or n.lower().startswith('cos') :
             p=REMOTE_FOLDER+n.split('-')[0]+'*/'+n.split('-G')[0]+'/'+n.split('-G')[0]+'*'+filt+'*drz_sci.fits'
         if n.lower().startswith('goo'):
@@ -124,14 +126,21 @@ class Image(object):
             
         #if the field was not imaged in given filter 
         filter_file=glob.glob(p)
+        self.path=p
+        #print (p)
         try:
             #print ('i guess not ? wtf  {}'.format(filter_file))
             #create wcs object
             w1=WCS(filter_file[0])
             
             #read the file
-            t=fits.open(filter_file[0])[0].data
-            
+            if n.lower().startswith('par'):
+                with fits.open(filter_file[0], memmap=False) as hdu:
+                    t=hdu[1].data
+            else:
+                with fits.open(filter_file[0], memmap=False) as hdu:
+                    t=hdu[0].data
+        
             pixelsize=self.pixels_per_image
             #get pixel position of the center object
             
@@ -169,9 +178,11 @@ class Image(object):
     				'center': (px0, py0),
     				'grid':grid,
     				'is_white':False}
+            del t
+            hdu.close()
+            del hdu
         except:
-            #print ('making white image for filter {} {}'.format(filter_file, filt))
-            #create a random white image
+            #make a white image if everything else fails
             white_img = np.zeros([100,100,3],dtype=np.uint8)
             white_img.fill(255)
             output= {'filter':filt,'data': white_img,'center': (0.0, 0.0),'grid':None, 'is_white': True}

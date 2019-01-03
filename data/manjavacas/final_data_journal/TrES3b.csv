@@ -1,0 +1,20 @@
+# OBJECT = TrES-3b,
+# RA (J2000): 17:52:07.020,
+# DEC (J2000): +37:32:46.18,
+# Reference: Manjavacas et al. 2018 ApJ,
+# First publication reference: 2014ApJ...785..148R,
+# DOI : doi:10.17909/t9-asft-6k38,
+# Contact: elenamanjavacas@email.arizona.edu,
+# First column: Wavelength (microns),
+# Second column: Flux density planet (erg/cm2/s/A),
+# Third column: Flux density uncertainty planet (erg/cm2/s/A),
+1.16250,6.74810e-18,4.33806e-18
+1.21300,5.27515e-18,3.22371e-18
+1.26050,4.88917e-18,2.58039e-18
+1.30700,4.41571e-18,2.77559e-18
+1.35250,5.66467e-18,3.06836e-18
+1.39900,5.60405e-18,2.52732e-18
+1.44700,3.85226e-18,1.92613e-18
+1.49700,6.10728e-18,1.31541e-18
+1.55050,5.09756e-18,1.66989e-18
+1.60800,5.63884e-18,1.27072e-18

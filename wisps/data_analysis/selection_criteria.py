@@ -15,6 +15,7 @@ from .indices import*
 from .spex_indices import *
 from .initialize import *
 from tqdm import tqdm
+from ..data_sets import datasets
 
 
 import pandas as pd
@@ -25,11 +26,10 @@ import matplotlib
 
 
 #load a previous sample of potential brown dwarfs
-df000=pd.read_csv(LIBRARIES+'/candidates.csv')
-df100=pd.read_hdf(COMBINED_PHOTO_SPECTRO_FILE, key='all_phot_spec_data')
-df200=df100[df100.grism_id.isin(df000.grism_id)]
 
-#print (df200)
+df200=datasets['candidates']
+mjdf=datasets['manjavacas']
+scndf=datasets['schneider']
 ############################################
 #format spex_sample ignore uncert
 class Annotator(object):
@@ -51,21 +51,22 @@ class Annotator(object):
         spt=kwargs.get('spt_label', 'Spts')
         #select by specral type range start spt=15
         df['spt_range']=''
-        classes=['M7-L0', 'L0-L5', 'L5-T0','T0-T5','T5-T9']
+        classes=['trash', 'M7-L0', 'L0-L5', 'L5-T0','T0-T5','T5-T9']
         if kwargs.get('assign_middle', False):
             #assign the the range to the median spectral type
             classes=[20, 22, 27, 32, 37]
 
-        if kwargs.get('assign_from_one', False):
-            classes=[1, 2, 3, 4, 5]
+        if kwargs.get('assign_number', False):
+            classes=[0, 1, 2, 3, 4, 5]
         if not 'data_type' in df.columns:
             df['data_type']='templates'
 
-        df['spt_range'].loc[(df[spt] >= 17.0 ) & (df[spt] <=20.0) & (df['data_type']== 'templates')]=classes[0]
-        df['spt_range'].loc[(df[spt] >= 20.1 ) & (df[spt] <=25.0) & (df['data_type']== 'templates')]=classes[1]
-        df['spt_range'].loc[(df[spt] >= 25.1 ) & (df[spt] <=30.0) & (df['data_type']== 'templates')]=classes[2]
-        df['spt_range'].loc[(df[spt] >= 30.1 ) & (df[spt] <=35.0) & (df['data_type']== 'templates')]=classes[3]
-        df['spt_range'].loc[(df[spt] >= 35.1 ) & (df[spt] <=40.0) & (df['data_type']== 'templates')]=classes[4]
+        df['spt_range'].loc[(df[spt] < 17.0 ) & (df['data_type']== 'templates')]=classes[0]
+        df['spt_range'].loc[(df[spt] >= 17.0 ) & (df[spt] <=20.0) & (df['data_type']== 'templates')]=classes[1]
+        df['spt_range'].loc[(df[spt] >= 20.1 ) & (df[spt] <=25.0) & (df['data_type']== 'templates')]=classes[2]
+        df['spt_range'].loc[(df[spt] >= 25.1 ) & (df[spt] <=30.0) & (df['data_type']== 'templates')]=classes[3]
+        df['spt_range'].loc[(df[spt] >= 30.1 ) & (df[spt] <=35.0) & (df['data_type']== 'templates')]=classes[4]
+        df['spt_range'].loc[(df[spt] >= 35.1 ) & (df[spt] <=40.0) & (df['data_type']== 'templates')]=classes[5]
         
         df['spt_range'].loc[ (df['data_type']== 'subdwarf')]='subdwarf'
         
@@ -173,16 +174,17 @@ class IndexSpace(object):
     	contaminants (pandas dataframe): a 3-column table (name, x_index, y_index) for all subdwarfs
     """
     def __init__(self, **kwargs):
-        self._shapes=None       #all the shapes
+        self._shapes=[]      #all the shapes
         self._contaminants=None
         self._spex_templates=None
-        self._contamination=None #contamination 
-        self._completeness=None
+        self._contamination={} #contamination 
+        self._completeness={}
         self.isBest= False #flag to specify if criterion will be used in the selectionprocess 
         self.xkey=kwargs.get('xkey', ' ')
         self.ykey=kwargs.get('ykey', ' ')
         self._spex_sample=None
         self._subdwarfs=None
+        self._false_negative=None
         #self._name=None
     def __repr__(self):
         return 'index-index space of '+ self.name
@@ -215,14 +217,16 @@ class IndexSpace(object):
         """
         Must be a pandas dataframe with columns
         """
-        df=new_conts[[self.xkey, self.ykey]]
+        df=Annotator.reformat_table(new_conts[[self.xkey, self.ykey]])
         df=df.dropna(how='any')
         df.columns=['x', 'y']
         #calculate the contamination based on the previous sample of potential brown dwarfs
         self._contaminants=new_conts[[self.xkey, self.ykey, 'Names']]
         #
-        true_bds=(df200[[self.xkey, self.ykey]]).values.T
+        true_bds=Annotator.reformat_table(df200[[self.xkey, self.ykey]].applymap(eval)).values.T
+        #print (true_bds)
         cont= {}
+        fn={}
         new_shapes=[]
         for s in self.shapes:
             s.datatype='contam'
@@ -231,14 +235,22 @@ class IndexSpace(object):
             #new definition of contamination
             #number that's selected that's actually brown dwarfs
             #print (true_bds)
+            #print (s.data)
             true_sl=len(s.select(true_bds).T)
             #number selected from all the trash
-            trash_sl=len(s.select(s.data).T)
+            slctd=s.select(s.data).T
+            #print (slctd)
+            trash_sl=len(slctd)
+            not_selcted=len(s.data)-  trash_sl
+            #false_neg=
             #print (trash_sl)
             #calculate the contamination
             #print (true_sl, trash_sl)
-            if trash_sl==0.0: cont[s.shape_name]=0.0
-            else: cont[s.shape_name]=(trash_sl-true_sl)/(trash_sl)
+            if trash_sl==0.0:
+                cont[s.shape_name]=0.0
+            else:
+                cont[s.shape_name]=abs(trash_sl-true_sl)/(trash_sl)
+
             new_shapes.append(s)
         self._contamination=cont
         self._shapes=new_shapes
@@ -277,6 +289,7 @@ class IndexSpace(object):
         #only keep columns that we need
         df= new_data[[self.xkey, self.ykey, 'Spts', 'Names']]
         #df.columns=['x', 'y', 'Spts', 'Names']
+       # print (self.xkey, self.ykey, new_data.columns)
         df['data_type']='templates'
         self._spex_sample= new_data[[self.xkey, self.ykey, 'Spts', 'Names']]
         #rename columns
@@ -285,10 +298,30 @@ class IndexSpace(object):
             annotated_df=Annotator.group_by_spt(df, add_subdwarfs=True, subdwarfs=self._subdwarfs)
         else:
             annotated_df=Annotator.group_by_spt(df)
-            
+        
         self._calc_completeness(annotated_df)
     
     #@classmethod   
+    def add_box(self, df, name, color, coeff):
+        """
+        Adds a box to the selection criteria
+        """
+        #reformat the data
+        x=np.array([*list(df.x.values)])
+        y=np.array([*list(df.y.values)])
+        ddf=pd.DataFrame([x[:,0], y[:,0], x[:,1], y[:, 1]]).transpose().dropna()
+        #create a box
+        box=Box()
+        box.scatter_coeff=coeff
+        box.alpha=.1
+        box.color=color
+        box.shape_name=name
+        box.edgecolor='#2ECC40'
+        box.data=np.array(ddf.values.T)
+        #add this to the existing 
+        self._shapes.append(box)
+        self._completeness[name]=box.efficiency
+
     def _calc_completeness(self, annotated_df):
         """
         	This is how each box is defined after the user passes the templates property
@@ -302,26 +335,25 @@ class IndexSpace(object):
         new_shapes=[]
         for name, group in grouped:
             df=group.dropna()
-            #print (df)
             if len(df) > 0.0:
                 #print('name of the group ...{} length ... {}'.format(name, len(group)))
                 to_use=df[[self.xkey, self.ykey]]
                 to_use.columns=['x', 'y']
-                xrng=[np.nanmin(np.array(to_use.x)), np.nanmax(np.array(to_use.x))]
-                yrng=[np.nanmin(np.array(to_use.y)), np.nanmax(np.array(to_use.y))]
-                box=Box()
-                box.scatter_coeff=3.0
-                box.alpha=1.0
-                box.color=None
-                box.shape_name=name
-                box.xrange=xrng
-                box.yrange=yrng
-                box.data=np.array([to_use.x, to_use.y])
-                new_shapes.append(box)
-                cpls[name]=box.efficiency
-                
-        self._shapes=new_shapes
-        self._completeness=cpls
+                self.add_box(to_use, name, '#0074D9', 3.0)
+
+
+        #add an extra box of late ts from manjavacas et al
+        mdf=mjdf[[self.xkey, self.ykey, 'spt']]
+        mdf.columns=['x', 'y', 'spt']
+
+        ydwarfs=mdf[mdf['spt'].apply(lambda x: splat.typeToNum(x))>36]
+        self.add_box(ydwarfs, 'Manj', '#0074D9', 3.0)
+
+        #add schneider objects
+        sdf= scndf[[self.xkey, self.ykey, 'spt']]
+        sdf.columns=['x', 'y', 'spt']
+        self.add_box(sdf, 'Schn', '#B10DC9', 3.0)
+
         return 
     
     def select(self, df, **kwargs):
@@ -371,7 +403,7 @@ class IndexSpace(object):
         """
         dict1={'data':[self.templates[self.xkey].tolist(), self.templates[self.ykey].tolist()], 
                'name':'Templates', \
-                'color':'#FFDC00', 
+                'color':'#0074D9', 
                 'marker':'D', 'ms':5, 'cmap':'YlOrBr', \
                   'alpha':1, 'edgecolor':'none', 'linewidths':3}
         
@@ -392,25 +424,52 @@ class IndexSpace(object):
         datadicts=kwargs.get('data_dicts', ddicts)
 
         fig=plt.figure(figsize=kwargs.get('figsize', (8,8)))
+
         ax1 = fig.add_subplot(111)
-        #ax1.set_xscale("log")
-        #ax1.set_yscale("log")
-        #_#sp_sample=self
-         #print (templates_data)
+
+        #if 'cont' in self.name.lower():
+        #    plt.xscale('log')
+        #    plt.yscale('log')
+
+        #plot contaminants
+        x=np.array(dict3['data'][0])
+        y=np.array(dict3['data'][1])
+        
+        small_df=pd.DataFrame([x, y]).applymap(np.float).transpose()
+        small_df.columns=['x', 'y']
+        small_df=small_df.replace([np.inf, -np.inf], np.nan)
+        small_df=small_df.dropna(how='any')
+        
+        #
+        #print (small_df)
+        #only show things in range of the plot
+        #small_df=small_df[(small_df.x.between(xlims[0],xlims[1]))& (small_df.y.between(ylims[0], ylims[1] ))]
+        
+        xd=small_df.x.as_matrix()  #rawr xd :) lol
+        yd=small_df.y.as_matrix()
+        
+        #hist2d=ax1.hist2d(x=xd, y=yd, cmap=kwargs.get('cmap', MYCOLORMAP), bins=10, alpha=1.0)
+        #cbar = fig.colorbar(hist2d[3],  orientation='horizontal')
+        ax1.scatter(xd, yd,  marker='.',  c='#AAAAAA', label='contaminants')
+
+        #plot templates
+
         templates_data =[d['data'] for d in datadicts if d['name']=='Templates']
+        templates_data=(np.array([*templates_data]))[0]
+        #print (templates_data.shape)
         if templates_data != []:
-            xmean=np.mean(templates_data[0][0])
-            xstd=np.std(templates_data[0][0])
-            ymean=np.mean(templates_data[0][1])
-            ystd=np.std(templates_data[0][1])
-            xmin=xmean-5.0*xstd
-            ymin=ymean-5.0*ystd
+            xmean=np.mean(templates_data[0][:,0])
+            xstd=np.std(templates_data[0][:,0])
+            ymean=np.mean(templates_data[1][:,0])
+            ystd=np.std(templates_data[1][:,0])
+            xmin=xmean-3.0*xstd
+            ymin=ymean-3.0*ystd
             if xmin<0.0:
                 xmin=0.0
             if ymin<0.0:
                 ymin=0.0
-            xlims=[xmin, xmean+5.0*xstd]
-            ylims=[ymin, ymean+5.0*ystd]
+            xlims=[xmin, xmean+3.0*xstd]
+            ylims=[ymin, ymean+3.0*ystd]
             
         else:
             xlims=self.shapes[-1].xrange
@@ -422,57 +481,47 @@ class IndexSpace(object):
                         s=d['ms'], cmap=d['cmap'], label=d['name'], alpha=d['alpha'], edgecolor=d['edgecolor'], 
                         linewidths=d['linewidths'])
                         
-        x=np.array(dict3['data'][0])
-        y=np.array(dict3['data'][1])
-        
-        small_df=pd.DataFrame([x, y]).transpose()
-        small_df.columns=['x', 'y']
-        small_df=small_df.replace([np.inf, -np.inf], np.nan)
-        small_df=small_df.dropna(how='any')
-        
-        #only show things in range of the plot
-        small_df=small_df[(small_df.x.between(xlims[0],xlims[1]))& (small_df.y.between(ylims[0], ylims[1] ))]
-        
-        xd=small_df.x.as_matrix()  #rawr xd :) lol
-        yd=small_df.y.as_matrix()
-        
-        # print (xd[np.isnan(xd)], yd[np.isnan(yd)])
-        #print (xd, yd)
-        #heatmap, xedges, yedges = np.histogram2d(xd, yd, bins=10000)
-        #extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
-        
-        
-        #ax1.imshow(heatmap.T, extent=extent, origin='lower', aspect='auto', cmap='viridis')
-        hist2d=ax1.hist2d(x=xd, y=yd, cmap=kwargs.get('cmap', MYCOLORMAP), bins=10, alpha=1.0)
-        
+    
         #ax1.hist2d(x=xd, y=yd, cmap='Reds')
-        cbar = fig.colorbar(hist2d[3],  orientation='horizontal')
+        
         df_=pd.DataFrame()
         df_['x']=d['data'][0]
         df_['y']=d['data'][1]
         for s in self.shapes:
-            #print ('plotting ....', s.shapetype)
-            s.color='none'
-            s.alpha=0.3
-            if s.shape_name in kwargs.get('highlight', [None]): s.plot( ax=ax1, only_shape=True, highlight=True)
-            else: s.plot( ax=ax1, only_shape=True)
+            if not s in kwargs.get('remove', []):
+                if s.shape_name in kwargs.get('highlight', [None]): s.plot( ax=ax1, only_shape=True, highlight=True)
+                else: s.plot( ax=ax1, only_shape=True)
             #s.color='none'
             #print (""" itsssssssss """,  kwargs.get('highlight', None))
             #print ('name', s.shape_name, 'color', s.color, 'linewidth', s.linewidth)
             
         plt.xlabel('$'+str(self.name.split(' ')[0])+'$', fontsize=18)
         plt.ylabel('$'+str(self.name.split(' ')[1])+'$', fontsize=18)
-        
-      
+
+        #plot manjavacas data
+        #FF851
+        mdf=Annotator.reformat_table(mjdf)
+        sdf=Annotator.reformat_table(scndf)
+
+        ax1.scatter(mdf[self.xkey], mdf[self.ykey],  marker='P',  c='#FF851B', label='manjavacas')
+        ax1.scatter(sdf[self.xkey], sdf[self.ykey],  marker='^',  c='#B10DC9', label='schneider')
+
         
         if kwargs.get('log_scale', False):
-            plt.xscale('log', nonposy='clip')
-            plt.yscale('log', nonposy='clip')
+            plt.xscale('log')
+            plt.yscale('log')
+        if np.std([s.xrange for s in self.shapes])>9.0*np.nanmedian([s.xrange for s  in self.shapes]):
+            plt.xscale('log')
+        if np.std([s.yrange for s in  self.shapes])>9.0*np.nanmedian([s.yrange for s in self.shapes]):
+            plt.yscale('log')
             
         filename=kwargs.get('filename', 'none')
         #set limits of the plts from templates 
         plt.xlim(kwargs.get('xlim',  xlims))
         plt.ylim(kwargs.get('ylim', ylims))
+
+        #indices that use the continuum have ranges that are too high, logscale this?
+
         plt.legend()
         plt.show()
         plt.close()
@@ -498,34 +547,31 @@ def save_criteria(**kwargs):
     """
     #load templates (will return spectral type and 10 indices for each object
     #completeness =kwargs.get('completeness', 0.9)
-    templates=spex_sample_ids(stype='spex_sample',  from_file=True)
-    tpl_ids=pd.DataFrame([x for x in templates['Indices']])
+    tpl_ids=spex_sample_ids(stype='spex_sample',  from_file=True)
     #templates['data_type']= 'templates'
-    
-    subdwarfs=spex_sample_ids(stype='sd',  from_file=True)
-    sd_ids=pd.DataFrame([x for x in subdwarfs['Indices']])
-    #subdwarfs['data_type']= 'subdwarf'
-
-    #print(subdwarfs)
-    
-    for k in tpl_ids.keys(): 
-        templates[k]=np.array(np.apply_along_axis(list, 0, tpl_ids[k].values))[:,0]
-        subdwarfs[k]=np.array(np.apply_along_axis(list, 0, sd_ids[k].values))[:,0]
-    
+    sd_ids=spex_sample_ids(stype='sd',  from_file=True)
+    #subdwarfs['data_type']= 'subdwarf
+    tpl_ids.Spts=tpl_ids.Spts.apply(float)
+    #print (tpl_ids)
+    #for k in tpl_ids.keys(): 
+    #    templates[k]=tpl_ids[k]
+    #    subdwarfs[k]= sd_ids[k]
+        
     #contaminants, should be using file that was generated after signal to noise cut
     #data_file=kwargs.get('cont_file', OUTPUT_FILES+'//new_contaminants.pkl')
     #conts=pd.read_pickle(data_file)
     conts=kwargs.get('conts', COMBINED_PHOTO_SPECTRO_DATA)
     #print(conts)
-    conts=conts.rename(columns={'grism_id': 'Names'})
-    keys=tpl_ids.columns
+    conts=Annotator.reformat_table(conts.rename(columns={'grism_id': 'Names'}))
+    keys=INDEX_NAMES
     index_spaces=[]
     for x_key, y_key in  tqdm(list(combinations(keys,2))):
         idspace=IndexSpace(xkey=x_key, ykey=y_key)
         #print (idspace.name)
+        #print (idspace.xkey, idspace.ykey)
         #pass subdwarfs first 
-        idspace.subdwarfs=subdwarfs
-        idspace.templates=templates
+        idspace.subdwarfs=sd_ids
+        idspace.templates=tpl_ids
         idspace.contaminants=conts
         index_spaces.append(idspace)
         
@@ -545,23 +591,23 @@ def plot_cont_compl(**kwargs):
 		"""
 		cmap=kwargs.get('cmap', MYCOLORMAP)
 		
-		crts=crts_from_file()
+		crts=crts_from_file().values()
 		conts=pd.DataFrame([ x.contamination for x in crts])
 		compls=pd.DataFrame([ x.completeness for x in crts])
 		conts['index-space']=[x.name for x in crts]
 		compls['index-space']=[x.name for x in crts]
 
-		conts.index=['idx'+str(i) for i in range(0, len(conts['index-space']))]
+		conts.index=['Idx'+str(i) for i in range(0, len(conts['index-space']))]
 		new_conts=conts.sort_values(by=list(conts.columns), ascending=True).drop(labels='index-space', axis=1)
-		compls.index=['idx'+str(i) for i in range(0, len(compls['index-space']))]
+		compls.index=['Idx'+str(i) for i in range(0, len(compls['index-space']))]
 		new_compls=compls.sort_values(by=list(compls.columns), ascending=True).drop(labels='index-space', axis=1)
 		
 		fig, (ax1, ax2)=plt.subplots(1, 2, figsize=kwargs.get('figsize',(10, 6)), sharex=True, sharey=True)
 		seaborn.heatmap(new_conts, cmap=cmap, ax=ax1)
 		seaborn.heatmap(new_compls,  ax=ax2, cmap=cmap)
 		
-		ax2.set_title('completeness', fontsize=14)
-		ax1.set_title('contamination', fontsize=14)
+		ax2.set_title('Completeness', fontsize=16)
+		ax1.set_title('Contamination', fontsize=16)
 		
 		fig.savefig( OUTPUT_FIGURES+'/completeness_contamination.pdf', bbox_inches='tight')
 		

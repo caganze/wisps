@@ -1,0 +1,21 @@
+# OBJECT = WASP-33b,
+# RA (J2000): 02:26:51.05823,
+# DEC (J2000): +37:33:01.7330,
+# Reference: Manjavacas et al. 2018 ApJ,
+# First publication reference: 2015ApJ...806..146H,
+# DOI : doi:10.17909/t9-asft-6k38,
+# Contact: elenamanjavacas@email.arizona.edu,
+# First column: Wavelength (microns),
+# Second column: Flux density planet (erg/cm2/s/A),
+# Third column: Flux density uncertainty planet (erg/cm2/s/A),
+1.15650,1.06524e-15,2.79699e-17
+1.20050,9.60416e-16,3.30043e-17
+1.24450,6.64890e-16,2.03153e-17
+1.28060,6.75553e-16,3.02872e-17
+1.31870,6.22690e-16,1.84577e-17
+1.36670,5.81787e-16,1.19112e-17
+1.41470,5.39078e-16,1.19568e-17
+1.46270,4.90917e-16,1.03163e-17
+1.51070,4.31450e-16,9.35032e-18
+1.55870,3.68000e-16,7.77964e-18
+1.60670,3.42076e-16,9.25476e-18

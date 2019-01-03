@@ -24,34 +24,6 @@ def f_test(x):
     """
     return stats.f.pdf(x, 2, 1, 0, scale=1)
 
-def fit_a_line(wave, flux, noise):
-    """
-    Fit a line, returns a chi-square
-    """
-    m, b, r_value, p_value, std_err = stats.linregress(wave,flux)
-    line=m*wave+b
-    chisqr=np.nansum((flux-line)**2/noise**2)
-    #print (chisqr)
-    return line, chisqr
-
-def compare_to_both(grism_id):
-    """
-    compare chi-square from line vs chi-square from standard
-    """
-    print (grism_id)
-    if grism_id.startswith('Par'):
-        result= pd.Series({'spex_chi':np.nan, 'line_chi':np.nan, 'spt': np.nan})
-    else:
-    	sp=Spectrum(name=grism_id)
-    	s=sp.splat_spectrum
-    	s.trim([1.15, 1.65])
-    	line, chi=fit_a_line(s.wave.value, s.flux.value, s.noise.value)
-    	spt, spexchi=splat.classifyByStandard(s, return_statistic=True, fit_ranges=[[1.15, 1.65]], plot=False)
-    	result=pd.Series({'spex_chi':spexchi, 'line_chi':chi, 'spt': spt})
-    	#calculate the f-statistic
-    return result
-
-
    
 def combined_wisp_hst_catalogs():
     """

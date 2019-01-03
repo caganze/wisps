@@ -30,6 +30,10 @@ import splat.empirical as spem
 from splat.plot import plotMap
 from splat.evolve import modelParameters
 
+import splat.simulate as spsim
+import splat.evolve as spev
+import splat.empirical as spem
+
 
 #####################################
 #                                   #
@@ -141,7 +145,7 @@ def galactic_density_juric(rc,zc,rho0 = 1./(u.pc**3),report='total',center='sun'
     else: return rho
 
 
-def volumeCorrection(coordinate,dmax,dmin=0.,model='juric',center='sun',nsamp=1000,unit=u.pc):
+def volume_correction(coordinate,dmax,dmin=0.,model='juric',center='sun',nsamp=1000,unit=u.pc):
     '''
     :Purpose: 
         Computes the effective volume sampled in a given direction to an outer distance value based on an underly stellar density model. 
@@ -216,6 +220,31 @@ def volumeCorrection(coordinate,dmax,dmin=0.,model='juric',center='sun',nsamp=10
         return float(integrate.trapz(rho[0]*(d**2),x=d)/integrate.trapz(d**2,x=d))
     else:
         return [float(integrate.trapz(r*(d**2),x=d)/integrate.trapz(d**2,x=d)) for r in rho]
+
+def make_luminosity_function():
+    #generate splat luminosity function
+    norm_range = [0.09,0.1]
+    norm_density = 0.0037
+    nsim = 1e4
+    spts=np.arange(17, 40)
+
+    # simulation
+    masses = spsim.simulateMasses(nsim,range=[0.02,0.15],distribution='power-law',alpha=0.5)
+    ages = spsim.simulateAges(nsim,range=[0.1,10.],distribution='uniform')
+    teffs = spev.modelParameters(mass=masses,age=ages,set='baraffe03')['temperature'].value
+    spts = np.array([spem.typeToTeff(float(x),set='filippazzo',reverse=True)[0] for x in teffs])
+    norm = norm_density/len(masses[np.where(np.logical_and(masses>=norm_range[0],masses<norm_range[1]))])
+
+    lfsim = []
+    spts = spts[np.isfinite(spts) == True]
+    for x in spts: lfsim.append(len(spts[np.where(np.logical_and(spts>=x,spts<x+1.))]))
+    lfsim = np.array(lfsim)*norm
+
+    df=pd.DataFrame()
+    df['spts']=spts
+    df['lsfim']=lfsim
+
+    df.to_pickle(OUTPUT_FILES+'/luminosity_function.pkl')
 
 
 

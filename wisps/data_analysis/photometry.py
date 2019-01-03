@@ -15,6 +15,7 @@ import glob
 from .spectrum_tools import*
 from .image import*
 from .plot_spectrum import plot_source
+from ..utils.tools import distance
 import splat.core as spl
 import splat.empirical as spe
 import random
@@ -209,12 +210,15 @@ class Source(Spectrum):
         """
         Overall distance of the source obtained by averaging all the photomteric distances
         """
+        #print (self.distances)
         if self._distance is None:
             return self._calculate_distance()
         else:
-            ds=[self.distances[k] for k in self.distances.keys() if '_er' not in k]
-            ers=[self.distances[k] for k in self.distances.keys() if '_er'  in k]
-            
+            ds=[self.distances[k][0] for k in self.distances.keys() if ('dist'  in k) and ('dist_er'  not in k)]
+            ers=[self.distances[k] for k in self.distances.keys() if 'dist_er'  in k]
+
+            #print (self._distance)
+            #print (ds)
             val=np.nanmean(ds)*u.pc
             unc= np.sqrt(np.nanstd(ds)**2+np.nanmean(ers)**2)*u.pc
             return {'val':val, 'er':unc}
@@ -252,63 +256,11 @@ class Source(Spectrum):
         """
         if self.mags is None: return None
     
-        distances={}
         if self.spectral_type is None:
             self.spectral_type = splat.classifyByStandard(self.splat_spectrum, comprng=[[1.1, 1.3], [1.3, 1.65]])[0]
             
-        std=splat.getStandard(self.spectral_type)
         
-        t_mass_mags1=[]
-        t_mass_mags_er1=[]
-        t_mass_mags2=[]
-        t_mass_mags_er2=[]
-        
-        for key in list(self.mags.keys()):
-            if key != '2MASS J':
-                fltr='NICMOS '+key
-    
-                #obtain color from std ( HST mag - 2MASS J or H mag)
-                color1=spl.filterMag(std, fltr)[0]-spl.filterMag(std,'2MASS J')[0]
-                color2=spl.filterMag(std, fltr)[0]-spl.filterMag(std,'2MASS H')[0]
-                
-                colorunc1=np.sqrt(spl.filterMag(std,fltr)[1]**2+spl.filterMag(std,'2MASS J')[1]**2)
-                colorunc2=np.sqrt(spl.filterMag(std,fltr)[1]**2+spl.filterMag(std,'2MASS H')[1]**2)
-                
-                #obtain 2MASS apparent magS
-                mass_j=float(self.mags[key][0])-float(color1)
-                mass_h=float(self.mags[key][0])-float(color2)
-                
-                #print ('2MASS J', mko_h)
-                mass_j_unc=np.sqrt( float(self.mags[key][1])**2+colorunc1**2)
-                mass_h_unc=np.sqrt( float(self.mags[key][1])**2+colorunc2**2)
-                
-            
-                
-                #calculate the mean distance from both H and J mags
-                d1, d_unc1=spe.estimateDistance(std, spt_e=0.5, mag_unc=mass_j_unc, spt=self.spectral_type,
-                                              mag = mass_j, filter= '2MASS J')
-                                              
-                d2, d_unc2=spe.estimateDistance(std, spt_e=0.5,  mag_unc=mass_h_unc, spt=self.spectral_type,
-                                              mag = mass_h, filter= '2MASS H')
-                
-            
-                #print (d1, d2)
-                distances['D_'+fltr]=np.round(np.nanmean([d1, d2]))
-                #remove nans 
-                x=np.array([d_unc1, d_unc2])
-                x[np.isnan(x)]=0.0
-                distances['D_'+fltr+'_er']=np.round(np.sqrt(x[0]**2+x[1]**2) )
-                #distances['SpT']=spt[0]
-        
-                t_mass_mags1.append(np.round(mass_j, 1))
-                t_mass_mags_er1.append(np.round(mass_j_unc, 1))
-                t_mass_mags2.append(np.round(mass_h, 1))
-                t_mass_mags_er2.append(np.round(mass_h_unc, 1))
-            
-        self.mags['2MASS J']= (np.nanmean(t_mass_mags1), np.sqrt(np.nanstd(t_mass_mags1)**2+np.nanstd(t_mass_mags1)**2))
-        self.mags['2MASS H']= (np.nanmean(t_mass_mags2), np.sqrt(np.nanstd(t_mass_mags2)**2+np.nanstd(t_mass_mags2)**2))
-        
-        self._distance=distances
+        self._distance= distance(self.mags, self.spectral_type)
         if self._distance is not None:
             self.coords=SkyCoord(ra=self._ra, dec=self._dec,  distance=self.distance['val'].value*u.pc)
         

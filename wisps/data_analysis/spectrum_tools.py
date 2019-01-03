@@ -3,16 +3,15 @@
 """
 Contains the sectrum object
 """
+
+
+#imports 
+##############
 from .initialize import *
 import splat
-import numpy as np
 from astropy.io import ascii, fits
 from matplotlib import gridspec
-
-#from astropy.table import hstack, Table, join, vstack
 import glob
-#from scipy.integrate import trapz        # for numerical integration
-#from scipy.interpolate import interp1d   #for 1-d interpolation
 import splat.core as spl
 from splat import plot as splat_plot
 from .indices import measure_indices
@@ -21,6 +20,11 @@ import statsmodels.nonparametric.kernel_density as kde
 import os
 from astropy.visualization import ZScaleInterval
 from scipy import interpolate
+from scipy import stats
+
+#################
+splat.initializeStandards()
+###############
 
 class Spectrum(object):
     """
@@ -59,7 +63,8 @@ class Spectrum(object):
         self._sensitivity=None
         self._spectrum_image_path=None
         self._indices=None
-        
+        self._spectral_type=None
+
         #load spectrum if given filename 
         
         if 'filepath' in kwargs: self._filepath =kwargs.get('filepath', None)
@@ -128,9 +133,46 @@ class Spectrum(object):
     
     def classify_by_standard(self, **kwargs):
         """
-        uses splat.classifyByStandard to classify spectra using spex standards
+        Uses splat.classifyByStandard to classify spectra using spex standards
         """ 
         return splat.classifyByStandard(self._splat_spectrum, **kwargs)
+
+    def fit_a_line(self, **kwargs):
+        """
+        Fit a line, returns a chi-square
+        """
+        #only fits within the range
+        mask=kwargs.get('mask', np.where((self.wave>1.15) & (self.wave <1.65))[0])
+        wave=self.wave[mask]
+        flux=self.flux[mask]
+        noise=self.noise[mask]
+        #fit a line from stast linerar regression package
+        m, b, r_value, p_value, std_err = stats.linregress(wave, flux)
+        line=m*wave+b
+        chisqr=np.nansum((flux-line)**2/noise**2)
+        #return the line anc chi-square
+        return line, chisqr
+
+    def f_test(self, **kwargs):
+        """
+        Use an F-test to see wether a line fits better than a spectral standard
+        """
+        #get the splat spectrum
+        s=self.splat_spectrum
+        #trim within the same wavelength used to compare to standards
+        s.trim([1.15, 1.65])
+        #fit a line
+        line, linechi=self.fit_a_line()
+        #compare to standards
+        spt, spexchi=splat.classifyByStandard(s, return_statistic=True, fit_ranges=[[1.15, 1.65]], plot=False, **kwargs)
+        #calculate f-statistic
+        x=spexchi/linechi
+        #calculate the f-statistic dfn=2, dfd=1 are areguments
+        f=stats.f.pdf(x, 2, 1, 0, scale=1)
+        #return result
+        result=pd.Series({'spex_chi':spexchi, 'line_chi':linechi, 'spt': spt, 'f':f})
+        return result
+
 
     def normalize(self, **kwargs):
         """
@@ -140,7 +182,7 @@ class Spectrum(object):
         :Example:
         """
         sp=self.splat_spectrum
-        sp.normalize()
+        sp.normalize(**kwargs)
         self._wave= sp.wave.value
         self._flux=sp.flux.value
         self._noise=sp.noise.value
@@ -183,8 +225,8 @@ class Spectrum(object):
             #use regions of interest to calculate different snrs
             msk1=np.where((self.wave>=1.2) &(self.wave<=1.3))[0]
             msk2=np.where(((self.wave>=1.2) &(self.wave<=1.3)) | ((self.wave>=1.52) &(self.wave<=1.65)))[0]
-            msk3=np.where((self.wave<=1.52) &(self.wave>=1.65) )[0]
-            msk4=np.where((self.wave<=1.1) &(self.wave>=1.65) )[0]
+            msk3=np.where((self.wave>=1.52) &(self.wave<=1.65) )[0]
+            msk4=np.where((self.wave>=1.1) &(self.wave<=1.65) )[0]
 
             snr1= np.nanmedian(self.flux[msk1]/self.noise[msk1])
             snr2=np.nanmedian (self.flux[msk2]/self.noise[msk2])
@@ -207,7 +249,22 @@ class Spectrum(object):
         """
         self.normalize()
         return measure_indices(self,**kwargs)
-    
+
+    def add_noise(self, n=1.0,noise=None):
+        """
+        add n-sigma noise to the spectrum
+        """
+        mask=np.where((self.wave>1.1) & (self.wave<1.7))[0]
+        mu= np.nanmedian(self.noise[mask])
+        if noise is not None:
+            addn=noise
+        else:
+            sigma=n*np.nanstd(self.noise[mask])
+            addn=np.random.normal(mu,sigma,len(self._flux))
+        self._flux=self._flux+addn
+        self._noise=self._noise+addn
+        self._indices= measure_indices(self, return_unc=True)
+        self._compute_snr()
 
     @property 
     def filepath(self): 
@@ -276,6 +333,8 @@ class Spectrum(object):
         except ValueError: pass
         self._compute_snr()
         self._indices= measure_indices(self, return_unc=True)
+        #self._original_flux=self._flux
+        #self._original_flux=self._noise
         
     @property 
     def filename(self):
@@ -291,11 +350,9 @@ class Spectrum(object):
     @filename.setter
     def filename(self, new_filename):
         #this is how I know I have not ran the parser before (I'm trying to avoid duplicating things)
-        print ('self filepath', self._filepath )
+        #print ('self filepath', self._filepath )
         if self._filepath is None:
-            print ('wtf man .....')
             survey, spectrum_path, stamp_image_path=parse_path(new_filename, 'v5')
-            print ('self filepath', survey, spectrum_path)
             self._filename=spectrum_path.split('/')[-1]
             self._spectrum_image_path=stamp_image_path
             self._survey=survey
@@ -311,13 +368,17 @@ class Spectrum(object):
     def spectrum_image(self):
         imgdata=None
         if self._survey == 'wisps':
-            with fits.open(self._spectrum_image_path) as imghdu:
+            with fits.open(self._spectrum_image_path, memmap=False) as imghdu:
                 imgdata=imghdu[0].data
             return  imgdata
+            imghdu.close()
+            del mgdata
         else:
-            with fits.open(self._spectrum_image_path) as imghdu:
+            with fits.open(self._spectrum_image_path, memmap=False) as imghdu:
                 imgdata=imghdu[5].data-imghdu[8].data
             return imgdata
+            imghdu.close()
+            del mgdata
 
     
     @property
@@ -349,7 +410,6 @@ def plot_any_spectrum(sp, **kwargs):
     ylabel=kwargs.get('ylabel','Normalized Flux')
     
     #paths
-    filename=kwargs.get('filename', OUTPUT_FIGURES+sp.name+'.pdf')
     
     #create the grid
     gs = gridspec.GridSpec(2, 3, height_ratios=(1, 3))
@@ -367,17 +427,20 @@ def plot_any_spectrum(sp, **kwargs):
     
     l1,=ax3.step(sp.wave, sp.flux, color='k')
     l2,=ax3.plot(sp.wave, sp.noise, 'c')
-    l4, =ax3.plot(sp.wave, sp.contamination, 'g')
+    try:
+        l4, =ax3.plot(sp.wave, sp.contamination, 'g')
+    except:
+        l4=None
     
     
     plts=[l1, l2, l4]
     
     #compare to standards
     if compare_to_std:
-        spectral_type=splat.classifyByStandard(sp.splat_spectrum, fit_ranges=[[1.1, 1.6]])[0]
+        spectral_type=splat.classifyByStandard(sp.splat_spectrum, fit_ranges=[[1.15, 1.65]])[0]
         std=splat.getStandard(spectral_type)
-        chi, scale=splat.compareSpectra(sp.splat_spectrum, std, fit_ranges=[[1.1, 1.6]])
-        std.scale(scale)
+        chi, scale=splat.compareSpectra(sp.splat_spectrum, std, fit_ranges=[[1.15, 1.65]])
+        #std.scale(scale)
         l3,=ax3.step(std.wave, std.flux, color='y')
         plts.append(l3)
     
@@ -388,13 +451,17 @@ def plot_any_spectrum(sp, **kwargs):
     ax3.set_ylabel(ylabel, fontsize=18)
     
     #add the 2d spectrum
-    v0, v1=ZScaleInterval().get_limits(sp.spectrum_image)
-    ax2.imshow(sp.spectrum_image, vmin=v0, vmax=v1, cmap='Greys', aspect='auto')
-    ax2.set_xlabel('G141', fontsize=15)
+    try:
+        v0, v1=ZScaleInterval().get_limits(sp.spectrum_image)
+        ax2.imshow(sp.spectrum_image, vmin=v0, vmax=v1, cmap='Greys', aspect='auto')
+        ax2.set_xlabel('G141', fontsize=15)
+    except:
+        pass
     
     #fig.legend(tuple(plts))
-    
-
+    if save:
+        filename=kwargs.get('filename', OUTPUT_FIGURES+sp.name+'.pdf')
+        plt.savefig(filename)
     return 
     		
 

@@ -25,51 +25,16 @@ from .initialize import *
 def hst3d_phot_spec():
     """ combining all of HST-3D photometry and spectroscopy
     """
-    #readin-in the files
-    f1=REMOTE_PHOT_CATALOGS+'/goodsn_3dhst.v4.1.cats/Catalog/goodsn_3dhst.v4.1.cat'
-    f2=REMOTE_PHOT_CATALOGS+'goodss_3dhst.v4.1.cats/Catalog/goodss_3dhst.v4.1.cat'
-    f3=REMOTE_PHOT_CATALOGS+'aegis_3dhst.v4.1.cats/Catalog/aegis_3dhst.v4.1.cat'
-    f4=REMOTE_PHOT_CATALOGS+'cosmos_3dhst.v4.1.cats/Catalog/cosmos_3dhst.v4.1.cat'
-    f5=REMOTE_PHOT_CATALOGS+'uds_3dhst.v4.2.cats/Catalog/uds_3dhst.v4.2.cat'
-    
-    goodsn=ascii.read(f1).to_pandas()
-    goodss=ascii.read(f2).to_pandas()
-    aegis=ascii.read(f3).to_pandas()
-    cosmos=ascii.read(f4).to_pandas()
-    uds=ascii.read(f5).to_pandas()
-    
-    goodsn['field']='goodsn'
-    goodss['field']='goodss'
-    aegis['field']='aegis'
-    cosmos['field']='cosmos'
-    uds['field']='uds'
-    
-    hst3d_phot=pd.concat([goodsn, goodss,
-                     aegis, cosmos,
-                     uds])
-    
-    #read in the spectroscopy
+    #photometry catalog
+    phot=ascii.read(REMOTE_PHOT_CATALOGS+'/3dhst_master.phot.v4.1/3dhst_master.phot.v4.1.cat').to_pandas()
+    phot=phot.rename(columns={'id':'phot_id'})
+
+    #get grism_ids from the spectrum catalog
     hdu=(fits.open(REMOTE_PHOT_CATALOGS+'3dhst.v4.1.5.master.fits')[1])
-    hst3d_specp=Table(hdu.data).to_pandas()
-    print (hst3d_specp.shape, hst3d_phot.shape)
-    
-    hst3d_phot=hst3d_phot.rename(columns={'id': 'phot_id'})
-    hst3d_specp['phot_id']= hst3d_specp['phot_id'].apply(int)
-    hst3d_phot['phot_id']=  hst3d_phot['phot_id'].apply(int)
-    
-    hst3d_specp['unique_id']= hst3d_specp['field'].astype(str)+hst3d_specp['phot_id'].astype(int).astype(str)
-    hst3d_phot['unique_id']=hst3d_phot['field'].astype(str)+hst3d_phot['phot_id'].astype(int).astype(str)
-    
-    hst3d_specp['unique_id']= hst3d_specp['unique_id'].apply(str.lower)
-    hst3d_phot['unique_id']= hst3d_phot['unique_id'].apply(str.lower)
-    
-    combined=pd.merge(hst3d_phot, hst3d_specp, on='unique_id', how='inner')
-    hst_3d=combined.reset_index(drop=True)
-    
-    #remove some columns
-    #define some specific functions
-    
-    #magnitudes are calculated to 25 zeo-point
+    spec=Table(hdu.data).to_pandas()
+    spec=spec[spec.grism_id !='00000']
+
+    #magnitudes are calculated to 25 zero-point
     def magnitude(flux):
         return 25.0-2.5*np.log10(flux)
     
@@ -80,37 +45,37 @@ def hst3d_phot_spec():
     		else: return abs(0.434*2.5*combined['flux_error']/combined['flux'])
     #compute magnitudes
     for f in ['160', '140']:
-        hst_3d['F'+f+'_mag']= hst_3d['f_F'+f+'W'].apply(magnitude)
-        hst_3d['Faper'+f+'_mag']= hst_3d['faper_F'+f+'W'].apply(magnitude)
+        phot['F'+f+'_mag']= phot['f_F'+f+'W'].apply(magnitude)
+        phot['Faper'+f+'_mag']= phot['faper_F'+f+'W'].apply(magnitude)
         cmbined1= pd.DataFrame()
-        cmbined1['flux']= hst_3d['f_F'+f+'W']
-        cmbined1['flux_error']=hst_3d['e_'+'F'+f+'W']
+        cmbined1['flux']= phot['f_F'+f+'W']
+        cmbined1['flux_error']=phot['e_'+'F'+f+'W']
         
         cmbined2=pd.DataFrame()
-        cmbined2['flux']=hst_3d['faper_F'+f+'W']
-        cmbined2['flux_error']=hst_3d['eaper_F'+f+'W']
+        cmbined2['flux']=phot['faper_F'+f+'W']
+        cmbined2['flux_error']=phot['eaper_F'+f+'W']
         
-        hst_3d['F'+f+'_mag_er']= cmbined1.apply(mag_err, axis=1)
-        hst_3d['Faper'+f+'_mag_er']=cmbined2.apply(mag_err, axis=1)
-    
-    #format pointing names
-    def get_pointing_name(grism_id):
-        """
-        return pointing name givem grism_id
-        """
-        if str(grism_id) != '00000':
-            return str(grism_id).split('-G141')[0]
-        else: return grism_id
-        
-    hst_3d['pointing_name']=hst_3d['grism_id'].apply(get_pointing_name)
-    	#only select certain columns 
+        phot['F'+f+'_mag_er']= cmbined1.apply(mag_err, axis=1)
+        phot['Faper'+f+'_mag_er']=cmbined2.apply(mag_err, axis=1)
+
     important_columns=['phot_id_x', 'grism_id', 'field_x', 'ra_x', 'dec_x','faper_F140W', 'eaper_F140W',\
                    'faper_F160W', 'eaper_F160W','f_F140W', 'e_F140W', 'f_F160W',\
                    'e_F160W', 'F160_mag', 'Faper160_mag', 'F140_mag', 'Faper140_mag', \
                    'F160_mag_er', 'Faper160_mag_er', 'F140_mag_er', 'Faper140_mag_er', 
-                   'jh_mag', 'flags', 'pointing_name', 'use_phot_x', 'f_cover', 'f_flagged', 'f_negative']
-    
-    hst_3d[important_columns].to_csv(OUTPUT_FILES+'/hst3d_photometry_all.csv')
+                   'jh_mag', 'flags', 'use_phot_x', 'f_cover', 'f_flagged', 'f_negative']
+
+    #merge spec and phot on unique id, from photid, because photid is only unique within each field
+    #this is done in order to obtain grism ids
+    phot['unique_id']=phot['phot_id'].apply(int).apply(str)+phot['field'].apply(lambda x: x.lower())
+    spec['unique_id']=spec['phot_id'].apply(str)+spec['field'].apply(lambda x: x.lower())
+    phot['unique_id']=phot['unique_id'].apply(lambda x:  x.replace('-', '').strip())
+    spec['unique_id']=spec['unique_id'].apply(lambda x: x.strip())
+
+    merged=pd.merge(spec, phot, on='unique_id', how='inner', validate='one_to_one')
+
+    print (merged[merged.grism_id.str.contains('good')])
+
+    merged[important_columns].to_csv(OUTPUT_FILES+'/hst3d_photometry_all.csv')
     
     
 def wisp_phot_spec():
@@ -125,7 +90,7 @@ def wisp_phot_spec():
         
         files=[]
         for filterfile in filterfiles_names:
-            	filepaths=REMOTE_FOLDER+'/wisps/'+'Par'+str(fld)+'_final*/DATA/DIRECT_GRISM/fin_F'+str(filterfile)+'.cat'
+            	filepaths=REMOTE_FOLDER+'/wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+'par'+str(fld)+'*/*'+str(filterfile)+'*_cat.txt'
             	for f in  glob.glob(filepaths): files.append(f)
         print (files)  
         return files
@@ -140,8 +105,8 @@ def wisp_phot_spec():
                 print (f)
                 data=pd.read_table(f, skiprows=np.arange(0, 16), sep='\t')['#'].apply(reformat_phot_table)
                 #print ('data {}, type {}'.format(len(data), type(data)))
-                phot['NIMCOS_'+str(f.split('_')[-1].split('.')[0])+'W']=data[12]
-                phot['NIMCOS_'+str(f.split('_')[-1].split('.')[0])+'W_ER']=data[13]
+                phot['NIMCOS_'+ f.split('_f')[-1].split('w_v6')[0]+'W']=data[12]
+                phot['NIMCOS_'+ f.split('_f')[-1].split('w_v6')[0]+'W_ER']=data[13]
                 phot['EXTRACTION_FLAG']=data[15]
                 datas.append(data)
             	
@@ -172,7 +137,7 @@ def wisp_phot_spec():
         all_catalogs=pd.concat(all_catalogs)
         return all_catalogs
     	
-    def grism_id(row): return str(row.FIELD)+'_BEAM_'+ str(row.NUMBER)+ 'A'
+    def grism_id(row): return str(row.FIELD)+'-'+ str(row.NUMBER).zfill(5)
     
     def reformat_phot_table(row): return pd.Series(row.split())
     

@@ -20,11 +20,11 @@ def get_paths():
     #a script that loops through the folder and reads in the fits images to extract
     path=REMOTE_FOLDER
     hst_paths=[path+p for  p in ['aegis', 'goods', 'cosmos', 'uds']]
-    wisp_path=path+'wisps'
+    wisp_path=path+'/wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'
     ppaths=[]
     for p in ['aegis',  'cosmos', 'uds', 'goods']:
         ppaths.extend(glob.glob(path+p+'/*/*F1*0W_drz_sci.fits'))
-    ppaths.extend(glob.glob(wisp_path+'/Par*/DATA/DIRECT_GRISM/F1*0.fits'))
+    ppaths.extend(glob.glob(wisp_path+'/par*/hlsp_wisp_hst_wfc3_*-80mas_f*w_v6.2_drz.fits'))
     ppaths.extend(glob.glob(path+'goods*'+'*F1*0W_drz_sci.fits'))
 
     return ppaths
@@ -43,7 +43,7 @@ def create_logs():
     fields=[]
     ppaths=get_paths()
     for ppath in ppaths:
-        #print (ppath)
+        print (ppath)
         data=fits.open(ppath)[0]
         if ppath.split('/')[4]=='wisps':
             fields.append('wisps-'+ppath.split('/Par')[1].split('_')[0])

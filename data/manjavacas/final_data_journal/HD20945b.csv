@@ -1,0 +1,20 @@
+# OBJECT = HD2094588,
+# RA (J2000): 22:03:10.77,
+# DEC (J2000): +18:53:03.5430,
+# Reference: Manjavacas et al. 2018 ApJ,
+# First publication reference: 2016AJ....152..203L,
+# DOI : doi:10.17909/t9-asft-6k38,
+# Contact: elenamanjavacas@email.arizona.edu,
+# First column: Wavelength (microns),
+# Second column: Flux density planet (erg/cm2/s/A),
+# Third column: Flux density uncertainty planet (erg/cm2/s/A),
+1.15150,3.00950e-17,1.09034e-17
+1.20400,6.04827e-17,9.31400e-18
+1.25600,6.52827e-17,8.41537e-18
+1.30850,5.64416e-17,7.58275e-18
+1.36150,3.82719e-17,6.91492e-18
+1.41400,1.88298e-17,6.62663e-18
+1.46600,3.39990e-17,6.11431e-18
+1.51850,3.87274e-17,6.01540e-18
+1.57150,5.56386e-17,5.72433e-18
+1.62400,5.16891e-17,5.42754e-18
