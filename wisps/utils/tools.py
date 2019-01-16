@@ -10,7 +10,38 @@ import statsmodels.nonparametric.kernel_density as kde
 #################
 splat.initializeStandards()
 ###############
+from wisps.utils import memoize_func
 
+#customize the interpolation function
+from scipy.interpolate import interp1d
+
+class extrap1d(object):
+    """
+    custom extrapolator object
+    """
+    def __init__(self, **kwargs):
+        self.interpolator=kwargs.get('interp', None) #must interp1d object
+        if not (self.interpolator is None):
+            xs=self.interpolator.x
+            ys=self.interpolator.y
+        else:
+            xs=None
+            ys=None
+        self.xs=xs
+        self.ys=ys
+    
+    def pointwise(self, x):
+        if x < self.xs[0]:
+            return float(self.ys[0])
+        elif x > self.xs[-1]:
+            return float(0.0)
+        else:
+            return self.interpolator(x)
+
+    def ufunclike(self, nx):
+        nx=np.array(nx)
+        nx=nx.reshape(len(nx), 1)
+        return np.apply_along_axis(self.pointwise, 1, nx)
 
 def my_color_map():
         colors1 = plt.cm.BuGn(np.linspace(0., 1, 256))
@@ -20,6 +51,7 @@ def my_color_map():
 
 MYCOLORMAP=my_color_map()
 
+@memoize_func
 def stats_kde(x, **kwargs):
     grid=np.arange(np.nanmin(x), np.nanmax(x))
     model=kde.KDEMultivariate(x, bw='normal_reference', var_type='c')
@@ -93,6 +125,7 @@ def radec2lb(ra, dec):
 
     return ao, bo
 
+#@memoize_func
 def distance(mags, spt):
     """
     mags is a dictionary of bright and faint mags
@@ -102,24 +135,30 @@ def distance(mags, spt):
     f110w=mags['F110W']
     f140w=mags['F140W']
     f160w=mags['F160W']
-    #convert these fuckers to 2MASS J, H, K
-    #get colo
-    
+
     res['absj'] = spem.typeToMag(splat.typeToNum(spt),'2MASS J',set='dupuy')[0]
     res['absh'] = spem.typeToMag(splat.typeToNum(spt),'2MASS H',set='dupuy')[0]
 
     for k in mags.keys():
+        flt='NICMOS '+k
+        #calculate the HST mag- Abs J offset of the standard
         sp = splat.STDS_DWARF_SPEX[spt]
         sp.fluxCalibrate('2MASS J',float(sp.j_2mass))
-        #sp.filterMag('NICMOS F140W')
-        c1=sp.filterMag('2MASS J')[0]-sp.filterMag(k)[0]
-        c2=sp.filterMag('2MASS H')[0]-sp.filterMag(k)[0]
-        
-        res[str('rel')+k+str('j')] = mags[k]+c1
-        res[str('rel')+k+str('h')] = mags[k]+c2
+        mag, mag_unc = splat.filterMag(sp, flt)
+        #calculate the mag of the standard in J and H
+        magj, mag_unck = splat.filterMag(sp,'2MASS J')
+        magh, mag_unck = splat.filterMag(sp,'2MASS H')
+        #calculate the offset between HST filters and 2mass filters
+        offsetj=magj-mag
+        offset2=magh-mag
+        #add that offset to the mag to find the j, h mag of the source
+        source_j=mags[k]+offsetj
+        source_h=mags[k]+offsetj
+        #calculate the two distances
+        distj=10.**((source_j-res['absj'])/5. + 1.)
+        disth=10.**((source_h-res['absh'])/5. + 1.)
+        #take the standard deviation
+        res[str('dist')+k]=np.nanmean([distj, disth], axis=0)
+        res[str('dist_er')+k]=np.nanstd([distj, disth], axis=0)
 
-        dist1=10**((res[str('rel')+k+str('j')]-res['absj'])/5.+1.)#[0]
-        dist2=10**((res[str('rel')+k+str('h')]-res['absh'])/5.+1.)#[0]
-        res[str('dist')+k]=np.sqrt(dist1**2+dist2**2)
-        res[str('dist_er')+k]=np.nanstd([dist1, dist2])
     return res

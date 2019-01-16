@@ -74,7 +74,7 @@ class Annotator(object):
         if kwargs.get('add_subdwarfs', False):
             sds=kwargs.get('subdwarfs', None)
             #print ('adding subdwarfs')
-            sds['spt_range']='subdwarf'
+            sds['spt_range']='subdwarfs'
             df=pd.concat([df,sds],  ignore_index=True, join="inner")
         #print (df)
         return df
@@ -346,13 +346,15 @@ class IndexSpace(object):
         mdf=mjdf[[self.xkey, self.ykey, 'spt']]
         mdf.columns=['x', 'y', 'spt']
 
-        ydwarfs=mdf[mdf['spt'].apply(lambda x: splat.typeToNum(x))>36]
-        self.add_box(ydwarfs, 'Manj', '#0074D9', 3.0)
 
         #add schneider objects
         sdf= scndf[[self.xkey, self.ykey, 'spt']]
         sdf.columns=['x', 'y', 'spt']
-        self.add_box(sdf, 'Schn', '#B10DC9', 3.0)
+
+        ydwarfs=mdf[mdf['spt'].apply(lambda x: splat.typeToNum(x))>37].append(sdf)
+
+        self.add_box(ydwarfs, 'Y dwarfs', '#0074D9', 3.0)
+
 
         return 
     
@@ -422,14 +424,12 @@ class IndexSpace(object):
             ddicts.append(dict2)
         
         datadicts=kwargs.get('data_dicts', ddicts)
-
-        fig=plt.figure(figsize=kwargs.get('figsize', (8,8)))
-
-        ax1 = fig.add_subplot(111)
-
-        #if 'cont' in self.name.lower():
-        #    plt.xscale('log')
-        #    plt.yscale('log')
+        
+        if 'ax' in kwargs:
+            ax1= kwargs.get('ax', None)
+        else:
+            fig=plt.figure(figsize=kwargs.get('figsize', (8,8)))
+            ax1=fig.add_subplot(111)
 
         #plot contaminants
         x=np.array(dict3['data'][0])
@@ -495,8 +495,8 @@ class IndexSpace(object):
             #print (""" itsssssssss """,  kwargs.get('highlight', None))
             #print ('name', s.shape_name, 'color', s.color, 'linewidth', s.linewidth)
             
-        plt.xlabel('$'+str(self.name.split(' ')[0])+'$', fontsize=18)
-        plt.ylabel('$'+str(self.name.split(' ')[1])+'$', fontsize=18)
+        ax1.set_xlabel('$'+str(self.name.split(' ')[0])+'$', fontsize=18)
+        ax1.set_ylabel('$'+str(self.name.split(' ')[1])+'$', fontsize=18)
 
         #plot manjavacas data
         #FF851
@@ -517,18 +517,16 @@ class IndexSpace(object):
             
         filename=kwargs.get('filename', 'none')
         #set limits of the plts from templates 
-        plt.xlim(kwargs.get('xlim',  xlims))
-        plt.ylim(kwargs.get('ylim', ylims))
+        ax1.set_xlim(kwargs.get('xlim',  xlims))
+        ax1.set_ylim(kwargs.get('ylim', ylims))
 
         #indices that use the continuum have ranges that are too high, logscale this?
 
-        plt.legend()
-        plt.show()
-        plt.close()
+        ax1.legend()
         filenm=kwargs.get('filename', 
         OUTPUT_FIGURES+'/indices/index_plot_'+self.name.replace('/','_').replace('-', '_').replace(' ', '_')+'.pdf')
         if kwargs.get('save', True):
-            fig.savefig(filenm, dpi=100, bbox_inches='tight')
+            plt.savefig(filenm, dpi=100, bbox_inches='tight')
             
         return
 

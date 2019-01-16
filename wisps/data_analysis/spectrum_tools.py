@@ -21,6 +21,8 @@ import os
 from astropy.visualization import ZScaleInterval
 from scipy import interpolate
 from scipy import stats
+import copy
+from wisps.utils import memoize_func
 
 #################
 splat.initializeStandards()
@@ -81,10 +83,29 @@ class Spectrum(object):
         if self._wave is not None:
        		 self._compute_snr()
         	 self._splat_spectrum=splat.Spectrum(wave=self._wave, flux=self._flux, noise=self._noise, instrument='WFC3')
+
+        #keep a copy of this object as an attribute
+        self.original=copy.deepcopy(self)
     
     def __repr__(self):
         if self._filename is None:return "anon spectrum"
         else: return self._filename
+
+
+    def reset(self):
+        '''
+        :Purpose: 
+            Restores a Spectrum to its original read-in state, removing scaling and smoothing. 
+        :Required Inputs:
+            None
+        
+        :Optional Inputs:
+            None
+        :Output:
+            Spectrum object is restored to original parameters
+        '''
+        self.__dict__.update(self.original.__dict__)
+        self.original = copy.deepcopy(self)
         
     
     @property
@@ -333,6 +354,7 @@ class Spectrum(object):
         except ValueError: pass
         self._compute_snr()
         self._indices= measure_indices(self, return_unc=True)
+        self.original = copy.deepcopy(self)
         #self._original_flux=self._flux
         #self._original_flux=self._noise
         
@@ -464,7 +486,7 @@ def plot_any_spectrum(sp, **kwargs):
         plt.savefig(filename)
     return 
     		
-
+@memoize_func
 def kde_statsmodels_m(x, x_grid, **kwargs):
     """
     multivariate kde

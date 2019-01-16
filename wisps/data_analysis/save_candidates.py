@@ -15,12 +15,8 @@ def plot_name(name):
 	print (name)
 	fname=SPECTRA_PATH+'/indices/'+name.replace('-', '_')+'.jpeg'
 	if os.path.isfile(fname) : pass
-	else:
-		try:
-			plot(name, fname)
-		except:
-			pass
-
+	plot(name, fname)
+	
 def plot(n, fname):
 		#print (n)
         s=Source(name=n.strip())

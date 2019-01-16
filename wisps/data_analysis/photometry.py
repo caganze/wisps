@@ -20,6 +20,7 @@ import splat.core as spl
 import splat.empirical as spe
 import random
 from astropy.coordinates import SkyCoord
+import copy
 
 
 class Source(Spectrum):
@@ -66,7 +67,8 @@ class Source(Spectrum):
             self.name=kwargs.get('name')
             
         if self._star_flag and  self._distance is None: self._calculate_distance()
-            
+        self.original = copy.deepcopy(self)
+
     def __repr__(self):
         if self._wisp_name is None:
             return 'anon spectrum'
@@ -151,6 +153,7 @@ class Source(Spectrum):
         img.name=new_name
         img.pixels_per_imagep=self.pixels_per_image
         self._image=img
+        self.original = copy.deepcopy(self)
         
         #print (self._mags)
         
@@ -159,7 +162,7 @@ class Source(Spectrum):
     def shortname(self):
     #using splat tricks to create shortnames
         if (self.name is not None ) and not np.isnan(self.ra):
-            if self.name.startswith('Par'):
+            if self.name.lower().startswith('par'):
                 self._shortname=spl.designationToShortName(self.designation).replace('J', 'WISP ')
                 
             elif self.name.lower().startswith('aegis'):

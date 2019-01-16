@@ -50,6 +50,7 @@ from wisps.utils import Memoize, profile, memoize_func
 #                                   #
 #####################################
 
+
 def galactic_density(rc,zc, report='total',center='sun',unit=u.pc,**kwargs):
     #compute juric galactic density function
     r0 = (8000.*u.pc)#.to(unit).value # radial offset from galactic center to Sun
@@ -70,13 +71,35 @@ def galactic_density(rc,zc, report='total',center='sun',unit=u.pc,**kwargs):
 
     return  thin_diskdens+ thick_diskdens+ halodens
 
-def number(crd, dmin, dmax, weight_function=lambda x: 1.):
-    #integrate the number desnity in a particular direction
-    d = np.linspace(dmin,dmax,1000)
+def number(crd, dmin, dmax, spt, **kwargs):
+    """
+    Integrate a pointing from two distances
+    crd: the coordinate of the pointing
+    spt: spectral type to use for the weight function
+    kwargs: weight_function: the weight function, goes to zero for later types and farther distances
+
+    """
+    nsample=kwargs.get('nsample', 10) #number of steps for the integral
+    d = np.linspace(dmin,dmax,nsample)
+
+    #get galactic coordinates of the pointing
     rho = []
     x,y,z = splat.xyz(crd,distance=d,center='sun',unit=u.pc)
     r = (x**2+y**2)**0.5
-    rho.append(weight_function(d)*galactic_density(r,z))
+    spt=np.array([spt])
+    if len(spt)==1:
+        ss=np.array([spt[0] for x in np.arange(len(d))])
+
+    else:
+        #I haven't figured out how to integrate different spectral types at once
+        raise  ValueError('cannot compute distances for multiple spectral types {} at once'.format(spt))
+
+    #get the weight function
+    weight_function=kwargs.get('weight_function', lambda x, y: np.ones((nsample, nsample)))
+    wght=np.nanmedian(np.array(weight_function(d, ss)), axis=0)
+
+    dens=galactic_density(r,z).value
+    rho.append(wght *dens)
 
     if len(rho) == 1:
         return float(integrate.trapz(rho[0]*(d**2),x=d))
@@ -93,7 +116,7 @@ def interpolate_luminosity(spt_grid):
 def make_luminosity_function():
     #generate splat luminosity function
     norm_range = [0.09,0.1]
-    norm_density = 1.0
+    norm_density = 0.0055
     nsim = 1e4
     spts=np.arange(17, 40)
 
