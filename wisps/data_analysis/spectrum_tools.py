@@ -24,6 +24,8 @@ from scipy import stats
 import copy
 from wisps.utils import memoize_func
 
+from functools import lru_cache #high performance memoization
+
 #################
 splat.initializeStandards()
 ###############
@@ -152,6 +154,7 @@ class Spectrum(object):
     	self._splat_spectrum= splat.Spectrum(wave=self._wave, flux=self._flux, noise=self._noise, instrument='WFC3')
     	return self._splat_spectrum
     
+    @lru_cache(maxsize=128)
     def classify_by_standard(self, **kwargs):
         """
         Uses splat.classifyByStandard to classify spectra using spex standards
@@ -284,8 +287,10 @@ class Spectrum(object):
             addn=np.random.normal(mu,sigma,len(self._flux))
         self._flux=self._flux+addn
         self._noise=self._noise+addn
-        self._indices= measure_indices(self, return_unc=True)
+        self.normalize()
+        #self._indices= measure_indices(self, return_unc=True)
         self._compute_snr()
+
 
     @property 
     def filepath(self): 
@@ -387,6 +392,7 @@ class Spectrum(object):
     	return self._survey
         
     @property
+    @lru_cache(maxsize=128)
     def spectrum_image(self):
         imgdata=None
         if self._survey == 'wisps':
@@ -404,6 +410,7 @@ class Spectrum(object):
 
     
     @property
+    @lru_cache(maxsize=128)
     def sensitivity_curve(self):
     	return self._sensitivity
     

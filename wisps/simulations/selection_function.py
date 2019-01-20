@@ -3,6 +3,8 @@
 
 ############################
 #Selection function routines
+
+#NEED MORE COMMENTS
 ########################
 
 #imports
@@ -57,14 +59,30 @@ class SF():
         #create a mask in the region of interest
         mask=np.where((spectr.wave>1.1) & (spectr.wave<1.7))[0]
 
+        spectr.normalize(waverange=[1.25,1.65])
+
+        spectra.append(spectr)
+        snrs.append(spectr.snr)
+        indices.append(fast_measure_indices(spectr))
+        f_test.append(spectr.f_test())
+        spts.append(spt)
+        ratios.append(1.0)
+
         for i in tqdm(np.arange(nsample)):
-            spectr.normalize(waverange=[1.25,1.5])
+            n1=spectr.original.snr['snr1']
+            #normalize the spectrum between 1.25 and 1.65 microns
+            spectr.normalize(waverange=[1.25,1.65])
+            #find the median flux then add lognormal noise
             mu= np.nanmedian(spectr.noise[mask])
+            #fin the std
             sigma=np.nanstd(spectr.noise[mask])
-            noise=5.0*np.random.lognormal(mu,sigma,len(spectr.flux))
+            #add 1-sigma log-normal noise
+            noise=0.001*n1*np.random.random()*np.random.lognormal(mu,sigma,len(spectr.flux))
             spectr.add_noise(noise=noise)
-            n1=np.nanmedian(spectr.original.snr['snr1'])
-            n2=np.nanmedian(spectr.snr['snr1'])
+            #calculate the ratio in snr
+            
+            n2=spectr.snr['snr1']
+            #append these data
             ratios.append(n2/n1)
             snrs.append(pd.Series(spectr.snr))
             indices.append(pd.Series(spectr.indices))
@@ -74,9 +92,9 @@ class SF():
             #reset the object after degradation
             spectr.reset()
         
-
         #calculate distances
         absmag=spem.typeToMag(spt,'NICMOS F160W',set='dupuy')[0]
+        #colors
         colors=-2.5*np.log10(ratios)
         d0=float(spectr.distance['val'].value)
         d=d0+np.array(10**(colors/5.+1.))
@@ -102,7 +120,7 @@ class SF():
         df['selected']=0
         df.selected[(df.snr1>snr) & (df.f> f_test) & (df.Names.isin(ncands))]=1
       
-        return df
+        self.data=df
 
     def make_data(self, spectra, spts,  **kwargs):
         """
@@ -113,7 +131,6 @@ class SF():
             results.append(self.generate_spectra(sx, spt, **kwargs))
 
         results=np.array(results)
-        print (len(results), len(results[0]))
         df1=pd.concat(results[:,3]).reset_index(drop=True)
         df2=pd.concat(results[:,-1]).reset_index(drop=True)
         df3=pd.concat(results[:,4]).reset_index(drop=True)
@@ -127,6 +144,27 @@ class SF():
         #add data to object
         self.data=df
 
+def fast_measure_indices(sp):
+    #fast wway to measure indices without monte-carlo sampling or interpolation
+    regions=np.array([[[1.15, 1.20], [1.246, 1.295]],
+         [[1.38, 1.43],  [1.15, 1.20]], 
+         [[1.56, 1.61],  [1.15, 1.20]], 
+         [[1.62,1.67],   [1.15, 1.20]], 
+        [[1.38, 1.43],  [1.246, 1.295]], 
+         [[1.56, 1.61],  [1.246, 1.295]],
+         [[1.62,1.67],   [1.246, 1.295]], 
+         [[1.56, 1.61],  [1.38, 1.43]],
+         [[1.62,1.67],   [1.38, 1.43]],
+         [[1.62,1.67],   [1.56, 1.61]]])
+    labels=wisps.INDEX_NAMES
+    res=pd.Series()
+    res.columns=labels
+    #loop over ratios 
+    for r, l in zip(regions, labels):
+        flx1=np.nanmedian(sp.flux[np.where((sp.wave>r[0][0]) & (sp.wave<r[0][1]))[0]])
+        flx2=np.nanmedian(sp.flux[np.where((sp.wave>r[1][0]) & (sp.wave<r[1][1]))[0]])
+        res[l]= flx1/flx2
+    return dict(res)
 
 def create_selection_function(**kwargs):
     """
@@ -135,7 +173,7 @@ def create_selection_function(**kwargs):
     #optional inputs
     output_file=kwargs.get('output_file', wisps.OUTPUT_FILES+'/selection_function.pkl')
     spectra_file=kwargs.get('spectra_file', wisps.OUTPUT_FILES+'/l_t_dwarfs.pkl')
-    nsamples=kwargs.get('nsamples', 10)
+    nsample=kwargs.get('nsample', 10)
 
     splat.initializeStandards()
     #paramaters from selection function I used
@@ -162,7 +200,8 @@ def create_selection_function(**kwargs):
     #save it in the 
     spectra=pd.read_pickle(spectra_file)
     spts=np.array([convert_to_string(s.spectral_type) for s in spectra])
-    sf.make_data(spectra, spts, nsample=10)
+    sf.make_data(spectra, spts, **kwargs)
+    sf.select(sf.data, to_use)
 
     with open(output_file, 'wb') as file:
         pickle.dump(sf,file)

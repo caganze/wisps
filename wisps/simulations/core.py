@@ -121,7 +121,7 @@ def make_luminosity_function():
     spts=np.arange(17, 40)
 
     # simulation
-    masses = spsim.simulateMasses(nsim,range=[0.02,0.15],distribution='power-law',alpha=0.5)
+    masses = spsim.simulateMasses(nsim,range=[0.02,0.15],distribution='power-law',alpha=0.6)
     ages = spsim.simulateAges(nsim,range=[0.1,10.],distribution='uniform')
     teffs = spev.modelParameters(mass=masses,age=ages,set='baraffe03')['temperature'].value
     spts = np.array([spem.typeToTeff(float(x),set='filippazzo',reverse=True)[0] for x in teffs])

@@ -44,6 +44,17 @@ def measure_indices(sp,**kwargs):
         result = {names[i]: inds[i] for i in np.arange(len(names))}
     return result
 
+def fast_measure_indices(sp, regions, labels, **kwargs):
+    #fast wway to measure indices without monte-carlo sampling or interpolation
+    res=pd.Series()
+    res.columns=labels
+    #loop over ratios 
+    for r, l in zip(regions, labels):
+        flx1=sp.flux(np.where((sp.wave>r[0][0]) & (sp.wave<r[0][1]))[0])
+        flx2=sp.flux(np.where((sp.wave>r[1][0]) & (sp.wave<r[1][1]))[0])
+        res[l]= flx1/flx2
+    return dict(res)
+
 def __measure_index(sp,*args,**kwargs):
     """
     internal function for index measurements

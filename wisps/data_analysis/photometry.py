@@ -22,6 +22,7 @@ import random
 from astropy.coordinates import SkyCoord
 import copy
 
+from functools import lru_cache
 
 class Source(Spectrum):
     """
@@ -198,6 +199,7 @@ class Source(Spectrum):
         
     
     @property
+    @lru_cache(maxsize=128)
     def distances(self):
         """
         distances measured using absmag/spt relations from Dupuy et al
@@ -209,6 +211,7 @@ class Source(Spectrum):
         return self._distance
     
     @property
+    @lru_cache(maxsize=128)
     def distance(self):
         """
         Overall distance of the source obtained by averaging all the photomteric distances
@@ -226,11 +229,13 @@ class Source(Spectrum):
             unc= np.sqrt(np.nanstd(ds)**2+np.nanmean(ers)**2)*u.pc
             return {'val':val, 'er':unc}
     
-    @property 
+    @property
+    @lru_cache(maxsize=128)
     def photo_image(self):
     	return self._image
     
     @property
+    @lru_cache(maxsize=128)
     def pixels_per_image(self):
         """
         The number of pixels around the object to show in photometry image
