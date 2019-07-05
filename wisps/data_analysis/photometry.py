@@ -55,7 +55,7 @@ class Source(Spectrum):
         self._mags=None
         self._distance=None
         self._spectrum=None
-        self.spectral_type=kwargs.get('spectral_type', None)
+        self._spt=kwargs.get('spectral_type', None)
         self.designation=None
         self._star_flag=kwargs.get('is_star', True)
         self._shortname= None
@@ -110,6 +110,11 @@ class Source(Spectrum):
         self.ra=new_coords.ra
         self.dec=new_coords.dec
         self.designation=splat.coordinateToDesignation(new_coords)
+
+    @property
+    def spectral_type(self):
+        return self.spt
+    
         
     
     @property

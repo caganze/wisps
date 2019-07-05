@@ -22,7 +22,7 @@ def measure_indices(sp,**kwargs):
     """
     sp=sp.splat_spectrum
     sample_type=kwargs.get("sample","median")
-    ns=kwargs.get("nsamples", 1)
+    ns=kwargs.get("nsamples", 100)
     #names = ['index-1','index-2', 'index-3', 'index-4', 'index-5', 'index-6','index-7', 'index-8', 'index-9', 'index-10' ]
     names=INDEX_NAMES
     inds = np.zeros(len(names))

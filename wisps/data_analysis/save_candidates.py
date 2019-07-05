@@ -5,6 +5,10 @@ import glob
 from .photometry import Source
 from .spectrum_tools import Spectrum
 
+
+
+import numba
+
 cands=pd.read_pickle(OUTPUT_FILES+'/selected_by_indices.pkl')
 import os
 SPECTRA_PATH=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//spectra//')
@@ -12,10 +16,9 @@ SPECTRA_PATH=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//spectra//'
 
 # a lot of routines to make my visual inspection of candidates a feedback loop
 def plot_name(name):
-	print (name)
-	fname=SPECTRA_PATH+'/indices/'+name.replace('-', '_')+'.jpeg'
+	fname=SPECTRA_PATH+'/ml/'+name.replace('-', '_')+'.jpeg'
 	if os.path.isfile(fname) : pass
-	plot(name, fname)
+	else: plot(name, fname)
 	
 def plot(n, fname):
 		#print (n)
@@ -30,6 +33,7 @@ def plot(n, fname):
         #        s.plot(save=True, filename=fname)
 
 def get_cand_grism_ids():
+	@numba.jit
 	def format_name(name):
 		n=name.split('/')[-1]
 		n=n.split('.jpeg')[0]
@@ -42,6 +46,7 @@ def get_cand_grism_ids():
 	lcands=[format_name(x) for x in cands]
 	#save this into the new candidates files
 	df=	COMBINED_PHOTO_SPECTRO_DATA
+	print (df[df.grism_id.isin(lcands)])
 	df[df.grism_id.isin(lcands)].to_csv(LIBRARIES+'/candidates.csv')
 	return lcands
 
@@ -49,5 +54,6 @@ def save_cands():
 	cands.grism_id.apply(plot_name)
 
 def look_at_all():
-	df=pd.read_hdf(COMBINED_PHOTO_SPECTRO_FILE,  key='snr_f_test_cut')
+	import wisps
+	df=wisps.datasets['rf_classified']
 	df.grism_id.apply(plot_name)

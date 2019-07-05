@@ -1,0 +1,185 @@
+\newcommand{\figfolder}{/users/caganze/research/wisps/figures/}
+
+%\begin{figure*}
+%    \centering
+%    \includegraphics[scale=0.6]{ \figfolder par1.pdf}
+%    \caption{WISPS-01 Parallel field image and Grism spectra. Each of the  533 pointings presented in this paper have both imaging and grism spectroscopic information}
+%    \label{fig:par1}
+%\end{figure*}
+
+
+%\begin{figure*}
+%    \centering
+%    \includegraphics{ \figfolder spex_sample.pdf}
+%    \caption{Spectral Type distribution of SpeX spectra used as training set}
+%   \label{fig:spexsample}
+%\end{figure*}
+
+
+
+\begin{figure*}
+    \centering
+    \includegraphics{\figfolder standards.pdf}
+    \caption{M5-T9 low resolution SpeX spectral standards (\citealt{2010ApJS..190..100K}) with highlighted bands showing the definition of spectral indices used in this study}
+    \label{fig:indexdefinition}
+\end{figure*}
+
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.8]{\figfolder fields_skymap.pdf}
+    \caption{Sky map of all the pointings in WISPS and 3D-HST}
+    \label{fig:skymap}
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.8]{\figfolder f_test_snr_distr.pdf}
+    \caption{Sky map of all the pointings in WISPS and 3D-HST}
+    \label{fig:skymap}
+\end{figure*}
+
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.75]{\figfolder filter_profiles.pdf}
+    \caption{Comparison between different HST and 2MASS filters used in this study}
+    \label{fig:filterprofiles}
+\end{figure*}
+
+
+
+\begin{figure*}
+\centering
+\includegraphics[scale=0.4]{\figfolder sensitivity_illustration.pdf}
+\caption{ Example of 2 HST-3D spectra before and after continuum correction to obtain the correct slope.The sensitivity curve is plotted in grey.}
+\label{fig:sensitivity}
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.5]{\figfolder index_index_plots.pdf}
+    \caption{ The best box selection criteria are shown from top left to bottom right for the following subtype groups:L0-L5, L5-T0,M7-L0, T0-T5,Y dwarfs and T5-T9, and subdwarfst respectively}
+    \label{fig:indexplots}
+\end{figure*}
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.5]{\figfolder completeness_contamination.pdf}
+    \caption{Completeness and Contamination of all indices}
+    \label{fig:completenesscontamination}
+
+\end{figure*}
+
+
+\begin{figure*}
+
+  \centering
+    \includegraphics[scale=0.5]{\figfolder confusion_matrix.pdf}
+    \caption{Confusion matrix for the random forest classifier used}
+    \label{fig:completenesscontamination}
+
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.65]{\figfolder candidates.pdf}
+    \caption{Spectral Sequence of UCDs Discovered in WISPS \& 3D-HST. The right plot shows the 1D spectrum where the shaded region is the contamination exaggerated by a factor of 10, the left plot shows the cutoff of the 2d spectrum for that extracted object. The derived spectral type of each object is displayed in the left corner of the right plot}
+    \label{fig:candidates}
+\end{figure*}
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.8]{\figfolder candidate_distances.pdf}
+    \caption{Distance distribution of UCDs Discovered in WISPS \& 3D-HST}
+    \label{fig:candidedistances}
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.5]{\figfolder hst_relations.pdf}
+    \caption{ Absolute  magnitude-spectral type relations for HST and 2 MASS filters. For HST filters, the dotted green curve shows the derived relation using only the offset between the respective HST filter and 2MASS J filter while the blue curve shows the derived relation using the offset with the 2MASS H filter. The solid line shows a best-fit 6th-order polynomial used, considering the wavelength coverage of the respective filters (figure \ref{fig:filterprofiles}). We report the coefficients of these polynomials in table x}
+    \label{fig:candidedistances}
+\end{figure*}
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.5]{\figfolder mag_limit.pdf}
+    \caption{Effect of the SNR-cuts on the overall faintness limit of this study. The green vertical line shows the bright cutoff and the black line shows the faint limit. We used these limits throughout this work to estimate the effective volume }
+    \label{fig:maglimit}
+\end{figure*}
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.5]{\figfolder mass_hubble_colors.pdf}
+    \caption{ Offsets between 2MASS filters magnitudes and F110W, F140W \& F160W magnitudes used to create absolute magnitude-spectral type relations for HST filters }
+    \label{fig:candidedistances}
+\end{figure*}
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.6]{\figfolder snr_fits.pdf}
+    \caption{Linear fit for apparent magnitudes log SNR for the 20 WISPS\& 3D-HST UCDs used to estimate apparent magnitude for the simulated sample of UCDs }
+    \label{fig:candidedistances}
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.8]{\figfolder spex_selectionfx.pdf}
+    \caption{Left: Distribution of generated spectra across spectral type and SNR color-coded by their probability of selection. Right: Each spectrum is represented without binning. The dotted line shows our SNR cutoff}
+    \label{fig:selectionspectra}
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.6]{\figfolder selection_function_samples.pdf}
+    \caption{ Selection probability of all the spectra used to estimate the selection function. Left: selection probability using a combination of both indices and f-test, right: selection probability using only the f-test. All SNRs are within a bin of $\Delta$ SNR=3 are assigned the same selection probability}
+    \label{fig:candidedistances}
+\end{figure*}
+
+
+%\begin{figure*}
+%   \centering
+%    \includegraphics[scale=0.6]{\figfolder selectionfx.pdf}
+%    \caption{Probability of selection for the sample of UCDs across SNR, spectral type and  distance }
+%    \label{fig:selectionpermag}
+%\end{figure*}
+
+%\begin{figure*}
+%\centering
+%\includegraphics[scale=0.6]{\figfolder synthetic_index_space.pdf}
+%\caption{Selection effects in the one index-index space. Left:  synthetic spectra used to generate our selection function plotted in a chosen index-index space and colored by their selection probabilities. Right: the same spectra color-coded by their SNR. This shows that low-SNR are more scattered in the index-index, therefore less-likely to be selected, as expected.}
+%\end{figure*}
+
+%\begin{figure*}
+%    \centering
+ %   \includegraphics[scale=0.6]{\figfolder number_per_field.pdf}
+ %   \caption{ The expected number of objects per field from both  surveys for two different spectral types (L0, T8). As expected high b fields have lower expected numbers due to shallower volumes reduced by the galactic density function while the expected number of T8 dwarfs is smaller (by an order of magnitude) compared to L-dwarfs, due to smaller distances}
+%    \label{fig:numberperfield}
+%\end{figure*}
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.6]{\figfolder simulations_dists.pdf}
+    \caption{Distribution of parameters of the simulated sample of UCDs}
+    \label{fig:simulationdists}
+\end{figure*}
+
+
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.6]{\figfolder oberved_numbers.pdf}
+    \caption{Distribution of UCDs found in all 533 pointings of HST \& 3D-HST compared to the expected number. There is an agreement with he late type objects but we over-predict the number of L dwarfs }
+    \label{fig:simulationdists}
+\end{figure*}
+
+
+

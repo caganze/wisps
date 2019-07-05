@@ -3,15 +3,16 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from ..data_analysis.initialize import OUTPUT_FILES
+from astropy.coordinates import SkyCoord
 import splat
+import wisps
+
 splat.initializeStandards()
 
-CONSTANTS={'RSUN': 8.3*u.kpc.to(u.pc)*u.pc,
-			'ZSUN': 2.7*u.kpc.to(u.pc)*u.pc,
-			'N_0':0.39*u.pc**-3,
-			'CCD_SIZE':1*u.arcmin**2,
-			'SATURATION_LIMIT': {'J': 5}}
+AREA=(4.3*(u.arcmin**2)).to((u.radian)**2)
+SOLID_ANGLE=(np.sin(np.sqrt(AREA)))**2.0
 
-
-
+POLYNOMIAL_RELATIONS= pd.read_pickle(wisps.OUTPUT_FILES+'/polynomial_relations.pkl')
 LUMINOSITY_FUCTION=pd.read_pickle(OUTPUT_FILES+'/luminosity_function.pkl')
+obs=pd.read_csv(wisps.OUTPUT_FILES+'//observation_log_with_limit.csv')
+OBSERVED_POINTINGS= SkyCoord(obs['ra (deg)'].values, obs['dec(deg)'].values, unit=u.deg)

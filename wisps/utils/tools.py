@@ -6,6 +6,7 @@ import splat
 import pandas as pd
 import splat.empirical as spem
 import statsmodels.nonparametric.kernel_density as kde
+import numba
 
 #################
 splat.initializeStandards()
@@ -32,9 +33,9 @@ class extrap1d(object):
     
     def pointwise(self, x):
         if x < self.xs[0]:
-            return float(self.ys[0])
+            return 0.0
         elif x > self.xs[-1]:
-            return float(0.0)
+            return float(self.ys[-1])
         else:
             return self.interpolator(x)
 
@@ -46,16 +47,27 @@ class extrap1d(object):
 def my_color_map():
         colors1 = plt.cm.BuGn(np.linspace(0., 1, 256))
         colors2 = plt.cm.Purples(np.linspace(0., 1, 256))
+        colors3 = plt.cm.cool(np.linspace(0., 1, 256))
+        colors4 = plt.cm.Greens(np.linspace(0., 1, 256))
         colors = np.vstack((colors1+colors2)/2)
-        return mcolors.LinearSegmentedColormap.from_list('my_colormap', colors)
+        colorsx = np.vstack((colors3+colors4)/2)
+        return mcolors.LinearSegmentedColormap.from_list('my_colormap', colors), mcolors.LinearSegmentedColormap.from_list('my_other_colormap', colorsx)
 
-MYCOLORMAP=my_color_map()
+MYCOLORMAP, MYCOLORMAP2=my_color_map()
 
 @memoize_func
 def stats_kde(x, **kwargs):
     grid=np.arange(np.nanmin(x), np.nanmax(x))
     model=kde.KDEMultivariate(x, bw='normal_reference', var_type='c')
     return grid, model.cdf(grid), model.pdf(grid)
+
+@numba.jit
+def make_spt_number(spt):
+    ##make a spt a number
+    if isinstance(spt, str):
+        return splat.typeToNum(spt)
+    else:
+        return spt
 
 def conv_to_galactic(ra, dec, d):
     '''
@@ -129,6 +141,11 @@ def radec2lb(ra, dec):
 def distance(mags, spt):
     """
     mags is a dictionary of bright and faint mags
+
+    set a bias 
+
+    SET A RANK 110 FIRST'
+    140 next, don't do a scatter
     """
     res=pd.Series()
     
@@ -146,8 +163,8 @@ def distance(mags, spt):
         sp.fluxCalibrate('2MASS J',float(sp.j_2mass))
         mag, mag_unc = splat.filterMag(sp, flt)
         #calculate the mag of the standard in J and H
-        magj, mag_unck = splat.filterMag(sp,'2MASS J')
-        magh, mag_unck = splat.filterMag(sp,'2MASS H')
+        magj, mag_unck = splat.filterMag(sp,'2MASS J', ab=True)
+        magh, mag_unck = splat.filterMag(sp,'2MASS H', ab=True)
         #calculate the offset between HST filters and 2mass filters
         offsetj=magj-mag
         offset2=magh-mag

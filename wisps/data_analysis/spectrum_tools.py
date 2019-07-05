@@ -23,13 +23,15 @@ from scipy import interpolate
 from scipy import stats
 import copy
 from wisps.utils import memoize_func
+import numba
+from scipy import stats
 
 from functools import lru_cache #high performance memoization
 
 #################
 splat.initializeStandards()
 ###############
-
+#@numba.jitclass()
 class Spectrum(object):
     """
     
@@ -68,6 +70,7 @@ class Spectrum(object):
         self._spectrum_image_path=None
         self._indices=None
         self._spectral_type=None
+        self._best_fit_line=None
 
         #load spectrum if given filename 
         
@@ -82,10 +85,13 @@ class Spectrum(object):
         if (self._filepath is not None):
         	self.filepath=self._filepath
         	
-        if self._wave is not None:
-       		 self._compute_snr()
-        	 self._splat_spectrum=splat.Spectrum(wave=self._wave, flux=self._flux, noise=self._noise, instrument='WFC3')
-
+        if (self._wave is not None) and (self.filepath is None):
+            self._compute_snr()
+            self._splat_spectrum=splat.Spectrum(wave=self._wave, flux=self._flux, noise=self._noise, instrument='WFC3')
+            self._best_fit_line=fit_a_line(self)
+            ftest=f_test(self)
+            for key in  ftest.keys(): 
+                setattr(self, key, ftest[key])
         #keep a copy of this object as an attribute
         self.original=copy.deepcopy(self)
     
@@ -153,51 +159,18 @@ class Spectrum(object):
     def splat_spectrum(self):
     	self._splat_spectrum= splat.Spectrum(wave=self._wave, flux=self._flux, noise=self._noise, instrument='WFC3')
     	return self._splat_spectrum
+
+    @property
+    def best_fit_line(self):
+        ##save the best fit line as part of the object
+        return self._best_fit_line
     
-    @lru_cache(maxsize=128)
+    #@lru_cache(maxsize=128)
     def classify_by_standard(self, **kwargs):
         """
         Uses splat.classifyByStandard to classify spectra using spex standards
         """ 
-        return splat.classifyByStandard(self._splat_spectrum, **kwargs)
-
-    def fit_a_line(self, **kwargs):
-        """
-        Fit a line, returns a chi-square
-        """
-        #only fits within the range
-        mask=kwargs.get('mask', np.where((self.wave>1.15) & (self.wave <1.65))[0])
-        wave=self.wave[mask]
-        flux=self.flux[mask]
-        noise=self.noise[mask]
-        #fit a line from stast linerar regression package
-        m, b, r_value, p_value, std_err = stats.linregress(wave, flux)
-        line=m*wave+b
-        chisqr=np.nansum((flux-line)**2/noise**2)
-        #return the line anc chi-square
-        return line, chisqr
-
-    def f_test(self, **kwargs):
-        """
-        Use an F-test to see wether a line fits better than a spectral standard
-        """
-        #get the splat spectrum
-        s=self.splat_spectrum
-        #trim within the same wavelength used to compare to standards
-        s.trim([1.15, 1.65])
-        #fit a line
-        line, linechi=self.fit_a_line()
-        #compare to standards
-        spt, spexchi=splat.classifyByStandard(s, return_statistic=True, fit_ranges=[[1.15, 1.65]], plot=False, **kwargs)
-        #calculate f-statistic
-        x=spexchi/linechi
-        #calculate the f-statistic dfn=2, dfd=1 are areguments
-        f=stats.f.pdf(x, 2, 1, 0, scale=1)
-        #return result
-        result=pd.Series({'spex_chi':spexchi, 'line_chi':linechi, 'spt': spt, 'f':f})
-        return result
-
-
+        return splat.classifyByStandard(self.splat_spectrum, comprng=[[1.1, 1.3], [1.3, 1.65]])
     def normalize(self, **kwargs):
         """
         :Purpose: Normalize a spectrum to a maximum value of 1 (in its current units)
@@ -234,7 +207,7 @@ class Spectrum(object):
             _cdf_snr=np.nan
 			
         return _cdf_snr
-    
+
     def _compute_snr(self):
         """
         different calcultions of snr 
@@ -265,6 +238,7 @@ class Spectrum(object):
         if self._indices is None: self._indices=measure_indices(self, return_unc=True)
         return self._indices
 
+  
     def measure_indices(self, **kwargs):
         """
         measure indices of aa spectrum, calls the measureIndicess function
@@ -273,28 +247,33 @@ class Spectrum(object):
         """
         self.normalize()
         return measure_indices(self,**kwargs)
-
-    def add_noise(self, n=1.0,noise=None):
+    def add_noise(self, *args, **kwargs):
         """
         add n-sigma noise to the spectrum
         """
-        mask=np.where((self.wave>1.1) & (self.wave<1.7))[0]
-        mu= np.nanmedian(self.noise[mask])
-        if noise is not None:
-            addn=noise
-        else:
-            sigma=n*np.nanstd(self.noise[mask])
-            addn=np.random.normal(mu,sigma,len(self._flux))
-        self._flux=self._flux+addn
-        self._noise=self._noise+addn
-        self.normalize()
-        #self._indices= measure_indices(self, return_unc=True)
-        self._compute_snr()
+        try:
+            self.normalize(waverange=[1.1, 1.7])
+            sp=self.splat_spectrum
+            sp.addNoise(*args, **kwargs)
+            self._flux=sp.flux.value
+            self._noise=sp.noise.value
+            #self._indices= measure_indices(self, return_unc=True)
+            self._compute_snr()
+            ftest=f_test(self)
+            for key in  ftest.keys(): 
+                setattr(self, key, ftest[key])
+        except:
+            pass
 
 
     @property 
     def filepath(self): 
         return self._filepath
+
+    @property
+    def f_test(self):
+        return self.f
+    
     	
     @filepath.setter
     def filepath(self, new_file_path):
@@ -360,8 +339,11 @@ class Spectrum(object):
         self._compute_snr()
         self._indices= measure_indices(self, return_unc=True)
         self.original = copy.deepcopy(self)
-        #self._original_flux=self._flux
-        #self._original_flux=self._noise
+        #print (fit_a_line(self))
+        self._best_fit_line=fit_a_line(self)
+        ftest=f_test(self)
+        for key in  ftest.keys(): 
+                setattr(self, key, ftest[key])
         
     @property 
     def filename(self):
@@ -392,7 +374,6 @@ class Spectrum(object):
     	return self._survey
         
     @property
-    @lru_cache(maxsize=128)
     def spectrum_image(self):
         imgdata=None
         if self._survey == 'wisps':
@@ -410,7 +391,6 @@ class Spectrum(object):
 
     
     @property
-    @lru_cache(maxsize=128)
     def sensitivity_curve(self):
     	return self._sensitivity
     
@@ -421,7 +401,7 @@ class Spectrum(object):
     		plot_any_spectrum(self, **kwargs)
     		
     	
-    		
+@numba.jit
 def plot_any_spectrum(sp, **kwargs):
     """
 	Main plotting tool for a specturm tool, almost a replica of plotting a Source object
@@ -466,7 +446,7 @@ def plot_any_spectrum(sp, **kwargs):
     
     #compare to standards
     if compare_to_std:
-        spectral_type=splat.classifyByStandard(sp.splat_spectrum, fit_ranges=[[1.15, 1.65]])[0]
+        spectral_type=splat.classifyByStandard(self.splat_spectrum, comprng=[[1.1, 1.3], [1.3, 1.65]])[0]
         std=splat.getStandard(spectral_type)
         chi, scale=splat.compareSpectra(sp.splat_spectrum, std, fit_ranges=[[1.15, 1.65]])
         #std.scale(scale)
@@ -492,8 +472,48 @@ def plot_any_spectrum(sp, **kwargs):
         filename=kwargs.get('filename', OUTPUT_FIGURES+sp.name+'.pdf')
         plt.savefig(filename)
     return 
-    		
-@memoize_func
+
+
+def fit_a_line(spectrum, **kwargs):
+    """
+    Fit a line, returns a chi-square
+    """
+    #only fits within the range
+    mask=kwargs.get('mask', np.where((spectrum.wave>1.15) & (spectrum.wave <1.65))[0])
+    wave=spectrum.wave[mask]
+    flux=spectrum.flux[mask]
+    noise=spectrum.noise[mask]
+    #fit a line from stast linerar regression package
+    m, b, r_value, p_value, std_err = stats.linregress(wave, flux)
+    line=m*wave+b
+    chisqr=np.nansum((flux-line)**2/noise**2)
+    #return the line anc chi-square
+    return tuple([line, chisqr])
+
+
+def f_test(spectrum, **kwargs):
+    """
+    Use an F-test to see wether a line fits better than a spectral standard
+    """
+    #get the splat spectrum
+    s=spectrum.splat_spectrum
+    #trim within the same wavelength used to compare to standards
+    s.trim([1.15, 1.65])
+    #fit a line
+    line=spectrum.best_fit_line[0]
+    linechi=spectrum.best_fit_line[1]
+    #compare to standards
+    classif=(spectrum.classify_by_standard(return_statistic=True, fit_ranges=[[1.15, 1.65]], plot=False, **kwargs))
+    spt=classif[0]
+    spexchi=classif[1]
+    #calculate f-statistic
+    x=spexchi/linechi
+    #calculate the f-statistic dfn=2, dfd=1 are areguments
+    f=stats.f.pdf(x, 2, 1, 0, scale=1)
+    #return result
+    result={'spex_chi':spexchi, 'line_chi':linechi, 'spt': spt, 'f':f}
+    return result
+	
 def kde_statsmodels_m(x, x_grid, **kwargs):
     """
     multivariate kde

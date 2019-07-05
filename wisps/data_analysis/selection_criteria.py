@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
@@ -47,6 +48,8 @@ class Annotator(object):
 
         Returns:
             returns the same table with spectral type ranges labelled
+
+        spt_label=keyword for spt column
         """
         spt=kwargs.get('spt_label', 'Spts')
         #select by specral type range start spt=15
@@ -223,7 +226,7 @@ class IndexSpace(object):
         #calculate the contamination based on the previous sample of potential brown dwarfs
         self._contaminants=new_conts[[self.xkey, self.ykey, 'Names']]
         #
-        true_bds=Annotator.reformat_table(df200[[self.xkey, self.ykey]].applymap(eval)).values.T
+        #true_bds=Annotator.reformat_table(df200[[self.xkey, self.ykey]].applymap(eval)).values.T
         #print (true_bds)
         cont= {}
         fn={}
@@ -232,24 +235,13 @@ class IndexSpace(object):
             s.datatype='contam'
             s.color=None
             s.data=np.array([df.x, df.y])
-            #new definition of contamination
-            #number that's selected that's actually brown dwarfs
-            #print (true_bds)
-            #print (s.data)
-            true_sl=len(s.select(true_bds).T)
-            #number selected from all the trash
-            slctd=s.select(s.data).T
-            #print (slctd)
-            trash_sl=len(slctd)
-            not_selcted=len(s.data)-  trash_sl
-            #false_neg=
-            #print (trash_sl)
-            #calculate the contamination
-            #print (true_sl, trash_sl)
-            if trash_sl==0.0:
+        
+            slctd=s.select(s.data)
+
+            if len(s.data.T)==0.0:
                 cont[s.shape_name]=0.0
             else:
-                cont[s.shape_name]=abs(trash_sl-true_sl)/(trash_sl)
+                cont[s.shape_name]=len(slctd.T)/len(s.data.T)
 
             new_shapes.append(s)
         self._contamination=cont
@@ -306,6 +298,7 @@ class IndexSpace(object):
         """
         Adds a box to the selection criteria
         """
+        print (df)
         #reformat the data
         x=np.array([*list(df.x.values)])
         y=np.array([*list(df.y.values)])
@@ -317,6 +310,7 @@ class IndexSpace(object):
         box.color=color
         box.shape_name=name
         box.edgecolor='#2ECC40'
+        print (ddf.values.T, name)
         box.data=np.array(ddf.values.T)
         #add this to the existing 
         self._shapes.append(box)
@@ -406,7 +400,7 @@ class IndexSpace(object):
         dict1={'data':[self.templates[self.xkey].tolist(), self.templates[self.ykey].tolist()], 
                'name':'Templates', \
                 'color':'#0074D9', 
-                'marker':'D', 'ms':5, 'cmap':'YlOrBr', \
+                'marker':'D', 'ms':25, 'cmap':'YlOrBr', \
                   'alpha':1, 'edgecolor':'none', 'linewidths':3}
         
         dict3={'data':[self.contaminants[self.xkey].tolist(),self.contaminants[self.ykey].tolist()], 
@@ -450,7 +444,7 @@ class IndexSpace(object):
         
         #hist2d=ax1.hist2d(x=xd, y=yd, cmap=kwargs.get('cmap', MYCOLORMAP), bins=10, alpha=1.0)
         #cbar = fig.colorbar(hist2d[3],  orientation='horizontal')
-        ax1.scatter(xd, yd,  marker='.',  c='#AAAAAA', label='contaminants')
+        ax1.scatter(xd, yd,  marker='o',  facecolors='none',  edgecolors='#AAAAAA', label='Contaminants')
 
         #plot templates
 
@@ -477,20 +471,22 @@ class IndexSpace(object):
     
             
         for d in datadicts:
-            ax1.scatter(d['data'][0],d['data'][1],  c=d['color'], marker=d['marker'],
-                        s=d['ms'], cmap=d['cmap'], label=d['name'], alpha=d['alpha'], edgecolor=d['edgecolor'], 
+            ax1.scatter(d['data'][0],d['data'][1],  facecolors=d['color'], marker='.',
+                        s=d['ms'], cmap=d['cmap'], label=d['name'], alpha=d['alpha'], edgecolors=d['edgecolor'], 
                         linewidths=d['linewidths'])
                         
     
         #ax1.hist2d(x=xd, y=yd, cmap='Reds')
-        
+        rmv= kwargs.get('remove', [None])
         df_=pd.DataFrame()
         df_['x']=d['data'][0]
         df_['y']=d['data'][1]
+        print (rmv)
         for s in self.shapes:
-            if not s in kwargs.get('remove', []):
-                if s.shape_name in kwargs.get('highlight', [None]): s.plot( ax=ax1, only_shape=True, highlight=True)
-                else: s.plot( ax=ax1, only_shape=True)
+                if s.shape_name in kwargs.get('highlight', [None]): 
+                    s.alpha=.5
+                    s.plot( ax=ax1, only_shape=True, highlight=False, alpha=1.)
+                else: pass
             #s.color='none'
             #print (""" itsssssssss """,  kwargs.get('highlight', None))
             #print ('name', s.shape_name, 'color', s.color, 'linewidth', s.linewidth)
@@ -503,17 +499,17 @@ class IndexSpace(object):
         mdf=Annotator.reformat_table(mjdf)
         sdf=Annotator.reformat_table(scndf)
 
-        ax1.scatter(mdf[self.xkey], mdf[self.ykey],  marker='P',  c='#FF851B', label='manjavacas')
-        ax1.scatter(sdf[self.xkey], sdf[self.ykey],  marker='^',  c='#B10DC9', label='schneider')
+        ax1.scatter(mdf[self.xkey], mdf[self.ykey],  marker='P', facecolors='none', edgecolors='#FF851B', label='Manjavacas')
+        ax1.scatter(sdf[self.xkey], sdf[self.ykey],  marker='^', facecolors='none', edgecolors='#B10DC9', label='Schneider')
 
         
-        if kwargs.get('log_scale', False):
-            plt.xscale('log')
-            plt.yscale('log')
-        if np.std([s.xrange for s in self.shapes])>9.0*np.nanmedian([s.xrange for s  in self.shapes]):
-            plt.xscale('log')
-        if np.std([s.yrange for s in  self.shapes])>9.0*np.nanmedian([s.yrange for s in self.shapes]):
-            plt.yscale('log')
+        #if kwargs.get('log_scale', False):
+        #    plt.xscale('log')
+        #    plt.yscale('log')
+        #if np.std([s.xrange for s in self.shapes])>20.0*np.nanmedian([s.xrange for s  in self.shapes]):
+        #    plt.xscale('log')
+        #if np.std([s.yrange for s in  self.shapes])>20.0*np.nanmedian([s.yrange for s in self.shapes]):
+        #    plt.yscale('log')
             
         filename=kwargs.get('filename', 'none')
         #set limits of the plts from templates 
@@ -522,7 +518,7 @@ class IndexSpace(object):
 
         #indices that use the continuum have ranges that are too high, logscale this?
 
-        ax1.legend()
+        ax1.legend(prop={'size': 8})
         filenm=kwargs.get('filename', 
         OUTPUT_FIGURES+'/indices/index_plot_'+self.name.replace('/','_').replace('-', '_').replace(' ', '_')+'.pdf')
         if kwargs.get('save', True):
@@ -545,19 +541,16 @@ def save_criteria(**kwargs):
     """
     #load templates (will return spectral type and 10 indices for each object
     #completeness =kwargs.get('completeness', 0.9)
-    tpl_ids=spex_sample_ids(stype='spex_sample',  from_file=True)
+    all_spex=datasets['spex']
+
+    all_spex['Spts']=all_spex.spt.apply(splat.typeToNum).apply(float)
+    all_spex['Names']=all_spex.grism_id
+
+    tpl_ids=all_spex[all_spex['metallicity_cls'] !='d/sd']
     #templates['data_type']= 'templates'
-    sd_ids=spex_sample_ids(stype='sd',  from_file=True)
+    sd_ids=all_spex[all_spex['metallicity_cls'] =='d/sd']
     #subdwarfs['data_type']= 'subdwarf
-    tpl_ids.Spts=tpl_ids.Spts.apply(float)
-    #print (tpl_ids)
-    #for k in tpl_ids.keys(): 
-    #    templates[k]=tpl_ids[k]
-    #    subdwarfs[k]= sd_ids[k]
-        
-    #contaminants, should be using file that was generated after signal to noise cut
-    #data_file=kwargs.get('cont_file', OUTPUT_FILES+'//new_contaminants.pkl')
-    #conts=pd.read_pickle(data_file)
+    
     conts=kwargs.get('conts', COMBINED_PHOTO_SPECTRO_DATA)
     #print(conts)
     conts=Annotator.reformat_table(conts.rename(columns={'grism_id': 'Names'}))
@@ -583,33 +576,33 @@ def save_criteria(**kwargs):
     return index_spaces
 
 def plot_cont_compl(**kwargs):
-
-		"""
-		plottting the contamination and completeness heatmaps
-		"""
-		cmap=kwargs.get('cmap', MYCOLORMAP)
-		
-		crts=crts_from_file().values()
-		conts=pd.DataFrame([ x.contamination for x in crts])
-		compls=pd.DataFrame([ x.completeness for x in crts])
-		conts['index-space']=[x.name for x in crts]
-		compls['index-space']=[x.name for x in crts]
-
-		conts.index=['Idx'+str(i) for i in range(0, len(conts['index-space']))]
-		new_conts=conts.sort_values(by=list(conts.columns), ascending=True).drop(labels='index-space', axis=1)
-		compls.index=['Idx'+str(i) for i in range(0, len(compls['index-space']))]
-		new_compls=compls.sort_values(by=list(compls.columns), ascending=True).drop(labels='index-space', axis=1)
-		
-		fig, (ax1, ax2)=plt.subplots(1, 2, figsize=kwargs.get('figsize',(10, 6)), sharex=True, sharey=True)
-		seaborn.heatmap(new_conts, cmap=cmap, ax=ax1)
-		seaborn.heatmap(new_compls,  ax=ax2, cmap=cmap)
-		
-		ax2.set_title('Completeness', fontsize=16)
-		ax1.set_title('Contamination', fontsize=16)
-		
-		fig.savefig( OUTPUT_FIGURES+'/completeness_contamination.pdf', bbox_inches='tight')
-		
-		return 
+    """
+    plottting the contamination and completeness heatmaps
+    """
+    cmap=kwargs.get('cmap', MYCOLORMAP)
+    crts=crts_from_file().values()
+    conts=pd.DataFrame([ x.contamination for x in crts])
+    compls=pd.DataFrame([ x.completeness for x in crts])
+    conts['index-space']=[x.name for x in crts]
+    compls['index-space']=[x.name for x in crts]
+    compls.sort_index()
+    conts.sort_index()
+    
+    conts.index=['Idx'+str(i) for i in range(0, len(conts['index-space']))]
+    new_conts=conts.sort_values(by=list(conts.columns), ascending=False).drop(labels='index-space', axis=1)
+    compls.index=['Idx'+str(i) for i in range(0, len(compls['index-space']))]
+    new_compls=compls.sort_values(by=list(compls.columns), ascending=False).drop(labels='index-space', axis=1)
+    
+    fig, (ax1, ax2)=plt.subplots(1, 2, figsize=kwargs.get('figsize',(10, 6)), sharex=True, sharey=True)
+    seaborn.heatmap(new_conts, cmap=cmap, ax=ax1)
+    seaborn.heatmap(new_compls,  ax=ax2, cmap=cmap)
+    
+    ax2.set_title('Completeness', fontsize=16)
+    ax1.set_title('Contamination', fontsize=16)
+    
+    fig.savefig( OUTPUT_FIGURES+'/completeness_contamination.pdf', bbox_inches='tight')
+    
+    return 
 		
 def pick_by_contamination(input_dict):
 	"""

@@ -4,7 +4,7 @@ from functools import partial
 #from cpython cimport array
 
 
-from line_profiler import LineProfiler
+#from line_profiler import LineProfiler
 def profile(*args, **kwargs):
     try:
         def do_profile(follow=[]):
