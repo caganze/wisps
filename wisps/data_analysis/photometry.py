@@ -15,12 +15,13 @@ import glob
 from .spectrum_tools import*
 from .image import*
 from .plot_spectrum import plot_source
-from ..utils.tools import distance
+from ..utils.tools import get_distance
 import splat.core as spl
 import splat.empirical as spe
 import random
 from astropy.coordinates import SkyCoord
 import copy
+import wisps
 
 from functools import lru_cache
 
@@ -150,7 +151,7 @@ class Source(Spectrum):
            
         self.coords=SkyCoord(ra=s.RA, dec=s.DEC, unit='deg')
         #self.spectral_type=s.Spts
-        self._flags=s['flags']
+        self._flags=s['class_star']
         
         #populate image data 
         img=Image()
@@ -216,7 +217,7 @@ class Source(Spectrum):
         return self._distance
     
     @property
-    @lru_cache(maxsize=128)
+    #@lru_cache(maxsize=128)
     def distance(self):
         """
         Overall distance of the source obtained by averaging all the photomteric distances
@@ -225,7 +226,7 @@ class Source(Spectrum):
         if self._distance is None:
             return self._calculate_distance()
         else:
-            ds=[self.distances[k][0] for k in self.distances.keys() if ('dist'  in k) and ('dist_er'  not in k)]
+            ds=[self.distances[k] for k in self.distances.keys() if ('dist'  in k) and ('dist_er'  not in k)]
             ers=[self.distances[k] for k in self.distances.keys() if 'dist_er'  in k]
 
             #print (self._distance)
@@ -235,12 +236,12 @@ class Source(Spectrum):
             return {'val':val, 'er':unc}
     
     @property
-    @lru_cache(maxsize=128)
+    #@lru_cache(maxsize=128)
     def photo_image(self):
     	return self._image
     
     @property
-    @lru_cache(maxsize=128)
+    #@lru_cache(maxsize=128)
     def pixels_per_image(self):
         """
         The number of pixels around the object to show in photometry image
@@ -294,40 +295,33 @@ class Source(Spectrum):
         plot_source(self, **kwargs)
         
 
-# def __get_photometric_info(sp):
-# 	#format catalog names
-# 	filters=['F110', 'F140', 'F160']
-# 	
-# 	if sp.name.startswith('Par'):
-# 		n1=s1.name
-# 		number=s1.name.split
-# 		path_to_cat=wisps.REMOTE_FOLDER+'wisps/'+n1.split('_')[0]+'_*'+'/DATA/DIRECT_GRISM/fin_*'+filt+'.cat'
-# 		filter_file=glob.glob(path_to_cat)[0]
-# 		cat=ascii.read(filter_file)
-# 		ra, dec, mag, mager=__read_phot_catalog( cat, number, survey)
-# 		
-# 	
-# 	return 
-# def __read_phot_catalog( cat, number, survey):
-# 	"""
-# 	gets input catalog and number of the object to extract
-# 	return photometry, ra and dec,
-# 	
-# 	this doens't solve my problem with missing 3d-hst IDS
-# 	"""
-# 	ra=None
-# 	dec=None
-# 	mag=None
-# 	mager=None
-# 	if survey=='wisps':
-# 		select=cat[cat.col2==number]
-# 		ra=float(select.col1.iloc[0].split('_')[1])
-# 		dec=float(select.col1.iloc[0].split('_')[2])
-# 		mag=float(select.col13.iloc[0])
-# 		mager=float(select.col14.iloc[0])
-# 		
-# 	if survey=='hst-3d':
-# 		select=cat[cat.NUMBER==number]
-# 		
-# 	return ra, dec, mag, mager
-# 	
+
+def distance(mags, spt):
+    """
+    mags is a dictionary of bright and faint mags
+
+    set a bias 
+
+    SET A RANK 110 FIRST'
+    140 next, don't do a scatter
+    """
+    res={}
+    
+    f110w=mags['F110W']
+    f140w=mags['F140W']
+    f160w=mags['F160W']
+
+    relations=wisps.POLYNOMIAL_RELATIONS
+    nsample=1000
+
+    for k in mags.keys():
+        flt='NICMOS '+k
+        #take the standard deviation
+        spts=make_spt_number(spt)+np.random.random(nsample)*.5 #take .5 to be the intrinsic scatter
+        absmags=relations['sp_'+k](spts)
+        relmags=mags[k][0]+np.random.random(nsample)*mags[k][1]
+        dists=get_distance(absmags, relmags)
+        res[str('dist')+k]=np.nanmean(dists)
+        res[str('dist_er')+k]=np.nanstd(dists)
+
+    return res

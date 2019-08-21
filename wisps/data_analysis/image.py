@@ -8,6 +8,8 @@ from astropy.wcs import WCS
 from astropy.io import fits
 import glob
 from .initialize import *
+from astropy.wcs.utils import skycoord_to_pixel
+from astropy.coordinates import SkyCoord
 
 class Image(object):
     """
@@ -128,28 +130,39 @@ class Image(object):
         filter_file=glob.glob(p)
         self.path=p
         #print (p)
+        #if True:
         try:
             #print ('i guess not ? wtf  {}'.format(filter_file))
             #create wcs object
-            w1=WCS(filter_file[0])
+     
             
             #read the file
             if n.lower().startswith('par'):
-                with fits.open(filter_file[0], memmap=False) as hdu:
+                with fits.open(filter_file[0],  memmap=False) as hdu:
                     t=hdu[1].data
+                    w1=WCS(hdu[1])
             else:
+                #print (n, filter_file)
                 with fits.open(filter_file[0], memmap=False) as hdu:
                     t=hdu[0].data
+                    w1=WCS(filter_file[0])
         
             pixelsize=self.pixels_per_image
             #get pixel position of the center object
             
             #get pixel positions from ra and dec
-            py0, px0 = w1.wcs_world2pix(self.ra, self.dec, 1)
+            if n.lower().startswith('par'):
+                coord=SkyCoord(ra=self.ra, dec=self.dec, unit=u.deg)
+                py0, px0 = skycoord_to_pixel(coord, w1, origin=0, mode='all')
+
+            else:
+                py0, px0 = w1.wcs_world2pix(self.ra, self.dec, 1)
             #print (py0, px0)
             px0=abs(px0)
             py0=abs(py0)
-            
+
+            pixelsize=pixelsize-25
+
             #grab a box around it
             px1, py1 = np.array([px0, py0])-pixelsize
             px2, py2 = np.array([px0, py0])+pixelsize
@@ -167,6 +180,9 @@ class Image(object):
             data  = t[slice(int(px1), int(px2)), slice(int(py1), int(py2))]
             #creating a grid for plotting
             grid   = np.mgrid[slice(int(px1), int(px2)), slice(int(py1), int(py2))]
+
+            #print (px0, py0, px1, py1, px2, py2)
+            #print (filter_file)
             
             #if everything is outside the bounds
             if np.all(bools): 
@@ -182,7 +198,7 @@ class Image(object):
             hdu.close()
             del hdu
         except:
-            #make a white image if everything else fails
+           #make a white image if everything else fails
             white_img = np.zeros([100,100,3],dtype=np.uint8)
             white_img.fill(255)
             output= {'filter':filt,'data': white_img,'center': (0.0, 0.0),'grid':None, 'is_white': True}

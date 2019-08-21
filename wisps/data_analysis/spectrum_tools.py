@@ -259,8 +259,10 @@ class Spectrum(object):
             self._noise=sp.noise.value
             #self._indices= measure_indices(self, return_unc=True)
             self._compute_snr()
-            ftest=f_test(self)
-            for key in  ftest.keys(): 
+            ftest=f_test(self, spt=self.spt)
+            self._indices=measure_indices(self, return_unc=True)
+            
+            for key in  ftest.keys():
                 setattr(self, key, ftest[key])
         except:
             pass
@@ -342,7 +344,7 @@ class Spectrum(object):
         #print (fit_a_line(self))
         self._best_fit_line=fit_a_line(self)
         ftest=f_test(self)
-        for key in  ftest.keys(): 
+        for key in  ftest.keys():
                 setattr(self, key, ftest[key])
         
     @property 
@@ -491,27 +493,40 @@ def fit_a_line(spectrum, **kwargs):
     return tuple([line, chisqr])
 
 
-def f_test(spectrum, **kwargs):
+def f_test(spectrum, spt=None, **kwargs):
     """
     Use an F-test to see wether a line fits better than a spectral standard
     """
     #get the splat spectrum
     s=spectrum.splat_spectrum
     #trim within the same wavelength used to compare to standards
+    #normalize
+    s.normalize(waverange=[1.15, 1.65])
     s.trim([1.15, 1.65])
     #fit a line
-    line=spectrum.best_fit_line[0]
-    linechi=spectrum.best_fit_line[1]
+    linefit=fit_a_line(spectrum)
+    line= linefit[0]
+    linechi=linefit[1]
     #compare to standards
-    classif=(spectrum.classify_by_standard(return_statistic=True, fit_ranges=[[1.15, 1.65]], plot=False, **kwargs))
-    spt=classif[0]
-    spexchi=classif[1]
+    if spt is None:
+        classif=spectrum.classify_by_standard(return_statistic=True, fit_ranges=[[1.15, 1.65]], plot=False, **kwargs)
+        spt=classif[0]
+        std=splat.STDS_DWARF_SPEX[spt]
+        std.normalize(waverange=[1.15, 1.65])
+        spexchi=splat.compareSpectra(s, std, fit_ranges=[[1.15, 1.65]], statistic='chisqr', scale=True)[0].value
+
+    if spt is not None:
+        std=splat.STDS_DWARF_SPEX[spt]
+        std.normalize(waverange=[1.15, 1.65])
+        spexchi=splat.compareSpectra(s, std, fit_ranges=[[1.15, 1.65]], statistic='chisqr', scale=True)[0].value
+    
     #calculate f-statistic
     x=spexchi/linechi
     #calculate the f-statistic dfn=2, dfd=1 are areguments
     f=stats.f.pdf(x, 2, 1, 0, scale=1)
     #return result
-    result={'spex_chi':spexchi, 'line_chi':linechi, 'spt': spt, 'f':f}
+    result={'spex_chi':spexchi, 'line_chi':linechi, \
+    'x':x, 'spt': spt, 'f':f, '_best_fit_line': [line, linechi]}
     return result
 	
 def kde_statsmodels_m(x, x_grid, **kwargs):

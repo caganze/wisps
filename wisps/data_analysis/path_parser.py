@@ -62,7 +62,7 @@ def parse_path(name, version):
         spectrum_path=_run_search(name)
         folder=name.split('wfc3_')[-1].split('wfc3_')[-1].split('-')[0]
         name=name.split('_wfc3_')[-1].split('a_g102')[0]
-        stamp_image_path=glob.glob(REMOTE_FOLDER+'/wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+folder+'*/2dstamp/hlsp_wisp_hst_wfc3*'+name+'*stamp2d.fits')[0]
+        stamp_image_path=glob.glob(REMOTE_FOLDER+'/wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+folder+'*/2dstamp/hlsp_wisp_hst_wfc3*'+name+'*a_g141_v6.2_stamp2d.fits')[0]
     if survey=='hst3d':
         spectrum_path=_run_search(name)
         #print (spectrum_path.split('/1D/ASCII/')[0]+'/2D/'+'FITS/'+name.split('1D')[0]+'*2D.fits')

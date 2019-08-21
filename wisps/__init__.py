@@ -8,4 +8,4 @@ __all__ = ["data_analysis", "simulations"]
 from wisps.data_analysis import *
 from wisps.data_analysis.initialize import *
 from wisps.data_sets import datasets
-#from . import *
+from wisps.relations import *

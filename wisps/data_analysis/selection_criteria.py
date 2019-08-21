@@ -284,7 +284,8 @@ class IndexSpace(object):
        # print (self.xkey, self.ykey, new_data.columns)
         df['data_type']='templates'
         self._spex_sample= new_data[[self.xkey, self.ykey, 'Spts', 'Names']]
-        #rename columns
+
+        #print (self._spex_sample.shape)
         annotated_df=None
         if not self._subdwarfs is None:
             annotated_df=Annotator.group_by_spt(df, add_subdwarfs=True, subdwarfs=self._subdwarfs)
@@ -298,19 +299,21 @@ class IndexSpace(object):
         """
         Adds a box to the selection criteria
         """
-        print (df)
+        #print (df)
         #reformat the data
         x=np.array([*list(df.x.values)])
         y=np.array([*list(df.y.values)])
-        ddf=pd.DataFrame([x[:,0], y[:,0], x[:,1], y[:, 1]]).transpose().dropna()
+        ddf=pd.DataFrame([x[:,0], y[:,0]]).transpose().dropna()
         #create a box
         box=Box()
+        if name.lower().startswith('l') or name.lower().startswith('y') or name.lower().startswith('m'): 
+            box=Box(shapetype='rectangle')
         box.scatter_coeff=coeff
         box.alpha=.1
         box.color=color
         box.shape_name=name
         box.edgecolor='#2ECC40'
-        print (ddf.values.T, name)
+        #print (ddf.values.T, name)
         box.data=np.array(ddf.values.T)
         #add this to the existing 
         self._shapes.append(box)
@@ -329,6 +332,7 @@ class IndexSpace(object):
         new_shapes=[]
         for name, group in grouped:
             df=group.dropna()
+            #print (df.shape, len(df))
             if len(df) > 0.0:
                 #print('name of the group ...{} length ... {}'.format(name, len(group)))
                 to_use=df[[self.xkey, self.ykey]]
@@ -337,6 +341,7 @@ class IndexSpace(object):
 
 
         #add an extra box of late ts from manjavacas et al
+        #print (self.completeness)
         mdf=mjdf[[self.xkey, self.ykey, 'spt']]
         mdf.columns=['x', 'y', 'spt']
 
@@ -349,6 +354,7 @@ class IndexSpace(object):
 
         self.add_box(ydwarfs, 'Y dwarfs', '#0074D9', 3.0)
 
+        #print (self.completeness)
 
         return 
     
@@ -390,6 +396,76 @@ class IndexSpace(object):
                 selected.append(sels)
 
             return list(selected)
+
+    def new_plot_best(self, box_label, **kwargs):
+        #newplotiing function only looking at one box
+        bs=self.shapes
+        bx=[x for x in bs if x.shape_name==box_label][0]
+        print (box_label)
+
+        spex_df=Annotator.reformat_table(datasets['spex']).reset_index(drop=True)
+        manj=Annotator.reformat_table(datasets['manjavacas']).reset_index(drop=True)
+        schn=Annotator.reformat_table(datasets['schneider']).reset_index(drop=True)
+        subdwarfs=Annotator.reformat_table(self._subdwarfs).reset_index(drop=True)
+        cands=Annotator.reformat_table(datasets['candidates']).reset_index(drop=True)
+
+        manj['Spts']=manj.spt.apply(splat.typeToNum)
+        schn['Spts']=schn.spt.apply(splat.typeToNum)
+        cands['Spts']=cands.spt.apply(splat.typeToNum)
+
+        spex_df=Annotator.group_by_spt(spex_df, spt_label='Spts')
+        schn=Annotator.group_by_spt(schn, spt_label='Spts')
+        manj=Annotator.group_by_spt(manj, spt_label='Spts')
+        cands=Annotator.group_by_spt(cands, spt_label='Spts')
+
+        ydwarfs=manj[manj['Spts'].apply(lambda x: x>37)]
+
+        if 'ax' in kwargs:
+            ax= kwargs.get('ax', None)
+        else:
+            fig=plt.figure(figsize=kwargs.get('figsize', (8,8)))
+            ax=fig.add_subplot(111)
+
+        conts=self.contaminants
+        xkey, ykey=self.xkey,self.ykey
+
+        ax.scatter((self.contaminants[xkey]).apply(float).round(2), (self.contaminants[ykey]).apply(float).round(2),  marker='o',  facecolors='none',  edgecolors='#AAAAAA', label='Contaminants')
+
+        if box_label.lower()=='y dwarfs':
+            ax.scatter(ydwarfs[xkey], ydwarfs[ykey], label='Y dwarfs')
+        if box_label.lower() =='subdwarfs':
+            ax.scatter(subdwarfs[xkey].apply(float), subdwarfs[ykey].apply(float), label='subdwarfs')
+        if (box_label.lower != 'y dwarfs') and (box_label.lower != 'subdwarfs'):
+            s_spex=spex_df[spex_df.spt_range==box_label]
+            s_manj=manj[manj.spt_range==box_label]
+            s_schn=schn[schn.spt_range==box_label]
+            s_cand=cands[cands.spt_range==box_label]
+            #print (s_cand)
+
+            ax.scatter(s_spex[xkey], s_spex[ykey], s=5, label='SpeX')
+            #ax.scatter(s_manj[xkey], s_manj[ykey],  marker='P', facecolors='none', edgecolors='#FF851B', label='Manjavacas')
+            #ax.scatter(s_schn[xkey],  s_schn[ykey],  marker='^', facecolors='none', edgecolors='#B10DC9', label='Schneider')
+            ax.scatter((s_cand[xkey]).apply(float).round(2), (s_cand[ykey]).apply(float).round(2), marker='x', facecolors='#111111', edgecolors='#2ECC40', label='candidates')
+
+
+        bx.plot( ax=ax, only_shape=True, highlight=False)
+
+        filename=kwargs.get('filename', 'none')
+        #set limits of the plts from templates 
+        ax.set_xlim(kwargs.get('xlim',  [0., 10.]))
+        ax.set_ylim(kwargs.get('ylim', [0., 10.]))
+
+        #indices that use the continuum have ranges that are too high, logscale this?
+
+        ax.set_xlabel(r'$'+str(self.name.split(' ')[0])+'$', fontsize=18)
+        ax.set_ylabel(r'$'+str(self.name.split(' ')[1])+'$', fontsize=18)
+
+        #ax.legend(prop={'size': 16})
+
+        if kwargs.get('save', False):
+            filenm=kwargs.get('filename', OUTPUT_FIGURES+'/indices/index_plot_'+self.name.replace('/','_').replace('-', '_').replace(' ', '_')+'.pdf')
+            plt.savefig(filenm, dpi=100, bbox_inches='tight')
+
     
 
     def plot(self, **kwargs):
@@ -477,11 +553,10 @@ class IndexSpace(object):
                         
     
         #ax1.hist2d(x=xd, y=yd, cmap='Reds')
-        rmv= kwargs.get('remove', [None])
         df_=pd.DataFrame()
         df_['x']=d['data'][0]
         df_['y']=d['data'][1]
-        print (rmv)
+        #print (rmv)
         for s in self.shapes:
                 if s.shape_name in kwargs.get('highlight', [None]): 
                     s.alpha=.5
@@ -518,7 +593,7 @@ class IndexSpace(object):
 
         #indices that use the continuum have ranges that are too high, logscale this?
 
-        ax1.legend(prop={'size': 8})
+        ax1.legend(prop={'size': 16})
         filenm=kwargs.get('filename', 
         OUTPUT_FIGURES+'/indices/index_plot_'+self.name.replace('/','_').replace('-', '_').replace(' ', '_')+'.pdf')
         if kwargs.get('save', True):
@@ -550,6 +625,8 @@ def save_criteria(**kwargs):
     #templates['data_type']= 'templates'
     sd_ids=all_spex[all_spex['metallicity_cls'] =='d/sd']
     #subdwarfs['data_type']= 'subdwarf
+
+    print (tpl_ids.shape, sd_ids.shape)
     
     conts=kwargs.get('conts', COMBINED_PHOTO_SPECTRO_DATA)
     #print(conts)
@@ -562,7 +639,11 @@ def save_criteria(**kwargs):
         #print (idspace.xkey, idspace.ykey)
         #pass subdwarfs first 
         idspace.subdwarfs=sd_ids
-        idspace.templates=tpl_ids
+        idspace.templates=tpl_ids[[x_key, y_key, 'Names', 'Spts']]
+        #idspace._spex_sample=tpl_ids
+        #annotated_df=Annotator.group_by_spt(tpl_ids)
+        #idspace._calc_completeness(annotated_df)
+        #print (len(idspace.templates[idspace.templates['spt_range']=='L0-L5']))
         idspace.contaminants=conts
         index_spaces.append(idspace)
         

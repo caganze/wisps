@@ -3,83 +3,83 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: main.aux
 The style file: aasjournal.bst
 Database file #1: library.bib
-Repeated entry---line 8762 of file library.bib
+Repeated entry---line 8809 of file library.bib
  : @article{refId0
  :                ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 13853 of file library.bib
+Repeated entry---line 13900 of file library.bib
  : @article{1997A&A...328....5K
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 26325 of file library.bib
+Repeated entry---line 26372 of file library.bib
  : @article{1997A&A...328...83C
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 39518 of file library.bib
+Repeated entry---line 39565 of file library.bib
  : @article{2001ApJ...554.1274C
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 39583 of file library.bib
+Repeated entry---line 39630 of file library.bib
  : @article{1997A&A...328...83C
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 43381 of file library.bib
+Repeated entry---line 43428 of file library.bib
  : @article{1997ApJ...482..913G
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 46195 of file library.bib
+Repeated entry---line 46242 of file library.bib
  : @article{2005ApJ...631L.159R
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 48990 of file library.bib
+Repeated entry---line 49037 of file library.bib
  : @article{2014arXiv1406.4887B
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 49066 of file library.bib
+Repeated entry---line 49113 of file library.bib
  : @article{2007ApJ...657..511A
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 52159 of file library.bib
+Repeated entry---line 52206 of file library.bib
  : @article{1997A&A...328....5K
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 52626 of file library.bib
+Repeated entry---line 52673 of file library.bib
  : @article{2001RvMP...73..719B
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 55441 of file library.bib
+Repeated entry---line 55488 of file library.bib
  : @article{2000AJ....119.3019C
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 55899 of file library.bib
+Repeated entry---line 55946 of file library.bib
  : @inproceedings{2003IAUS..211...41B
  :                                   ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 56379 of file library.bib
+Repeated entry---line 56426 of file library.bib
  : @article{2005ARA&A..43..195K
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 56470 of file library.bib
+Repeated entry---line 56517 of file library.bib
  : @article{2005ApJ...622..319P
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 57003 of file library.bib
+Repeated entry---line 57050 of file library.bib
  : @article{2010ARA&A..48..339B
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 59408 of file library.bib
+Repeated entry---line 59455 of file library.bib
  : @article{2007MNRAS.379.1599L
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 67315 of file library.bib
+Repeated entry---line 67362 of file library.bib
  : @article{1999AJ....117.1010T
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 71009 of file library.bib
+Repeated entry---line 71056 of file library.bib
  : @inproceedings{1998ASPC..134..394B
  :                                   ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 71208 of file library.bib
+Repeated entry---line 71255 of file library.bib
  : @article{2000ARA&A..38..337C
  :                             ,
 I'm skipping whatever remains of this entry
@@ -87,7 +87,6 @@ Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Warning--empty journal in Burgasser2014
 Warning--empty journal in Collaboration2013
 Warning--empty journal in Gagne2015
-Warning--empty journal in Hogg2010
 Warning--empty publisher in scipy
 Warning--empty publisher in doi:10.1117/12.789581
 Warning--empty journal in Kuntschner2013
@@ -95,45 +94,45 @@ Warning--empty journal in LSSTScienceCollaboration2009
 Warning--empty journal in Manjavacas2018
 Warning--empty journal in Sorahana2018
 Warning--empty journal in Spergel2015
-You've used 81 entries,
+You've used 82 entries,
             3183 wiz_defined-function locations,
-            1254 strings with 38611 characters,
-and the built_in function-call counts, 47738 in all, are:
-= -- 3196
-> -- 4872
-< -- 21
-+ -- 1612
-- -- 1720
-* -- 4762
-:= -- 9416
-add.period$ -- 81
-call.type$ -- 81
-change.case$ -- 507
-chr.to.int$ -- 80
+            1267 strings with 39183 characters,
+and the built_in function-call counts, 48327 in all, are:
+= -- 3239
+> -- 4923
+< -- 22
++ -- 1628
+- -- 1737
+* -- 4817
+:= -- 9529
+add.period$ -- 82
+call.type$ -- 82
+change.case$ -- 511
+chr.to.int$ -- 81
 cite$ -- 92
-duplicate$ -- 1550
-empty$ -- 2323
-format.name$ -- 1805
-if$ -- 9065
+duplicate$ -- 1568
+empty$ -- 2354
+format.name$ -- 1826
+if$ -- 9185
 int.to.chr$ -- 2
 int.to.str$ -- 0
-missing$ -- 76
-newline$ -- 247
-num.names$ -- 326
-pop$ -- 573
+missing$ -- 77
+newline$ -- 250
+num.names$ -- 330
+pop$ -- 576
 preamble$ -- 1
-purify$ -- 506
+purify$ -- 510
 quote$ -- 0
-skip$ -- 1274
+skip$ -- 1295
 stack$ -- 0
-substring$ -- 1707
+substring$ -- 1744
 swap$ -- 20
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 729
-warning$ -- 11
-while$ -- 279
+type$ -- 738
+warning$ -- 10
+while$ -- 283
 width$ -- 0
-write$ -- 802
+write$ -- 813
 (There were 20 error messages)

@@ -10,6 +10,9 @@ Allers, K., Jaffe, D., Luhman, K., {et~al.} 2007, $\backslash$apj, 657, 511
   Shim}]{2010ApJ...723..104A}
 Atek, H., Malkan, M., McCarthy, P., {et~al.} 2010, $\backslash$apj, 723, 104
 
+\bibitem[{Aumer \& Binney(2009)}]{2009MNRAS.397.1286A}
+Aumer, M., \& Binney, J. 2009, $\backslash$mnras, 397, 1286
+
 \bibitem[{Baraffe {et~al.}(2003)Baraffe, Chabrier, Allard, \&
   Hauschildt}]{2003IAUS..211...41B}
 Baraffe, I., Chabrier, G., Allard, F., \& Hauschildt, P. 2003, in IAU
@@ -187,9 +190,6 @@ Gould, A., Bahcall, J., \& Flynn, C. 1997, $\backslash$apj, 482, 913
   {Muirhead}, \& {Christiansen}}]{2019arXiv190505900H}
 {Hardegree-Ullman}, K.~K., {Cushing}, M.~C., {Muirhead}, P.~S., \&
   {Christiansen}, J.~L. 2019, arXiv e-prints, arXiv:1905.05900
-
-\bibitem[{Hogg {et~al.}(2010)Hogg, Bovy, \& Lang}]{Hogg2010}
-Hogg, D.~W., Bovy, J., \& Lang, D. 2010, arXiv:1008.4686
 
 \bibitem[{Holwerda {et~al.}(2014)Holwerda, Trenti, Clarkson, Sahu, Bradley,
   Stiavelli, Pirzkal, {De Marchi}, Andersen, Bouwens, \& Ryan}]{Holwerda2014}
@@ -374,6 +374,12 @@ Reyl{\'{e}}, C. 2018, Astronomy {\&} Astrophysics, 619, L8
   Forveille, Artigau, Malo, Hill, \& Doyon}]{Reyle2010a}
 Reyle, C., Delorme, P., Willott, C.~J., {et~al.} 2010, Astronomy and
   Astrophysics, Volume 522, id.A112, 15 pp., 522, arXiv:1008.2301
+
+\bibitem[{{Rujopakarn} {et~al.}(2010){Rujopakarn}, {Eisenstein}, {Rieke},
+  {Papovich}, {Cool}, {Moustakas}, {Jannuzi}, {Kochanek}, {Rieke}, {Dey},
+  {Eisenhardt}, {Murray}, {Brown}, \& {Le Floc'h}}]{2010ApJ...718.1171R}
+{Rujopakarn}, W., {Eisenstein}, D.~J., {Rieke}, G.~H., {et~al.} 2010, \apj,
+  718, 1171
 
 \bibitem[{Ryan {et~al.}(2011)Ryan, Thorman, Yan, Fan, Yan, Mechtley, Hathi,
   Cohen, Windhorst, McCarthy, \& Wittman}]{Ryan2011}

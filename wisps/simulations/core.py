@@ -29,6 +29,8 @@ from astropy.coordinates import SkyCoord
 import scipy.integrate as integrate
 import random
 
+from ..utils.tools import get_distance
+
 
 sf=pd.read_pickle(wisps.OUTPUT_FILES+'/selection_function.pkl') #my selection function
 
@@ -41,6 +43,34 @@ def convert_to_rz(ra, dec, dist):
     r=(newcoord.cartesian.x**2+newcoord.cartesian.y**2)**0.5
     z=newcoord.cartesian.z
     return r.to(u.pc).value, z.to(u.pc).value
+
+
+@numba.vectorize
+def l_dwarf_density_function(r, z):
+    
+    """
+    A l dwarfs density function beacsue numba doesn't allow vectorization with kwargs
+    """
+    ##constants
+    r0 = 8000 # radial offset from galactic center to Sun
+    z0 = 25.  # vertical offset from galactic plane to Sun
+    l1 = 2600. # radial length scale of exponential thin disk 
+    h1 = 280.# vertical length scale of exponential thin disk 
+    ftd = 0.12 # relative number of thick disk to thin disk star counts
+    l2 = 3600. # radial length scale of exponential thin disk 
+    h2 = 900. # vertical length scale of exponential thin disk 
+    fh = 0.0051 # relative number of halo to thin disk star counts
+    qh = 0.64 # halo axial ratio
+    nh = 2.77 # halo power law index
+    
+    dens0=1.0
+    
+    thindens=dens0*np.exp(-abs(r-r0)/l1)*np.exp(-abs(z-z0)/h1)
+    thickdens=dens0*np.exp(-abs(r-r0)/l2)*np.exp(-abs(z-z0)/h2)
+    halodens= dens0*(((r0/(r**2+(z/qh)**2)**0.5))**nh)
+    
+    return thindens+ftd*thickdens+fh*halodens
+
 
 @numba.vectorize
 def juric_density_function(r, z):
@@ -81,13 +111,19 @@ def custom_volume_correction(c, dmin, dmax, nsamp=100):
     rho=juric_density_function(r, z)
     return integrate.trapz(rho*(dds**2), x=dds)/(dmax**3)
 
+
 class Pointing(object):
     ## a pointing object making it easier to draw samples
     
     def __init__(self, **kwargs):
         #only input is the direction
         self.coord=kwargs.get('coord', None)
-        self._samples=[]
+        self._samples={}
+        self.survey=kwargs.get('survey', None)
+        self.mag_limits=None
+        self.dist_limits=None
+        self.name=kwargs.get('name', None)
+        self.volume=None
 
     def cdf(self,  dmin, dmax):
         """
@@ -98,30 +134,80 @@ class Pointing(object):
             ##get the value of the cdf at a given distance
             return (x**3-dmin**3)*custom_volume_correction(self.coord, dmin,x)
         
-        norm=6*(dmax**3)*custom_volume_correction(self.coord, dmin, 2*dmax)
-        dds=np.linspace(dmin+1.0, dmax, 200)
+        norm=(dmax)**3*custom_volume_correction(self.coord, dmin, dmax)
+        dds=np.logspace(np.log10(dmin), np.log10(dmax), 5000)
         cdf=get_cdf_point(dds)
         return dds, cdf/norm
+
+    def compute_distance_limits(self):
+        """
+        computes distance limits based on limiting mags
+        """
+        rels=wisps.POLYNOMIAL_RELATIONS
+        spgrid=np.arange(20, 38)
+        if self.mag_limits is None:
+            pass
+        else:
+            #use F140W for 3d-hst pointing and f110w for wisps
+            pol=None
+            maglmts=None
+            if self.survey=='wisps':
+                pol=rels['sp_F110W']
+                maglmts= self.mag_limits['F110W']
+            if self.survey=='hst3d':
+                pol=rels['sp_F140W']
+                maglmts=self.mag_limits['F140W']
+
+            #compute asbmags using abolute mag relations
+            absmags=pol(spgrid)
+            relfaintmags=np.array([maglmts[0] for s in spgrid])
+            relbrightmags=np.array([maglmts[1] for s in spgrid])
+            
+            #compute distances
+            dmins=get_distance(absmags, relbrightmags)
+            dmaxs=get_distance(absmags, relfaintmags)
+
+            distances=np.array([dmaxs, dmins]).T
+
+            self.dist_limits=dict(zip(spgrid, distances))
+            #create a dictionary
+
+    def computer_volume(self):
+        """
+        given area calculate the volume
+        """
+        volumes={}
+        solid_angle=SOLID_ANGLE
+        for k in self.dist_limits.keys():
+             vc=spsim.volumeCorrection(self.coord,  self.dist_limits[k][1], self.dist_limits[k][0])
+             volumes['vc_'+str(k)]=vc
+             volumes[k]= vc*0.33333333333*(self.dist_limits[k][0]**3-self.dist_limits[k][1]**3)
+
+        self.volume=volumes
     
 
-    def random_draw(self,  dmin, dmax, nsample=1000):
+    def random_draw(self,  dmax, dmin, nsample=1000):
         """
         randomly drawing x distances in a given direction
         """
-        dvals, cdfvals=self.cdf(dmax, dmin)
+        dvals, cdfvals=self.cdf(dmin, dmax)
         @numba.vectorize("int32(float64)")
         def invert_cdf(i):
-            return bisect.bisect(cdfvals, i)-1
+            return bisect.bisect(cdfvals, i)
         x=np.random.rand(nsample)
         idx=invert_cdf(x)
-        return np.array(dvals)[idx]
+        res= np.array(dvals)[idx-1]
+        return res
 
     @property
     def samples(self):
         return self._samples
     
-    def create_sample(self, dmin, dmax):
-        self._samples.append(self.random_draw(dmax, dmin, nsample=10000))
+    def create_sample(self, nsample=1000):
+        self._samples={}
+        for k in  self.dist_limits.keys():
+            #draw up to twice the distance limit
+            self._samples[k]=self.random_draw( 2*self.dist_limits[k][0], self.dist_limits[k][1], nsample=nsample)
     
       
 #simulate spectral types
@@ -202,148 +288,8 @@ def simulate_spts(**kwargs):
 
     return values
 
-#compute effective volumes
-def compute_effective_volumes(**kwargs):
-    """
-    compute effective volumes for all the pointings in my simulation
-    """
-    recompute=kwargs.get('recompute', False)
-    bmags=kwargs.get('bmags', {'F110W': 18.0, 'F140W':18.0, 'F160W':18.0})
-    fmags=kwargs.get('fmags', {'F110W': 22.5, 'F140W':22.6, 'F160W':22.7})
-    
-    spgrid=np.arange(20, 38)
-
-    if recompute:
-        area=AREA
-        solid_angle=SOLID_ANGLE
-        rels=POLYNOMIAL_RELATIONS
-        coords=OBSERVED_POINTINGS
-        ds=[]
-        for spt in spgrid:
-               dmax=None
-               dmin=None
-               pol=rels['sp_F140W']
-               absf140=pol(spt)
-               dmax=(10.**(-(absf140-fmags['F140W'])/5. + 1.))
-               dmin=(10.**(-(absf140-bmags['F140W'])/5. + 1.))
-               print ('spt {} distance {}'.format(spt, dmax-dmin))
-               ds.append([dmin, dmax])
-
-        vols=[]
-        vcs=[]
-        for coord in tqdm(coords):
-           vs=[]
-           vcor=[]
-           for d in ds:
-               vc=spsim.volumeCorrection(coord, d[0], d[1])
-               vs.append([vc*0.33333333333*solid_angle*(d[1]**3-d[0]**3)])
-               vcor.append(vc)
-           vols.append(vs)
-           vcs.append(vcor)
-
-        import pickle
-        with open(wisps.OUTPUT_FILES+'/volumes.pkl', 'wb') as file:
-           pickle.dump([ds, spgrid, vols, vcs], file)
-
-    else:
-        ds, spgrid, vols, vcs=pd.read_pickle(wisps.OUTPUT_FILES+'/volumes.pkl')
-
-    return  ds, spgrid, vols, vcs
-
 def drop_nan(x):
     x=np.array(x)
     return x[(~np.isnan(x)) & (~np.isinf(x)) ]
 
     ##selection function
-
-    
-@numba.vectorize("float64(float64, float64)")
-def probfunction(x, y):
-    # a custom version of my selection function
-    return sf.probability_of_selection(x, y)
-
-
-def compute_effective_numbers(spts, dists, spgrid):
-    ##given a distribution of masses, ages, teffss
-    ## based on my polynomial relations and my own selection function
-    def match_dist_to_spt(spt, distances):
-        """
-        one to one matching between distance and spt
-        to avoid all sorts of interpolations or binning
-        """
-        try:
-            indexs=np.arange(0, len(spgrid))
-            idx=(indexs[(spgrid==round(spt))])[0]
-            return random.choice(distances[idx])
-        except IndexError:
-            return np.nan
-
-    #polynomial relations
-    rels=POLYNOMIAL_RELATIONS
-    #effective volumes
-    dlimits, spgrid, vols, vcs=compute_effective_volumes()
-    #assign distances
-    dists_for_spts=np.array(list(map(lambda x: match_dist_to_spt(x, dists), spts)))
-    #compute magnitudes absolute mags
-    f110s= rels['sp_F110W'](spts)
-    f140s= rels['sp_F140W'](spts)
-    f160s= rels['sp_F160W'](spts)
-    #compute apparent magnitudes
-    appf140s=f140s+5*np.log10(dists_for_spts/10.0)
-    #compute snr based on my relations
-    #only use F140W for SNRJS
-    #offset them by the scatter in the relation
-    f140_snrj_scatter=rels['sigma_log_f140']
-    snrjs=10**np.random.normal(np.array(rels['snr_F140W'](appf140s)), f140_snrj_scatter)
-    #apply the selection function (this is the slow part)
-    sl=probfunction(spts, snrjs)
-
-    #group these by spt
-    df=pd.DataFrame()
-    df['spt']=spts
-    df['ps']=sl
-    df['appF140']=appf140s
-    df['snr']=snrjs
-    #round the spt for groupings
-    df.spt=df.spt.apply(round)
-
-    #make selection cuts 
-    df_cut=df.drop(df[(df.appF140>22.6) & (df.appF140> 18.0) & (df.snr > 3.0)].index)
-
-    #group by spt and sum
-    phi0=[]
-    phi0_spts=[]
-
-    for g in df_cut.groupby('spt'):
-        phi0_spts.append(g[0])
-        phi0.append(np.nansum(g[1].ps))
-
-    idx=[i for i, x in enumerate(phi0_spts) if x in spgrid]
-
-    #finally some luminosity function
-    phi=np.array(phi0)[idx]
-    #return all the data
-
-    return f110s, f140s, f160s, dists_for_spts, appf140s, snrjs, phi
-
-
-
-
-def compute_effective_distances(**kwargs):
-  """
-  This is embarrassingly parallel
-
-  """
-  recompute=kwargs.get('recompute', False)
-  nsamples=kwargs.get('nsamples', 10)
-  if recompute:
-    dlimits, spgrid, vols, vcs=compute_effective_volumes()
-    pnts=[Pointing(coord=x) for x in OBSERVED_POINTINGS]
-
-    list(map(lambda x: [x.create_sample(0.5*dlim[0], 2.0*dlim[1]) for dlim in dlimits], pnts))
-    import pickle
-    with open(wisps.OUTPUT_FILES+'/eff_distances.pkl', 'wb') as file:
-           pickle.dump(pnts, file)
-  else:
-    pnts=pd.read_pickle(wisps.OUTPUT_FILES+'/eff_distances.pkl')
-  return pnts

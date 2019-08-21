@@ -11,6 +11,7 @@ output: final cattalog of all the sources, their photometry and spectral indices
 
 """
 from .initialize import *
+import glob
 
 import sys
 from astropy.io import fits, ascii
@@ -23,10 +24,16 @@ from .initialize import *
 
 
 def hst3d_phot_spec():
-    """ combining all of HST-3D photometry and spectroscopy
+    """ combining all of HST-3D photometry catalogs and not ignoring columns
     """
-    #photometry catalog
-    phot=ascii.read(REMOTE_PHOT_CATALOGS+'/3dhst_master.phot.v4.1/3dhst_master.phot.v4.1.cat').to_pandas()
+    #photome
+    cat_files=glob.glob('/users/caganze/*_3dhst*/Catalog/*.cat')
+    cats=[]
+    for c in cat_files:
+        t=ascii.read(c).to_pandas()
+        t['field']=c.split('_3dhst')[0].split('/')[-1]
+        cats.append(t)
+    phot=pd.concat(cats)
     phot=phot.rename(columns={'id':'phot_id'})
 
     #get grism_ids from the spectrum catalog
@@ -58,11 +65,7 @@ def hst3d_phot_spec():
         phot['F'+f+'_mag_er']= cmbined1.apply(mag_err, axis=1)
         phot['Faper'+f+'_mag_er']=cmbined2.apply(mag_err, axis=1)
 
-    important_columns=['phot_id_x', 'grism_id', 'field_x', 'ra_x', 'dec_x','faper_F140W', 'eaper_F140W',\
-                   'faper_F160W', 'eaper_F160W','f_F140W', 'e_F140W', 'f_F160W',\
-                   'e_F160W', 'F160_mag', 'Faper160_mag', 'F140_mag', 'Faper140_mag', \
-                   'F160_mag_er', 'Faper160_mag_er', 'F140_mag_er', 'Faper140_mag_er', 
-                   'jh_mag', 'flags', 'use_phot_x', 'f_cover', 'f_flagged', 'f_negative']
+    
 
     #merge spec and phot on unique id, from photid, because photid is only unique within each field
     #this is done in order to obtain grism ids
@@ -75,7 +78,7 @@ def hst3d_phot_spec():
 
     print (merged[merged.grism_id.str.contains('good')])
 
-    merged[important_columns].to_csv(OUTPUT_FILES+'/hst3d_photometry_all.csv')
+    merged.to_csv(OUTPUT_FILES+'/hst3d_photometry_all.csv')
     
     
 def wisp_phot_spec():
@@ -108,6 +111,7 @@ def wisp_phot_spec():
                 phot['NIMCOS_'+ f.split('_f')[-1].split('w_v6')[0]+'W']=data[12]
                 phot['NIMCOS_'+ f.split('_f')[-1].split('w_v6')[0]+'W_ER']=data[13]
                 phot['EXTRACTION_FLAG']=data[15]
+                phot['star_flag']=data[14]
                 datas.append(data)
             	
         #combine grism ids with corresponding photometry

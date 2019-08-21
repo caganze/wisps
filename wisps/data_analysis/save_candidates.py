@@ -16,7 +16,7 @@ SPECTRA_PATH=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//spectra//'
 
 # a lot of routines to make my visual inspection of candidates a feedback loop
 def plot_name(name):
-	fname=SPECTRA_PATH+'/ml/'+name.replace('-', '_')+'.jpeg'
+	fname=SPECTRA_PATH+'/indices/'+name.replace('-', '_')+'.jpeg'
 	if os.path.isfile(fname) : pass
 	else: plot(name, fname)
 	
@@ -47,7 +47,7 @@ def get_cand_grism_ids():
 	#save this into the new candidates files
 	df=	COMBINED_PHOTO_SPECTRO_DATA
 	print (df[df.grism_id.isin(lcands)])
-	df[df.grism_id.isin(lcands)].to_csv(LIBRARIES+'/candidates.csv')
+	df[df.grism_id.isin(lcands)].to_pickle(LIBRARIES+'/candidates.pkl')
 	return lcands
 
 def save_cands():
@@ -56,4 +56,5 @@ def save_cands():
 def look_at_all():
 	import wisps
 	df=wisps.datasets['rf_classified']
+	print (len(df))
 	df.grism_id.apply(plot_name)

@@ -1,7 +1,6 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  5 JUL 2019 15:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  21 AUG 2019 13:48
 entering extended mode
  restricted \write18 enabled.
- file:line:error style messages enabled.
  %&-line parsing enabled.
 **main.tex
 (./main.tex
@@ -466,53 +465,148 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
 LaTeX Info: Redefining \[ on input line 2817.
 LaTeX Info: Redefining \] on input line 2818.
 )
+(/usr/local/texlive/2018/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/local/texlive/2018/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.te
+x
+\pgfutil@everybye=\toks27
+\pgfutil@tempdima=\dimen138
+\pgfutil@tempdimb=\dimen139
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-li
+sts.tex))
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box60
+(/usr/local/texlive/2018/texmf-dist/tex/latex/ms/everyshi.sty
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
+))
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/utilities/pgfrcs.code.tex
+Package: pgfrcs 2015/08/07 v3.0.1a (rcs-revision 1.31)
+)) (/usr/local/texlive/2018/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks28
+\pgfkeys@temptoks=\toks29
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/utilities/pgfkeysfiltered.c
+ode.tex
+\pgfkeys@tmptoks=\toks30
+))) (/usr/local/texlive/2018/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex
+\pgf@x=\dimen140
+\pgf@xa=\dimen141
+\pgf@xb=\dimen142
+\pgf@xc=\dimen143
+\pgf@y=\dimen144
+\pgf@ya=\dimen145
+\pgf@yb=\dimen146
+\pgf@yc=\dimen147
+\c@pgf@counta=\count159
+\c@pgf@countb=\count160
+\c@pgf@countc=\count161
+\c@pgf@countd=\count162
+)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen148
+\pgfmath@count=\count163
+\pgfmath@box=\box61
+\pgfmath@toks=\toks31
+\pgfmath@stack@operand=\toks32
+\pgfmath@stack@operation=\toks33
+)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.code.
+tex
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.basic
+.code.tex)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.trigo
+nometric.code.tex)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.rando
+m.code.tex)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.compa
+rison.code.tex)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.base.
+code.tex)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.round
+.code.tex)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.misc.
+code.tex)
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integ
+erarithmetics.code.tex)))
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count164
+)))
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2013/12/13 v3.0.1a (rcs-revision 1.25)
+
+(/usr/local/texlive/2018/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
+\pgffor@iter=\dimen149
+\pgffor@skip=\dimen150
+\pgffor@stack=\toks34
+\pgffor@toks=\toks35
+))
+(/usr/local/texlive/2018/texmf-dist/tex/latex/dpfloat/dpfloat.sty
+Package: dpfloat 2006/10/05
+\@@wholepage=\box62
+)
 Class revtex4-1 Info: Unrecognized array package. Please update this document c
-lass! (Proceeding with fingers crossed.) on input line 8.
+lass! (Proceeding with fingers crossed.) on input line 10.
 Class revtex4-1 Info: Patching unrecognized longtable package. (Proceeding with
- fingers crossed) on input line 8.
-Class revtex4-1 Info: Robustifying \LaTeX's \boldmath command on input line 8.
-Class revtex4-1 Info: cite was not loaded (OK!) on input line 8.
-Class revtex4-1 Info: mcite was not loaded (OK!) on input line 8.
-Class revtex4-1 Info: multicol was not loaded (OK!) on input line 8.
- (./main.aux)
-Runaway argument?
-{{3.5}{8}{Spectral Cl 
-./main.tex:8: File ended while scanning use of \@newl@bel.
-<inserted text> 
-                \par 
-l.8 \begin{document}
-                    
-? s
-OK, entering \scrollmode...
+ fingers crossed) on input line 10.
+Class revtex4-1 Info: Robustifying \LaTeX's \boldmath command on input line 10.
+
+Class revtex4-1 Info: cite was not loaded (OK!) on input line 10.
+Class revtex4-1 Info: mcite was not loaded (OK!) on input line 10.
+Class revtex4-1 Info: multicol was not loaded (OK!) on input line 10.
+ (./main.aux
+
+LaTeX Warning: Label `fig:spexsample' multiply defined.
+
+
+LaTeX Warning: Label `fig:skymap' multiply defined.
+
+
+LaTeX Warning: Label `fig:candidedistances' multiply defined.
+
+
+LaTeX Warning: Label `fig:candidedistances' multiply defined.
+
+
+LaTeX Warning: Label `fig:candidedistances' multiply defined.
+
+
+LaTeX Warning: Label `fig:candidedistances' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-(/usr/local/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+ (/usr/local/texlive/2018/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count159
-\scratchdimen=\dimen138
-\scratchbox=\box60
-\nofMPsegments=\count160
-\nofMParguments=\count161
-\everyMPshowfont=\toks27
-\MPscratchCnt=\count162
-\MPscratchDim=\dimen139
-\MPnumerator=\count163
-\makeMPintoPDFobject=\count164
-\everyMPtoPDFconversion=\toks28
+\scratchcounter=\count165
+\scratchdimen=\dimen151
+\scratchbox=\box63
+\nofMPsegments=\count166
+\nofMParguments=\count167
+\everyMPshowfont=\toks36
+\MPscratchCnt=\count168
+\MPscratchDim=\dimen152
+\MPnumerator=\count169
+\makeMPintoPDFobject=\count170
+\everyMPtoPDFconversion=\toks37
 ) (/usr/local/texlive/2018/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
@@ -530,8 +624,8 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\AtBeginShipoutBox=\box61
-Package hyperref Info: Link coloring ON on input line 8.
+\AtBeginShipoutBox=\box64
+Package hyperref Info: Link coloring ON on input line 10.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -539,565 +633,83 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/local/texlive/2018/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count165
+\c@section@level=\count171
 )
-LaTeX Info: Redefining \ref on input line 8.
-LaTeX Info: Redefining \pageref on input line 8.
-LaTeX Info: Redefining \nameref on input line 8.
-LaTeX Font Info:    Try loading font information for U+lasy on input line 41.
+LaTeX Info: Redefining \ref on input line 10.
+LaTeX Info: Redefining \pageref on input line 10.
+LaTeX Info: Redefining \nameref on input line 10.
+
+ABD: EveryShipout initializing macros
+LaTeX Font Info:    Try loading font information for U+lasy on input line 46.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 41.
+LaTeX Font Info:    Try loading font information for U+msa on input line 46.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 41.
+LaTeX Font Info:    Try loading font information for U+msb on input line 46.
 
 (/usr/local/texlive/2018/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+) [1{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 52.
 
-Package natbib Warning: Citation `2008ApJ...673..864J' on page 1 undefined on i
-nput line 44.
-
-
-Package natbib Warning: Citation `2005ARA&A..43..195K' on page 1 undefined on i
-nput line 44.
-
-
-Package natbib Warning: Citation `2007AJ....133..439C' on page 1 undefined on i
-nput line 44.
-
-
-Package natbib Warning: Citation `2000ARA&A..38..337C' on page 1 undefined on i
-nput line 44.
-
-
-Package natbib Warning: Citation `2001RvMP...73..719B' on page 1 undefined on i
-nput line 44.
-
-
-Package natbib Warning: Citation `2010AJ....139.2679B' on page 1 undefined on i
-nput line 44.
-
-
-Package natbib Warning: Citation `1998ASPC..134..394B' on page 1 undefined on i
-nput line 44.
-
-
-Package natbib Warning: Citation `luhman2012' on page 1 undefined on input line
- 44.
-
-
-Package natbib Warning: Citation `martin2017' on page 1 undefined on input line
- 44.
-
-
-Package natbib Warning: Citation `LopezSantiago2006' on page 1 undefined on inp
-ut line 44.
-
-
-Package natbib Warning: Citation `Gagne2015' on page 1 undefined on input line 
-44.
-
-
-Package natbib Warning: Citation `Mamajek2015' on page 1 undefined on input lin
-e 44.
-
-
-Package natbib Warning: Citation `Faherty2018' on page 1 undefined on input lin
-e 44.
-
-
-Package natbib Warning: Citation `refId0' on page 1 undefined on input line 46.
-
-
-
-Package natbib Warning: Citation `2007AJ....133..439C' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `2010ApJS..190..100K' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `2011ApJS..197...19K' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `2011ApJ...743...50C' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `Marocco01062015' on page 1 undefined on input
- line 46.
-
-
-Package natbib Warning: Citation `2013MNRAS.430.1171D' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `2013MNRAS.433..457B' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `Reyle2010a' on page 1 undefined on input line
- 46.
-
-
-Package natbib Warning: Citation `Reyle2018' on page 1 undefined on input line 
-46.
-
-
-Package natbib Warning: Citation `2007AJ....133..439C' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `2008ApJ...676.1281M' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `Reyle2010a' on page 1 undefined on input line
- 46.
-
-
-Package natbib Warning: Citation `2019ApJS..240...19K' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `2019arXiv190604166B' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `2009ApJ...697..148B' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `2019MNRAS.486.1260Z' on page 1 undefined on i
-nput line 46.
-
-
-Package natbib Warning: Citation `2010ARA&A..48..339B' on page 1 undefined on i
-nput line 46.
-
-[1{/usr/local/texlive/2018/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-
-Package natbib Warning: Citation `1997ApJ...482..913G' on page 2 undefined on i
-nput line 49.
-
-
-LaTeX Warning: Command \textgreater invalid in math mode on input line 49.
-
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 49.
 (/usr/local/texlive/2018/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <12> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 49.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 52.
+ [2] [3]
 
+LaTeX Warning: Reference `fig:par1' on page 4 undefined on input line 66.
 
-LaTeX Warning: Command \textgreater invalid in math mode on input line 49.
+[4] [5] [6] [7]
 
-
-Package natbib Warning: Citation `1997A&A...328....5K' on page 2 undefined on i
-nput line 49.
-
-
-Package natbib Warning: Citation `1997A&A...328...83C' on page 2 undefined on i
-nput line 49.
-
-
-Package natbib Warning: Citation `2001A&A...373..886R' on page 2 undefined on i
-nput line 49.
-
-
-Package natbib Warning: Citation `2005ApJ...631L.159R' on page 2 undefined on i
-nput line 49.
-
-
-Package natbib Warning: Citation `Ryan2011' on page 2 undefined on input line 5
-1.
-
-
-Package natbib Warning: Citation `2005ApJ...631L.159R' on page 2 undefined on i
-nput line 51.
-
-
-Package natbib Warning: Citation `2005ApJ...622..319P' on page 2 undefined on i
-nput line 51.
-
-
-Package natbib Warning: Citation `Holwerda2014' on page 2 undefined on input li
-ne 51.
-
-
-Package natbib Warning: Citation `2009ApJ...695.1591P' on page 2 undefined on i
-nput line 51.
-
-
-Package natbib Warning: Citation `2009ApJ...695.1591P' on page 2 undefined on i
-nput line 51.
-
-
-Package natbib Warning: Citation `Vledder2016' on page 2 undefined on input lin
-e 51.
-
-
-Package natbib Warning: Citation `Sorahana2018' on page 2 undefined on input li
-ne 51.
-
-
-Package natbib Warning: Citation `2019arXiv190310806C' on page 2 undefined on i
-nput line 51.
-
-
-LaTeX Warning: Command \textgreater invalid in math mode on input line 51.
-
-
-LaTeX Warning: Command \textgreater invalid in math mode on input line 51.
-
-[2]
-
-Package natbib Warning: Citation `2005ARA&A..43..195K' on page 3 undefined on i
-nput line 53.
-
-
-Package natbib Warning: Citation `2006ApJ...637.1067B' on page 3 undefined on i
-nput line 53.
-
-
-Package natbib Warning: Citation `2005ApJ...622..319P' on page 3 undefined on i
-nput line 53.
-
-
-Package natbib Warning: Citation `Kirkpatrick2000' on page 3 undefined on input
- line 53.
-
-
-Package natbib Warning: Citation `2009ApJ...695.1591P' on page 3 undefined on i
-nput line 53.
-
-
-Package natbib Warning: Citation `Giavalisco2004' on page 3 undefined on input 
-line 53.
-
-
-Package natbib Warning: Citation `2012ApJ...752L..14M' on page 3 undefined on i
-nput line 55.
-
-
-Package natbib Warning: Citation `2010ApJ...723..104A' on page 3 undefined on i
-nput line 55.
-
-[3]
-
-Package natbib Warning: Citation `2010ApJ...723..104A' on page 4 undefined on i
-nput line 63.
-
-
-Package natbib Warning: Citation `Momcheva2016' on page 4 undefined on input li
-ne 63.
-
-
-Package natbib Warning: Citation `2012ApJS..200...13B' on page 4 undefined on i
-nput line 63.
-
-
-Package natbib Warning: Citation `Skelton2014' on page 4 undefined on input lin
-e 63.
-
-
-Package natbib Warning: Citation `doi:10.1117/12.789581' on page 4 undefined on
- input line 63.
-
-
-Package natbib Warning: Citation `1538-4357-660-1-L1' on page 4 undefined on in
-put line 65.
-
-
-Package natbib Warning: Citation `Scoville2007' on page 4 undefined on input li
-ne 65.
-
-
-Package natbib Warning: Citation `2007MNRAS.379.1599L' on page 4 undefined on i
-nput line 65.
-
-
-Package natbib Warning: Citation `Giavalisco2004' on page 4 undefined on input 
-line 65.
-
-
-LaTeX Warning: Reference `fig:par1' on page 4 undefined on input line 65.
-
-
-LaTeX Warning: Reference `fig:sensitivity' on page 4 undefined on input line 67
+LaTeX Warning: Reference `fig:selectionf' on page 8 undefined on input line 101
 .
 
-
-LaTeX Warning: Reference `tab:pointings' on page 4 undefined on input line 67.
-
-
-Package natbib Warning: Citation `Kuntschner2013' on page 4 undefined on input 
-line 71.
-
-
-Package natbib Warning: Citation `Kummel2009' on page 4 undefined on input line
- 71.
-
-
-Package natbib Warning: Citation `2010ApJ...723..104A' on page 4 undefined on i
-nput line 71.
-
-
-Package natbib Warning: Citation `Momcheva2016' on page 4 undefined on input li
-ne 71.
-
-
-Package natbib Warning: Citation `Skelton2014' on page 4 undefined on input lin
-e 71.
-
-[4]
-
-LaTeX Warning: Reference `fig:sensitivity' on page 5 undefined on input line 77
-.
-
-
-Package natbib Warning: Citation `2010ApJS..190..100K' on page 5 undefined on i
-nput line 77.
-
-
-Package natbib Warning: Citation `scipy' on page 5 undefined on input line 80.
-
-
-LaTeX Warning: Command \textgreater invalid in math mode on input line 80.
-
-
-LaTeX Warning: Command \textgreater invalid in math mode on input line 80.
-
-
-LaTeX Warning: Command \textless invalid in math mode on input line 86.
-
-
-LaTeX Warning: Command \textless invalid in math mode on input line 86.
-
-
-LaTeX Warning: Command \textless invalid in math mode on input line 86.
-
-
-LaTeX Warning: Command \textless invalid in math mode on input line 86.
-
-
-Package natbib Warning: Citation `2001PhDT.......116B' on page 5 undefined on i
-nput line 86.
-
-
-Package natbib Warning: Citation `1999AJ....117.1010T' on page 5 undefined on i
-nput line 86.
-
-
-Package natbib Warning: Citation `2000AJ....119.3019C' on page 5 undefined on i
-nput line 86.
-
-
-Package natbib Warning: Citation `2007ApJ...657..511A' on page 5 undefined on i
-nput line 86.
-
-
-Package natbib Warning: Citation `2007ApJ...658..557B' on page 5 undefined on i
-nput line 86.
-
-[5]
-
-Package natbib Warning: Citation `2014arXiv1406.4887B' on page 6 undefined on i
-nput line 90.
-
-
-LaTeX Warning: Command \textgreater invalid in math mode on input line 90.
-
-
-LaTeX Warning: Command \textgreater invalid in math mode on input line 90.
-
-
-Package natbib Warning: Citation `Manjavacas2018' on page 6 undefined on input 
-line 90.
-
-
-Package natbib Warning: Citation `Schneider2015' on page 6 undefined on input l
-ine 90.
-
-
-Package natbib Warning: Citation `Hogg2010' on page 6 undefined on input line 9
-4.
-
-[6]
-
-LaTeX Warning: Command \textgreater invalid in math mode on input line 101.
-
-
-LaTeX Warning: Command \textgreater invalid in math mode on input line 101.
-
-
-LaTeX Warning: Reference `fig:selectionf' on page 7 undefined on input line 103
-.
-
-[7]
-
-Package natbib Warning: Citation `2010ApJS..190..100K' on page 8 undefined on i
-nput line 107.
-
-
-Package natbib Warning: Citation `2012ApJS..201...19D' on page 8 undefined on i
-nput line 109.
-
-
-Package natbib Warning: Citation `Skelton2014' on page 8 undefined on input lin
-e 109.
-
-
-Package natbib Warning: Citation `2012arXiv1201.0490P' on page 8 undefined on i
-nput line 114.
-
-
-Package natbib Warning: Citation `2019arXiv190505900H' on page 8 undefined on i
-nput line 114.
-
-
+[8]
 Overfull \vbox (4.22119pt too high) has occurred while \output is active []
 
 
-[8]
+[9]
 
-LaTeX Warning: Reference `fig:d_candidates' on page 9 undefined on input line 1
-19.
+LaTeX Warning: Reference `fig:d_candidates' on page 10 undefined on input line 
+123.
 
+[10]
 
-Package natbib Warning: Citation `2012ApJ...752L..14M' on page 9 undefined on i
-nput line 119.
-
-
-Package natbib Warning: Citation `Momcheva2016' on page 9 undefined on input li
-ne 128.
-
-
-LaTeX Warning: Reference `fig:mag limit' on page 9 undefined on input line 128.
-
-
-
-Package natbib Warning: Citation `2012ApJS..201...19D' on page 9 undefined on i
-nput line 128.
-
-
-LaTeX Warning: Reference `candidates' on page 9 undefined on input line 128.
-
-[9] [10]
-
-Package natbib Warning: Citation `1999ApJ...521..613R' on page 11 undefined on 
-input line 140.
-
-
-Package natbib Warning: Citation `2001ApJ...554.1274C' on page 11 undefined on 
-input line 140.
-
-
-Package natbib Warning: Citation `2003IAUS..211...41B' on page 11 undefined on 
-input line 140.
-
-
-Package natbib Warning: Citation `Filippazzo2015' on page 11 undefined on input
- line 140.
-
-
-Package natbib Warning: Citation `2007ApJ...659..655B' on page 11 undefined on 
-input line 142.
-
-
-Package natbib Warning: Citation `2008ApJ...673..864J' on page 11 undefined on 
-input line 145.
-
-./main.tex:151: Extra alignment tab has been changed to \cr.
-<template> }$\hfill \endtemplate 
-                                 
-l.151 \end{split}
-                 
-You have given more \span or & marks than there were
-in the preamble to the \halign or \valign now in progress.
-So I'll assume that you meant to type \cr instead.
-
-./main.tex:151: Extra alignment tab has been changed to \cr.
-<template> }$\hfill \endtemplate 
-                                 
-l.151 \end{split}
-                 
-You have given more \span or & marks than there were
-in the preamble to the \halign or \valign now in progress.
-So I'll assume that you meant to type \cr instead.
+LaTeX Warning: Reference `fig:mag limit' on page 11 undefined on input line 129
+.
 
 [11]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 140.
 
-LaTeX Warning: Command \textless invalid in math mode on input line 154.
-
-
-LaTeX Warning: Command \textless invalid in math mode on input line 154.
-
-
-LaTeX Warning: Command \textless invalid in math mode on input line 154.
-
-
-LaTeX Warning: Command \textless invalid in math mode on input line 154.
-
-
-LaTeX Warning: Command \textless invalid in math mode on input line 169.
-
-
-LaTeX Warning: Command \textless invalid in math mode on input line 169.
-
-
-Package natbib Warning: Citation `2004ApJS..155..191B' on page 12 undefined on 
-input line 171.
-
-
-Package natbib Warning: Citation `Ryan2017' on page 12 undefined on input line 
-171.
-
-[12]
-
-Package natbib Warning: Citation `2014ApJ...794..143B' on page 13 undefined on 
-input line 173.
-
-
-Package natbib Warning: Citation `2007ApJ...659..655B' on page 13 undefined on 
-input line 173.
-
-
-Package natbib Warning: Citation `Lodieu2017' on page 13 undefined on input lin
-e 175.
-
-
-Package natbib Warning: Citation `RyanJr.2016' on page 13 undefined on input li
-ne 177.
-
-
-Package natbib Warning: Citation `LSSTScienceCollaboration2009' on page 13 unde
-fined on input line 177.
-
-
-Package natbib Warning: Citation `Spergel2015' on page 13 undefined on input li
-ne 177.
-
-[13]
-
-Package natbib Warning: Citation `Collaboration2013' on page 14 undefined on in
-put line 186.
-
-
-Package natbib Warning: Citation `Burgasser2014' on page 14 undefined on input 
-line 186.
-
-[14] (./figures.tex
-</users/caganze/research/wisps/figures/standards.pdf, id=126, 432.5896pt x 522.
+ (/usr/local/texlive/2018/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 140.
+ [12]
+[13] [14] [15] [16] (./figures.tex
+</users/caganze/research/wisps/figures/par1.pdf, id=445, 722.7pt x 289.08pt>
+File: /users/caganze/research/wisps/figures/par1.pdf Graphic file (type pdf)
+<use /users/caganze/research/wisps/figures/par1.pdf>
+Package pdftex.def Info: /users/caganze/research/wisps/figures/par1.pdf  used o
+n input line 6.
+(pdftex.def)             Requested size: 433.62334pt x 173.44933pt.
+</users/caganze/research/wisps/figures/spexsample.pdf, id=446, 553.54926pt x 40
+9.04819pt>
+File: /users/caganze/research/wisps/figures/spexsample.pdf Graphic file (type p
+df)
+<use /users/caganze/research/wisps/figures/spexsample.pdf>
+Package pdftex.def Info: /users/caganze/research/wisps/figures/spexsample.pdf  
+used on input line 14.
+(pdftex.def)             Requested size: 442.84pt x 327.23898pt.
+</users/caganze/research/wisps/figures/standards.pdf, id=447, 432.5896pt x 522.
 00697pt>
 File: /users/caganze/research/wisps/figures/standards.pdf Graphic file (type pd
 f)
@@ -1105,16 +717,7 @@ f)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/standards.pdf  u
 sed on input line 22.
 (pdftex.def)             Requested size: 432.58853pt x 522.00569pt.
-
-
-Package natbib Warning: Citation `2010ApJS..190..100K' on page 15 undefined on 
-input line 23.
-
-
-Package natbib Warning: Citation `2010ApJS..190..100K' on page 15 undefined on 
-input line 23.
-
-</users/caganze/research/wisps/figures/fields_skymap.pdf, id=127, 578.16pt x 43
+</users/caganze/research/wisps/figures/fields_skymap.pdf, id=452, 578.16pt x 43
 3.62pt>
 File: /users/caganze/research/wisps/figures/fields_skymap.pdf Graphic file (typ
 e pdf)
@@ -1122,7 +725,7 @@ e pdf)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/fields_skymap.pd
 f  used on input line 31.
 (pdftex.def)             Requested size: 462.52863pt x 346.89647pt.
-</users/caganze/research/wisps/figures/f_test_snr_distr.pdf, id=128, 578.16pt x
+</users/caganze/research/wisps/figures/f_test_snr_distr.pdf, id=453, 578.16pt x
  289.08pt>
 File: /users/caganze/research/wisps/figures/f_test_snr_distr.pdf Graphic file (
 type pdf)
@@ -1130,7 +733,7 @@ type pdf)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/f_test_snr_distr
 .pdf  used on input line 38.
 (pdftex.def)             Requested size: 462.52863pt x 231.2643pt.
-</users/caganze/research/wisps/figures/filter_profiles.pdf, id=129, 395.79126pt
+</users/caganze/research/wisps/figures/filter_profiles.pdf, id=454, 395.79126pt
  x 333.95695pt>
 File: /users/caganze/research/wisps/figures/filter_profiles.pdf Graphic file (t
 ype pdf)
@@ -1138,7 +741,7 @@ ype pdf)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/filter_profiles.
 pdf  used on input line 47.
 (pdftex.def)             Requested size: 296.84271pt x 250.46709pt.
-</users/caganze/research/wisps/figures/sensitivity_illustration.pdf, id=130, 55
+</users/caganze/research/wisps/figures/sensitivity_illustration.pdf, id=455, 55
 2.77654pt x 695.7467pt>
 File: /users/caganze/research/wisps/figures/sensitivity_illustration.pdf Graphi
 c file (type pdf)
@@ -1146,15 +749,15 @@ c file (type pdf)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/sensitivity_illu
 stration.pdf  used on input line 56.
 (pdftex.def)             Requested size: 221.10669pt x 278.29375pt.
-</users/caganze/research/wisps/figures/index_index_plots.pdf, id=131, 842.66821
-pt x 553.58823pt>
+</users/caganze/research/wisps/figures/index_index_plots.pdf, id=456, 1276.2882
+2pt x 838.4655pt>
 File: /users/caganze/research/wisps/figures/index_index_plots.pdf Graphic file 
 (type pdf)
 <use /users/caganze/research/wisps/figures/index_index_plots.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/index_index_plot
 s.pdf  used on input line 63.
-(pdftex.def)             Requested size: 421.33307pt x 276.79343pt.
-</users/caganze/research/wisps/figures/completeness_contamination.pdf, id=132, 
+(pdftex.def)             Requested size: 510.50626pt x 335.38025pt.
+</users/caganze/research/wisps/figures/completeness_contamination.pdf, id=457, 
 633.24715pt x 440.99867pt>
 File: /users/caganze/research/wisps/figures/completeness_contamination.pdf Grap
 hic file (type pdf)
@@ -1162,7 +765,9 @@ hic file (type pdf)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/completeness_con
 tamination.pdf  used on input line 71.
 (pdftex.def)             Requested size: 316.6228pt x 220.4988pt.
-</users/caganze/research/wisps/figures/confusion_matrix.pdf, id=133, 433.62pt x
+LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 72.
+</users/caganze/research/wisps/figures/confusion_matrix.pdf, id=458, 433.62pt x
  216.81pt>
 File: /users/caganze/research/wisps/figures/confusion_matrix.pdf Graphic file (
 type pdf)
@@ -1170,20 +775,19 @@ type pdf)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/confusion_matrix
 .pdf  used on input line 81.
 (pdftex.def)             Requested size: 216.80946pt x 108.40472pt.
-</users/caganze/research/wisps/figures/candidates.pdf, id=134, 867.24pt x 650.4
-3pt>
+</users/caganze/research/wisps/figures/candidates.pdf, id=459, 1084.05pt x 1445
+.4pt>
 File: /users/caganze/research/wisps/figures/candidates.pdf Graphic file (type p
 df)
 <use /users/caganze/research/wisps/figures/candidates.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/candidates.pdf  
 used on input line 89.
-(pdftex.def)             Requested size: 563.69934pt x 422.77449pt.
+(pdftex.def)             Requested size: 433.61232pt x 578.14977pt.
 
-Overfull \hbox (50.58191pt too wide) in paragraph at lines 89--90
- [][] 
- []
 
-</users/caganze/research/wisps/figures/candidate_distances.pdf, id=135, 433.62p
+LaTeX Warning: Float too large for page by 31.96004pt on input line 92.
+
+</users/caganze/research/wisps/figures/candidate_distances.pdf, id=460, 433.62p
 t x 289.08pt>
 File: /users/caganze/research/wisps/figures/candidate_distances.pdf Graphic fil
 e (type pdf)
@@ -1191,211 +795,698 @@ e (type pdf)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/candidate_distan
 ces.pdf  used on input line 97.
 (pdftex.def)             Requested size: 346.89647pt x 231.2643pt.
-</users/caganze/research/wisps/figures/hst_relations.pdf, id=136, 867.24pt x 43
-3.62pt>
-File: /users/caganze/research/wisps/figures/hst_relations.pdf Graphic file (typ
-e pdf)
-<use /users/caganze/research/wisps/figures/hst_relations.pdf>
-Package pdftex.def Info: /users/caganze/research/wisps/figures/hst_relations.pd
-f  used on input line 104.
-(pdftex.def)             Requested size: 433.61894pt x 216.80946pt.
-
-LaTeX Warning: Reference `fig:filterprofiles' on page 15 undefined on input lin
-e 105.
-
-
-LaTeX Warning: Reference `fig:filterprofiles' on page 15 undefined on input lin
-e 105.
-
-</users/caganze/research/wisps/figures/mag_limit.pdf, id=137, 867.24pt x 578.16
-pt>
-File: /users/caganze/research/wisps/figures/mag_limit.pdf Graphic file (type pd
-f)
-<use /users/caganze/research/wisps/figures/mag_limit.pdf>
-Package pdftex.def Info: /users/caganze/research/wisps/figures/mag_limit.pdf  u
-sed on input line 112.
-(pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
-</users/caganze/research/wisps/figures/mass_hubble_colors.pdf, id=138, 867.24pt
+</users/caganze/research/wisps/figures/mass_hubble_colors.pdf, id=461, 867.24pt
  x 361.35pt>
 File: /users/caganze/research/wisps/figures/mass_hubble_colors.pdf Graphic file
  (type pdf)
 <use /users/caganze/research/wisps/figures/mass_hubble_colors.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/mass_hubble_colo
-rs.pdf  used on input line 120.
-(pdftex.def)             Requested size: 433.61894pt x 180.67456pt.
-</users/caganze/research/wisps/figures/snr_fits.pdf, id=139, 867.24pt x 216.81p
+rs.pdf  used on input line 107.
+(pdftex.def)             Requested size: 256.55872pt x 106.90057pt.
+</users/caganze/research/wisps/figures/hst_relations.pdf, id=462, 867.24pt x 43
+3.62pt>
+File: /users/caganze/research/wisps/figures/hst_relations.pdf Graphic file (typ
+e pdf)
+<use /users/caganze/research/wisps/figures/hst_relations.pdf>
+Package pdftex.def Info: /users/caganze/research/wisps/figures/hst_relations.pd
+f  used on input line 107.
+(pdftex.def)             Requested size: 256.55872pt x 128.2807pt.
+
+Overfull \hbox (7.3pt too wide) detected at line 107
+  []   []  
+ []
+
+</users/caganze/research/wisps/figures/snr_fits.pdf, id=467, 867.24pt x 216.81p
 t>
 File: /users/caganze/research/wisps/figures/snr_fits.pdf Graphic file (type pdf
 )
 <use /users/caganze/research/wisps/figures/snr_fits.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/snr_fits.pdf  us
-ed on input line 128.
+ed on input line 115.
 (pdftex.def)             Requested size: 520.34802pt x 130.08699pt.
 
-Overfull \hbox (7.23059pt too wide) in paragraph at lines 128--129
+Overfull \hbox (7.23059pt too wide) in paragraph at lines 115--116
  [][] 
  []
 
-</users/caganze/research/wisps/figures/spex_selectionfx.pdf, id=140, 433.62pt x
- 216.81pt>
-File: /users/caganze/research/wisps/figures/spex_selectionfx.pdf Graphic file (
-type pdf)
-<use /users/caganze/research/wisps/figures/spex_selectionfx.pdf>
-Package pdftex.def Info: /users/caganze/research/wisps/figures/spex_selectionfx
-.pdf  used on input line 135.
-(pdftex.def)             Requested size: 346.89647pt x 173.44823pt.
-</users/caganze/research/wisps/figures/selection_function_samples.pdf, id=141, 
-613.49771pt x 409.04819pt>
+</users/caganze/research/wisps/figures/mag_limit.pdf, id=470, 867.24pt x 578.16
+pt>
+File: /users/caganze/research/wisps/figures/mag_limit.pdf Graphic file (type pd
+f)
+<use /users/caganze/research/wisps/figures/mag_limit.pdf>
+Package pdftex.def Info: /users/caganze/research/wisps/figures/mag_limit.pdf  u
+sed on input line 122.
+(pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
+</users/caganze/research/wisps/figures/selection_function_samples.pdf, id=471, 
+610.00021pt x 403.68253pt>
 File: /users/caganze/research/wisps/figures/selection_function_samples.pdf Grap
 hic file (type pdf)
 <use /users/caganze/research/wisps/figures/selection_function_samples.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/selection_functi
-on_samples.pdf  used on input line 142.
-(pdftex.def)             Requested size: 368.10147pt x 245.4308pt.
-</users/caganze/research/wisps/figures/simulations_dists.pdf, id=142, 843.0195p
-t x 550.72296pt>
+on_samples.pdf  used on input line 129.
+(pdftex.def)             Requested size: 366.00294pt x 242.21138pt.
+</users/caganze/research/wisps/figures/distance_distribution.pdf, id=472, 433.6
+2pt x 216.81pt>
+File: /users/caganze/research/wisps/figures/distance_distribution.pdf Graphic f
+ile (type pdf)
+<use /users/caganze/research/wisps/figures/distance_distribution.pdf>
+Package pdftex.def Info: /users/caganze/research/wisps/figures/distance_distrib
+ution.pdf  used on input line 136.
+(pdftex.def)             Requested size: 433.61894pt x 216.80946pt.
+</users/caganze/research/wisps/figures/simulations_dists.pdf, id=474, 698.1153p
+t x 406.42725pt>
 File: /users/caganze/research/wisps/figures/simulations_dists.pdf Graphic file 
 (type pdf)
 <use /users/caganze/research/wisps/figures/simulations_dists.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/simulations_dist
-s.pdf  used on input line 170.
-(pdftex.def)             Requested size: 505.8156pt x 330.43631pt.
-</users/caganze/research/wisps/figures/oberved_numbers.pdf, id=143, 841.4231pt 
-x 302.38208pt>
+s.pdf  used on input line 143.
+(pdftex.def)             Requested size: 418.8724pt x 243.85823pt.
+</users/caganze/research/wisps/figures/oberved_numbers.pdf, id=475, 822.21405pt
+ x 283.40701pt>
 File: /users/caganze/research/wisps/figures/oberved_numbers.pdf Graphic file (t
 ype pdf)
 <use /users/caganze/research/wisps/figures/oberved_numbers.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/oberved_numbers.
-pdf  used on input line 179.
-(pdftex.def)             Requested size: 504.85776pt x 181.43063pt.
-) (./main.bbl [15 </users/caganze/research/wisps/figures/standards.pdf>]
-[16 </users/caganze/research/wisps/figures/fields_skymap.pdf>] [17 </users/caga
-nze/research/wisps/figures/f_test_snr_distr.pdf> </users/caganze/research/wisps
-/figures/filter_profiles.pdf
+pdf  used on input line 150.
+(pdftex.def)             Requested size: 493.33223pt x 170.0455pt.
+) (./tables.tex
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file /users/caganze/research/wisp
-s/figures/filter_profiles.pdf): PDF inclusion: multiple pdfs with page group in
-cluded in a single page
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.10 ...05 & -0.01 & 0.04 & 0.9 & 0.031 \\\enddata
+                                                  
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+[17 </users/caganze/research/wisps/figures/par1.pdf> </users/caganze/research/w
+isps/figures/spexsample.pdf
+
+pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/spexsample
+.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>] [18 </users/caganze/research/wisps/figures/standards.pdf>] [19 </users/cagan
+ze/research/wisps/figures/fields_skymap.pdf>] [20 </users/caganze/research/wisp
+s/figures/f_test_snr_distr.pdf> </users/caganze/research/wisps/figures/filter_p
+rofiles.pdf
+
+pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/filter_pro
+files.pdf): PDF inclusion: multiple pdfs with page group included in a single p
+age
+>] [21 </users/caganze/research/wisps/figures/sensitivity_illustration.pdf>]
+[22 </users/caganze/research/wisps/figures/index_index_plots.pdf>] [23 </users/
+caganze/research/wisps/figures/completeness_contamination.pdf> </users/caganze/
+research/wisps/figures/confusion_matrix.pdf
+
+pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/confusion_
+matrix.pdf): PDF inclusion: multiple pdfs with page group included in a single 
+page
+>] [24 </users/caganze/research/wisps/figures/candidates.pdf>] [25 </users/caga
+nze/research/wisps/figures/candidate_distances.pdf> </users/caganze/research/wi
+sps/figures/mass_hubble_colors.pdf
+
+pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/mass_hubbl
+e_colors.pdf): PDF inclusion: multiple pdfs with page group included in a singl
+e page
+> </users/caganze/research/wisps/figures/hst_relations.pdf
+
+pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/hst_relati
+ons.pdf): PDF inclusion: multiple pdfs with page group included in a single pag
+e
+>] [26 </users/caganze/research/wisps/figures/snr_fits.pdf> </users/caganze/res
+earch/wisps/figures/mag_limit.pdf
+
+pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/mag_limit.
+pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>] [27 </users/caganze/research/wisps/figures/selection_function_samples.pdf> <
+/users/caganze/research/wisps/figures/distance_distribution.pdf
+
+pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/distance_d
+istribution.pdf): PDF inclusion: multiple pdfs with page group included in a si
+ngle page
+>] [28 </users/caganze/research/wisps/figures/simulations_dists.pdf> </users/ca
+ganze/research/wisps/figures/oberved_numbers.pdf
+
+pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/oberved_nu
+mbers.pdf): PDF inclusion: multiple pdfs with page group included in a single p
+age
 >]
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 69.
-
-[18 </users/caganze/research/wisps/figures/sensitivity_illustration.pdf>]
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 69.
+Overfull \vbox (0.67484pt too high) has occurred while \output is active []
 
 
-Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
-
-[19 </users/caganze/research/wisps/figures/index_index_plots.pdf> </users/cagan
-ze/research/wisps/figures/completeness_contamination.pdf
-
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file /users/caganze/research/wisp
-s/figures/completeness_contamination.pdf): PDF inclusion: multiple pdfs with pa
-ge group included in a single page
->]
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 69.
-
-[20 </users/caganze/research/wisps/figures/confusion_matrix.pdf>]
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 69.
+[29] [30] [31]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
 
 
-Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
-
-[21 </users/caganze/research/wisps/figures/candidates.pdf>] [22 </users/caganze
-/research/wisps/figures/candidate_distances.pdf> </users/caganze/research/wisps
-/figures/hst_relations.pdf
-
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file /users/caganze/research/wisp
-s/figures/hst_relations.pdf): PDF inclusion: multiple pdfs with page group incl
-uded in a single page
->]
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 95.
-
-[23 </users/caganze/research/wisps/figures/mag_limit.pdf> </users/caganze/resea
-rch/wisps/figures/mass_hubble_colors.pdf
-
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file /users/caganze/research/wisp
-s/figures/mass_hubble_colors.pdf): PDF inclusion: multiple pdfs with page group
- included in a single page
->]
-
-LaTeX Warning: A float is stuck (cannot be placed) on input line 95.
+[32]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
 
 
-Class revtex4-1 Warning: Deferred float stuck during \clearpage processing.
+[33]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
 
-[24 </users/caganze/research/wisps/figures/snr_fits.pdf> </users/caganze/resear
-ch/wisps/figures/spex_selectionfx.pdf
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file /users/caganze/research/wisp
-s/figures/spex_selectionfx.pdf): PDF inclusion: multiple pdfs with page group i
-ncluded in a single page
->] [25 </users/caganze/research/wisps/figures/selection_function_samples.pdf>]
-[26 </users/caganze/research/wisps/figures/simulations_dists.pdf> </users/cagan
-ze/research/wisps/figures/oberved_numbers.pdf
+[34]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file /users/caganze/research/wisp
-s/figures/oberved_numbers.pdf): PDF inclusion: multiple pdfs with page group in
-cluded in a single page
->] [27])
 
-Package natbib Warning: There were undefined citations.
+[35]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
 
-[28]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 193.
- (./main.aux
 
-Package natbib Warning: Citation(s) may have changed.
-(natbib)                Rerun to get citations correct.
+[36]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
 
-)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 193.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 193.
+
+[37]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[38]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[39]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[40]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[41]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[42]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[43]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[44]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[45]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[46]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[47]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[48]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[49]
+Overfull \vbox (1.73416pt too high) has occurred while \output is active []
+
+
+[50]) [51] (./main.bbl [52] [53]) [54]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 205.
+ (./main.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 205.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 205.
 
 
 LaTeX Warning: There were undefined references.
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right .
-
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 9746 strings out of 492649
- 140355 string characters out of 6129622
- 271935 words of memory out of 5000000
- 13335 multiletter control sequences out of 15000+600000
- 18096 words of font info for 71 fonts, out of 8000000 for 9000
+ 14915 strings out of 492649
+ 247103 string characters out of 6129622
+ 656804 words of memory out of 5000000
+ 18381 multiletter control sequences out of 15000+600000
+ 16856 words of font info for 67 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 35i,19n,37p,2515b,631s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 40i,11n,40p,2885b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
 /usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
 usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></u
-sr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
-/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/l
-ocal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loc
-al/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local
-/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/te
-xlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texli
-ve/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/
-2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2
-018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/201
-8/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2018
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2018/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2018/t
-exmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/20
-18/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on main.pdf (28 pages, 2586619 bytes).
+sr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr
+/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/l
+ocal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loc
+al/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local
+/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/t
+exlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texl
+ive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive
+/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/20
+18/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2018/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2018/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2018/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2018/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2018/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2018/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2018/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2018/texmf-dist
+/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2018/texmf-
+dist/fonts/type1/public/cm-super/sfrm1728.pfb>
+Output written on main.pdf (54 pages, 1681733 bytes).
 PDF statistics:
- 743 PDF objects out of 1000 (max. 8388607)
- 580 compressed objects within 6 object streams
- 168 named destinations out of 1000 (max. 500000)
- 91 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1178 PDF objects out of 1200 (max. 8388607)
+ 956 compressed objects within 10 object streams
+ 198 named destinations out of 1000 (max. 500000)
+ 101 words of extra memory for PDF output out of 10000 (max. 10000000)
 

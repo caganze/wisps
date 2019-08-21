@@ -67,7 +67,7 @@ class SF():
                 'line_chi':spectr.line_chi, 'spex_chi':spectr.spex_chi},  spectr.snr)
             return  vals
         
-        tg_snrs=np.logspace(3.0, 0., nsample)
+        tg_snrs=np.logspace(np.log10(spectr.snr['snr1']), 0., nsample)
         spectra, indices, ftest, snrs=return_noised_spectrum(tg_snrs)
         spts=[spt for x in spectra]
         return spectra, spts,  pd.DataFrame.from_records(indices), pd.DataFrame.from_records(snrs), pd.DataFrame.from_records(ftest)
