@@ -1,0 +1,42 @@
+\documentclass[manuscript]{aastex}
+
+\usepackage{natbib}
+\usepackage{graphics}
+\usepackage{amsmath}
+\usepackage{ amssymb }
+\usepackage{xcolor} 
+\usepackage{pgffor}  
+\usepackage{dpfloat}                                         
+\begin{document}
+
+
+\newcommand{\figfolder}{/users/caganze/research/wisps/figures/}
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.4]{\figfolder index_index_plots.pdf}
+    \caption{Best selection criteria for different subtype ranges. Both the calibrartion samples and the contaminants are shown}
+    \label{fig:indexplots}
+\end{figure*}
+
+
+\begin{figure}
+\gridline{
+    \fig{\figfolder Ldwarfs_selection_02.pdf}{0.4\textwidth}{(F-test cut at .2)}
+    \fig{\figfolder Ldwarfs_selection_03.pdf}{0.4\textwidth}{(F-test cut at .3)}
+    }
+\gridline{
+    \fig{\figfolder Ldwarfs_selection_04.pdf}{0.4\textwidth}{(F-test cut at .4)}
+    \fig{\figfolder Ldwarfs_selection_05.pdf}{0.4\textwidth}{(F-test cut at .5)}
+}
+\gridline{
+    \fig{\figfolder Ldwarfs_selection_06.pdf}{0.4\textwidth}{(F-test cut at .6)}
+    \fig{\figfolder Ldwarfs_selection_07.pdf}{0.4\textwidth}{(F-test cut at .7)}
+    }
+\end{figure}
+
+
+
+
+
+\end{document}

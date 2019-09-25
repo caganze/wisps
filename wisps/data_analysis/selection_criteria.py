@@ -33,6 +33,13 @@ mjdf=datasets['manjavacas']
 scndf=datasets['schneider']
 ############################################
 #format spex_sample ignore uncert
+
+def make_spt_number(spt):
+    ##make a spt a number
+    if isinstance(spt, str):
+        return splat.typeToNum(spt)
+    else:
+        return spt
 class Annotator(object):
     """
     Contains static method to manipulate index-index tables 
@@ -401,22 +408,23 @@ class IndexSpace(object):
         #newplotiing function only looking at one box
         bs=self.shapes
         bx=[x for x in bs if x.shape_name==box_label][0]
-        print (box_label)
-
         spex_df=Annotator.reformat_table(datasets['spex']).reset_index(drop=True)
         manj=Annotator.reformat_table(datasets['manjavacas']).reset_index(drop=True)
         schn=Annotator.reformat_table(datasets['schneider']).reset_index(drop=True)
         subdwarfs=Annotator.reformat_table(self._subdwarfs).reset_index(drop=True)
         cands=Annotator.reformat_table(datasets['candidates']).reset_index(drop=True)
+        #rfcands=Annotator.reformat_table(datasets['rf_classified_not_indices']).reset_index(drop=True)
 
-        manj['Spts']=manj.spt.apply(splat.typeToNum)
-        schn['Spts']=schn.spt.apply(splat.typeToNum)
-        cands['Spts']=cands.spt.apply(splat.typeToNum)
+        manj['Spts']=manj.spt.apply(make_spt_number)
+        schn['Spts']=schn.spt.apply(make_spt_number)
+        cands['Spts']=cands.spt.apply(make_spt_number)
+        #rfcands['Spts']=rfcands.spt.apply(make_spt_number)
 
         spex_df=Annotator.group_by_spt(spex_df, spt_label='Spts')
         schn=Annotator.group_by_spt(schn, spt_label='Spts')
         manj=Annotator.group_by_spt(manj, spt_label='Spts')
         cands=Annotator.group_by_spt(cands, spt_label='Spts')
+        #rfcands=Annotator.group_by_spt(rfcands)
 
         ydwarfs=manj[manj['Spts'].apply(lambda x: x>37)]
 
@@ -437,15 +445,17 @@ class IndexSpace(object):
             ax.scatter(subdwarfs[xkey].apply(float), subdwarfs[ykey].apply(float), label='subdwarfs')
         if (box_label.lower != 'y dwarfs') and (box_label.lower != 'subdwarfs'):
             s_spex=spex_df[spex_df.spt_range==box_label]
-            s_manj=manj[manj.spt_range==box_label]
-            s_schn=schn[schn.spt_range==box_label]
+            #s_manj=manj[manj.spt_range==box_label]
+            #s_schn=schn[schn.spt_range==box_label]
             s_cand=cands[cands.spt_range==box_label]
+            #s_rf=rfcands[rfcands.spt_range==box_label]
             #print (s_cand)
 
             ax.scatter(s_spex[xkey], s_spex[ykey], s=5, label='SpeX')
             #ax.scatter(s_manj[xkey], s_manj[ykey],  marker='P', facecolors='none', edgecolors='#FF851B', label='Manjavacas')
             #ax.scatter(s_schn[xkey],  s_schn[ykey],  marker='^', facecolors='none', edgecolors='#B10DC9', label='Schneider')
-            ax.scatter((s_cand[xkey]).apply(float).round(2), (s_cand[ykey]).apply(float).round(2), marker='x', facecolors='#111111', edgecolors='#2ECC40', label='candidates')
+            ax.scatter((s_cand[xkey]).apply(float).round(3), (s_cand[ykey]).apply(float).round(3), marker='x', facecolors='#111111', edgecolors='#2ECC40', label='candidates')
+            #ax.scatter((s_rf[xkey]).apply(float).round(3), (s_rf[ykey]).apply(float).round(3), marker='x', facecolors='#2ECC40', edgecolors='#2ECC40', label='rf candidates')
 
 
         bx.plot( ax=ax, only_shape=True, highlight=False)
@@ -662,8 +672,8 @@ def plot_cont_compl(**kwargs):
     """
     cmap=kwargs.get('cmap', MYCOLORMAP)
     crts=crts_from_file().values()
-    conts=pd.DataFrame([ x.contamination for x in crts])
-    compls=pd.DataFrame([ x.completeness for x in crts])
+    conts=pd.DataFrame([ x.contamination for x in crts]).drop(columns=['trash'])
+    compls=pd.DataFrame([ x.completeness for x in crts]).drop(columns=['trash'])
     conts['index-space']=[x.name for x in crts]
     compls['index-space']=[x.name for x in crts]
     compls.sort_index()

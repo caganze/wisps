@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  21 AUG 2019 13:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  20 SEP 2019 01:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -666,42 +666,86 @@ LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <12> not available
 
 LaTeX Warning: Reference `fig:par1' on page 4 undefined on input line 66.
 
-[4] [5] [6] [7]
+[4]
 
-LaTeX Warning: Reference `fig:selectionf' on page 8 undefined on input line 101
-.
+LaTeX Warning: Reference `tab:pointings' on page 5 undefined on input line 68.
+
+[5] [6] [7]
+! Extra }, or forgotten $.
+l.108 ...{(ymax, ymin)} =  m\text{(xmax, xmin)}+b}
+                                                   \end{equation};
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
 
 [8]
-Overfull \vbox (4.22119pt too high) has occurred while \output is active []
 
-
-[9]
-
-LaTeX Warning: Reference `fig:d_candidates' on page 10 undefined on input line 
-123.
-
-[10]
-
-LaTeX Warning: Reference `fig:mag limit' on page 11 undefined on input line 129
+LaTeX Warning: Reference `fig:selectionf' on page 9 undefined on input line 116
 .
 
+! Misplaced alignment tab character &.
+l.124 ...ually confirmed non-UCDs from with WISP &
+                                                   3D-HST surveys, 5000 rand...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.124 ...veys, 5000 randomly chosen low-SNR WISP &
+                                                   3D-HST objects with both ...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+! Misplaced alignment tab character &.
+l.124 ...visually inspected candidates from WISP &
+                                                   3D-HST , 2698 M0-T9 objec...
+I can't figure out why you would want to use a tab mark
+here. If you just want an ampersand, the remedy is
+simple: Just type `I\&' now. But if some right brace
+up above has ended a previous alignment prematurely,
+you're probably due for more error messages, and you
+might try typing `S' now just to see what is salvageable.
+
+[9] [10]
+
+LaTeX Warning: Reference `fig:d_candidates' on page 11 undefined on input line 
+142.
+
+
+Overfull \vbox (8.22119pt too high) has occurred while \output is active []
+
+
 [11]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 140.
+
+LaTeX Warning: Reference `fig:mag limit' on page 12 undefined on input line 148
+.
+
+[12]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 159.
 
  (/usr/local/texlive/2018/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 140.
- [12]
-[13] [14] [15] [16] (./figures.tex
-</users/caganze/research/wisps/figures/par1.pdf, id=445, 722.7pt x 289.08pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 159.
+ [13]
+[14] [15] [16] [17] (./figures.tex
+</users/caganze/research/wisps/figures/par1.pdf, id=452, 722.7pt x 289.08pt>
 File: /users/caganze/research/wisps/figures/par1.pdf Graphic file (type pdf)
 <use /users/caganze/research/wisps/figures/par1.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/par1.pdf  used o
 n input line 6.
 (pdftex.def)             Requested size: 433.62334pt x 173.44933pt.
-</users/caganze/research/wisps/figures/spexsample.pdf, id=446, 553.54926pt x 40
+</users/caganze/research/wisps/figures/spexsample.pdf, id=453, 553.54926pt x 40
 9.04819pt>
 File: /users/caganze/research/wisps/figures/spexsample.pdf Graphic file (type p
 df)
@@ -709,7 +753,7 @@ df)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/spexsample.pdf  
 used on input line 14.
 (pdftex.def)             Requested size: 442.84pt x 327.23898pt.
-</users/caganze/research/wisps/figures/standards.pdf, id=447, 432.5896pt x 522.
+</users/caganze/research/wisps/figures/standards.pdf, id=454, 432.5896pt x 522.
 00697pt>
 File: /users/caganze/research/wisps/figures/standards.pdf Graphic file (type pd
 f)
@@ -717,7 +761,7 @@ f)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/standards.pdf  u
 sed on input line 22.
 (pdftex.def)             Requested size: 432.58853pt x 522.00569pt.
-</users/caganze/research/wisps/figures/fields_skymap.pdf, id=452, 578.16pt x 43
+</users/caganze/research/wisps/figures/fields_skymap.pdf, id=459, 578.16pt x 43
 3.62pt>
 File: /users/caganze/research/wisps/figures/fields_skymap.pdf Graphic file (typ
 e pdf)
@@ -725,7 +769,7 @@ e pdf)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/fields_skymap.pd
 f  used on input line 31.
 (pdftex.def)             Requested size: 462.52863pt x 346.89647pt.
-</users/caganze/research/wisps/figures/f_test_snr_distr.pdf, id=453, 578.16pt x
+</users/caganze/research/wisps/figures/f_test_snr_distr.pdf, id=460, 578.16pt x
  289.08pt>
 File: /users/caganze/research/wisps/figures/f_test_snr_distr.pdf Graphic file (
 type pdf)
@@ -733,7 +777,7 @@ type pdf)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/f_test_snr_distr
 .pdf  used on input line 38.
 (pdftex.def)             Requested size: 462.52863pt x 231.2643pt.
-</users/caganze/research/wisps/figures/filter_profiles.pdf, id=454, 395.79126pt
+</users/caganze/research/wisps/figures/filter_profiles.pdf, id=461, 395.79126pt
  x 333.95695pt>
 File: /users/caganze/research/wisps/figures/filter_profiles.pdf Graphic file (t
 ype pdf)
@@ -741,7 +785,7 @@ ype pdf)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/filter_profiles.
 pdf  used on input line 47.
 (pdftex.def)             Requested size: 296.84271pt x 250.46709pt.
-</users/caganze/research/wisps/figures/sensitivity_illustration.pdf, id=455, 55
+</users/caganze/research/wisps/figures/sensitivity_illustration.pdf, id=462, 55
 2.77654pt x 695.7467pt>
 File: /users/caganze/research/wisps/figures/sensitivity_illustration.pdf Graphi
 c file (type pdf)
@@ -749,7 +793,7 @@ c file (type pdf)
 Package pdftex.def Info: /users/caganze/research/wisps/figures/sensitivity_illu
 stration.pdf  used on input line 56.
 (pdftex.def)             Requested size: 221.10669pt x 278.29375pt.
-</users/caganze/research/wisps/figures/index_index_plots.pdf, id=456, 1276.2882
+</users/caganze/research/wisps/figures/index_index_plots.pdf, id=463, 1276.2882
 2pt x 838.4655pt>
 File: /users/caganze/research/wisps/figures/index_index_plots.pdf Graphic file 
 (type pdf)
@@ -757,118 +801,138 @@ File: /users/caganze/research/wisps/figures/index_index_plots.pdf Graphic file
 Package pdftex.def Info: /users/caganze/research/wisps/figures/index_index_plot
 s.pdf  used on input line 63.
 (pdftex.def)             Requested size: 510.50626pt x 335.38025pt.
-</users/caganze/research/wisps/figures/completeness_contamination.pdf, id=457, 
-633.24715pt x 440.99867pt>
+</users/caganze/research/wisps/figures/completeness_contamination.pdf, id=464, 
+641.08043pt x 440.99867pt>
 File: /users/caganze/research/wisps/figures/completeness_contamination.pdf Grap
 hic file (type pdf)
 <use /users/caganze/research/wisps/figures/completeness_contamination.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/completeness_con
 tamination.pdf  used on input line 71.
-(pdftex.def)             Requested size: 316.6228pt x 220.4988pt.
+(pdftex.def)             Requested size: 320.53943pt x 220.4988pt.
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10.95> not available
 (Font)              Font shape `OML/cmm/m/it' tried instead on input line 72.
-</users/caganze/research/wisps/figures/confusion_matrix.pdf, id=458, 433.62pt x
+</users/caganze/research/wisps/figures/confusion_matrix.pdf, id=465, 433.62pt x
  216.81pt>
 File: /users/caganze/research/wisps/figures/confusion_matrix.pdf Graphic file (
 type pdf)
 <use /users/caganze/research/wisps/figures/confusion_matrix.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/confusion_matrix
-.pdf  used on input line 81.
-(pdftex.def)             Requested size: 216.80946pt x 108.40472pt.
-</users/caganze/research/wisps/figures/candidates.pdf, id=459, 1084.05pt x 1445
-.4pt>
+.pdf  used on input line 83.
+(pdftex.def)             Requested size: 256.55872pt x 128.284pt.
+</users/caganze/research/wisps/figures/cv_scores.pdf, id=466, 433.62pt x 578.16
+pt>
+File: /users/caganze/research/wisps/figures/cv_scores.pdf Graphic file (type pd
+f)
+<use /users/caganze/research/wisps/figures/cv_scores.pdf>
+Package pdftex.def Info: /users/caganze/research/wisps/figures/cv_scores.pdf  u
+sed on input line 83.
+(pdftex.def)             Requested size: 256.55872pt x 342.09068pt.
+
+Overfull \hbox (7.3pt too wide) detected at line 83
+  []   []  
+ []
+
+</users/caganze/research/wisps/figures/candidates.pdf, id=467, 758.835pt x 1626
+.075pt>
 File: /users/caganze/research/wisps/figures/candidates.pdf Graphic file (type p
 df)
 <use /users/caganze/research/wisps/figures/candidates.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/candidates.pdf  
-used on input line 89.
-(pdftex.def)             Requested size: 433.61232pt x 578.14977pt.
+used on input line 91.
+(pdftex.def)             Requested size: 265.59624pt x 569.13478pt.
 
+LaTeX Warning: Float too large for page by 22.94505pt on input line 94.
 
-LaTeX Warning: Float too large for page by 31.96004pt on input line 92.
-
-</users/caganze/research/wisps/figures/candidate_distances.pdf, id=460, 433.62p
+</users/caganze/research/wisps/figures/candidate_distances.pdf, id=468, 433.62p
 t x 289.08pt>
 File: /users/caganze/research/wisps/figures/candidate_distances.pdf Graphic fil
 e (type pdf)
 <use /users/caganze/research/wisps/figures/candidate_distances.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/candidate_distan
-ces.pdf  used on input line 97.
+ces.pdf  used on input line 99.
 (pdftex.def)             Requested size: 346.89647pt x 231.2643pt.
-</users/caganze/research/wisps/figures/mass_hubble_colors.pdf, id=461, 867.24pt
+</users/caganze/research/wisps/figures/mass_hubble_colors.pdf, id=469, 867.24pt
  x 361.35pt>
 File: /users/caganze/research/wisps/figures/mass_hubble_colors.pdf Graphic file
  (type pdf)
 <use /users/caganze/research/wisps/figures/mass_hubble_colors.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/mass_hubble_colo
-rs.pdf  used on input line 107.
+rs.pdf  used on input line 109.
 (pdftex.def)             Requested size: 256.55872pt x 106.90057pt.
-</users/caganze/research/wisps/figures/hst_relations.pdf, id=462, 867.24pt x 43
+</users/caganze/research/wisps/figures/hst_relations.pdf, id=470, 867.24pt x 43
 3.62pt>
 File: /users/caganze/research/wisps/figures/hst_relations.pdf Graphic file (typ
 e pdf)
 <use /users/caganze/research/wisps/figures/hst_relations.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/hst_relations.pd
-f  used on input line 107.
+f  used on input line 109.
 (pdftex.def)             Requested size: 256.55872pt x 128.2807pt.
 
-Overfull \hbox (7.3pt too wide) detected at line 107
+Overfull \hbox (7.3pt too wide) detected at line 109
   []   []  
  []
 
-</users/caganze/research/wisps/figures/snr_fits.pdf, id=467, 867.24pt x 216.81p
+</users/caganze/research/wisps/figures/snr_fits.pdf, id=475, 867.24pt x 216.81p
 t>
 File: /users/caganze/research/wisps/figures/snr_fits.pdf Graphic file (type pdf
 )
 <use /users/caganze/research/wisps/figures/snr_fits.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/snr_fits.pdf  us
-ed on input line 115.
+ed on input line 117.
 (pdftex.def)             Requested size: 520.34802pt x 130.08699pt.
 
-Overfull \hbox (7.23059pt too wide) in paragraph at lines 115--116
+Overfull \hbox (7.23059pt too wide) in paragraph at lines 117--118
  [][] 
  []
 
-</users/caganze/research/wisps/figures/mag_limit.pdf, id=470, 867.24pt x 578.16
+</users/caganze/research/wisps/figures/mag_limit.pdf, id=478, 867.24pt x 578.16
 pt>
 File: /users/caganze/research/wisps/figures/mag_limit.pdf Graphic file (type pd
 f)
 <use /users/caganze/research/wisps/figures/mag_limit.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/mag_limit.pdf  u
-sed on input line 122.
+sed on input line 124.
 (pdftex.def)             Requested size: 433.61894pt x 289.07928pt.
-</users/caganze/research/wisps/figures/selection_function_samples.pdf, id=471, 
-610.00021pt x 403.68253pt>
+</users/caganze/research/wisps/figures/graphical_model.pdf, id=479, 796.67719pt
+ x 569.05513pt>
+File: /users/caganze/research/wisps/figures/graphical_model.pdf Graphic file (t
+ype pdf)
+<use /users/caganze/research/wisps/figures/graphical_model.pdf>
+Package pdftex.def Info: /users/caganze/research/wisps/figures/graphical_model.
+pdf  used on input line 131.
+(pdftex.def)             Requested size: 478.01001pt x 341.43571pt.
+</users/caganze/research/wisps/figures/selection_function_samples.pdf, id=480, 
+611.34428pt x 409.04819pt>
 File: /users/caganze/research/wisps/figures/selection_function_samples.pdf Grap
 hic file (type pdf)
 <use /users/caganze/research/wisps/figures/selection_function_samples.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/selection_functi
-on_samples.pdf  used on input line 129.
-(pdftex.def)             Requested size: 366.00294pt x 242.21138pt.
-</users/caganze/research/wisps/figures/distance_distribution.pdf, id=472, 433.6
+on_samples.pdf  used on input line 138.
+(pdftex.def)             Requested size: 366.8094pt x 245.4308pt.
+</users/caganze/research/wisps/figures/distance_distribution.pdf, id=481, 433.6
 2pt x 216.81pt>
 File: /users/caganze/research/wisps/figures/distance_distribution.pdf Graphic f
 ile (type pdf)
 <use /users/caganze/research/wisps/figures/distance_distribution.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/distance_distrib
-ution.pdf  used on input line 136.
+ution.pdf  used on input line 145.
 (pdftex.def)             Requested size: 433.61894pt x 216.80946pt.
-</users/caganze/research/wisps/figures/simulations_dists.pdf, id=474, 698.1153p
-t x 406.42725pt>
+</users/caganze/research/wisps/figures/simulations_dists.pdf, id=483, 698.1042p
+t x 409.17743pt>
 File: /users/caganze/research/wisps/figures/simulations_dists.pdf Graphic file 
 (type pdf)
 <use /users/caganze/research/wisps/figures/simulations_dists.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/simulations_dist
-s.pdf  used on input line 143.
-(pdftex.def)             Requested size: 418.8724pt x 243.85823pt.
-</users/caganze/research/wisps/figures/oberved_numbers.pdf, id=475, 822.21405pt
- x 283.40701pt>
+s.pdf  used on input line 152.
+(pdftex.def)             Requested size: 418.86575pt x 245.50835pt.
+</users/caganze/research/wisps/figures/oberved_numbers.pdf, id=484, 822.21405pt
+ x 278.31018pt>
 File: /users/caganze/research/wisps/figures/oberved_numbers.pdf Graphic file (t
 ype pdf)
 <use /users/caganze/research/wisps/figures/oberved_numbers.pdf>
 Package pdftex.def Info: /users/caganze/research/wisps/figures/oberved_numbers.
-pdf  used on input line 150.
-(pdftex.def)             Requested size: 493.33223pt x 170.0455pt.
+pdf  used on input line 159.
+(pdftex.def)             Requested size: 493.33223pt x 166.98738pt.
 ) (./tables.tex
 ! Missing $ inserted.
 <inserted text> 
@@ -1308,28 +1372,28 @@ With luck, this will get me unwedged. But if you
 really didn't forget anything, try typing `2' now; then
 my insertion and my current dilemma will both disappear.
 
-[17 </users/caganze/research/wisps/figures/par1.pdf> </users/caganze/research/w
+[18 </users/caganze/research/wisps/figures/par1.pdf> </users/caganze/research/w
 isps/figures/spexsample.pdf
 
 pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/spexsample
 .pdf): PDF inclusion: multiple pdfs with page group included in a single page
->] [18 </users/caganze/research/wisps/figures/standards.pdf>] [19 </users/cagan
-ze/research/wisps/figures/fields_skymap.pdf>] [20 </users/caganze/research/wisp
+>] [19 </users/caganze/research/wisps/figures/standards.pdf>] [20 </users/cagan
+ze/research/wisps/figures/fields_skymap.pdf>] [21 </users/caganze/research/wisp
 s/figures/f_test_snr_distr.pdf> </users/caganze/research/wisps/figures/filter_p
 rofiles.pdf
 
 pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/filter_pro
 files.pdf): PDF inclusion: multiple pdfs with page group included in a single p
 age
->] [21 </users/caganze/research/wisps/figures/sensitivity_illustration.pdf>]
-[22 </users/caganze/research/wisps/figures/index_index_plots.pdf>] [23 </users/
-caganze/research/wisps/figures/completeness_contamination.pdf> </users/caganze/
-research/wisps/figures/confusion_matrix.pdf
+>] [22 </users/caganze/research/wisps/figures/sensitivity_illustration.pdf>]
+[23 </users/caganze/research/wisps/figures/index_index_plots.pdf>] [24 </users/
+caganze/research/wisps/figures/completeness_contamination.pdf>] [25 </users/cag
+anze/research/wisps/figures/confusion_matrix.pdf> </users/caganze/research/wisp
+s/figures/cv_scores.pdf
 
-pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/confusion_
-matrix.pdf): PDF inclusion: multiple pdfs with page group included in a single 
-page
->] [24 </users/caganze/research/wisps/figures/candidates.pdf>] [25 </users/caga
+pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/cv_scores.
+pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>] [26 </users/caganze/research/wisps/figures/candidates.pdf>] [27 </users/caga
 nze/research/wisps/figures/candidate_distances.pdf> </users/caganze/research/wi
 sps/figures/mass_hubble_colors.pdf
 
@@ -1341,108 +1405,29 @@ e page
 pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/hst_relati
 ons.pdf): PDF inclusion: multiple pdfs with page group included in a single pag
 e
->] [26 </users/caganze/research/wisps/figures/snr_fits.pdf> </users/caganze/res
+>] [28 </users/caganze/research/wisps/figures/snr_fits.pdf> </users/caganze/res
 earch/wisps/figures/mag_limit.pdf
 
 pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/mag_limit.
 pdf): PDF inclusion: multiple pdfs with page group included in a single page
->] [27 </users/caganze/research/wisps/figures/selection_function_samples.pdf> <
-/users/caganze/research/wisps/figures/distance_distribution.pdf
+>] [29 </users/caganze/research/wisps/figures/graphical_model.pdf>] [30 </users
+/caganze/research/wisps/figures/selection_function_samples.pdf> </users/caganze
+/research/wisps/figures/distance_distribution.pdf
 
 pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/distance_d
 istribution.pdf): PDF inclusion: multiple pdfs with page group included in a si
 ngle page
->] [28 </users/caganze/research/wisps/figures/simulations_dists.pdf> </users/ca
+>] [31 </users/caganze/research/wisps/figures/simulations_dists.pdf> </users/ca
 ganze/research/wisps/figures/oberved_numbers.pdf
 
 pdfTeX warning: pdflatex (file /users/caganze/research/wisps/figures/oberved_nu
 mbers.pdf): PDF inclusion: multiple pdfs with page group included in a single p
 age
->]
-Overfull \vbox (0.67484pt too high) has occurred while \output is active []
-
-
-[29] [30] [31]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[32]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[33]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[34]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[35]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[36]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[37]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[38]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[39]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[40]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[41]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[42]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[43]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[44]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[45]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[46]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[47]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[48]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[49]
-Overfull \vbox (1.73416pt too high) has occurred while \output is active []
-
-
-[50]) [51] (./main.bbl [52] [53]) [54]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 205.
+>]) (./main.bbl [32] [33] [34] [35] [36]) [37]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 224.
  (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 205.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 205.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 224.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 224.
 
 
 LaTeX Warning: There were undefined references.
@@ -1453,12 +1438,12 @@ LaTeX Warning: There were multiply-defined labels.
  ) 
 Here is how much of TeX's memory you used:
  14915 strings out of 492649
- 247103 string characters out of 6129622
- 656804 words of memory out of 5000000
- 18381 multiletter control sequences out of 15000+600000
+ 247657 string characters out of 6129622
+ 407404 words of memory out of 5000000
+ 18390 multiletter control sequences out of 15000+600000
  16856 words of font info for 67 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 40i,11n,40p,2885b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 40i,11n,40p,2885b,643s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
@@ -1483,10 +1468,10 @@ st/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2018/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2018/texmf-dist
 /fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2018/texmf-
 dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on main.pdf (54 pages, 1681733 bytes).
+Output written on main.pdf (37 pages, 2193347 bytes).
 PDF statistics:
- 1178 PDF objects out of 1200 (max. 8388607)
- 956 compressed objects within 10 object streams
- 198 named destinations out of 1000 (max. 500000)
- 101 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1209 PDF objects out of 1440 (max. 8388607)
+ 967 compressed objects within 10 object streams
+ 187 named destinations out of 1000 (max. 500000)
+ 111 words of extra memory for PDF output out of 10000 (max. 10000000)
 

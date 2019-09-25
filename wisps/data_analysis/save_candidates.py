@@ -21,16 +21,11 @@ def plot_name(name):
 	else: plot(name, fname)
 	
 def plot(n, fname):
-		#print (n)
-        s=Source(name=n.strip())
-        s.plot(save=True, filename=fname.strip())
-        #mask=np.where((s.wave>1.15) & (s.wave <1.65))[0]
-        #print (s.flags, s.spectral_type)
-        #if not s.name.startswith('par'):
-        #	if ((s.flags[-3] ==1.0)& (s.flags[-1]<0.2) & (s.flags[-2]<0.2)): 
-        #		s.plot(save=True, filename=fname)
-        #else:
-        #        s.plot(save=True, filename=fname)
+	try:
+		s=Source(name=n.strip())
+		s.plot(save=True, filename=fname.strip())
+	except IndexError:
+		print (n)
 
 def get_cand_grism_ids():
 	@numba.jit

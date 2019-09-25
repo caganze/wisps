@@ -161,7 +161,7 @@ class Image(object):
             px0=abs(px0)
             py0=abs(py0)
 
-            pixelsize=pixelsize-25
+            #pixelsize=pixelsize-25
 
             #grab a box around it
             px1, py1 = np.array([px0, py0])-pixelsize

@@ -76,17 +76,19 @@
 
 
 \begin{figure*}
-
   \centering
-    \includegraphics[scale=0.5]{\figfolder confusion_matrix.pdf}
-    \caption{Confusion matrix for the random forest classifier used in this survey}
+    \gridline{
+    \fig{\figfolder confusion_matrix.pdf}{0.5\textwidth}{(a)}
+    \fig{\figfolder cv_scores.pdf}{0.5\textwidth}{(b)}
+    }
+    \caption{(a) Confusion matrix for the random forest classifier used in this survey (b) CV scores for the number of features used}
     \label{fig:matrix}
 
 \end{figure*}
 
 \begin{figure*}
     \centering
-    \includegraphics[scale=0.4]{\figfolder candidates.pdf}
+    \includegraphics[scale=0.35]{\figfolder candidates.pdf}
     \caption{Spectral Sequence of UCDs Discovered in WISPS \& 3D-HST. The right plot shows the 1D spectrum where the shaded region is the reported contamination by the survey, the middle plot shows the WFC3 image acquired in either F140W, F160W or F110W filter and the far-left plot shows the cutoff of the G141 spectrum for that extracted object. The derived spectral type of each object is displayed in the left corner of the far-left plot}
     \label{fig:candidates}
 \end{figure*}
@@ -125,6 +127,13 @@
 \end{figure*}
 
 \begin{figure*}
+\centering
+    \includegraphics[scale=0.6]{\figfolder graphical_model.pdf}
+    \caption{Graphical Model showing the simulation process}
+    \label{fig:graph_model}
+\end{figure*}
+
+\begin{figure*}
     \centering
     \includegraphics[scale=0.6]{\figfolder selection_function_samples.pdf}
     \caption{Visualization of our selection function as a function accross spectral type and SNR-J. The label "F-test" indicates spectra with F-test \textgreater 0.5, the label "RF" indicates the spectra labelled as UCDs by the random forest classifier, and the label "Indices" indicates the spectra selected by our best selection criteria. The bar indicates the selection probability defined as the number of spectra selected over the total number of spectra in each SNR-J, spectral type bin. In the Monte-Carlo simulation, we use the most-selective selection function. }
@@ -154,14 +163,3 @@
 
 %print (3*y+x)
 %x=0, 1, 2
-
-%\begin{figure}\ContinuedFloat
-%    {\foreach\y in {0,1,...,8}{%
-%        \gridline{\fig{\figfolder /ltwarfs/spectrum\number\numexpr   1+ 2*\y\relax.pdf}{0.3\textwidth}{(\number\numexpr  1+2*\y)}
- %           \fig{\figfolder /ltwarfs/spectrum\number\numexpr  2 + 2*\y\relax.pdf}{0.3\textwidth}{(\number\numexpr  2 + 2*\y)}
-            %\fig{\figfolder /ltwarfs/spectrum\number\numexpr  3 + 3*\y\relax.pdf}{0.3\textwidth}{(\number\numexpr  3 + 3*\y)}}
-            %\fig{\figfolder /ltwarfs/spectrum\number\numexpr  12 + \y\relax.pdf}{0.2\textwidth}{(\number\numexpr  12 + \y)}}
-%            }}
-
-%\end{figure}
-

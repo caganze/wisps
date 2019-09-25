@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1566342827 "figures.tex" "figures.pdf" "figures" 1566342827
+["pdflatex"] 1566934336 "figures.tex" "figures.pdf" "figures" 1566934336
   "/usr/local/texlive/2018/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/local/texlive/2018/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1480098701 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2018/texmf-dist/tex/latex/base/omlcmr.fd" 1523050425 2473 8052e27f66be3b6e63e955171dae6bfe ""
@@ -7,7 +7,7 @@
   "/usr/local/texlive/2018/texmf-var/web2c/pdftex/pdflatex.fmt" 1523934516 4220280 10cab8fbd7c5a7c52aba9917e190d018 ""
   "/usr/local/texlive/2018/texmf.cnf" 1523934483 577 0b39adfd7c93507ff20c9c14c2f1a33f ""
   "figures.aux" 1564268759 8 a94a2480d3289e625eea47cd1b285758 ""
-  "figures.tex" 1566342827 7783 772b35c1491d44b5e88c40f8cbe8ba41 ""
+  "figures.tex" 1566934333 7763 92f28330f158252f774be187299cc7c9 ""
   (generated)
-  "figures.log"
   "figures.pdf"
+  "figures.log"

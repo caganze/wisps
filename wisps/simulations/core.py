@@ -28,11 +28,19 @@ import emcee
 from astropy.coordinates import SkyCoord
 import scipy.integrate as integrate
 import random
+import pymc3 as pm
 
 from ..utils.tools import get_distance
 
 
-sf=pd.read_pickle(wisps.OUTPUT_FILES+'/selection_function.pkl') #my selection function
+
+
+from concurrent.futures import ThreadPoolExecutor, wait , ALL_COMPLETED
+from  functools import partial
+
+
+
+h_ldwarfs=380
 
 @numba.jit
 def convert_to_rz(ra, dec, dist):
@@ -44,36 +52,7 @@ def convert_to_rz(ra, dec, dist):
     z=newcoord.cartesian.z
     return r.to(u.pc).value, z.to(u.pc).value
 
-
-@numba.vectorize
-def l_dwarf_density_function(r, z):
-    
-    """
-    A l dwarfs density function beacsue numba doesn't allow vectorization with kwargs
-    """
-    ##constants
-    r0 = 8000 # radial offset from galactic center to Sun
-    z0 = 25.  # vertical offset from galactic plane to Sun
-    l1 = 2600. # radial length scale of exponential thin disk 
-    h1 = 280.# vertical length scale of exponential thin disk 
-    ftd = 0.12 # relative number of thick disk to thin disk star counts
-    l2 = 3600. # radial length scale of exponential thin disk 
-    h2 = 900. # vertical length scale of exponential thin disk 
-    fh = 0.0051 # relative number of halo to thin disk star counts
-    qh = 0.64 # halo axial ratio
-    nh = 2.77 # halo power law index
-    
-    dens0=1.0
-    
-    thindens=dens0*np.exp(-abs(r-r0)/l1)*np.exp(-abs(z-z0)/h1)
-    thickdens=dens0*np.exp(-abs(r-r0)/l2)*np.exp(-abs(z-z0)/h2)
-    halodens= dens0*(((r0/(r**2+(z/qh)**2)**0.5))**nh)
-    
-    return thindens+ftd*thickdens+fh*halodens
-
-
-@numba.vectorize
-def juric_density_function(r, z):
+def density_function(r, z, h1):
     
     """
     A custom juric density function that only uses numpy arrays for speed
@@ -81,36 +60,38 @@ def juric_density_function(r, z):
     """
     ##constants
     r0 = 8000 # radial offset from galactic center to Sun
-    z0 = 25.  # vertical offset from galactic plane to Sun
-    l1 = 2600. # radial length scale of exponential thin disk 
-    h1 = 300.# vertical length scale of exponential thin disk 
-    ftd = 0.12 # relative number of thick disk to thin disk star counts
-    l2 = 3600. # radial length scale of exponential thin disk 
-    h2 = 900. # vertical length scale of exponential thin disk 
+    z0=25.
+    l = 2600. # radial length scale of exponential thin disk 
     fh = 0.0051 # relative number of halo to thin disk star counts
     qh = 0.64 # halo axial ratio
     nh = 2.77 # halo power law index
     
-    dens0=1.0
+    rhod0 = 1./(1.+fh)
+    center='sun'
     
-    thindens=dens0*np.exp(-abs(r-r0)/l1)*np.exp(-abs(z-z0)/h1)
-    thickdens=dens0*np.exp(-abs(r-r0)/l2)*np.exp(-abs(z-z0)/h2)
-    halodens= dens0*(((r0/(r**2+(z/qh)**2)**0.5))**nh)
+    r = r+r0
+    z = z+z0
     
-    return thindens+ftd*thickdens+fh*halodens
+    disk=np.exp(-abs(r-r0)/l)/((np.cosh((z-z0)/h1)**2))
+    halo = rhod0*fh*(((r0/(r**2+(z/qh)**2)**0.5))**nh) #halo density
+    
+    return disk+halo
+
+def logp(r, z, h):
+    "likelihood function"
+    d=(r**2+z**2)**(-0.5)
+    return 2*np.log(d)+np.log(density_function(r, z, h))
 
 
 @numba.jit
-def custom_volume_correction(c, dmin, dmax, nsamp=100):
-    """
-    A volume correction term that only uses numpy array for speed
-    All units are in pc
-    """
-    dds = np.linspace(dmin,dmax,nsamp)
-    r, z=convert_to_rz(c.ra, c.dec, dds)
-    rho=juric_density_function(r, z)
-    return integrate.trapz(rho*(dds**2), x=dds)/(dmax**3)
-
+def custom_volume_correction(coordinate,dmin, dmax):
+    nsamp=1000
+    ds = np.linspace(dmin,dmax,nsamp)
+    r, z=convert_to_rz(coordinate.ra, coordinate.dec, ds)
+    rh0=density_function(r, z,h_ldwarfs )
+    num=integrate.trapz(rh0*(ds**2), x=ds)
+    den=((dmax-dmin)**3)
+    return  num/den
 
 class Pointing(object):
     ## a pointing object making it easier to draw samples
@@ -132,9 +113,9 @@ class Pointing(object):
         @numba.vectorize("float64(float64)")
         def get_cdf_point(x):
             ##get the value of the cdf at a given distance
-            return (x**3-dmin**3)*custom_volume_correction(self.coord, dmin,x)
+            return (x**3-dmin**3)*spsim.volumeCorrection(self.coord, dmin,x)
         
-        norm=(dmax)**3*custom_volume_correction(self.coord, dmin, dmax)
+        norm=(dmax)**3*spsim.volumeCorrection(self.coord, dmin, dmax)
         dds=np.logspace(np.log10(dmin), np.log10(dmax), 5000)
         cdf=get_cdf_point(dds)
         return dds, cdf/norm
@@ -208,6 +189,85 @@ class Pointing(object):
         for k in  self.dist_limits.keys():
             #draw up to twice the distance limit
             self._samples[k]=self.random_draw( 2*self.dist_limits[k][0], self.dist_limits[k][1], nsample=nsample)
+
+
+class BayesianPointing(Pointing):
+    
+    def __init__(self, **kwargs):
+        ##initialize the same way
+        super().__init__()
+        
+        self.coord=kwargs.get('coord', None)
+        self._samples={}
+        self.survey=kwargs.get('survey', None)
+        self.mag_limits=None
+        self.dist_limits=None
+    
+        self.name=kwargs.get('name', None)
+        self.volume=None
+
+        self.model= pm.Model()
+        self.traces=[]
+        
+    def computer_volume(self):
+        """
+        given area calculate the volume
+        """
+        volumes={}
+        for k in self.dist_limits.keys():
+             vc=custom_volume_correction(self.coord,  self.dist_limits[k][1], self.dist_limits[k][0])
+             volumes['vc_'+str(k)]=vc
+             volumes[k]= vc*0.33333333333*(self.dist_limits[k][0]**3-self.dist_limits[k][1]**3)
+
+        self.volume=volumes
+        
+    def random_draw(self, nsample=10000):
+        """
+        randomly drawing given a direction
+        instead of using CDF inversion, use a bayesian likelihood function
+        """
+        h=h_ldwarfs
+        traces=[]
+        spgrid=np.arange(20, 38)
+        for spt in spgrid:
+            
+            ras=self.coord.ra
+            decs=self.coord.dec
+    
+            dmaxs=self.dist_limits[spt][0]
+            dmins=self.dist_limits[spt][1]
+
+            robsmax, zobsmax=convert_to_rz(ras,decs, dmaxs)
+            robsmin, zobsmin=convert_to_rz(ras,decs, dmins)
+
+            with pm.Model() as model:
+                lower_r=robsmin
+                upper_r=robsmax
+
+                upper_z=np.nanmax([zobsmax, zobsmin])
+                lower_z=np.nanmin([zobsmax, zobsmin])
+
+
+                r=pm.Uniform('r', lower=lower_r, upper=upper_r)
+                z=pm.Uniform('z', lower=lower_z, upper=upper_z)
+
+
+                like = pm.Potential('lnlike', logp(r,z,h))
+                d=pm.Deterministic('d', (r**2+z**2)**0.5)
+
+                trace = pm.sample(tune=int(nsample/100), draws=int(nsample))
+                traces.append(trace)
+                
+        self.traces=traces
+        
+    @property
+    def samples(self):
+        return np.array([tr['d'] for tr in self.traces])
+    
+    
+    def create_sample(self, nsample=10000):
+        self.random_draw(nsample=nsample)
+
     
       
 #simulate spectral types
@@ -292,4 +352,57 @@ def drop_nan(x):
     x=np.array(x)
     return x[(~np.isnan(x)) & (~np.isinf(x)) ]
 
-    ##selection function
+
+def make_bayesian_points():
+    ##if called, create and save bayesian pointings
+    lf=wisps.LUMINOSITY_FUCTION
+    lfdes=wisps.DES_LUMINOSITY_FUCTION
+    maglimits=wisps.MAG_LIMITS
+    obs=pd.read_csv(wisps.OUTPUT_FILES+'//observation_log_with_limit.csv')
+
+    def get_survey(pointing):
+        if pointing.startswith('par'):
+            return 'wisps'
+        else:
+            return 'hst3d'
+
+    def make_bayesian_pointing(ra, dec, survey, name):
+        coord=SkyCoord(ra=ra*u.deg,dec=dec*u.deg )
+        return BayesianPointing(coord=coord, survey=survey, name=name)
+
+    def run_bayesian( pnt):
+        print ("making point {}".format(pnt.coord))
+        #run the script
+        pnt.mag_limits=maglimits[pnt.survey]
+        pnt.compute_distance_limits()
+        pnt.computer_volume()
+        pnt.create_sample( nsample=10000)
+
+
+    ras=obs['ra (deg)']
+    decs=obs['dec(deg)']
+    surveys=obs.pointing.apply(get_survey)
+
+
+    #initialize bayesian pointings 
+    bayepnts=[make_bayesian_pointing(ra, dec, survey, name) for ra, dec, survey, name in zip(ras, decs, surveys, obs.pointing.values)]
+
+    #should probably parallelize this, I'm sick of waiting
+    #set up the infrascture
+    iterables=([bayepnts ])
+    method=partial(run_bayesian)
+
+    results=[]
+
+    #run the damn thing
+    with ThreadPoolExecutor(max_workers=1000) as executor:
+        futures=executor.map( method, *iterables, timeout=None, chunksize=100)
+
+    results=np.array([x for x in futures])
+
+    #save them in a file
+    import pickle
+    with open(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', 'wb') as file:
+           pickle.dump( bayepnts,file)
+
+

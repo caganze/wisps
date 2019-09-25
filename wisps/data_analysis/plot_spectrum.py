@@ -22,7 +22,7 @@ def plot_source(sp, **kwargs):
     """
 
     #flags
-    cmap=kwargs.get('cmap', 'viridis')
+    cmap=kwargs.get('cmap', 'inferno')
     compare_to_std=kwargs.get('compare_to_std', True)
     save=kwargs.get('save', False)
     filt=kwargs.get('filter', 'F140W')

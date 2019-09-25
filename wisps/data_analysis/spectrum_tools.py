@@ -523,7 +523,7 @@ def f_test(spectrum, spt=None, **kwargs):
     #calculate f-statistic
     x=spexchi/linechi
     #calculate the f-statistic dfn=2, dfd=1 are areguments
-    f=stats.f.pdf(x, 2, 1, 0, scale=1)
+    f=stats.f.cdf(x, 2, 1, 0, scale=1)
     #return result
     result={'spex_chi':spexchi, 'line_chi':linechi, \
     'x':x, 'spt': spt, 'f':f, '_best_fit_line': [line, linechi]}
