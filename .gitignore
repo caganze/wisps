@@ -4,7 +4,7 @@
 #/figures/
 /spectra/
 /wisps/db/
-#/candidates/
+/candidates/
 /wisps.egg-info/
 .DS_Store
 .pytest_cache/
