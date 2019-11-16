@@ -40,7 +40,7 @@ from  functools import partial
 
 
 
-h_ldwarfs=380
+h_ldwarfs=300
 
 @numba.jit
 def convert_to_rz(ra, dec, dist):
@@ -116,7 +116,7 @@ class Pointing(object):
             return (x**3-dmin**3)*spsim.volumeCorrection(self.coord, dmin,x)
         
         norm=(dmax)**3*spsim.volumeCorrection(self.coord, dmin, dmax)
-        dds=np.logspace(np.log10(dmin), np.log10(dmax), 5000)
+        dds=np.logspace(np.log10(dmin), np.log10(dmax), 10000)
         cdf=get_cdf_point(dds)
         return dds, cdf/norm
 
@@ -125,7 +125,6 @@ class Pointing(object):
         computes distance limits based on limiting mags
         """
         rels=wisps.POLYNOMIAL_RELATIONS
-        spgrid=np.arange(20, 38)
         if self.mag_limits is None:
             pass
         else:
@@ -140,9 +139,9 @@ class Pointing(object):
                 maglmts=self.mag_limits['F140W']
 
             #compute asbmags using abolute mag relations
-            absmags=pol(spgrid)
-            relfaintmags=np.array([maglmts[0] for s in spgrid])
-            relbrightmags=np.array([maglmts[1] for s in spgrid])
+            absmags=pol(SPGRID)
+            relfaintmags=np.array([maglmts[0] for s in SPGRID])
+            relbrightmags=np.array([maglmts[1] for s in SPGRID])
             
             #compute distances
             dmins=get_distance(absmags, relbrightmags)
@@ -150,7 +149,7 @@ class Pointing(object):
 
             distances=np.array([dmaxs, dmins]).T
 
-            self.dist_limits=dict(zip(spgrid, distances))
+            self.dist_limits=dict(zip(SPGRID, distances))
             #create a dictionary
 
     def computer_volume(self):
@@ -192,81 +191,101 @@ class Pointing(object):
 
 
 class BayesianPointing(Pointing):
-    
+
     def __init__(self, **kwargs):
-        ##initialize the same way
-        super().__init__()
-        
+        #only input is the direction
         self.coord=kwargs.get('coord', None)
         self._samples={}
         self.survey=kwargs.get('survey', None)
         self.mag_limits=None
         self.dist_limits=None
-    
         self.name=kwargs.get('name', None)
         self.volume=None
 
-        self.model= pm.Model()
-        self.traces=[]
+    def cdf(self,  dmin, dmax):
+        """
+        The cumulative distribution function along the line of sight
+        """
+        @numba.vectorize("float64(float64)")
+        def get_cdf_point(x):
+            ##get the value of the cdf at a given distance
+            return (x**3-dmin**3)*custom_volume_correction(self.coord, dmin,x)
         
+        norm=(dmax)**3*custom_volume_correction(self.coord, dmin, dmax)
+        dds=np.logspace(np.log10(dmin), np.log10(dmax), 5000)
+        cdf=get_cdf_point(dds)
+        return dds, cdf/norm
+
+    def compute_distance_limits(self):
+        """
+        computes distance limits based on limiting mags
+        """
+        rels=wisps.POLYNOMIAL_RELATIONS
+        if self.mag_limits is None:
+            pass
+        else:
+            #use F140W for 3d-hst pointing and f110w for wisps
+            pol=None
+            maglmts=None
+            if self.survey=='wisps':
+                pol=rels['sp_F110W']
+                maglmts= self.mag_limits['F110W']
+            if self.survey=='hst3d':
+                pol=rels['sp_F140W']
+                maglmts=self.mag_limits['F140W']
+
+            #compute asbmags using abolute mag relations
+            absmags=pol(SPGRID)
+            relfaintmags=np.array([maglmts[0] for s in SPGRID])
+            relbrightmags=np.array([maglmts[1] for s in SPGRID])
+            
+            #compute distances
+            dmins=get_distance(absmags, relbrightmags)
+            dmaxs=get_distance(absmags, relfaintmags)
+
+            distances=np.array([dmaxs, dmins]).T
+
+            self.dist_limits=dict(zip(SPGRID, distances))
+            #create a dictionary
+
     def computer_volume(self):
         """
         given area calculate the volume
         """
         volumes={}
+        solid_angle=SOLID_ANGLE
         for k in self.dist_limits.keys():
              vc=custom_volume_correction(self.coord,  self.dist_limits[k][1], self.dist_limits[k][0])
              volumes['vc_'+str(k)]=vc
              volumes[k]= vc*0.33333333333*(self.dist_limits[k][0]**3-self.dist_limits[k][1]**3)
 
         self.volume=volumes
-        
-    def random_draw(self, nsample=10000):
-        """
-        randomly drawing given a direction
-        instead of using CDF inversion, use a bayesian likelihood function
-        """
-        h=h_ldwarfs
-        traces=[]
-        spgrid=np.arange(20, 38)
-        for spt in spgrid:
-            
-            ras=self.coord.ra
-            decs=self.coord.dec
     
-            dmaxs=self.dist_limits[spt][0]
-            dmins=self.dist_limits[spt][1]
 
-            robsmax, zobsmax=convert_to_rz(ras,decs, dmaxs)
-            robsmin, zobsmin=convert_to_rz(ras,decs, dmins)
+    def random_draw(self,  dmax, dmin, nsample=1000):
+        """
+        randomly drawing x distances in a given direction
+        """
+        dvals, cdfvals=self.cdf(dmin, dmax)
+        @numba.vectorize("int32(float64)")
+        def invert_cdf(i):
+            return bisect.bisect(cdfvals, i)
+        x=np.random.rand(nsample)
+        idx=invert_cdf(x)
+        res= np.array(dvals)[idx-1]
+        return res
 
-            with pm.Model() as model:
-                lower_r=robsmin
-                upper_r=robsmax
-
-                upper_z=np.nanmax([zobsmax, zobsmin])
-                lower_z=np.nanmin([zobsmax, zobsmin])
-
-
-                r=pm.Uniform('r', lower=lower_r, upper=upper_r)
-                z=pm.Uniform('z', lower=lower_z, upper=upper_z)
-
-
-                like = pm.Potential('lnlike', logp(r,z,h))
-                d=pm.Deterministic('d', (r**2+z**2)**0.5)
-
-                trace = pm.sample(tune=int(nsample/100), draws=int(nsample))
-                traces.append(trace)
-                
-        self.traces=traces
-        
     @property
     def samples(self):
-        return np.array([tr['d'] for tr in self.traces])
+        return self._samples
     
-    
-    def create_sample(self, nsample=10000):
-        self.random_draw(nsample=nsample)
+    def create_sample(self, nsample=1000):
+        self._samples={}
+        for k in  self.dist_limits.keys():
+            #draw up to twice the distance limit
+            self._samples[k]=self.random_draw( 2*self.dist_limits[k][0], self.dist_limits[k][1], nsample=nsample)
+
+
 
     
       
@@ -279,13 +298,13 @@ def simulate_spts(**kwargs):
     
     if recompute:
 
-        norm_range = [0.09,0.1]
-        norm_density = 0.0055
-        nsim = kwargs.get('nsample', 1e2)
-        spts=np.arange(17, 40)
+        norm_range = [0.01, 0.075]
+        norm_density = 0.1
+        nsim = kwargs.get('nsample', 5e5)
+        spts=np.arange(17, 42)
 
         # simulation
-        masses = spsim.simulateMasses(nsim,range=[0.02,0.15],distribution='power-law',alpha=0.5)
+        masses = spsim.simulateMasses(nsim,range=[0.001,0.15],distribution='power-law',alpha=0.5)
         norm = norm_density/len(masses[np.where(np.logical_and(masses>=norm_range[0],masses<norm_range[1]))])
 
 
@@ -340,10 +359,10 @@ def simulate_spts(**kwargs):
         values={'mass': masses, 'ages':np.array(ages), 'teffs':np.array(teffs), 'spts':np.array(spts), 'norm':norm, 'betas': betas}
 
         import pickle
-        with open(wisps.OUTPUT_FILES+'/mass_age_spcts.pkl', 'wb') as file:
+        with open(wisps.OUTPUT_FILES+'/mass_age_spcts_2nd.pkl', 'wb') as file:
            pickle.dump(values,file)
     else:
-        values=pd.read_pickle(wisps.OUTPUT_FILES+'/mass_age_spcts.pkl')
+        values=pd.read_pickle(wisps.OUTPUT_FILES+'/mass_age_spcts_2nd.pkl')
 
 
     return values

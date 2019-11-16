@@ -30,17 +30,19 @@ from  functools import partial
 
 
 
-
-
 def add_noise_to_spectrum(sp, snr):
     #if I propose a larger SNR don't do anything to save time
     if snr > sp.snr['snr2']:
-        f_test={"f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi}
+        sp.reset()
+        sp_old=sp.spt
+        f_test={"f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi, 'spt_new': sp.spt, 'sp_old':sp_old}
         res_dict= {**sp.snr, **fast_measure_indices(sp), **f_test}
         return res_dict
     else:
+        sp.reset()
+        sp_old=sp.spt
         sp.add_noise(snr=snr)
-        f_test={"f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi}
+        f_test={"f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi, 'spt_new': sp.spt, 'sp_old': sp_old}
         res_dict= {**sp.snr, **fast_measure_indices(sp), **f_test}
         sp.reset()
         return res_dict
@@ -48,7 +50,6 @@ def add_noise_to_spectrum(sp, snr):
 def add_multiple_noises(sp, noises):
     res=list(map(lambda x: add_noise_to_spectrum(sp, x), noises))
     df=pd.DataFrame.from_records(res)
-    df['spt']=sp.spt
     return df
 
 @numba.jit
@@ -75,16 +76,17 @@ def fast_measure_indices(sp):
     return dict(res)
 
 
-def make_data(spectra):
+def make_data(spectra, **kwargs):
     """
     create a selection function from a list of spectra and spts
     """
     results=[]
+    nsample=kwargs.get("nsample", 1000)
     #for sx, spt in zip(spectra, spts):
      #   results.append(self.generate_spectra(sx, spt, **kwargs))
     #run this in parallel
 
-    snrs=10**np.random.uniform(-1,3,(len(spectra), 10))
+    snrs=10**np.random.uniform(-1,3,(len(spectra), nsample))
     iterables=([spectra, snrs])
 
     method=partial(add_multiple_noises)
@@ -115,7 +117,7 @@ def create_selection_function(**kwargs):
         else:
             return splat.typeToNum(x)
 
-    res=make_data(spectra)
+    res=make_data(spectra, **kwargs)
 
     with open(output_file, 'wb') as file:
         pickle.dump(res,file)

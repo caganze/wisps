@@ -1,18 +1,19 @@
 \newcommand{\figfolder}{/users/caganze/research/wisps/figures/}
+\newcommand{\spectrafolder}{/Users/caganze/research/wisps/figures/ltwarfs/}
+
+
+%\begin{figure*}
+%   \centering
+%   \includegraphics[scale=0.6]{\figfolder par1.pdf}
+%   \caption{Reference and reduced G141 grism of the first field in WISPS.}
+%   \label{fig:par1}
+%\end{figure*}
 
 
 \begin{figure*}
    \centering
-   \includegraphics[scale=0.6]{\figfolder par1.pdf}
-   \caption{Example of a reduced grism spectrum of WISPS-01}
-   \label{fig:spexsample}
-\end{figure*}
-
-
-\begin{figure*}
-   \centering
-   \includegraphics[scale=0.8]{\figfolder spexsample.pdf}
-   \caption{Calibration Samples of UCDs used in this study}
+   \includegraphics[scale=0.9]{\figfolder spexsample.pdf}
+   \caption{Distribution in spectral type and signal to noise of three calibration samples of UCDs used in this study}
    \label{fig:spexsample}
 \end{figure*}
 
@@ -29,15 +30,15 @@
 \begin{figure*}
     \centering
     \includegraphics[scale=0.8]{\figfolder fields_skymap.pdf}
-    \caption{Sky map of all the pointings in WISPS and 3D-HST}
+    \caption{Sky distribution all the pointings in WISPS and 3D-HST used in this study}
     \label{fig:skymap}
 \end{figure*}
 
 \begin{figure*}
     \centering
     \includegraphics[scale=0.8]{\figfolder f_test_snr_distr.pdf}
-    \caption{f-test and SNR-J distributions of all Spectra in both surveys}
-    \label{fig:skymap}
+    \caption{F-test and SNR-J distributions of all Spectra in both surveys showing the cuts at 0.4 and 3 respectively}
+    \label{fig:ftestdistr}
 \end{figure*}
 
 
@@ -45,7 +46,7 @@
 \begin{figure*}
     \centering
     \includegraphics[scale=0.75]{\figfolder filter_profiles.pdf}
-    \caption{Comparison between different HST and 2MASS filters used in this study}
+    \caption{Comparison between spectral coverage of different WFC3 and 2MASS filters used in this study. We used these filters to estimate absolute magnitudes of our UCD sample}
     \label{fig:filterprofiles}
 \end{figure*}
 
@@ -53,15 +54,15 @@
 
 \begin{figure*}
 \centering
-\includegraphics[scale=0.4]{\figfolder sensitivity_illustration.pdf}
+\includegraphics[scale=0.8]{\figfolder sensitivity_illustration.pdf}
 \caption{ Example of 2 HST-3D spectra before and after continuum correction to obtain the correct slope. The sensitivity curve is plotted in grey.}
 \label{fig:sensitivity}
 \end{figure*}
 
 \begin{figure*}
     \centering
-    \includegraphics[scale=0.4]{\figfolder index_index_plots.pdf}
-    \caption{Best selection criteria for different subtype ranges. Both the calibrartion samples and the contaminants are shown}
+    \includegraphics[scale=0.5]{\figfolder index_index_plots.jpeg}
+    \caption{Best selection criteria for different subtype ranges. The grey points are the contaminants after we applied both a J-SNR cut and and F-test cut, the blue points are the set of templates (from the calibration samples) used to define these boxes. The crossed black points are the real UCDs confirmed after visual inspection and the orange crosses are the UCDs that have spectral types for each particular box (e.g a L2 UCD would be colored orange in the L0-L5 while an L7 would be colored black the L0-L5 box )}
     \label{fig:indexplots}
 \end{figure*}
 
@@ -76,28 +77,13 @@
 
 
 \begin{figure*}
-  \centering
+    \centering
     \gridline{
-    \fig{\figfolder confusion_matrix.pdf}{0.5\textwidth}{(a)}
-    \fig{\figfolder cv_scores.pdf}{0.5\textwidth}{(b)}
+    \fig{\figfolder candidate_distances.pdf}{0.5\textwidth}{(a)}
+    \fig{\figfolder candidate_skymap.pdf}{0.5\textwidth}{(b)}
     }
-    \caption{(a) Confusion matrix for the random forest classifier used in this survey (b) CV scores for the number of features used}
-    \label{fig:matrix}
-
-\end{figure*}
-
-\begin{figure*}
-    \centering
-    \includegraphics[scale=0.35]{\figfolder candidates.pdf}
-    \caption{Spectral Sequence of UCDs Discovered in WISPS \& 3D-HST. The right plot shows the 1D spectrum where the shaded region is the reported contamination by the survey, the middle plot shows the WFC3 image acquired in either F140W, F160W or F110W filter and the far-left plot shows the cutoff of the G141 spectrum for that extracted object. The derived spectral type of each object is displayed in the left corner of the far-left plot}
-    \label{fig:candidates}
-\end{figure*}
-
-
-\begin{figure*}
-    \centering
-    \includegraphics[scale=0.8]{\figfolder candidate_distances.pdf}
-    \caption{Spatial distribution of the the UCD sample reported in this paper}
+    \caption{ (a) Distance distribution of the UCD sample
+    (b) Galactic distribution of the UCD sample}
     \label{fig:candidedistances}
 \end{figure*}
 
@@ -109,14 +95,15 @@
     }
     %\includegraphics[scale=0.5]{\figfolder hst_relations.pdf}
     \caption{ (a) Offsets between 2MASS J, H magnitudes and HST F110W, F140W, F160W magnitudes as a function of spectral type (b) Absolute  magnitude-spectral type relations for HST and 2 MASS filters. For HST filters, the dotted green curve shows the derived relation using only the offset between the respective HST filter and 2MASS J filter while the blue curve shows the derived relation using the offset with the 2MASS H filter. The solid line shows a best-fit 6th-order polynomial used, considering the wavelength coverage of the respective filters (figure \ref{fig:filterprofiles}). We report the coefficients of these polynomials in table \ref{tab:polynomials}}
-    \label{fig:candidedistances}
+    \label{fig:absmagrelations}
 \end{figure*}
+
 
 \begin{figure*}
     \centering
     \includegraphics[scale=0.6]{\figfolder snr_fits.pdf}
     \caption{Linear fits between SNR-J and apparent F110W, F140W, F160W magnitudes using the sample of UCDs. These relations are reported in table \ref{tab:polynomials} and used to estimate SNR-J for different apparent magnitudes}
-    \label{fig:candidedistances}
+    \label{fig:snrfits}
 \end{figure*}
 
 \begin{figure*}
@@ -136,30 +123,94 @@
 \begin{figure*}
     \centering
     \includegraphics[scale=0.6]{\figfolder selection_function_samples.pdf}
-    \caption{Visualization of our selection function as a function accross spectral type and SNR-J. The label "F-test" indicates spectra with F-test \textgreater 0.5, the label "RF" indicates the spectra labelled as UCDs by the random forest classifier, and the label "Indices" indicates the spectra selected by our best selection criteria. The bar indicates the selection probability defined as the number of spectra selected over the total number of spectra in each SNR-J, spectral type bin. In the Monte-Carlo simulation, we use the most-selective selection function. }
-    \label{fig:candidedistances}
+    \caption{Visualization of our selection function as a function accross spectral type and SNR-J. The label "F-test" indicates spectra with F-test \textless 0.4, the label "RF" indicates the spectra labelled as UCDs by the random forest classifier, and the label "Indices" indicates the spectra selected by our best selection criteria. The bar indicates the selection probability defined as the number of spectra selected over the total number of spectra in each SNR-J, spectral type bin. In the Monte-Carlo simulation, we use the most-selective selection function. }
+    \label{fig:selectionf}
+\end{figure*}
+
+
+
+\begin{figure*}
+    \centering
+    \gridline{
+    \fig{\figfolder simulations_dists.pdf}{0.8\textwidth}{(a)}}
+    \gridline{
+    \fig{\figfolder simulations_dists_selection_effects.pdf}{0.8\textwidth}{(b)}}
+    \caption{ (a) Monte-Carlo simulation: distribution of randomly drawn masses, a uniform age distribution and spectral types (b)distribution J-SNRs, distances apparent F140W following relations defined in this work assumming different scale heights. We also show the computed volume for each spectral type}
+    \label{fig:simulationdists}
 \end{figure*}
 
 \begin{figure*}
     \centering
-    \includegraphics{\figfolder distance_distribution.pdf}
-    \caption{Distribution of randomly drawn distances in all WISPS \& 3D-HST pointings \ref{eq:distancerandom} }
-    \label{fig:candidedistances}
+    \includegraphics[scale=0.6]{\figfolder galactic_distribution_sim.jpeg}
+    \caption{Monte-Carlo simulation: distribution of galacto-centric r, z sampled  from the likelihood function $P(d)$ for all 533 pointings up to a distance of 5h }
+    \label{fig:rzmontecarlo}
 \end{figure*}
 
-\begin{figure*}
-   \centering
-   \includegraphics[scale=0.6]{\figfolder simulations_dists.pdf}
-   \caption{Monte-Carlo simulation: distribution of randomly drawn masses, ages, distances and computed spectral types, SNR-J and apparent F140W following relations defined in this work }
-  \label{fig:simulationdists}
-\end{figure*}
 
 \begin{figure*}
     \centering
     \includegraphics[scale=0.6]{\figfolder oberved_numbers.pdf}
-    \caption{Comparison between the measured number densities and the expected number densities based on the Monte-Carlo simulation based on different age distirbutions. We observe an under-prediction within Poisson-like errobars ($\sim \sqrt N$) between the predictions and the measurements per subytype but an agreement within subgroupings of 5 subtypes. The total number of predicted UCDs with spectral types $\geq$ L0 is 16.9 while the total number of UCDs within the limiting magnitudes (F110W \textgreater22.0 or F140W \textgreater21.5) is 16}
+    \caption{Comparison between the measured number densities and the expected number densities based on the Monte-Carlo simulation based on different age distirbutions. These estimates are based on limiting magnitude F140W \textless21.5 and SNR-J\textgreater10 which eliminates most of our T dwarf sample}
     \label{fig:simulationnbrs}
 \end{figure*}
 
-%print (3*y+x)
-%x=0, 1, 2
+
+\begin{figure}
+\begin{tabular}{cc}
+  \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum0.jpeg} &  
+  \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum1.jpeg} \\
+
+ \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum2.jpeg} &  
+  \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum3.jpeg} \\
+
+\includegraphics[width=0.5\linewidth]{\spectrafolder spectrum4.jpeg} &  
+  \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum5.jpeg} \\
+  
+\includegraphics[width=0.5\linewidth]{\spectrafolder spectrum6.jpeg} &  
+  \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum7.jpeg} \\
+
+
+\end{tabular}
+\caption{ Spectra of UCDs in both surveys. The bottom plot shows the 1D spectrum fit to a spectral standard, The noise and the contamination are also shown, the top left plot shows the WFC3 image acquired in either F140W, F160W or F110W filter and the top-right plot shows the cutoff of the G141 spectrum for that extracted object.}
+\end{figure}
+
+
+\foreach \i in {8,...,19}{ 
+     \begin{figure} \ContinuedFloat
+     \begin{tabular}{cc}
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i \relax.jpeg} &  
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+1 \relax.jpeg} \\
+
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+2 \relax.jpeg} &  
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+3 \relax.jpeg}  \\
+
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+4 \relax.jpeg}  &  
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+5 \relax.jpeg} \\
+
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+6 \relax.jpeg}  &  
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+7 \relax.jpeg}  \\
+
+   \end{tabular}
+   \caption{cont.}
+   \end{figure} 
+   \clearpage
+ }
+
+
+\begin{figure} \ContinuedFloat
+     \begin{tabular}{cc}
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum160.jpeg} &  
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum161.jpeg} \\
+
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum162.jpeg} &  
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum163.jpeg}  \\
+
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum164.jpeg}  &  
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum165.jpeg} \\
+
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum166.jpeg}  &  
+       \includegraphics[width=0.5\linewidth]{\spectrafolder spectrum167.jpeg} \\
+
+   \end{tabular}
+   \caption{cont.}
+\end{figure} 

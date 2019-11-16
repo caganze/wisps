@@ -1,0 +1,249 @@
+notes from momcheva et al.
+-------------------------- 
+
+[introduction]
+
+3D-HST description paper
+
+Pirzkal et al. 2004 started using a disperser on HST/grism observations 
+
+3D-HST is a 2-orbit program (does this mean 2 years? )
+
+The goal is 3D-HST is to obtain a representative sample of galaxies from redshift 0.7 to 3, corresponds to the epoch where most of the stars in the present-day universe were formed
+
+3D-HST also has ACS/G800 grism data in parallalel covering optical wavelenghts (0.5-0.9 micron)
+
+The fields were chosen to coincide with those of CANDELS (Grogin et al. 2011 ). CANDELS is an imaging survey that covers 0.25 deg^2 of the sky --> a wide range of complimentary ground-based and space-based imaging data. These fields are "standards" for deep imaging of the distant universe (but the footprint is smaller than candels, ~ 70 percent of  the fields )
+
+Technically the grism data for galaxies stand on their own but they can use photometry (we need photometry for stars )
+
+steps used in the post-processing in 3D HST
+
+1. Obtained imaging data using the same pixel scale of CANDELS
+
+2. Source catalogs were creater using Sexectrator 
+
+3. Created SEDS
+
+[^^ all described in skelton et al. 2014]
+
+4. there is an universal/orginal ACS and WFC3 grism coordinate system. All the sources were put in that coordinate system without a need for source matching  
+
+5. Measured redshfits
+
+6. used a stellar synthesis model to deduce stellar parameters for each galaxy 
+
+
+7-8: there is also Mid IR photometry from Spitzer/MIPS+ UV data used to measure star formation rates
+
+
+
+[Data description]
+
+G141 grism data are shallower, they cover a wide area (2 orbits)
+some fields are deeper, fields in the UDF
+
+[observation strategy]
+ G141 grism covers 1.1- 1.65 micron and peak transmission of 45% at 1.45 micron 
+
+ G141 dispersion if 46.5 angstrom per pixel (R ~ 130)
+ However the dispersion changes by the morphology of the source and the error in the wavelength zeropoint is 8 angstrom and the uncertainty in wavelengh is 0.06 angsrom per pixel 
+
+ 70% of candels is covered 
+
+ Observations were conducted from october 2010 to novermber 2012
+ 
+ Each pointing is two orbits paired with F140W photometry
+ Typical exposure times are 5000s for G141 AND 800s for F140W
+
+ The four pairs of grism and direct imaging exposures are seperated by small telescope offsets to improve PSF sampling and remove hot pixels
+
+ GOOD0S-n is part fo the AGHAST program divieded into 28 pointings soit 56 orbits observed between sept 16 2009 and sept 26 2010
+
+ High background and scattered light --> GOODSN were re-observed on April 19 and 24 2011 with different dither patterns
+
+ Typical exposure toimes in GOODSN are 800s for JH_140 AND 5200S in G141
+
+
+
+
+[Data reduction]
+
+[Grism reduction procedure]
+
+
+Previous version of the pipeline (Brammer et al. 2012) used custom alignment and flat-fielding and sky subtraction. Extraction of grisms used the axe software package
+
+
+Changes made to the procedure:
+
+pre-processing stays the same, except they don't use Axe anymore becuase axe uses drizzling. WTF is drizzling ? Anyway they drizzle the data onto a linear wavlength scalae
+
+Alternative to drizzling: they place the four dithered exposures onto a distorted grid with pixels where the pixels are half the original pixel size. This is called "interlacing" 
+
+This is how they maintain the full resolution and avoid correlations between nearby pixels
+
+
+[F140W Images reduction]
+
+They downloaded raw (RAWR xd lol) images, calibrated images (FLT) and assiocated tables (ASN) ( this is probably HST lingo)
+
+Processing is done using calwfc3 (koekemoer et al. 2011)
+They also obtain persistance images from STscI, they offer how much persistance there is in a given exposure from various sources
+
+Detailed reduction explained by skelton et al. 2014
+
+How they do it: they use astrodrizzle and tweakreg (gonzaga et al. 2012) 
+
+They conduct inspection for satellite trails and artifcats and elevated background from the earthshine, they provide a data quality flag, they correct for perstance by masking areas affected by that
+
+They have time-dependent sky flats, then use astrodirzzle to find more hot pixels and cosmic rays 
+
+Background substraction: prelimary source detection using sextractor, create a mask from this, fit a second order polynomial to the background and subtract it, reaalign the image to the reference frame 
+
+Satellite images are removed by inspecting all images
+
+
+Time-varying background, earthshine appear at the edges of the image close the earth limb. A major background is He at 1.083 micron (this depends on the telescope-earth position and can vary with time) -- the background increase is non-linear
+
+[Flat-fielding]
+
+They divide the G141 grism by the F140W calibration image following brammer et al. 2012. This neglects the wavelenght dependence but it's simple. The time-dependence of the background depends from zodiaclac continuum, scattered light and He emisison .Brammer et al. 2014 came up with fit to correct for this, removing most of the background
+
+[interlacing]
+Wtf is drizzling and interlacing
+
+Drizzling is a traditional way of combining dithered images and retaining the resolution and correcting for geometric effects
+
+
+Drizzling works well for a large number of images, but here we only have 4 images for per pointing --> correlated noise or loss of resolution 
+
+Drizzling is bad for spectra, correlated noise looks like absorption features and can't be removed on spectrum by spectrum basis 
+
+Most 3D-HST pointings are eight images (four direct images, four dispersed images with a 4-point dither pattern at 1/2 pixel intervals)
+
+So they use "interlacing"
+WTF is interlacing??
+
+
+They combine all imaages into one grid, pixel by pixel, but there is 1/2 pixel offset by design. They do this for F140W images and G141 grisms. The final G141 images have a pixel size of 23 angstorm times 0.06 arcseconds
+
+This is not good for when one  of the images in the dither pattern is missing
+
+
+[Astrometry, refernce catalogs etc.]
+Before extraction, they require a refernece image providing positions and morpholgies of all the objects in the pointing
+
+This image is the how they create a global contamination model  to acccount for overlapping spectra. Each reference image is accompained by a catalog definig positions and magnitudes of all objects in the field and segmentation map?  wtf is a segmentation map?
+
+
+Reference images are crated using data from skelton et al. Direct image is different from reference image. Direct image means the one they took, reference image means depper astrometrically aligned image with a different filter. This is used to model the contamination. The reference image is a sum of J125, F140, and F160W. All magnitudes are scaled to the JH140 zero point with appropriate error propagation 
+
+[Contamination model]
+
+The big challenegd in the extraction is saying which pixesl correspond to the spectrum of given object in a filed after all this pre-processing. They want to estimate the contibution of every single source in the grism image then add all independent contributions to correct for overlapping spectra. 
+
+--> dispersion varies with wavelength, probably in an non-linear manner.
+
+--> they have the x, y position of each object 
+
+---> the wavelenght solution along a trace is polynomial within the coordiante system of the distorted image
+
+--> No order-blocking filters, so multiple orders are mixed together (this sucks man), but most of the light is in the zero and 1st orders, visible in the image
+
+
+How the contaminatoon model is crated:
+--> Reference image segmentation map
+--> Input: reference image, segementatin map, sextractor catalog, direct grism image
+
+---> Model each 2D spectrum: compute trace and dispersion paramters for each order as a spectrum from one-pixel (as if it was from one pixel), the two-dimensional model is built by shifting the o-th spectrum/scaled by the flux --> it's like a convolution of a 2D thumbnail
+
+--> they have the morphology/PSF of each object i.e the continuum ignoring wavelengthb dependence
+
+--> model SEDS, from a set of  EAZY (full stellar population model ) galaxy templates in all available photometric bands, what about stars?
+
+--> they extract 312 pixels the first order dispered speectrum for each object
+
+
+
+zE WISPS SURVEY
+-------------
+
+480 FIELDS P.I m mALKAN
+
+Takes data during parallel mode with long instegration 
+with the cosmic origins spectrograph(COS, osterman et al. 2011) ror the space telescope imager (STIS, )
+
+Data include both G102 and G141 GRISM and direct imaging in 110w and F140W, typical integration times of 400s in each band. 
+
+Data processin with CALWF3 for bias, flat-fielding and background  and then uses axe to extract slitelles spectra
+
+Spectra with important contamination are removed from the analysis, the contamination obtained from axe are not accurate
+
+Notes from Atek et al. 
+
+NICMOS is not WFC3, WFC3 has a larger field of view 
+~1000 orbits
+
+
+WFC3 uses HgCdTe detectorss with a plate scale of 0.13 arcsec per pixel and a total FOV of 123 arcsec times 136 arcsec, two grisms g102 and g141 and dispersion 0.0024 micron/pixel and 0.0046 micron/pixel respectively  R=210 for G102 and R=130 for G141
+
+
+[observation strategy]
+
+
+The fields are 5.5 and 4.75 arcmin away from the COS AND STIS primary targets
+Fields are chosen out of the galactic plane 
+
+TO reach the same depth in both G102 and G141, the integration times are 2.4 to 1 ratios 
+
+Extracting grisms require a reference image, their reference images are in F110W(G102) and F140W (G141) the ratio of integration times, imgaing grisms is 6:1 
+What's the actual integration times
+
+[data reduction]
+
+Advantages of WFC3: low sky backgrounf 
+Challenges: multiple spectral orders overlap but given chosen highb latitudes of the fields, there is virtually no crowding 
+
+The spectral resolution depends on the PSF of the object
+They provide a reference images with positions and morphologies of each object in the field
+
+This whole process is integrated in the WFC3 pipeline CALWF3 in the axe software. Axe maps the first and zeor order and provide an estimate of the contamination 
+
+[reduction of images]
+WISP is pure-parallel project, it doesn't do dithering 
+they flagged bad pixels  misssed by AXE using custom IDL routines
+Images are combined using drizzle (koekemoer 2002)
+They run sextractor to extract source catalogs for their F110W, and F140W images
+
+[reduction of grism images]
+They performed a global sky subraction  for the background originathing from zoiacal light, and earth thermal emissions
+
+
+_________________________________________________
+
+[Introduction stuff ]
+
+Delfosse et al. 1997
+-------------------
+
+Notes on the Deep Infrared southern sky DENIS survey
+Aim: survey the stellar content of the galaxy, broad but okay ....
+
+
+Delfosse 1997 found 3 field brown dwarfs candidates by searching over 230 deg square , with infrared spectra including the first isolated brown dwarf  up to J=16.5
+
+
+First brown dwarf is actauually Nakajima et al. 1995 
+
+Robin , reyle et al. 2002
+-----------------------
+
+
+
+
+
+
+
+
+

@@ -242,13 +242,8 @@ class IndexSpace(object):
             s.datatype='contam'
             s.color=None
             s.data=np.array([df.x, df.y])
-        
             slctd=s.select(s.data)
-
-            if len(s.data.T)==0.0:
-                cont[s.shape_name]=0.0
-            else:
-                cont[s.shape_name]=len(slctd.T)/len(s.data.T)
+            cont[s.shape_name]=len(slctd.T)/len(s.data.T)
 
             new_shapes.append(s)
         self._contamination=cont
@@ -311,6 +306,9 @@ class IndexSpace(object):
         x=np.array([*list(df.x.values)])
         y=np.array([*list(df.y.values)])
         ddf=pd.DataFrame([x[:,0], y[:,0]]).transpose().dropna()
+
+        #if name =='Y dwarfs':
+        #    print ()
         #create a box
         box=Box()
         if name.lower().startswith('l') or name.lower().startswith('y') or name.lower().startswith('m'): 
@@ -357,7 +355,7 @@ class IndexSpace(object):
         sdf= scndf[[self.xkey, self.ykey, 'spt']]
         sdf.columns=['x', 'y', 'spt']
 
-        ydwarfs=mdf[mdf['spt'].apply(lambda x: splat.typeToNum(x))>37].append(sdf)
+        ydwarfs=mdf[mdf['spt'].apply(lambda x: splat.typeToNum(x))>38].append(sdf)
 
         self.add_box(ydwarfs, 'Y dwarfs', '#0074D9', 3.0)
 
@@ -428,6 +426,16 @@ class IndexSpace(object):
 
         ydwarfs=manj[manj['Spts'].apply(lambda x: x>37)]
 
+        #do everything in log-space
+        spex_df[INDEX_NAMES]=(spex_df[INDEX_NAMES].applymap(float))#.applymap(np.log10)
+        schn[INDEX_NAMES]=(schn[INDEX_NAMES].applymap(float))#.applymap(np.log10)
+        manj[INDEX_NAMES]=(manj[INDEX_NAMES].applymap(float))#.applymap(np.log10)
+        cands[INDEX_NAMES]=(cands[INDEX_NAMES].applymap(float))#.applymap(np.log10)
+        ydwarfs[INDEX_NAMES]=(ydwarfs[INDEX_NAMES].applymap(float))#.applymap(np.log10)
+
+
+        ####################################
+
         if 'ax' in kwargs:
             ax= kwargs.get('ax', None)
         else:
@@ -437,7 +445,7 @@ class IndexSpace(object):
         conts=self.contaminants
         xkey, ykey=self.xkey,self.ykey
 
-        ax.scatter((self.contaminants[xkey]).apply(float).round(2), (self.contaminants[ykey]).apply(float).round(2),  marker='o',  facecolors='none',  edgecolors='#AAAAAA', label='Contaminants')
+        ax.scatter((self.contaminants[xkey]).apply(float), (self.contaminants[ykey]).apply(float),  marker='o',  facecolors='none',  edgecolors='#AAAAAA', label='Contaminants')
 
         if box_label.lower()=='y dwarfs':
             ax.scatter(ydwarfs[xkey], ydwarfs[ykey], label='Y dwarfs')
@@ -467,8 +475,8 @@ class IndexSpace(object):
 
         #indices that use the continuum have ranges that are too high, logscale this?
 
-        ax.set_xlabel(r'$'+str(self.name.split(' ')[0])+'$', fontsize=18)
-        ax.set_ylabel(r'$'+str(self.name.split(' ')[1])+'$', fontsize=18)
+        ax.set_xlabel(r'$Log  '.ljust(2)+str(self.name.split(' ')[0])+'$', fontsize=18)
+        ax.set_ylabel(r'$Log  '.ljust(2)+str(self.name.split(' ')[1])+'$', fontsize=18)
 
         #ax.legend(prop={'size': 16})
 
@@ -605,7 +613,7 @@ class IndexSpace(object):
 
         ax1.legend(prop={'size': 16})
         filenm=kwargs.get('filename', 
-        OUTPUT_FIGURES+'/indices/index_plot_'+self.name.replace('/','_').replace('-', '_').replace(' ', '_')+'.pdf')
+        OUTPUT_FIGURES+'/indices/index_plot_'+self.name.replace('/','_').replace('-', '_').replace(' ', '_')+'.jpeg')
         if kwargs.get('save', True):
             plt.savefig(filenm, dpi=100, bbox_inches='tight')
             
@@ -637,6 +645,10 @@ def save_criteria(**kwargs):
     #subdwarfs['data_type']= 'subdwarf
 
     print (tpl_ids.shape, sd_ids.shape)
+
+    #work in log space
+    #tpl_ids[INDEX_NAMES]=(Annotator.reformat_table(tpl_ids[INDEX_NAMES]).applymap(float)+.1).applymap(np.log10)
+    #sd_ids[INDEX_NAMES]=(Annotator.reformat_table(sd_ids[INDEX_NAMES]).applymap(float)+1.).applymap(np.log10)
     
     conts=kwargs.get('conts', COMBINED_PHOTO_SPECTRO_DATA)
     #print(conts)

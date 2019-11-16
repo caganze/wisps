@@ -1,3 +1,5 @@
+
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
@@ -56,7 +58,6 @@ class Source(Spectrum):
         self._mags=None
         self._distance=None
         self._spectrum=None
-        self._spt=kwargs.get('spectral_type', None)
         self.designation=None
         self._star_flag=kwargs.get('is_star', True)
         self._shortname= None
@@ -111,12 +112,6 @@ class Source(Spectrum):
         self.ra=new_coords.ra
         self.dec=new_coords.dec
         self.designation=splat.coordinateToDesignation(new_coords)
-
-    @property
-    def spectral_type(self):
-        return self.spt
-    
-        
     
     @property
     def name(self):
@@ -138,7 +133,7 @@ class Source(Spectrum):
         # to see how this is created look at pre_processing.py
         df=COMBINED_PHOTO_SPECTRO_DATA
        	try:
-        	s=df.loc[df['grism_id'].isin([new_name])].reset_index().ix[0]
+        	s=df.loc[df['grism_id'].isin([new_name.lower()])].reset_index().ix[0]
         except:
         	warnings.warn('This source was removed using snr cut',  stacklevel=2)
         	df=pd.read_hdf(COMBINED_PHOTO_SPECTRO_FILE, key='all_phot_spec_data')
@@ -271,7 +266,7 @@ class Source(Spectrum):
         if self.mags is None: return None
     
         if self.spectral_type is None:
-            self.spectral_type = splat.classifyByStandard(self.splat_spectrum, comprng=[[1.1, 1.3], [1.3, 1.65]])[0]
+            self.spectral_type = splat.classifyByStandard(self.splat_spectrum, comprange=[[1.2, 1.6]], dwarf=True,subdwarf=False,  statistic='chisqr') [0]
             
         
         self._distance= distance(self.mags, self.spectral_type)
@@ -293,7 +288,6 @@ class Source(Spectrum):
     
         """
         plot_source(self, **kwargs)
-        
 
 
 def distance(mags, spt):

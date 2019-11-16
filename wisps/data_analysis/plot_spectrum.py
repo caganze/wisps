@@ -8,9 +8,40 @@ Main plotting module for Source objects
 from matplotlib import gridspec
 from .initialize import *
 from astropy.visualization import ZScaleInterval
+from matplotlib.colors import LogNorm
 import splat
 #from .sepctrum_tools import plot_any_sp
 from matplotlib import patches
+
+
+
+def plot_image(sp, ax, cmap='inferno'):
+     # mapping between filters and images
+    image_data_dict={'F140W' : sp.photo_image.f140,
+                'F160W': sp.photo_image.f160,
+                'F110W': sp.photo_image.f110}
+    try:
+        image_key_to_use=[ k for k in image_data_dict.keys() if image_data_dict[k]['grid'] is not None  ][0]
+    except:
+        image_key_to_use='F140W'
+
+    
+    mag_in_filter=np.round(sp.mags[image_key_to_use][0])
+    image_data=image_data_dict[image_key_to_use]
+    
+    image=image_data['data']
+    
+    mask=image<3.*np.nanstd(image)
+    vmin, vmax=ZScaleInterval().get_limits( image[mask])
+    #norm=matplotlib.colors.Normalize(vmin=vmin, vmax=vmax, clip=False)
+    norm=LogNorm()
+    
+    ax.pcolormesh(image_data['grid'][0], image_data['grid'][1], 
+                   image_data['data'], cmap=cmap,
+                   vmin=vmin, vmax=vmax, rasterized=True, alpha=1.0)
+    
+    ax.plot(image_data['center'][0], 
+             image_data['center'][1], marker='+',c='#111111', ms=30)
 
 def plot_source(sp, **kwargs):
     
@@ -20,6 +51,8 @@ def plot_source(sp, **kwargs):
     For a simpler plot, see Spectrum.plot
     
     """
+    #
+    sp.normalize()
 
     #flags
     cmap=kwargs.get('cmap', 'inferno')
@@ -28,9 +61,12 @@ def plot_source(sp, **kwargs):
     filt=kwargs.get('filter', 'F140W')
     
     #esthetiques
-    xlim= kwargs.get('xlim', [1.1, 1.7])
+    xlim= kwargs.get('xlim', [1.15, 1.65])
+    #if np.nanmin(sp.wave) < :
+    #    xlim=[np.nanmin(sp.wave), np.nanmax(sp.wave)]
+    mask0=np.logical_and(sp.wave > xlim[0], sp.wave < xlim[1])
     
-    ylim=kwargs.get('ylim', [np.nanmin(sp.flux), np.nanmax(sp.flux)])
+    ylim=kwargs.get('ylim', [np.nanmin(sp.flux[mask0]), np.nanmax(sp.flux[mask0])])
     xlabel=kwargs.get('xlabel','Wavelength ($\mu m$)')
     ylabel=kwargs.get('ylabel','Flux + c')
     if sp.survey=='hst3d':
@@ -40,7 +76,7 @@ def plot_source(sp, **kwargs):
     filename=kwargs.get('filename', OUTPUT_FIGURES+'/'+sp.name+'.pdf')
     
     #create the grid
-    gs = gridspec.GridSpec(2, 3, height_ratios=(1, 3))
+    gs = gridspec.GridSpec(2, 3, height_ratios=(1, 2))
     fig=plt.figure(figsize=(8,6))
     ax1 = plt.subplot(gs[0, 0]) 
     ax2 = plt.subplot(gs[0, 1:3]) 
@@ -62,8 +98,9 @@ def plot_source(sp, **kwargs):
     #option to overplot the
    
     #get spectral type of the source
+    sp.normalize()
     if sp.spectral_type is None:
-         sp.spectral_type=splat.classifyByStandard(sp.splat_spectrum,  comprng=[[1.1, 1.3], [1.3, 1.6]])[0]
+         sp.spectral_type=splat.classifyByStandard(sp.splat_spectrum, statistic='chisqr',  comprange=[[1.2, 1.6]], dwarf=True,subdwarf=False, scale=True) [0]
     
     #collect plts
     plts=[l1, l2, l4]
@@ -73,8 +110,7 @@ def plot_source(sp, **kwargs):
     print ('plotting standard for {}'.format(sp.name))
     std=splat.getStandard(sp.spectral_type)
     std.normalize()
-    chi, scale=splat.compareSpectra(sp.splat_spectrum, std,  comprng=[[1.1, 1.3], [1.3, 1.6]])
-    #print ('scale ... {}'.format(scale))
+    chi, scale=splat.compareSpectra(sp.splat_spectrum, std,  comprange=[[1.15, 1.65]], statistic='chisqr', scale=True) 
     std.scale(scale)
     l3,=ax3.step(std.wave, std.flux, color='y')
     plts.append(l3)
@@ -84,42 +120,50 @@ def plot_source(sp, **kwargs):
     ax3.set_ylabel(ylabel, fontsize=18)
     
     #add the 2d spectrum
-    v0, v1=ZScaleInterval().get_limits(sp.spectrum_image)
-    ax2.imshow(sp.spectrum_image, vmin=v0, vmax=v1, cmap='Greys', aspect='auto')
+    med=np.nanmedian(sp.spectrum_image)
+    stdev=3.*np.nanstd(sp.spectrum_image)
+
+    bools= np.logical_and(abs(sp.spectrum_image) < stdev, abs(sp.spectrum_image)>stdev)
+
+    img=sp.spectrum_image
+    img[bools]=None
+    v0, v1=ZScaleInterval().get_limits(img)
+    ax2.imshow(img, vmin=v0, vmax=v1, cmap='Greys', aspect='auto')
     ax2.set_xlabel('G141', fontsize=15)
     
     #add the photo image
 
     image_data=None
+
+    plot_image(sp, ax1, cmap='inferno')
     
     # mapping between filters and images
-    image_data_dict={'F140W' : sp.photo_image.f140,
-                'F160W': sp.photo_image.f160,
-                'F110W': sp.photo_image.f110}
-    try:
-    	image_key_to_use=[ k for k in image_data_dict.keys() if image_data_dict[k]['grid'] is not None  ][0]
-    except:
-    	image_key_to_use='F140W'
+    #image_data_dict={'F140W' : sp.photo_image.f140,
+    #            'F160W': sp.photo_image.f160,
+    #            'F110W': sp.photo_image.f110}
+    #try:
+    #	image_key_to_use=[ k for k in image_data_dict.keys() if image_data_dict[k]['grid'] is not None  ][0]
+    #except:
+    #	image_key_to_use='F140W'
     	
     
-    mag_in_filter=np.round(sp.mags[image_key_to_use][0])
+    #mag_in_filter=np.round(sp.mags[image_key_to_use][0])
     
     	
-    image_data=image_data_dict[image_key_to_use]
-    vmin, vmax = ZScaleInterval().get_limits(image_data['data'])
-    
+    #image_data=image_data_dict[image_key_to_use]
+    #vmin, vmax = ZScaleInterval().get_limits(image_data['data']) 
     #white images
-    if image_data['is_white']: 
-    	ax1.imshow(image_data['data'])
-    else:
-    	ax1.pcolormesh(image_data['grid'][0], image_data['grid'][1], 
-                   image_data['data'], cmap=cmap,
-                   vmin=vmin, vmax=vmax, rasterized=True, alpha=1.0)
+    #if image_data['is_white']: 
+    #	ax1.imshow(image_data['data'])
+    #else:
+    #	ax1.pcolormesh(image_data['grid'][0], image_data['grid'][1], 
+    #              image_data['data'], cmap=cmap,
+    #               vmin=vmin, vmax=vmax, rasterized=True, alpha=1.0)
                    
-    ax1.plot(image_data['center'][0], 
-             image_data['center'][1], marker='+',c='#111111', ms=50)
+    #ax1.plot(image_data['center'][0], 
+    #         image_data['center'][1], marker='+',c='#111111', ms=50)
              
-    ax1.set_xlabel(image_key_to_use+'= '+str(mag_in_filter), fontsize=15)
+    #ax1.set_xlabel(image_key_to_use+'= '+str(mag_in_filter), fontsize=15)
     
     #print (np.nanmax(sp.flux[(1.25<sp.wave) & (sp.wave<1.6)]))
     #print (xlim)
@@ -138,8 +182,12 @@ def plot_source(sp, **kwargs):
             ax3.add_patch(rect)
             ax3.text(wrng[0],  flux_max-(flux_max/10.0),wlabel, {'fontsize':16} )
 
-    
-    lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+sp.spectral_type+') '+std.shortname), 
+    try: 
+        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+sp.spectral_type+') '+std.shortname), 
+               loc=(1.01, 0.15), fontsize=15)
+        #y dwarfs don't have shortnames
+    except AttributeError:
+        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+sp.spectral_type+') '+std.name), 
                loc=(1.01, 0.15), fontsize=15)
                
     #print(filename)

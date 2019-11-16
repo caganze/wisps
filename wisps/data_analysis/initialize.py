@@ -1,12 +1,6 @@
 # -*- coding: utf-8 -*-
 
-##giving me a hard time
-try: 
-    import seaborn
-    seaborn.set_style("ticks")
-except:
-	print ('could not import seaborn')
-	pass
+
 from astropy import units as u
 import numpy as np
 import pandas as pd
@@ -16,29 +10,16 @@ import os
 import warnings
 
 
-from ..utils.tools import MYCOLORMAP, MYCOLORMAP2, make_spt_number
+from ..utils.tools import *
+##giving me a hard time
 
+try: 
+    import seaborn
+    seaborn.set_style("ticks")
+except:
+    print ('could not import seaborn')
+    pass
 
-#matplotlib defaults
-mpl.rcParams['grid.color'] = 'k'
-mpl.rcParams['grid.linestyle'] = '--'
-mpl.rcParams['grid.linewidth'] = 0.2
-mpl.rcParams['figure.figsize'] = [8.0, 6.0]
-mpl.rcParams['figure.dpi'] = 80
-mpl.rcParams['savefig.dpi'] = 100
-mpl.rcParams['font.size'] = 18
-mpl.rcParams['legend.fontsize'] = 'large'
-mpl.rcParams['figure.titlesize'] = 'large'
-
-mpl.rc('xtick', labelsize=16) 
-mpl.rc('ytick', labelsize=16) 
-font = {'family' : 'serif',
-        'serif':[],
-        'weight' : 'bold',
-        'size'   : 16}
-mpl.rc('font', **font)
-mpl.rc('text', usetex=True)
-mpl.rcParams['agg.path.chunksize'] = 10000
 
 
 #environment variables

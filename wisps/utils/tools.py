@@ -43,3 +43,20 @@ def make_spt_number(spt):
         return splat.typeToNum(spt)
     else:
         return spt
+
+@numba.jit
+def is_in_that_classification(spt, subclass):
+    #determines if a spt is within a subclass
+    flag=False
+    scl=subclass.lower()
+    if scl[0] in ['m', 'l', 't']:
+        slow=splat.typeToNum(subclass[:2])
+        shigh=splat.typeToNum(subclass[-2:])
+        if slow<=make_spt_number(spt)<=shigh:
+            flag=True
+    if scl.startswith('y') & (make_spt_number(spt)>39):
+        flag=True
+    if scl.startswith('subd'):
+        flag=False
+    
+    return flag

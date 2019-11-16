@@ -30,6 +30,20 @@ from functools import lru_cache #high performance memoization
 
 #################
 splat.initializeStandards()
+splat.initiateStandards()
+splat.initiateStandards(sd=True)
+splat.initiateStandards(dsd=True)
+splat.initiateStandards(esd=True)
+splat.initiateStandards(vlg=True)
+splat.initiateStandards(intg=True)
+
+STD_DICTS =splat.STDS_DWARF_SPEX.copy()
+STD_DICTS.update(splat.STDS_VLG_SPEX)
+STD_DICTS.update(splat.STDS_INTG_SPEX)
+STD_DICTS.update(splat.STDS_SD_SPEX)
+STD_DICTS.update(splat.STDS_DSD_SPEX)
+STD_DICTS.update(splat.STDS_ESD_SPEX)
+
 ###############
 #@numba.jitclass()
 class Spectrum(object):
@@ -92,8 +106,10 @@ class Spectrum(object):
             ftest=f_test(self)
             for key in  ftest.keys(): 
                 setattr(self, key, ftest[key])
+            self.normalize()
         #keep a copy of this object as an attribute
         self.original=copy.deepcopy(self)
+
     
     def __repr__(self):
         if self._filename is None:return "anon spectrum"
@@ -137,6 +153,11 @@ class Spectrum(object):
         return self._snr
 
     @property
+    def spectral_type(self):
+        return self._spectral_type
+    
+
+    @property
     def empty_flag(self):
         if np.all(self.flux ==-1.0):
             self._empty_flag=True
@@ -170,7 +191,10 @@ class Spectrum(object):
         """
         Uses splat.classifyByStandard to classify spectra using spex standards
         """ 
-        return splat.classifyByStandard(self.splat_spectrum, comprng=[[1.1, 1.3], [1.3, 1.65]])
+        val=splat.classifyByStandard(self.splat_spectrum, **kwargs)
+        print (val)
+        self._spectral_type=val[0]
+
     def normalize(self, **kwargs):
         """
         :Purpose: Normalize a spectrum to a maximum value of 1 (in its current units)
@@ -247,6 +271,7 @@ class Spectrum(object):
         """
         self.normalize()
         return measure_indices(self,**kwargs)
+
     def add_noise(self, *args, **kwargs):
         """
         add n-sigma noise to the spectrum
@@ -259,7 +284,7 @@ class Spectrum(object):
             self._noise=sp.noise.value
             #self._indices= measure_indices(self, return_unc=True)
             self._compute_snr()
-            ftest=f_test(self, spt=self.spt)
+            ftest=f_test(self)
             self._indices=measure_indices(self, return_unc=True)
             
             for key in  ftest.keys():
@@ -299,7 +324,7 @@ class Spectrum(object):
             #print (self._filename)
             if self._filename.startswith('hlsp'):
                 self._filename=self._filename.split('_wfc3_')[-1].split('a_g102')[0]
-            survey, stamp_image_path=get_image_path(self._filename)
+            survey, stamp_image_path=get_image_path(self._filename, self._filepath)
             self._spectrum_image_path=stamp_image_path
             self._survey=survey
         
@@ -448,9 +473,9 @@ def plot_any_spectrum(sp, **kwargs):
     
     #compare to standards
     if compare_to_std:
-        spectral_type=splat.classifyByStandard(self.splat_spectrum, comprng=[[1.1, 1.3], [1.3, 1.65]])[0]
+        spectral_type=splat.classifyByStandard(self.splat_spectrum,  comprange=[[1.2, 1.6]], statistic='chisqr',dwarf=True,subdwarf=False, scale=True) [0]
         std=splat.getStandard(spectral_type)
-        chi, scale=splat.compareSpectra(sp.splat_spectrum, std, fit_ranges=[[1.15, 1.65]])
+        chi, scale=splat.compareSpectra(sp.splat_spectrum, std,  comprange=[[1.2, 1.6]], statistic='chisqr', scale=True) 
         #std.scale(scale)
         l3,=ax3.step(std.wave, std.flux, color='y')
         plts.append(l3)
@@ -493,7 +518,7 @@ def fit_a_line(spectrum, **kwargs):
     return tuple([line, chisqr])
 
 
-def f_test(spectrum, spt=None, **kwargs):
+def f_test(spectrum, **kwargs):
     """
     Use an F-test to see wether a line fits better than a spectral standard
     """
@@ -507,19 +532,18 @@ def f_test(spectrum, spt=None, **kwargs):
     linefit=fit_a_line(spectrum)
     line= linefit[0]
     linechi=linefit[1]
-    #compare to standards
-    if spt is None:
-        classif=spectrum.classify_by_standard(return_statistic=True, fit_ranges=[[1.15, 1.65]], plot=False, **kwargs)
-        spt=classif[0]
-        std=splat.STDS_DWARF_SPEX[spt]
-        std.normalize(waverange=[1.15, 1.65])
-        spexchi=splat.compareSpectra(s, std, fit_ranges=[[1.15, 1.65]], statistic='chisqr', scale=True)[0].value
 
-    if spt is not None:
-        std=splat.STDS_DWARF_SPEX[spt]
-        std.normalize(waverange=[1.15, 1.65])
-        spexchi=splat.compareSpectra(s, std, fit_ranges=[[1.15, 1.65]], statistic='chisqr', scale=True)[0].value
+    print (linechi)
+
+    spectrum.classify_by_standard(return_statistic=True,  comprange=[[1.2, 1.6]], statistic='chisqr', scale=True, plot=False, **kwargs)
+    spt=spectrum.spectral_type
+    print (spt)
     
+    std=STD_DICTS[spt]
+
+    std.normalize(waverange=[1.2, 1.6])
+    spexchi=splat.compareSpectra(s, std,  comprange=[[1.2, 1.6]], statistic='chisqr', scale=True)[0].value
+
     #calculate f-statistic
     x=spexchi/linechi
     #calculate the f-statistic dfn=2, dfd=1 are areguments
