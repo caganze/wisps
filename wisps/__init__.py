@@ -9,6 +9,7 @@ from wisps.data_analysis import *
 from wisps.data_analysis.initialize import *
 from wisps.data_sets import datasets
 from wisps.relations import *
+from wisps.utils import *
 
 
 import matplotlib as mpl 

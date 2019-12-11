@@ -17,6 +17,7 @@ from .spex_indices import *
 from .initialize import *
 from tqdm import tqdm
 from ..data_sets import datasets
+from ..utils.tools import get_distance, make_spt_number
 
 
 import pandas as pd
@@ -32,143 +33,7 @@ df200=datasets['candidates']
 mjdf=datasets['manjavacas']
 scndf=datasets['schneider']
 ############################################
-#format spex_sample ignore uncert
 
-def make_spt_number(spt):
-    ##make a spt a number
-    if isinstance(spt, str):
-        return splat.typeToNum(spt)
-    else:
-        return spt
-class Annotator(object):
-    """
-    Contains static method to manipulate index-index tables 
-    """
-    @staticmethod
-    def  group_by_spt(df, **kwargs):
-        
-        """
-        This is a static method that takes a table and an array of spectral type and 
-        
-        Args:
-            df (pandas dataframe): a table of objects with a column of labelled spectral types
-
-        Returns:
-            returns the same table with spectral type ranges labelled
-
-        spt_label=keyword for spt column
-        """
-        spt=kwargs.get('spt_label', 'Spts')
-        #select by specral type range start spt=15
-        df['spt_range']=''
-        classes=['trash', 'M7-L0', 'L0-L5', 'L5-T0','T0-T5','T5-T9']
-        if kwargs.get('assign_middle', False):
-            #assign the the range to the median spectral type
-            classes=[20, 22, 27, 32, 37]
-
-        if kwargs.get('assign_number', False):
-            classes=[0, 1, 2, 3, 4, 5]
-        if not 'data_type' in df.columns:
-            df['data_type']='templates'
-
-        df['spt_range'].loc[(df[spt] < 17.0 ) & (df['data_type']== 'templates')]=classes[0]
-        df['spt_range'].loc[(df[spt] >= 17.0 ) & (df[spt] <=20.0) & (df['data_type']== 'templates')]=classes[1]
-        df['spt_range'].loc[(df[spt] >= 20.1 ) & (df[spt] <=25.0) & (df['data_type']== 'templates')]=classes[2]
-        df['spt_range'].loc[(df[spt] >= 25.1 ) & (df[spt] <=30.0) & (df['data_type']== 'templates')]=classes[3]
-        df['spt_range'].loc[(df[spt] >= 30.1 ) & (df[spt] <=35.0) & (df['data_type']== 'templates')]=classes[4]
-        df['spt_range'].loc[(df[spt] >= 35.1 ) & (df[spt] <=40.0) & (df['data_type']== 'templates')]=classes[5]
-        
-        df['spt_range'].loc[ (df['data_type']== 'subdwarf')]='subdwarf'
-        
-        #print (df)
-        if kwargs.get('add_subdwarfs', False):
-            sds=kwargs.get('subdwarfs', None)
-            #print ('adding subdwarfs')
-            sds['spt_range']='subdwarfs'
-            df=pd.concat([df,sds],  ignore_index=True, join="inner")
-        #print (df)
-        return df
-
-    @staticmethod
-    def color_from_spts(spts, **kwargs):
-        """
-        Given spt (or a bunch of intergers, get colors
-        spts must be arrays of numbers else, will try to change it to colors
-        """
-        if isinstance(spts[0], str):
-            try:
-                spts=[float(x) for x in spts]
-            except:
-                spts=[splat.typeToNum(x) for x in spts]
-                
-        cmap=kwargs.get('cmap', matplotlib.cm.YlOrBr)
-        maxi= np.nanmax(spts)
-        mini=np.nanmin(spts)
-        norm = matplotlib.colors.Normalize(vmin=mini, vmax=maxi, clip=True)
-        mapper = matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap)
-        colors=[]
-        for c in spts:
-                colors.append(mapper.to_rgba(c))
-        
-        return colors
-
-    @staticmethod
-    def reformat_table(df):
-        """
-        drop uncertainties in the indidces 
-        """
-        new_df=pd.DataFrame()
-        for k in df.columns: 
-            if isinstance(df[k].iloc[0], tuple):
-                new_df[k]=np.array(np.apply_along_axis(list, 0, df[k].values))[:,0]
-            else:
-                new_df[k]=df[k].values
-        return new_df
-        
-    #group_by_spt=staticmethod(group_by_spt)
-    #color_from_spts=staticmethod(color_from_spts)
-
-class Selector(object):
-    """
-    An object that helps me select using different logic
-    """
-    @staticmethod
-    def select(subtype, index_spaces, data, **kwargs):
-        """
-        subtype: a string 'M7-L0' etc..
-        index_spaces: a list of IndexSpace objects
-        data must have columns consisent with the name of index-index spaces
-        """
-        _logic=kwargs.get('logic', 'and')
-        if not isinstance(_logic, str) or _logic not in ['and', 'or']:
-            raise ValueError(""" Logic must 'and' or 'or' """)
-    
-        selected=[]
-        #print(data
-        for idx in index_spaces:
-                sls=idx.select(data, shapes_to_use=[subtype])
-                sls=list(np.concatenate(sls))
-                selected.append(list(sls))
-
-        selected=list(selected)
-        #print (selected)
-
-        result=[]
-        result_names=[]
-        
-        #print(selected)
-        if _logic =='and':
-            result_names=list(set.intersection(*map(set,selected)))
-            #print (result_names)
-        if _logic=='or':
-            result_names=list(set().union(*selected))
-
-        if len(result_names) !=0.0 :
-            result=data[data.Names.isin(result_names)]
-
-        #print (result_names)
-
-        return result
 
 class IndexSpace(object):
     """
@@ -267,7 +132,7 @@ class IndexSpace(object):
         """
         a pandas dataframe
         """
-        return self._spex_sample
+        return self._spex_templates
     
     @templates.setter
     def  templates(self, new_data):
@@ -323,7 +188,6 @@ class IndexSpace(object):
         #add this to the existing 
         self._shapes.append(box)
         self._completeness[name]=box.efficiency
-
     def _calc_completeness(self, annotated_df):
         """
         	This is how each box is defined after the user passes the templates property
@@ -355,7 +219,9 @@ class IndexSpace(object):
         sdf= scndf[[self.xkey, self.ykey, 'spt']]
         sdf.columns=['x', 'y', 'spt']
 
-        ydwarfs=mdf[mdf['spt'].apply(lambda x: splat.typeToNum(x))>38].append(sdf)
+        ydwarfs=(mdf[mdf['spt'].apply(make_spt_number)>38].append(sdf)).reset_index(drop=True)
+       
+
 
         self.add_box(ydwarfs, 'Y dwarfs', '#0074D9', 3.0)
 

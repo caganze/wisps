@@ -29,30 +29,21 @@ from concurrent.futures import ThreadPoolExecutor, wait , ALL_COMPLETED
 from  functools import partial
 
 
-
 def add_noise_to_spectrum(sp, snr):
     #if I propose a larger SNR don't do anything to save time
-    if snr > sp.snr['snr2']:
-        sp.reset()
-        sp_old=sp.spt
-        f_test={"f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi, 'spt_new': sp.spt, 'sp_old':sp_old}
-        res_dict= {**sp.snr, **fast_measure_indices(sp), **f_test}
-        return res_dict
-    else:
-        sp.reset()
-        sp_old=sp.spt
-        sp.add_noise(snr=snr)
-        f_test={"f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi, 'spt_new': sp.spt, 'sp_old': sp_old}
-        res_dict= {**sp.snr, **fast_measure_indices(sp), **f_test}
-        sp.reset()
-        return res_dict
+    sp.reset()
+    sp_old=sp.spectral_type
+    sp.add_noise(snr, nsample=1)
+    f_test={"f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi, 'spt_new': sp.spectral_type, 'sp_old': sp_old}
+    res_dict= {**sp.snr, **fast_measure_indices(sp), **f_test}
+    sp.reset()
+    return res_dict
     
 def add_multiple_noises(sp, noises):
     res=list(map(lambda x: add_noise_to_spectrum(sp, x), noises))
-    df=pd.DataFrame.from_records(res)
-    return df
+    return res
 
-@numba.jit
+
 def fast_measure_indices(sp):
     #fast wway to measure indices without monte-carlo sampling or interpolation
     regions=np.array([[[1.15, 1.20], [1.246, 1.295]],
@@ -91,11 +82,11 @@ def make_data(spectra, **kwargs):
 
     method=partial(add_multiple_noises)
     with ThreadPoolExecutor(max_workers=1000) as executor:
-        futures=executor.map( method, *iterables, timeout=None, chunksize=100)
+        results=list(tqdm(executor.map( method, *iterables, timeout=None, chunksize=100)))
 
-    results=[x for x in futures]
+    #results=[x for x in futures]
 
-    return pd.concat(results)
+    return pd.concat(pd.DataFrame.from_records(results))
 
 def create_selection_function(**kwargs):
     """
@@ -104,11 +95,8 @@ def create_selection_function(**kwargs):
     #optional inputs
     output_file=kwargs.get('output_file', wisps.OUTPUT_FILES+'/selection_function.pkl')
     spectra=pd.read_pickle(wisps.OUTPUT_FILES+'/l_t_dwarfs_spex.pkl')
-
-    print (spectra)
-
-    splat.initializeStandards()
     
+    splat.initializeStandards()
     
     #set up the selection 
     def convert_to_string(x):

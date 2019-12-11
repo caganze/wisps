@@ -26,8 +26,7 @@ def interpolated_lf(spts, lumin):
     f = interp1d(spts, lumin)
     return f(SPGRID)
 
-@numba.jit
-def probability_of_selection(vals, method='f_test_label'):
+def probability_of_selection(vals, method='idx_ft_label'):
     """
     probablity of selection for a given snr and spt
     """
@@ -47,19 +46,23 @@ def probability_of_selection(vals, method='f_test_label'):
     else:
         return np.nanmean(ref_df[method][(ref_df.spt==floor) &(ref_df.snr.apply(np.log10).between(floor2, floor2+.3))])
 
-@numba.vectorize(['float32(float32, float32)','float64(float64, float64)'])
+@np.vectorize
 def selection_function(spt, snr):
     return  probability_of_selection((spt, snr))
 
 def compute_effective_numbers(spts,SPGRID, h):
     ##given a distribution of masses, ages, teffss
     ## based on my polynomial relations and my own selection function
+    spts=wisps.make_spt_number(spts)
     DISTANCE_WITHIN_LIMITS={}
     for k in DISTANCE_LIMITS.keys():
         dx=BAYESIAN_DISTANCES_VOLUMES['distances'][h]
-        DISTANCE_WITHIN_LIMITS[k]= dx[np.logical_and(dx>DISTANCE_LIMITS[k][1]/2., dx< 10* DISTANCE_LIMITS[k][1])]
+        if k < 37:
+            DISTANCE_WITHIN_LIMITS[k]= dx[ dx< 15* DISTANCE_LIMITS[k][1]]
+        if k >= 37:
+            DISTANCE_WITHIN_LIMITS[k]= dx[ dx< 50* DISTANCE_LIMITS[k][1]]
     
-    @numba.vectorize("float64(float64)")
+    @np.vectorize
     def match_dist_to_spt(spt):
         """
         one to one matching between distance and spt
@@ -73,10 +76,9 @@ def compute_effective_numbers(spts,SPGRID, h):
         #scracth that
         "-------------"
         spt_r=np.floor(spt)
-        if spt_r in SPGRID:
+        d=np.nan
+        if (spt_r in DISTANCE_WITHIN_LIMITS.keys()) and (len(DISTANCE_WITHIN_LIMITS[spt_r]) >0) :
             d= np.random.choice(DISTANCE_WITHIN_LIMITS[spt_r])
-        else:
-            d=np.nan
         return d
 
     ds=(BAYESIAN_DISTANCES_VOLUMES['distances'])[h]
@@ -147,34 +149,18 @@ def compute_effective_numbers(spts,SPGRID, h):
     #probablity of selection > 1.
     df['ps']=sl
 
-    (df['ps'])[flag]=0.0
-    
-    #group by spt and sum
-    phi0=[]
-    phi0_spts=[]
+    #share meeting 
+    df.loc[flag, 'ps']=0.0
 
-    df_cut=df[flag]
-
-    fractions=float(len(df)/len(df_cut))
-
-    for g in df.groupby('spt'):
-        phi0_spts.append(g[0])
-        phi0.append(float(np.nansum(g[1].ps))*fractions)
-
-    idx=[i for i, x in enumerate(phi0_spts) if x in SPGRID]
-
-    #finally some luminosity function!
-    phi=np.array(phi0)[idx]
-    #return all the data
-
-    return f110s, f140s, f160s, dists_for_spts, appf140s,  appf110s,  appf160s, snrjs, phi, df.ps.values
+    #just return the selection probabilities 
+    return f110s, f140s, f160s, dists_for_spts, appf140s,  appf110s,  appf160s, snrjs, df.ps.values
 
 
 def simulation_outputs(**kwargs):
     """
     Purpose:compute number densities
     """
-    hs=kwargs.get("hs", [100, 250, 275, 300, 325, 350, 1000])
+    hs=kwargs.get("hs", [200, 250, 275, 300, 325, 350, 1000])
     recompute=kwargs.get("recompute", False)
 
     if recompute:
@@ -195,14 +181,13 @@ def simulation_outputs(**kwargs):
          appf160s=[]
          sl_probs=[]
          for h in tqdm(hs):
-             spts=drop_nan(SIMULATED_DIST['spts'][0][:,0])
-             f110, f140, f160, dists_for_spts, appf140, appf110, appf160, snrj, phi, sl_prob=compute_effective_numbers(spts,SPGRID, h)
+             spts=drop_nan(SIMULATED_DIST['spts'][0])
+             f110, f140, f160, dists_for_spts, appf140, appf110, appf160, snrj, sl_prob=compute_effective_numbers(spts,SPGRID, h)
              f110s.append(f110)
              f140s.append(f140)
              f160s.append(f160)
              dists.append(dists_for_spts)
              snrjs.append(snrj)
-             phis.append(phi)
              appf140s.append(appf140)
              appf110s.append(appf110)
              appf160s.append(appf160)
@@ -210,7 +195,7 @@ def simulation_outputs(**kwargs):
 
              
          values={"f110": f110s, "f140": f140s, "hs": hs, "f160": f160s, "appf140s": appf140s,"appf110s": appf110s,
-         "appf160s": appf160s, "dists":dists, "snrjs": snrjs, "n": phi, "spgrid": SPGRID, "vol": VOLUMES, 
+         "appf160s": appf160s, "dists":dists, "snrjs": snrjs, "spgrid": SPGRID, "vol": VOLUMES, 
          'sl_prob': np.array(sl_probs)}
          
          import pickle

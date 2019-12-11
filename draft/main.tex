@@ -7,6 +7,7 @@
 
 \usepackage{graphicx}
 \usepackage{pgffor}
+\usepackage{rotating}
 
 
 \usepackage{pdftexcmds}
@@ -80,7 +81,7 @@ A parallel approach is to use deep pencil beam samples of spectra in red optical
 \citealt{2012ApJ...752L..14M} discovered 3 late T dwarfs the WFC3 infrared Spectroscopic Survey ( WISPS) fields (\citealt{2010ApJ...723..104A}) identified by their strong \meth and \wat absorption features. The sample size was not large enough to put meaningful constraints on the scale height or the luminosity function L and T dwarfs beyond the local volume. In this paper, we expand upon this study by developing an effective method to select UCDs in similar surveys.
 
 
-Section \ref{sec:data} describes the data, section \ref{sec:selectionp} describes the selection process, section \ref{sec:simulations}} discusses the result compared to a Monte-Carlo simulation
+Section \ref{sec:data} describes the data, section \ref{sec:selectionp} describes the selection process, section \ref{sec:simulations} discusses the result compared to a Monte-Carlo simulation
 
 \section{Data}\label{sec:data}
 
@@ -107,13 +108,10 @@ The WISP survey is a 1000-orbit HST pure-parallel survey covering 390 fields ($\
 Data reduction and grism extraction was performed using a combination of \texttt{AXe} software \citep{Kuntschner2013, Kummel2009} and custom IDL pipelines to remove additional background and to flag bad pixels. The main sources of background are zodiacal light, and earth thermal emissions. Grisms spectra in WISPS have little crowding of the same fields given their high galactic latitudes, but multiple spectral orders do overlap. WISPS provides an estimate of contamination of each spectrum computed using \texttt{AXe} and source catalogs in WISPS were generated using SExtractor \citep{1996A&AS..117..393B}. We obtained WISPS G102 and G141 grism data as well as broad-band F110W, F140W, F160W photometric data and source catalogs from the Mukuliski Archive for Space Telescope (MAST \footnote{\url{https://archive.stsci.edu/prepds/wisp/}} ). 
 
 
-\subsection{Reduced Data Products}
-
 \section{Selection of UCDs}\label{sec:selectionp}
 
 \subsection{Calibration Samples}\label{trainset}
 
-%%motivate 
 To find a sample of UCDs in WISPS \& 3D-HST data, we created a calibration sample of known UCDs, with similar features, e.g spectral coverage and resolution to define our selection methods and quantity their efficiencies and biases. We obtained 2056 M7-T9 low-resolution ($\sim$75-120), NIR (0.9-2.5 $\micron$) spectra of nearby brown dwarfs with median SNR \textgreater 10 from the SpeX Prism Library (SPL, \citealt{2014arXiv1406.4887B}, \url{https://cass.ucsd.edu/~ajb/browndwarfs/spexprism/library.html}) of UCDs. We will refer to this sample as the templates/SpeX sample. In addition, we compiled a list other UCD spectra taken with the same instrument. We used the 77 UCDs from \cite{Manjavacas2018} observed with the WFC3 as part of a study of cloud properties of hot Jupiters and brown dwarf atmospheres and compilation of a WFC3 UCD library. The Schneider dataset is a list of 22 Y dwarfs obtained by \cite{Schneider2015} using the WFC3 camera with the same resolution and wavelength coverage. These objects were targeted as a part of a program to determine spectroscopic markers of the T/Y dwarf transition. We combined these three sets of spectra. 
 
 \subsection{Pre-selection}
@@ -170,13 +168,13 @@ As an alternative to using selection boxes in 2D-space, we trained a random fore
  The training set of 11019 objects is composed of 8283 visually confirmed non-UCDs from several iteration of the box-selection method in the previous section, 77 objects from the Manjavacas set, 22 objects form the Schneider set. We labeled these sources using two labels: UCDs, which are objects with spectral types $\geq$ M7, and non-UCDs which are objects with spectral types $\leq$ M7 and/or part of the visually confirmed as non-UCDs.  his labeling results in 2148 objects labeled as UCDs (label=1) 8871 and with label=0. 
 
 %feature selection and accuracy scores
-Choosing an appropriate set of features is an important part of designing a good machine learning classifier. By intuition, spectral indices, although they are correlated, are a good set of features to use. We added the signal-to-noise ratio in the J-continuum, the two $\chi^2$s and their ratio, and the F-test value as additional features. For missing features, we replaced those values with -99999.9 and scaled all features in the range [0, 1] using \texttt{MinMaxScaler}. To test the accuracy of our classifier, we use a procedure similar to that of \citep{2017AJ....153...73M}. We used 2-fold cross validation score and split the training by 50\% and 50\% partitions. We computed the accuracy by starting with one index as a feature and then adding additional features. We tracked the accuracy of the classification using cross-validation (CV) scores for each additional feature. With only one spectral index, we achieved a classification score of 75.4\%, with all additional features we achieved a CV score of 99.4 \%, for which spectral indices were responsible for spectral indices alone were responsible for CV score up to 96.5\%. We deployed the classifier on 26370 point-source objects in both surveys with J-SNR\textgreater 3, classifying 404 sources as UCDs with their spectral classification of $\geq$ M7. We then visually inspected these objects and we found 136 to be real UCDs.
-
+Choosing an appropriate set of features is an important part of designing a good machine learning classifier. By intuition, spectral indices, although they are correlated, are a good set of features to use. We added the signal-to-noise ratio in the J-continuum, the two $\chi^2$s and their ratio, and the F-test value as additional features. For missing features, we replaced those values with -99999.9 and scaled all features in the range [0, 1] using \texttt{MinMaxScaler}. To test the accuracy of our classifier, we use a procedure similar to that of \citep{2017AJ....153...73M}. We used 2-fold cross validation score and split the training by 50\% and 50\% partitions. We computed the accuracy by starting with one index as a feature and then adding additional features. We tracked the accuracy of the classification using cross-validation (CV) scores for each additional feature. With only one spectral index, we achieved a classification score of 75.4\%, with all additional features we achieved a CV score of 98.68 \%. We deployed the classifier on the 110930 point-source objects in both surveys with J-SNR\textgreater 3, classifying 490 sources as UCDs, among which 109 are real UCDs ( M7-T9). The false positive rate (FP) for this method, using the same definition is 77.7\%.
 
 \subsection{Sample Characterization}\label{sec:results}
 
 \subsubsection{M dwarfs}
-We found 99 objects with speCtral types of M7-L0. 
+We found 121 objects with spectral types of M7-M9, these objects are defined by the \wat absorption features at distances between 500 pc and 4 kpc. We show the distance distribution of all the UCDs in the sample in Figure (insert fig ). While T dwarfs are limited in the nearby $\sim$ 500 pc, M and L dwarfs are observed up to $\sim$ 3kpc; this includes sources outside our effective limiting magnitude. The observed galactic distribution of the UCDs is consistent with the galactic distribution and depths of the pointings in the survey. The farthest L dwarf is at xxx and the farthest T dwarf is xx at 2000 pc . This sample include 3 T dwarfs identified by \cite{2012ApJ...752L..14M} including perhaps the farthest spectroscopically-identified T dwarf to known. We report the magnitude distribution of our sample in fig xx and table xx. The faintest objects in the sample have magnitudes of F110W=24.3, F140W=25.2, F160W=25.2. 
+
 
 \subsubsection{ Robust L \& T dwarfs}
 \paragraph{WISP L dwarfs}
@@ -199,17 +197,16 @@ We find one early T dwarf is COSMOS-23: COSMOS1000+0217 is classified as T3 at $
 
 \subsubsection{ Subdwarfs, Y dwarfs  \& Binaries}
 
+[WORKING ON THIS SUBSECTION]
 We searched for subdwarfs and Y dwarfs by creating selection criteria for these subtypes. However, we did not find any obvious subdwarfs or binaries in the sample with the two methods. This is unsurprising given that estimates of the ratio of subdwarfs to dwarfs is 1/400 (ref) and the binary fraction of UCDs is very low \textless 10 \%. 
 
 \subsubsection{Borderline L \& T dwarfs }
 
-There were a few borderline cases that we accepted as UCDs. 
+T
 
-\subsubsection{ Magnitude \& Distance  Distribution }
+\subsubsection{ Absolute Magnitude  Spectral Type Relations }
 
 We create an absolute magnitude-spectral type relation to estimate distances of objects in our observed sample. This relations are built from the relations of \cite{2012ApJS..201...19D}. We first computed an offset/color between 2MASS J and H magnitudes and AB Hubble magnitudes by convolving the SpeX standard for a given spectral type with the respective filter. This offset {}in convolutions is then added to the absolute magnitude-spectral type relations in 2MASS J, H filters to obtain the new relation in Hubble filters. Error propagation is done using Monte-Carlo sampling, we report these relations in Table \ref{tab:polynomials} and show them in Figure \ref{fig:absmagrelations}
-
-We show the distance distribution of the observed sample in Figure (insert fig ). While T dwarfs are limited in the nearby $\sim$ 500 pc, M and L dwarfs are observed up to $\sim$ 3kpc; this includes sources outside our effective limiting magnitude. The observed galactic distribution of the UCDs is consistent with the galactic distribution and depths of the pointings in the survey. The farthest L dwarf is at xxx and the farthest T dwarf is xx at xxx pc . This sample include 3 T dwarfs identified by \cite{2012ApJ...752L..14M} including perhaps the farthest spectroscopically-identified T dwarf to known. We report the magnitude distribution of our sample in fig xx and table xx.  The faintest objects in the sample have magnitudes of F110W=24.3, F140W=25.2, F160W=25.2. 
 
 
 \section{Probing Galactic Structure}\label{sec:simulations}
@@ -268,7 +265,7 @@ For each simulated spectral type from the mass function (section \ref{step1simul
 
 \item \textbf{ $\mathcal{S}$  $\leftarrow$ (J-SNR, SpT)}: we assigned a selection probability, as previously defined, to every simulated object in the observed, that is an object with magnitude and signal-noise ratios within our cuts (J-SNR \textless 3 and F110W \textgreater 22.5 (the limiting magnitude from 3D-HST). 
 
-The expected number of expected objects per spectral type is then by a simple product of selection probabilities, effective volume scaled by the normalization factor. 
+\item The expected number of expected objects per spectral type is then by a simple product of selection probabilities, effective volume scaled by the normalization factor. 
 \begin{equation}
 N_{sim}(\text{SpT})= N_0 \cdot V_{eff} (\text{SpT}) \cdot \sum _i \mathcal{S}(\text{J-SNR}_i, \text{SpT}) \end{equation}. We compared these numbers to the observed numbers of UCDs for each age distribution in figure \ref{fig:simulationnbrs}
 

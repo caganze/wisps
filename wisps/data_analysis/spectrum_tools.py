@@ -22,9 +22,10 @@ from astropy.visualization import ZScaleInterval
 from scipy import interpolate
 from scipy import stats
 import copy
-from wisps.utils import memoize_func
+from ..utils import memoize_func
 import numba
 from scipy import stats
+from ..utils.tools import get_distance, make_spt_number
 
 from functools import lru_cache #high performance memoization
 
@@ -192,7 +193,8 @@ class Spectrum(object):
         Uses splat.classifyByStandard to classify spectra using spex standards
         """ 
         val=splat.classifyByStandard(self.splat_spectrum, **kwargs)
-        print (val)
+        if make_spt_number(val[0]) > 39:
+            val=splat.classifyByStandard( self.splat_spectrum, comprange=[[1.2, 1.5]],  stat = 'stddev' )
         self._spectral_type=val[0]
 
     def normalize(self, **kwargs):
@@ -209,28 +211,6 @@ class Spectrum(object):
         self._noise=sp.noise.value
         
         return
-        
-    @property 
-    def cdf_snr(self):
-        """
-        Returns the snr computed form the SNR kde 
-        """
-        try:
-            sn=np.array(self.flux/self.noise)
-            sn=sn[~np.isnan(sn)]
-            xgrid=np.linspace(np.nanmin(sn), np.nanmax(sn), len(self.wave))
-            cdf=kde_statsmodels_m(sn, xgrid)
-            #dirty trick to make sure I always get a value take the biggest value between 80% and 90%
-            #should replace this with an interpolotation but it's slower
-            #plt.plot(cdf)
-            #plt.show()
-            sel=np.where(cdf>0.9)[-1] 
-            _cdf_snr=xgrid[sel[-1]]
-            self._snr_histogram=cdf
-        except:
-            _cdf_snr=np.nan
-			
-        return _cdf_snr
 
     def _compute_snr(self):
         """
@@ -254,7 +234,7 @@ class Spectrum(object):
             snr3=np.nanmedian (self.flux[msk3]/self.noise[msk3])
             snr4=np.nanmedian (self.flux[msk4]/self.noise[msk4])
 
-            self._snr= {'snr1':snr1, 'snr2':snr2, 'cdf_snr': self.cdf_snr,'snr3':snr3, 'snr4':snr4}
+            self._snr= {'snr1':snr1, 'snr2':snr2, 'snr3':snr3, 'snr4':snr4}
         
     @property
     def indices(self):
@@ -272,26 +252,23 @@ class Spectrum(object):
         self.normalize()
         return measure_indices(self,**kwargs)
 
-    def add_noise(self, *args, **kwargs):
+    def add_noise(self, snr, **kwargs):
         """
         add n-sigma noise to the spectrum
         """
-        try:
-            self.normalize(waverange=[1.1, 1.7])
-            sp=self.splat_spectrum
-            sp.addNoise(*args, **kwargs)
-            self._flux=sp.flux.value
-            self._noise=sp.noise.value
-            #self._indices= measure_indices(self, return_unc=True)
-            self._compute_snr()
-            ftest=f_test(self)
-            self._indices=measure_indices(self, return_unc=True)
-            
-            for key in  ftest.keys():
-                setattr(self, key, ftest[key])
-        except:
-            pass
+        self.normalize()
+        snr0=self.snr['snr1']
+        self._noise= np.array([x*snr0/snr for x in self.noise])
+        self._flux =self.flux+(np.random.normal(np.zeros(len(self.noise)), self.noise))
+        self._compute_snr()
+        ftest=f_test(self)
+        ns=kwargs.get('nsample', 100)
+        if kwargs.get('recompute_indices', False):
+            self._indices=measure_indices(self, return_unc=True, nsamples=ns)
+        for key in  ftest.keys():
+            setattr(self, key, ftest[key])
 
+  
 
     @property 
     def filepath(self): 
@@ -358,11 +335,10 @@ class Spectrum(object):
         
         #add offset if some of the flux is negative
         #print (self._wave)
-        try:
-            offset_flux=np.nanmin(self._flux[np.where((self._wave >1.4) & (self._wave <1.5))])
-            if offset_flux<0.0:
-                     self._flux=self._flux+abs(offset_flux)
-        except ValueError: pass
+        offset_flux=np.nanmin(self._flux[np.where((self._wave >1.4) & (self._wave <1.5))])
+        if offset_flux<0.0:
+                 self._flux=self._flux+abs(offset_flux)
+
         self._compute_snr()
         self._indices= measure_indices(self, return_unc=True)
         self.original = copy.deepcopy(self)
@@ -422,83 +398,9 @@ class Spectrum(object):
     	return self._sensitivity
     
     def plot(self, **kwargs):
-    	if kwargs.get('with_splat'):
-    		splat_plot.plotSpectrum(self._splat_spectrum, **kwargs)
-    	else:
-    		plot_any_spectrum(self, **kwargs)
+        splat_plot.plotSpectrum(self._splat_spectrum, **kwargs)
+    
     		
-    	
-@numba.jit
-def plot_any_spectrum(sp, **kwargs):
-    """
-	Main plotting tool for a specturm tool, almost a replica of plotting a Source object
-    """
-    cmap=kwargs.get('cmap', 'viridis')
-    compare_to_std=kwargs.get('compare_to_std', False)
-    save=kwargs.get('save', False)
-    filt=kwargs.get('filter', 'F140W')
-    
-    #esthetiques
-    mask=np.where((sp.wave>1.15)& (sp.wave<1.65))[0]
-    xlim= kwargs.get('xlim', [1.15, 1.65])
-    xlabel=kwargs.get('xlabel','Wavelength (micron)')
-    ylim=kwargs.get('ylim', [np.nanmin(sp.flux[mask]), np.nanmax(sp.flux[mask])])
-    ylabel=kwargs.get('ylabel','Normalized Flux')
-    
-    #paths
-    
-    #create the grid
-    gs = gridspec.GridSpec(2, 3, height_ratios=(1, 3))
-    fig=plt.figure(figsize=(8,6))
-    ax1 = plt.subplot(gs[0, 0]) 
-    ax2 = plt.subplot(gs[0, 1:3]) 
-    ax3 = plt.subplot(gs[1, :]) 
-    
-    #remove markers from images
-    ax1.set_xticks([])
-    ax1.set_yticks([])
-    ax2.set_xticks([])
-    ax2.set_yticks([])
-    
-    
-    l1,=ax3.step(sp.wave, sp.flux, color='k')
-    l2,=ax3.plot(sp.wave, sp.noise, 'c')
-    try:
-        l4, =ax3.plot(sp.wave, sp.contamination, 'g')
-    except:
-        l4=None
-    
-    
-    plts=[l1, l2, l4]
-    
-    #compare to standards
-    if compare_to_std:
-        spectral_type=splat.classifyByStandard(self.splat_spectrum,  comprange=[[1.2, 1.6]], statistic='chisqr',dwarf=True,subdwarf=False, scale=True) [0]
-        std=splat.getStandard(spectral_type)
-        chi, scale=splat.compareSpectra(sp.splat_spectrum, std,  comprange=[[1.2, 1.6]], statistic='chisqr', scale=True) 
-        #std.scale(scale)
-        l3,=ax3.step(std.wave, std.flux, color='y')
-        plts.append(l3)
-    
-    ax3.set_xlim(xlim)
-    ax3.set_ylim(ylim)
-    
-    ax3.set_xlabel(xlabel, fontsize=18)
-    ax3.set_ylabel(ylabel, fontsize=18)
-    
-    #add the 2d spectrum
-    try:
-        v0, v1=ZScaleInterval().get_limits(sp.spectrum_image)
-        ax2.imshow(sp.spectrum_image, vmin=v0, vmax=v1, cmap='Greys', aspect='auto')
-        ax2.set_xlabel('G141', fontsize=15)
-    except:
-        pass
-    
-    #fig.legend(tuple(plts))
-    if save:
-        filename=kwargs.get('filename', OUTPUT_FIGURES+sp.name+'.pdf')
-        plt.savefig(filename)
-    return 
 
 
 def fit_a_line(spectrum, **kwargs):
@@ -532,13 +434,8 @@ def f_test(spectrum, **kwargs):
     linefit=fit_a_line(spectrum)
     line= linefit[0]
     linechi=linefit[1]
-
-    print (linechi)
-
     spectrum.classify_by_standard(return_statistic=True,  comprange=[[1.2, 1.6]], statistic='chisqr', scale=True, plot=False, **kwargs)
     spt=spectrum.spectral_type
-    print (spt)
-    
     std=STD_DICTS[spt]
 
     std.normalize(waverange=[1.2, 1.6])
@@ -550,7 +447,7 @@ def f_test(spectrum, **kwargs):
     f=stats.f.cdf(x, 2, 1, 0, scale=1)
     #return result
     result={'spex_chi':spexchi, 'line_chi':linechi, \
-    'x':x, 'spt': spt, 'f':f, '_best_fit_line': [line, linechi]}
+    'x':x, 'f':f, '_best_fit_line': [line, linechi]}
     return result
 	
 def kde_statsmodels_m(x, x_grid, **kwargs):

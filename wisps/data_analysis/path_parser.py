@@ -80,7 +80,6 @@ def _run_search(name):
     path=''
     prefix= name[:3]
     if name.startswith('Par') or name.startswith('par') or name.startswith('hlsp'):
-        try:
             #search version 6
             if name.endswith('.dat'):
                 n=name.split('.dat')[0]
@@ -90,19 +89,16 @@ def _run_search(name):
                 n=name
             path=REMOTE_FOLDER+'wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+folder+'/1dspectra/*'+n+'*a_g141_*'
             path=glob.glob(path)[0]
-        except:
-            #search version 5
-            folder=name.split('_')[0]
-            path=REMOTE_FOLDER+'wisps/'+folder+'*/Spectra/*'+name+'.dat'
-            #print (path)
-            path=glob.glob(path)[0]
+        #except:
+        #   #search version 5
+        #    folder=name.split('_')[0]
+        #    path=REMOTE_FOLDER+'wisps/'+folder+'*/Spectra/*'+name+'.dat'
+        #    #print (path)
+        #    path=glob.glob(path)[0]
     if prefix in ['aeg', 'cos', 'uds', 'goo']:
-        try:
             syls= (name.split('-'))
             str_= REMOTE_FOLDER+'*'+prefix+'*'+'/*'+prefix+ '*'+syls[1]+'*'+'/1D/ASCII/'+prefix+'*'+ syls[1]+ '*'+syls[2]+'*'
             path=glob.glob(str_)[0]
-        except:
-            path=''
     return path
 
 @memoize_func
@@ -120,9 +116,9 @@ def return_path(name):
 def return_spectrum_name(path):
 	""" returns name given path in the wisp folder"""
 	name=''
-	try:
+	if path.endswith('.dat'):
 		name= path.split('.dat')[0].split('/')[-1]
-	except:
+	else:
 		name=path.split('.ascii')[0].split('/')[-1].split('.')[0]
 
 	return name

@@ -15,12 +15,13 @@ from scipy.integrate import trapz        # for numerical integration
 from scipy.interpolate import interp1d   #for 1-d interpolation
 import splat
 
-def measure_indices(sp,**kwargs):
+
+def measure_indices(s,**kwargs):
     """
     sp must be a Spectrum object
     roughly similar to splat.measureIndices (github.com/aburgasser/splat) 
     """
-    sp=sp.splat_spectrum
+    sp=s.splat_spectrum
     sample_type=kwargs.get("sample","median")
     ns=kwargs.get("nsamples", 100)
     #names = ['index-1','index-2', 'index-3', 'index-4', 'index-5', 'index-6','index-7', 'index-8', 'index-9', 'index-10' ]

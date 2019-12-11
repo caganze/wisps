@@ -132,14 +132,8 @@ class Source(Spectrum):
         #this is the master table that contains everything i.e after the snr cut 
         # to see how this is created look at pre_processing.py
         df=COMBINED_PHOTO_SPECTRO_DATA
-       	try:
-        	s=df.loc[df['grism_id'].isin([new_name.lower()])].reset_index().ix[0]
-        except:
-        	warnings.warn('This source was removed using snr cut',  stacklevel=2)
-        	df=pd.read_hdf(COMBINED_PHOTO_SPECTRO_FILE, key='all_phot_spec_data')
-        	s=df.loc[df['grism_id'].isin([new_name])].reset_index().ix[0]
-        #print (s)
-
+        s=df.loc[df['grism_id'].apply(lambda x: x.lower()).isin([new_name.lower()])].reset_index().ix[0]
+        
         self._mags={'F110W': (s.F110[0], s.F110[1]), 
                              'F160W': (s.F160[0], s.F160[1]),
                              'F140W': (s.F140[0], s.F140[1])}
@@ -165,22 +159,22 @@ class Source(Spectrum):
     #using splat tricks to create shortnames
         if (self.name is not None ) and not np.isnan(self.ra):
             if self.name.lower().startswith('par'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'WISP ')
+                self._shortname=spl.designationToShortName(self.designation).replace('J', 'WISP J')
                 
             elif self.name.lower().startswith('aegis'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'AEGIS ')
+                self._shortname=spl.designationToShortName(self.designation).replace('J', 'AEGIS J')
                 
             elif self.name.lower().startswith('goodss'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'GOODSS ')
+                self._shortname=spl.designationToShortName(self.designation).replace('J', 'GOODSS J')
             
             elif self.name.lower().startswith('goodsn'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'GOODSN ')
+                self._shortname=spl.designationToShortName(self.designation).replace('J', 'GOODSN J')
                 
             elif self.name.lower().startswith('uds'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'UDS ')
+                self._shortname=spl.designationToShortName(self.designation).replace('J', 'UDS J')
                 
             elif self.name.lower().startswith('cosmos'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'COSMOS ')
+                self._shortname=spl.designationToShortName(self.designation).replace('J', 'COSMOS J')
 
         return self._shortname
     
@@ -309,10 +303,10 @@ def distance(mags, spt):
     nsample=1000
 
     for k in mags.keys():
-        flt='NICMOS '+k
         #take the standard deviation
-        spts=make_spt_number(spt)+np.random.random(nsample)*.5 #take .5 to be the intrinsic scatter
-        absmags=relations['sp_'+k](spts)
+        spt=make_spt_number(spt)
+        absmag_scatter=relations['sigma_sp_'+k]
+        absmags=np.random.normal(relations['sp_'+k](spt), absmag_scatter, nsample)
         relmags=mags[k][0]+np.random.random(nsample)*mags[k][1]
         dists=get_distance(absmags, relmags)
         res[str('dist')+k]=np.nanmean(dists)
