@@ -7,12 +7,20 @@ import pandas as pd
 import splat.empirical as spem
 import statsmodels.nonparametric.kernel_density as kde
 import numba
+from astropy.io import ascii
+import matplotlib
+from astropy import stats as astrostats
+from scipy import stats
+import bisect
+
+#from . import *
 
 #################
 splat.initializeStandards()
 ###############
 from wisps.utils import memoize_func
 
+mamjk=ascii.read('/users/caganze/research/wisps/data/mamajek_relations.txt').to_pandas().replace('None', np.nan)
 
 class Annotator(object):
     """
@@ -98,7 +106,35 @@ class Annotator(object):
             else:
                 new_df[k]=df[k].values
         return new_df
-        
+
+@np.vectorize      
+def splat_teff_to_spt(teff):
+    rel=splat.SPT_TEFF_RELATIONS['pecaut']
+    spt_sorted_idx=np.argsort(rel['values'])
+    scatter=108
+    teffsc=np.random.normal(teff, scatter)
+    return np.interp(teffsc, np.array(rel['values'])[spt_sorted_idx], np.array(rel['spt'])[spt_sorted_idx])
+
+def absolute_magnitude_jh(spt):
+    """
+    returns J and H magnitudes by interpolating between values from pecaut2013
+    must probably sort spt if spt is a list bfeore passing it through the interpolator
+    """
+    js=mamjk.M_J.apply(float).values
+    jminush=mamjk['J-H'].apply(float).values
+    hs=js-jminush
+    
+    spts=mamjk.SpT.apply(make_spt_number).apply(float).values
+    
+    hsortedindex=np.argsort(hs)
+    jsortedindex=np.argsort(js)
+    
+    hval=np.interp(spt,  spts[hsortedindex], hs[hsortedindex])
+    jval=np.interp(spt,  spts[jsortedindex], js[jsortedindex])
+    
+    return [jval, hval]
+
+
 @numba.vectorize("float64(float64, float64)", target='cpu')
 def get_distance(absmag, rel_mag):
     return 10.**(-(absmag-rel_mag)/5. + 1.)
@@ -133,6 +169,15 @@ def drop_nan(x):
     x=np.array(x)
     return x[(~np.isnan(x)) & (~np.isinf(x)) ]
 
+
+def custom_histogram(things, grid, binsize=1):
+    n=[]
+    for g in grid:
+        n.append(len(things[np.logical_and(g<=things, things< g+binsize)]))
+    return np.array(n)
+
+
+
 @numba.jit
 def is_in_that_classification(spt, subclass):
     #determines if a spt is within a subclass
@@ -149,3 +194,46 @@ def is_in_that_classification(spt, subclass):
         flag=False
     
     return flag
+
+
+
+def random_draw(xvals, cdfvals, nsample=10):
+    """
+    randomly drawing x distances in a given direction
+    """
+    @numba.vectorize("int32(float64)")
+    def invert_cdf(i):
+        return bisect.bisect(cdfvals, i)-1
+    x=np.random.rand(nsample)
+    idx=invert_cdf(x)
+    return np.array(xvals)[idx]
+
+
+def fit_polynomial(x, y, n=2, y_unc=None, sigma_clip=False, sigma=None):
+    """
+    Polynomial fit with n-sigma clipping
+    """
+    if sigma_clip:
+        va=np.array([x, y]).T
+        d=pd.DataFrame(va).dropna().values
+        sigma_clipped=astrostats.sigma_clip(d, sigma=sigma)
+        x=sigma_clipped[:,0]
+        y=sigma_clipped[:,1]
+
+    nany=np.isnan(x)
+    p = np.poly1d(np.polyfit(x[~nany], y[~nany], n))
+
+    if y_unc is not None:
+        p=np.poly1d(np.polyfit(x[~nany],y[~nany], n, w=1./y_unc[~nany]))
+    return p
+
+def kernel_density(distr):
+    """
+    1D-kernel density estimation
+    """
+    kernel = stats.gaussian_kde(distr)
+    return kernel
+
+
+def dropnans(x):
+    return [~np.isnan(x)]

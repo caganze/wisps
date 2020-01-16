@@ -4,166 +4,161 @@ The top-level auxiliary file: main.aux
 The style file: aasjournal.bst
 Database file #1: library.bib
 Warning--entry type for "michael_waskom_2014_12710" isn't style-file defined
---line 102 of file library.bib
-Repeated entry---line 9349 of file library.bib
+--line 123 of file library.bib
+Repeated entry---line 9370 of file library.bib
  : @article{refId0
  :                ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 14442 of file library.bib
+Repeated entry---line 14463 of file library.bib
  : @article{1997A&A...328....5K
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 26914 of file library.bib
+Repeated entry---line 26935 of file library.bib
  : @article{1997A&A...328...83C
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 31280 of file library.bib
+Repeated entry---line 31301 of file library.bib
  : @article{2013A&A...560A.109H
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 40326 of file library.bib
- : @article{2001ApJ...554.1274C
- :                             ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 40391 of file library.bib
+Repeated entry---line 40412 of file library.bib
  : @article{1997A&A...328...83C
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 40637 of file library.bib
+Repeated entry---line 40658 of file library.bib
  : @article{1997ApJ...482..420L
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 44189 of file library.bib
+Repeated entry---line 44210 of file library.bib
  : @article{1997ApJ...482..913G
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 47003 of file library.bib
+Repeated entry---line 47024 of file library.bib
  : @article{2005ApJ...631L.159R
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 49798 of file library.bib
+Repeated entry---line 49819 of file library.bib
  : @article{2014arXiv1406.4887B
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 49874 of file library.bib
+Repeated entry---line 49895 of file library.bib
  : @article{2007ApJ...657..511A
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 52245 of file library.bib
+Repeated entry---line 52266 of file library.bib
  : @article{1963PThPh..30..460H
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 52967 of file library.bib
+Repeated entry---line 52988 of file library.bib
  : @article{1997A&A...328....5K
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 53219 of file library.bib
+Repeated entry---line 53240 of file library.bib
  : @inproceedings{2003ASPC..287..427B
  :                                   ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 53434 of file library.bib
+Repeated entry---line 53455 of file library.bib
  : @article{2001RvMP...73..719B
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 56249 of file library.bib
+Repeated entry---line 56270 of file library.bib
  : @article{2000AJ....119.3019C
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 56707 of file library.bib
- : @inproceedings{2003IAUS..211...41B
- :                                   ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 57187 of file library.bib
+Repeated entry---line 57208 of file library.bib
  : @article{2005ARA&A..43..195K
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 57278 of file library.bib
+Repeated entry---line 57299 of file library.bib
  : @article{2005ApJ...622..319P
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 60216 of file library.bib
+Repeated entry---line 60237 of file library.bib
  : @article{2007MNRAS.379.1599L
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 60667 of file library.bib
+Repeated entry---line 60688 of file library.bib
  : @article{2014PASP..126..642S
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 68164 of file library.bib
+Repeated entry---line 68179 of file library.bib
  : @article{1999AJ....117.1010T
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 71858 of file library.bib
+Repeated entry---line 71873 of file library.bib
  : @inproceedings{1998ASPC..134..394B
  :                                   ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 72057 of file library.bib
+Repeated entry---line 72072 of file library.bib
  : @article{2000ARA&A..38..337C
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 75067 of file library.bib
+Repeated entry---line 75082 of file library.bib
  : @article{1998ApJ...497..294L
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 76303 of file library.bib
+Repeated entry---line 76318 of file library.bib
  : @article{2002MNRAS.332L..65B
  :                             ,
 I'm skipping whatever remains of this entry
-Repeated entry---line 76332 of file library.bib
+Repeated entry---line 76347 of file library.bib
  : @inproceedings{2003ASPC..287..427B
  :                                   ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 78627 of file library.bib
+ : @article{2003A&A...402..701B
+ :                             ,
 I'm skipping whatever remains of this entry
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Warning--empty journal in Burgasser2014
 Warning--empty journal in Collaboration2013
 Warning--empty journal in Gagne2015
 Reallocated str_pool (elt_size=1) to 130000 items from 65000.
-Warning--empty publisher in scipy
 Warning--empty publisher in doi:10.1117/12.789581
 Warning--empty journal in Kuntschner2013
 Warning--empty journal in LSSTScienceCollaboration2009
 Warning--empty journal in Manjavacas2018
 Warning--empty journal in Sorahana2018
 Warning--empty journal in Spergel2015
-You've used 117 entries,
+You've used 116 entries,
             3183 wiz_defined-function locations,
-            1529 strings with 63186 characters,
-and the built_in function-call counts, 75579 in all, are:
-= -- 4730
-> -- 8420
+            1517 strings with 62684 characters,
+and the built_in function-call counts, 74836 in all, are:
+= -- 4674
+> -- 8360
 < -- 30
-+ -- 2795
-- -- 2955
-* -- 7834
-:= -- 15027
-add.period$ -- 117
-call.type$ -- 117
-change.case$ -- 754
-chr.to.int$ -- 115
-cite$ -- 127
-duplicate$ -- 2242
-empty$ -- 3385
-format.name$ -- 3078
-if$ -- 14186
-int.to.chr$ -- 3
++ -- 2777
+- -- 2933
+* -- 7764
+:= -- 14898
+add.period$ -- 116
+call.type$ -- 116
+change.case$ -- 750
+chr.to.int$ -- 113
+cite$ -- 125
+duplicate$ -- 2213
+empty$ -- 3337
+format.name$ -- 3058
+if$ -- 14032
+int.to.chr$ -- 4
 int.to.str$ -- 0
-missing$ -- 110
-newline$ -- 355
-num.names$ -- 471
-pop$ -- 844
+missing$ -- 111
+newline$ -- 352
+num.names$ -- 466
+pop$ -- 841
 preamble$ -- 1
-purify$ -- 753
+purify$ -- 750
 quote$ -- 0
-skip$ -- 1877
+skip$ -- 1844
 stack$ -- 0
-substring$ -- 2577
-swap$ -- 32
-text.length$ -- 3
+substring$ -- 2530
+swap$ -- 26
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 1053
-warning$ -- 10
-while$ -- 415
+type$ -- 1044
+warning$ -- 9
+while$ -- 408
 width$ -- 0
-write$ -- 1163
-(There were 27 error messages)
+write$ -- 1152
+(There were 26 error messages)

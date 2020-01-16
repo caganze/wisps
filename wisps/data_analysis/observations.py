@@ -22,9 +22,12 @@ def get_paths():
     hst_paths=[path+p for  p in ['aegis', 'goods', 'cosmos', 'uds']]
     wisp_path=path+'/wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'
     ppaths=[]
+    spectrapaths=[]
     for p in ['aegis',  'cosmos', 'uds', 'goods']:
-        ppaths.extend(glob.glob(path+p+'/*/*F1*0W_drz_sci.fits'))
-    ppaths.extend(glob.glob(wisp_path+'/par*/hlsp_wisp_hst_wfc3_*-80mas_f*w_v6.2_drz.fits'))
+        ppaths.extend(glob.glob(path+p+'/*/*G141*_drz_sci.fits'))
+    #ppaths.extend(glob.glob(wisp_path+'/par*/hlsp_wisp_hst_wfc3_*-80mas_f*w_v6.2_drz.fits')) #actually we 
+    #nly care about grism_observations
+    ppaths.extend(glob.glob(wisp_path+'par*/hlsp_wisp_hst_wfc3_*g141*_drz.fits'))
     ppaths.extend(glob.glob(path+'goods*'+'*F1*0W_drz_sci.fits'))
 
     return ppaths

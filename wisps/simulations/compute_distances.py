@@ -7,7 +7,7 @@ import matplotlib as mpl
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 import theano
-import theano.tensor as T
+import theano.tensor as tt
 import pandas as pd
 import pymc3 as pm
 import seaborn as sns 
@@ -18,19 +18,23 @@ from scipy import integrate
 from wisps.utils.tools import get_distance
 from tqdm import tqdm
 
+
 #imports
 #----------------------
 
 #constants
+Rsun=wispsim.Rsun
+Zsun=wispsim.Zsun
 
-Rsun=83000.
-Zsun=25.
 spgrid=wispsim.SPGRID
 #-----------------------
 
 #read-in the pointings
 pnts=wisps.OBSERVED_POINTINGS
+print (pnts[0].survey)
 COORDS=SkyCoord([p.coord for p in wisps.OBSERVED_POINTINGS ])
+LBS=np.vstack([[x.coord.galactic.l.radian,x.coord.galactic.b.radian] for x in pnts ])
+
 
 galc=COORDS.transform_to('galactic')
 
@@ -38,68 +42,43 @@ LS=galc.l.radian
 
 BS=galc.b.radian
 
-hs=[200, 250, 275, 300, 325, 350, 1000]
+
 #OBSERVED_DIST=np.concatenate(np.array([v for v in pnts[0].dist_limits.values()]))
 #---------------------------
 
 #define functions
-#-------------------------------------------
-def density_function(r, z, h=300.):
-    
-    """
-    A custom juric density function that only uses numpy arrays for speed
-    All units are in pc
-    """
-    l = 2600. # radial length scale of exponential thin disk 
-    
-    zpart=(1./np.cosh(abs(z-Zsun)/(2*h)))**2
-    rpart=np.exp(-(r-Rsun)/h)
-    
-    return zpart*rpart
 
 def sample_distances(nsample=1000, h=300):
     """
     sample the galaxy given a scale height
     
     """
-    def logp(r, z, d):
-        return np.log10((d**2)*density_function(r, z, h))
+    def logprior(l, b):
+        return tt.switch(( abs(b) < 0.35),-np.inf, 0)
+
+    def logp(l, b, r, z, d, h):
+        return np.log((d**2)*wispsim.density_function(r, z, h))+logprior(l, b)
 
     with pm.Model() as model:
+        l=pm.Uniform('l', lower=-np.pi, upper=np.pi, testval=np.pi/2)
+        b=pm.Uniform('b', lower=-np.pi/2, upper=np.pi/2, testval=np.pi/3)
+    
+        d=pm.Uniform('d', lower=0., upper=5000., testval=500.)
         
-        l=pm.Uniform('l', lower=np.nanmin(LS), upper=np.nanmax(LS) , observed=LS)
-        b=pm.Uniform('b', lower=np.nanmin(BS), upper=np.nanmax(BS),  observed=BS)
-        d=pm.Uniform('d', lower=h/100, upper=10*h, testval=5*h, shape=len(BS))
-
-        r=pm.Deterministic('r', np.sqrt( (d * np.cos( b ) )**2 + Rsun * (Rsun - 2 * d * np.cos( b ) * np.cos( l ) ) ))
-        z=pm.Deterministic('z', Zsun+ d * np.sin( b - np.arctan( Zsun / Rsun) ))
+        x=pm.Deterministic('x',  Rsun-d*np.cos(b)*np.cos(l))
+        y=pm.Deterministic('y', -d*np.cos(b)*np.sin(l))
+        r=pm.Deterministic('r', (x**2+y**2)**0.5 )
+        z=pm.Deterministic('z', Zsun+ d * np.sin(b))
         
-        like = pm.DensityDist('likelihood', logp, observed={
-                             'r': r, 'z': z, 'd':d})
-
+        like = pm.DensityDist('likelihood', logp, observed={'l':l, 'b':b,
+                             'r': r, 'z': z, 'd':d, 'h':h})
         trace = pm.sample(draws=int(nsample), cores=2, step=pm.Metropolis())
     return trace
 
 
 
 #measure volumes with changing scale heights
-
-def custom_volume(coordinate,dmin, dmax, h):
-    nsamp=1000
-    ds = np.linspace(dmin,dmax,nsamp)
-    rd=np.sqrt( (ds * np.cos( coordinate.galactic.b.value  ) )**2 +
-               Rsun * (Rsun - 2 * ds* np.cos( coordinate.galactic.b.value ) * np.cos( coordinate.galactic.l.value ) ) )
-    zd=Zsun+ ds * np.sin( coordinate.galactic.b.value - np.arctan( Zsun / Rsun) )
-    rh0=density_function(rd, zd,h=h )
-    val=integrate.trapz(rh0*(ds**2), x=ds)
-
-    return val
-
-def get_accurate_relations(x, rel, rel_unc):
-    #use monte-carlo error propgation
-    vals=np.random.normal(rel(x), rel_unc, 100)
-    return np.nanmean(vals)
-
+#need to change this to directly measuring l and b and 
 
 def compute_distance_limits(pnt):
     """
@@ -115,13 +94,13 @@ def compute_distance_limits(pnt):
     pol_unc=None
 
     if pnt.survey=='wisps':
-        pol=rels['sp_F160W']
-        pol_unc=rels['sigma_sp_F160W']
-        maglmts= wisps.MAG_LIMITS['wisps']['F160W']
+        pol=rels['sp_F140W']
+        pol_unc=rels['sigma_sp_F140W']
+        maglmts= wisps.MAG_LIMITS['wisps']['F140W']
     if pnt.survey=='hst3d':
-        pol=rels['sp_F160W']
-        pol_unc=rels['sigma_sp_F160W']
-        maglmts=wisps.MAG_LIMITS['hst3d']['F160W']
+        pol=rels['sp_F140W']
+        pol_unc=rels['sigma_sp_F140W']
+        maglmts=wisps.MAG_LIMITS['hst3d']['F140W']
 
     #compute asbmags using abolute mag relations
     absmags=[get_accurate_relations(x, pol, pol_unc) for x in spgrid]
@@ -137,60 +116,35 @@ def compute_distance_limits(pnt):
     return dict(zip(wispsim.SPGRID, distances))
             #create a dictionary
 
-def computer_volume(pnt):
-        """
-        given area calculate the volume
-        """
-        volumes={}
-        dist_limits=compute_distance_limits(pnt)
-        for k in spgrid:
-            vs=[]
-            for h in hs:
-                v=custom_volume(pnt.coord,  dist_limits[k][1], dist_limits[k][0], h)*wispsim.SOLID_ANGLE
-                vs.append(v)
-            volumes[k]= np.array(vs)
-
-    
-
-        return volumes
-
-
-
-
 #----------------------------------
 #save stuff 
 if __name__ =='__main__':
     
     #sample the galactic structure model
     traces=[]
-    for h in hs:
-        traces.append(sample_distances(nsample=20000, h=h))
+    for h in wispsim.HS:
+        traces.append(sample_distances(nsample=10000, h=h))
 
 
     dists=np.array([t['d'] for t in traces])
-    rs=np.array([t['r'] for t in traces])
-    zs=np.array([t['z'] for t in traces])
+    ls=np.array([t['l'] for t in traces])
+    bs=np.array([t['b'] for t in traces])
 
-    #--------------------------------------------
-    volumes=[computer_volume(pnt) for pnt in tqdm(pnts)]
-    dist_limits=compute_distance_limits(pnts[0])
+   
     dists=np.array(dists)
 
-    dist_dict=dict(zip(hs, dists))
-    rs_dict=dict(zip(hs, rs))
-    zs_dict=dict(zip(hs, zs))
+    dist_dict=dict(zip(wispsim.HS, dists))
+    ls_dict=dict(zip(wispsim.HS, ls))
+    bs_dict=dict(zip(wispsim.HS, bs))
 
 
-    full_dict={'volumes': volumes, 'distances': dist_dict, 'rs': rs_dict, 'zs': zs_dict}
+    full_dict={ 'distances': dist_dict, 'ls': ls_dict, 'bs': bs_dict}
 
     import pickle
     with open(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', 'wb') as file:
                pickle.dump(full_dict,file)
 
-    with open(wisps.OUTPUT_FILES+'/distance_limits.pkl', 'wb') as file:
-               pickle.dump(dist_limits,file)
-
     import wisps.simulations.effective_numbers as eff
-    eff.simulation_outputs(recompute=True, hs=hs)
+    eff.simulation_outputs(recompute=True, hs=wispsim.HS)
 
 

@@ -27,6 +27,8 @@ import numba
 from scipy import stats
 from ..utils.tools import get_distance, make_spt_number
 
+POLYNOMIAL_RELATIONS= pd.read_pickle(OUTPUT_FILES+'/polynomial_relations.pkl')
+
 from functools import lru_cache #high performance memoization
 
 #################
@@ -192,9 +194,12 @@ class Spectrum(object):
         """
         Uses splat.classifyByStandard to classify spectra using spex standards
         """ 
+        comprange=[[1.2, 1.5]]
         val=splat.classifyByStandard(self.splat_spectrum, **kwargs)
+        if  np.nanmin(self.wave) <=.85:
+            comprange=[[0.95, 1.6]]
         if make_spt_number(val[0]) > 39:
-            val=splat.classifyByStandard( self.splat_spectrum, comprange=[[1.2, 1.5]],  stat = 'stddev' )
+            val=splat.classifyByStandard( self.splat_spectrum, comprange=comprange,  stat = 'stddev' )
         self._spectral_type=val[0]
 
     def normalize(self, **kwargs):
@@ -449,7 +454,33 @@ def f_test(spectrum, **kwargs):
     result={'spex_chi':spexchi, 'line_chi':linechi, \
     'x':x, 'f':f, '_best_fit_line': [line, linechi]}
     return result
-	
+
+def distance(mags, spt):
+    """
+    mags is a dictionary of bright and faint mags
+
+    set a bias 
+    """
+    res={}
+    
+    f110w=mags['F110W']
+    f140w=mags['F140W']
+    f160w=mags['F160W']
+
+    relations=POLYNOMIAL_RELATIONS
+    nsample=1000
+
+    for k in mags.keys():
+        #take the standard deviation
+        spt=make_spt_number(spt)
+        absmag_scatter=relations['sigma_sp_'+k]
+        absmags=np.random.normal(relations['sp_'+k](spt), absmag_scatter, nsample)
+        relmags=mags[k][0]+np.random.random(nsample)*mags[k][1]
+        dists=get_distance(absmags, relmags)
+        res[str('dist')+k]=np.nanmean(dists)
+        res[str('dist_er')+k]=np.nanstd(dists)
+
+    return res
 def kde_statsmodels_m(x, x_grid, **kwargs):
     """
     multivariate kde

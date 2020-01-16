@@ -20,7 +20,7 @@ REMOTE_FOLDER=os.environ['WISP_SURVEY_DATA']
 def get_image_path(name, spectrum_path):
 	#print (name)
 	##returns the image path without going through the whole thing again
-	if name.startswith('Par') or name.startswith('par') or name.startswith('hlsp'):
+	if name.lower().startswith('par') or name.startswith('hlsp'):
 		survey='wisps'
 
 	elif name.startswith('goo') or  name.startswith('ud') or  name.startswith('aeg')  or name.startswith('cos'):
@@ -40,6 +40,7 @@ def get_image_path(name, spectrum_path):
 		#print ('stamp image',stamp_image_path )
 	#print (survey, spectrum_path, stamp_image_path)
 	return survey, stamp_image_path
+
 
 
 @memoize_func
@@ -87,8 +88,14 @@ def _run_search(name):
             else:
                 folder=name.split('-')[0]
                 n=name
-            path=REMOTE_FOLDER+'wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+folder+'/1dspectra/*'+n+'*a_g141_*'
-            path=glob.glob(path)[0]
+
+            path1=REMOTE_FOLDER+'wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+folder+'/1dspectra/*'+n+'*a_g141_*'
+            path2=REMOTE_FOLDER+'wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+folder+'/1dspectra/*'+n+'*a_g102-g141_*'
+
+            path=glob.glob(path1)[0]
+            if len(glob.glob(path2)) > 0:
+            	path=glob.glob(path2)[0]
+
         #except:
         #   #search version 5
         #    folder=name.split('_')[0]

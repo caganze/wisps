@@ -30,11 +30,17 @@
 \newcommand{\Msun}{M$_\sun$}
 \newcommand{\chisquare}{$\chi^2$}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%				              MAIN TEXT
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \title{Beyond the Local Volume: Surface Densities of Ultracool Dwarfs in Deep HST/WFC3 Parallel Fields }
 
-\author[0000-0003-2094-9128]{Christian Aganze}
+%\author[0000-0003-2094-9128]{Christian Aganze}
+\author{Christian Aganze}
 \author{Adam J. Burgasser }
 \affiliation{Department of Physics, University of California, San Diego, CA 92093, USA}
 
@@ -57,15 +63,12 @@
 
 
 \begin{abstract}
-Ultracool dwarfs (UCDs) of the L, T, and Y spectral classes are the lowest-mass and coldest objects in the Milky Way. Like stars, they are tracers of Galactic structure and star-formation history, while the cooling of substellar UCDS provide additional probes for galactic archeology and chemical evolution. Wide-field optical and infrared surveys have uncovered thousands of UCDs, but primarily in the immediate solar neighborhood (d \textless 100 pc). To push to larger distances, we have searched over 0.5 deg$^2$ of the WFC3 Infrared Spectroscopic Parallel Survey and the 3D-HST parallel survey with low-resolution near-infrared spectra. We report the discovery of 168 M7-T9 and T dwarfs with spectro-photometric distances up to $\sim$2 kpc for L dwarfs and $\sim$ 400 pc for T dwarfs. We model the number density distribution with population simulations incorporating various assumptions of the intrinsic MF and birth rates, accounting for UCD evolutionary models and Galactic structure. We under-predict the number density of T dwarfs in our simulation, reflecting a larger scale height (h \textgreater 1000 pc) for these old populations. Future infrared sky surveys conducted with the James Webb Space Telescope (JWST) or the Euclid mission will put finer constraints on the true scale height of UCDS. We predict that Euclid will yield $\sim$ $10^4$ L dwarfs and $\sim$ $10^4$ T dwarfs spectra in the Euclid South and Euclid Fornax fields alone for a limiting magnitude of J=24, providing enough statistics to fully characterize UCDs in the Galactic context.
+Ultracool dwarfs (UCDs) of the L, T, and Y spectral classes are the lowest-mass and coldest objects in the Milky Way. Like stars, they are tracers of Galactic structure and star-formation history, while the cooling of substellar UCDS provide additional probes for galactic archeology and chemical evolution. Wide-field optical and infrared surveys have uncovered thousands of UCDs, but primarily in the immediate solar neighborhood (d \textless 100 pc). To push to larger distances, we have searched over 0.5 deg$^2$ of the WFC3 Infrared Spectroscopic Parallel Survey and the 3D-HST parallel survey with low-resolution near-infrared spectra. We report the discovery of 193 M7-T9 and T dwarfs with spectro-photometric distances up to $\sim$2 kpc for L dwarfs and $\sim$ 400 pc for T dwarfs. We model the number density distribution with population simulations incorporating various assumptions of the intrinsic MF and birth rates, accounting for UCD evolutionary models and Galactic structure. We find observations generally consistent with predictions from different two sets of evolutionary models. We find the scale height of L dwarfs to be 20--300 pc while the T dwarf scale height is $\geq$ 400 pc. Future infrared sky surveys conducted with the James Webb Space Telescope (JWST) or the Euclid mission will put finer constraints on the luminosity of UCDs at large distances. We predict that Euclid will yield $\sim 10^3--10^4$ L and T dwarfs spectra in the Euclid South and Euclid Fornax fields alone for a limiting magnitude of J=24, providing enough statistics to fully characterize UCDs in the Galactic context.
 
 \end{abstract}
 
 
-
-%Introduction
 \section{Introduction}
-
 The structure and evolution of the Milky Way is largely inferred from heterogeneous spatial and kinematic distributions of its stars. Star-count data show that the overall structure conforms to a younger population fit to one or more exponential disks and an older population fit to a power-law or oblate spheroid \citep{1978AJ.....83.1163D,1981ApJS...47..357B,2008ApJ...673..864J}; and models show that the disk started forming stars 8--11 Gyr ago, while the halo star-formation history dates to 10--13 Gyr ago from possible multiple merger events. Hence, halo stellar populations contain stars with ages comparable to the age the universe \citep{1998ApJ...497..294L,2009ARA&A..47..371T,2013A&A...560A.109H}. Questions relating to the formation and evolution of the Galaxy through its stars constitute the field of Galactic archeology \citep{1987ARA&A..25..603F,2012ARA&A..50..251I}, which, through the usage of large sky surveys (e.g the Sloan Digital Sky Survey, \citealt{2000AJ....120.1579Y}), has enabled a 6-dimensional depiction of the Galaxy. The Gaia mission \citep{,2018A&A...616A...1G} has recently contributed to our understanding of the Milky Way. Some of the notable discoveries include major merger events that formed the inner stellar halo and thick disk (Gaia-Enceladus/Gaia sausage: \citealt{2018Natur.563...85H,2018MNRAS.478..611B, 2018ApJ...856L..26M,Gallart_2019}, and the Sequoia event: \citealt{2018ApJ...856L..26M,2019MNRAS.488.1235M}), the discovery and characterization of hypervelocity stars \citep{2018MNRAS.479.2789B}, stellar streams as probes of the Galactic potential and dark matter profile \citep{Boubert_2018,2018MNRAS.481.3442M,2019arXiv190908924K}. The Gaia mission has also enabled the discovery of substructure in the solar neighborhood in the galactic disk caused by phase mixing in velocity space, from possible interactions with the spiral structure of the Galaxy \citep{2018Natur.561..360A}.
 
 Ultracool dwarfs (UCDs; M $\lesssim$0.1\Msun, {\teff} $\lesssim$3000K; \citealt{2005ARA&A..43..195K}) provide a new approach for studying the Galaxy \citep{2004ApJS..155..191B,Ryan2017}. They constitute $\sim$50\% of the total number of stars and they are abundant in every environment in the Galaxy \citep{2007AJ....133..439C,2000ARA&A..38..337C,2001RvMP...73..719B,2010AJ....139.2679B}. Stellar UCDs have lifetimes far in excess of the age of the Galaxy (\textgreater 10$^3$ Gyr, \citealt{1997ApJ...482..420L}), while substellar UCDs (brown dwarfs) do not fuse hydrogen and hence cool down with time \citep{1963PThPh..30..460H}. They have distinct spectra shaped by strong molecular absorption bands that are highly sensitive to temperature, surface gravity and metallicity. The evolution of UCDs provides potential age diagnostics that have already been exploited in stellar cluster studies \citep{1998ASPC..134..394B,luhman2012,martin2017} and searches of young moving groups near the Sun (\citealt{LopezSantiago2006}, \citealt{Gagne2015}, \citealt{Mamajek2015}, \citealt{Faherty2018}).
@@ -74,22 +77,18 @@ UCDs have historically been discovered in red optical and infrared sky surveys (
 
 Deep pencil-beam imaging surveys provide a novel approach to use star-count data in characterization of UCD populations beyond the local volume. A common approach is to use photometric selections cuts anchored to known sample. Early work by \cite{1997ApJ...482..913G} conducted an M-dwarf number counts to measure the halo luminosity function of the Hubble Space Telescope's Wide Field Camera 2 (HST-WFC2) and Planetary Camera (PC1) Deep Fields. They found 47 M dwarfs with M$_V$ \textgreater 13.5, and the distribution was consistent with a power law the mass function that turns at M $\sim$0.6 \Msun from $\alpha$=-1 to $\alpha$=0.44. Subsequent studies by \cite{1997A&A...328....5K, 1997A&A...328...83C} concluded that the contribution of low-mass stars (M$\sim$0.3 \Msun ) to the halo luminosity function is less than 1\%. \cite{2005ApJ...631L.159R} searched 15 deep parallel fields from the Hubble Space Telescope star-count optical data obtained with the ACS instrument, selected by their i-z colors. They estimated a scale of $\sim$350 pc for L \& T dwarfs. Later work by \cite{Ryan2011} found 17 late M, L and T dwarfs in 231.90 arcmin$^2$ of WFC3 imaging of the GOODS fields using a combination of wide and narrow-band filter colors. They estimated a disk scale height of 290$\pm$39pc consistent with work by \cite{2005ApJ...622..319P}. In addition to poor estimate of spectral types, these samples were contaminated with various non-stellar sources that could not be identified in the absence of spectral information. To push towards a larger and pure sample, \cite{Holwerda2014} identified  274 in 227 arcmin$^2$ M-dwarfs (to a limiting magnitude F125W=25) from the HST-WFC3 Brightest of Re-ionizing Galaxies (BoRG, \citealt{2009ApJ...695.1591P}) survey, using an optical and near-infrared colors and determined their spectral types using V-J color-M-dwarf subtype relation (\citealt{2009ApJ...695.1591P}). They found a slightly higher density of M-dwarfs identified in the Northern fields compared to the Southern Fields, and a  disk scale-height of 0.3--4kpc with a dependence on subtype. The overall M-dwarf scale height was $\sim$600 pc, a number that is much larger than previous estimates mostly due to large uncertainties in the fit. \cite{Vledder2016} reanalyzed these data using a Markov Chain Monte Carlo method to fit the statistic to a galactic model including a thin disk, thick disk, and halo component. They derived a scale height of $290^{+20}_{-19}$ pc and a central number density of $0.29^{+0.20}_{-0.13}$ pc$^{-3}$, with no correlation of model parameters with M-dwarf subtype, and consistent with previous studies. However, these studies do not probe statistics for later types. Recent work by \cite{Sorahana2018} found 3665 L dwarfs brighter than z=24 by searching 130 square degrees of the Hyper Suprime-Cam Subaru Strategic Program data and found an average L-dwarf scale height of 340--420 pc. \cite{2019arXiv190310806C} compiled a list of 11,745 photometrically classified L0-T9 dwarfs distances up to $\sim$ 400 pc by searching $\sim$2,400 deg$^2$ of the Dark Energy Survey (DES) data at a limiting magnitude of z=22. They estimated a large scale height of $\sim$ 450 pc. These last two studies provide another constraint on the number density of L dwarfs in the Galaxy using large samples (N\textgreater 10$^3$); however, as in many imaging surveys, poor accuracy in spectral types significantly affects the derived parameters. Ultimately, the large uncertainties on spectral types  of UCDs in imaging surveys poorly constrain their distances, and deep spectroscopic follow-up of these sources is not a priority for precious HST time. 
 
-
 %Spectroscopic/grism surveys
 A parallel approach is to use deep pencil beam samples of spectra in red optical and near infrared (NIR) with no prior selection of source type. NIR spectroscopy, in particular, samples the peak of UCD spectral energy distributions and measure broad molecular features that guide UCD classification schemes (\citealt{2005ARA&A..43..195K}). \citet{2005ApJ...622..319P} identified 18 late M and 2 L dwarfs in the Hubble Ultra Deep Field (HUDF) and estimated their spectral types by fitting templates from \citet{Kirkpatrick2000} to their Gradient-Assisted Photon Echo Spectroscopy (GRAPES, ref) taken with the xxx instrument (ref). This study inferred a disk scale height of 400 $\pm$ 100 pc for M and L dwarfs. Another study by \citet{2009ApJ...695.1591P} used deep Advanced Camera for Surveys (ACS) slitless grism observations of the Probing Evolution And Reionization Spectroscopically (PEARS) fields (as part the Great Observatories Origins Deep Survey (GOODS) fields, \citealt{Giavalisco2004}) down to a z=25 and spectroscopically identified 43 M4-M9 dwarfs. Using a thick and thin disk model, the study estimated a scale height for the thin disk of $\sim$370 pc, and $\sim$100 pc for the thick disk, a halo fraction between 0.00025--0.0005 consistent with previous estimates. 
 
 \citealt{2012ApJ...752L..14M} discovered 3 late T dwarfs the WFC3 infrared Spectroscopic Survey ( WISPS) fields (\citealt{2010ApJ...723..104A}) identified by their strong \meth and \wat absorption features. The sample size was not large enough to put meaningful constraints on the scale height or the luminosity function L and T dwarfs beyond the local volume. In this paper, we expand upon this study by developing an effective method to select UCDs in similar surveys.
 
-
 Section \ref{sec:data} describes the data, section \ref{sec:selectionp} describes the selection process, section \ref{sec:simulations} discusses the result compared to a Monte-Carlo simulation
 
 \section{Data}\label{sec:data}
-
 We obtained data from two surveys: the WFC3 Infrared Spectroscopic Parallel Survey (WISPS, \citealt{2010ApJ...723..104A}) and 3D-HST ( \citealt{Momcheva2016}, \citealt{2012ApJS..200...13B}, \citealt{Skelton2014}). These two surveys used the IR channel of the WFC3 camera (\citealt{doi:10.1117/12.789581}) providing low-resolution G102 ($\lambda$ = 0.8--1.17 $\micron$, R$\sim$210) and G141 ($\lambda$ = 1.11--1.67 $\micron$, R $\sim$130) grism spectra. Removal of the slit mask allows for the overlapping spectra of the 136$\times$123 arcsec inner FOV of the WFC3 camera. Figure \ref{fig:par1} shows an WCF3 exposure of one of fields in WISP.
 
 
 \subsection{3D-HST survey data}
-
 %general description: wwhich fields
  3D-HST a parallel survey of 248-orbits spanning $\sim$600 arcmin$^2$ as part of Hubble Cycles 18 \& 19. This survey targets four standard deep extra-galactic fields: The All-wavelength Extended Groth Strip International Survey (AEGIS, \citealt{1538-4357-660-1-L1} ), Cosmic Evolution Survey (COSMOS, \citealt{Scoville2007}), Ultra-Deep Survey(UKIDSS-UDS, \citealt{2007MNRAS.379.1599L}), the Great Observatories Origins Deep Survey (GOODS-South and GOODS-North, \citealt{Giavalisco2004}), using the ACS/G800L and WFC3/G141 grisms in parallel. The goal of 3D-HST is to obtain as the the Cosmic Assembly Near-infrared Deep Extragalactic Legacy Survey(CANDELS survey, \citealt{2011ApJS..197...35G}, \citealt{2011ApJS..197...36K}. However, 3D-HST is only 70\% of the total footprint of the CANDELS. Photometric catalog data products are described in \cite{Skelton2014} and combined data products in \cite{Momcheva2016}
 
@@ -102,7 +101,6 @@ Data reduction in 3D-HST involves reducing the both the direct F140W images and 
 We used data products described by \cite{Momcheva2016} and the photometric catalog of sources in \cite{Skelton2014} retrieved from the survey's website \footnote{\url{https://3dhst.research.yale.edu/Home.html}}. The extracted 1D spectra in 3D-HST survey are not continuum-corrected as shown in Figure \ref{fig:sensitivity}. We obtained a correct continuum of each 3D-SHT spectrum by dividing the flux of the spectrum and the sensitivity curve of the detector provided in the data. We did not perform any additional reduction to the data.
 
 \subsection{WISP survey data}
-
 The WISP survey is a 1000-orbit HST pure-parallel survey covering 390 fields ($\sim$1500 arcmin$^2$) that follows observing programs accepted on the Cosmic Origins Spectrograph (COS) and Space Telescope Imaging Spectrograph (STIS). The survey's observing strategy as well as data-reduction is described in \cite{2010ApJ...723..104A}. The goal of WISPS is to conduct a census of star-forming high-redshift galaxies. The fields in WISPS were chosen away from the galactic plane and  5.5 and 4.75 arcmin away from the fields of COS and STSIS. Given the pure-parallel nature of this survey, the fields are observed in G102, G141 grism with no dithering between exposure. Reference images were also taken using F110W (corresponding to G102) and F140W (corresponding to G141) imaging cameras. To reach the same depth in both G102 and G141, the ratio of exposure times was fixed at 2.4:1, while the exposure ratio of exposure times for imaging and grism is 6:1.
 
 Data reduction and grism extraction was performed using a combination of \texttt{AXe} software \citep{Kuntschner2013, Kummel2009} and custom IDL pipelines to remove additional background and to flag bad pixels. The main sources of background are zodiacal light, and earth thermal emissions. Grisms spectra in WISPS have little crowding of the same fields given their high galactic latitudes, but multiple spectral orders do overlap. WISPS provides an estimate of contamination of each spectrum computed using \texttt{AXe} and source catalogs in WISPS were generated using SExtractor \citep{1996A&AS..117..393B}. We obtained WISPS G102 and G141 grism data as well as broad-band F110W, F140W, F160W photometric data and source catalogs from the Mukuliski Archive for Space Telescope (MAST \footnote{\url{https://archive.stsci.edu/prepds/wisp/}} ). 
@@ -110,22 +108,19 @@ Data reduction and grism extraction was performed using a combination of \texttt
 
 \section{Selection of UCDs}\label{sec:selectionp}
 
-\subsection{Calibration Samples}\label{trainset}
-
-To find a sample of UCDs in WISPS \& 3D-HST data, we created a calibration sample of known UCDs, with similar features, e.g spectral coverage and resolution to define our selection methods and quantity their efficiencies and biases. We obtained 2056 M7-T9 low-resolution ($\sim$75-120), NIR (0.9-2.5 $\micron$) spectra of nearby brown dwarfs with median SNR \textgreater 10 from the SpeX Prism Library (SPL, \citealt{2014arXiv1406.4887B}, \url{https://cass.ucsd.edu/~ajb/browndwarfs/spexprism/library.html}) of UCDs. We will refer to this sample as the templates/SpeX sample. In addition, we compiled a list other UCD spectra taken with the same instrument. We used the 77 UCDs from \cite{Manjavacas2018} observed with the WFC3 as part of a study of cloud properties of hot Jupiters and brown dwarf atmospheres and compilation of a WFC3 UCD library. The Schneider dataset is a list of 22 Y dwarfs obtained by \cite{Schneider2015} using the WFC3 camera with the same resolution and wavelength coverage. These objects were targeted as a part of a program to determine spectroscopic markers of the T/Y dwarf transition. We combined these three sets of spectra. 
+\subsection{Calibration Samples}\label{sec:trainset}
+To discover new UCDs in the WISPS \& 3D-HST data, we created a calibration sample of known UCDs, with similar features, e.g spectral coverage and resolution. We obtained 2056 M7-T9 low-resolution ($\sim$75-120), NIR (0.9-2.5 $\micron$) spectra of nearby brown dwarfs with median SNR \textgreater 10 from the SpeX Prism Library (SPL, \citealt{2014arXiv1406.4887B}, \footnote{\url{https://cass.ucsd.edu/~ajb/browndwarfs/spexprism/library.html}}) of UCDs. We will refer to this sample as the templates/SpeX sample. In addition, we compiled a list other UCD spectra taken with the same instrument. We used the 77 UCDs from \cite{Manjavacas2018} observed with the WFC3. Finally, we obtained a list of 22 Y dwarfs obtained by \cite{Schneider2015} using the WFC3 camera. 
 
 \subsection{Pre-selection}
-
 \subsubsection{Point-source Cut}
-
-We combined all grism data and photometry from both surveys and obtained a total of 271915 grisms that have corresponding photometry in the provided photometric catalogs. To narrow down our selection, point sources were identified using \texttt{Source Extractor}'s stellarity index \texttt{CLASS\_STAR} $\neq$0. 3D-HST provides an additional \texttt{star\_flag} flag for point-sources based on their F160W magnitudes and the flag \texttt{FLUX\_RADIUS}, but we find that this flag eliminates 3 UCDs from 3D-HST in the selected sample of UCDs, hence the flag was ignored. We reduced the sample down to 110930 spectra, that is 40.7\% of the total number of spectra.
+We combined all grism data and photometry from the two surveys and obtained a total of 271915 objects that have corresponding photometry in the provided photometric catalogs. To narrow down our selection, point sources were identified using \texttt{Source Extractor}'s stellarity index \texttt{CLASS\_STAR} $\neq$0. 3D-HST provides an additional \texttt{star\_flag} flag for point-sources based on their F160W magnitudes and the flag \texttt{FLUX\_RADIUS}, but we find that this flag eliminates 3 UCDs from 3D-HST in the selected sample of UCDs, hence the flag was ignored. We reduced the sample down to 110930 spectra, that is 40.7\% of the total number of spectra.
 
 
 \subsubsection{J-band SNR rejection }
-UCDs display a strong \wat and \meth absorption features in the J and H bands. We do not expect other objects in this survey to display similar molecular broad features, hence to narrow down our selection, we defined a signal-to-noise ratio in the J-band continuum (hereafter J-SNR) in the wavelength region of 1.2 $\micron$ $\leq$ $\lambda$ $\leq$1.3 $\micron$. This J-SNR captures the amount of flux in the J-band, hence we eliminated the lowest SNR objects my making a cut at J-SNR= 3 retaining 46370 spectra/grisms, that is 38.7 \% of the original point-source sample and 15.8\%of the total number of spectra. We also measured the J-SNR for all the spectra in our calibration samples in a similar fashion.
+UCDs display a strong \wat and \meth molecular absorption features in the J and H bands (1.1-1.6 \micron). We do not expect other objects in this survey to display similar molecular broad features, hence to narrow down our selection, we defined a signal-to-noise ratio in the J-band continuum (hereafter J-SNR) for 1.2 $\micron$ $\leq$ $\lambda$ $\leq$1.3 $\micron$. This J-SNR captures the amount of flux in the J-band, hence we eliminated the lowest SNR objects my making a cut at J-SNR=3 retaining 46370 spectra/grisms, that is 38.7\% of the original point-source sample and 15.8\% of the total number of spectra including extended objects. We also measured the J-SNR for all the spectra in our calibration samples in a similar fashion.
 
 \subsection{Spectral Fitting and F-test}
-After the J-SNR cut, we fitted spectra to UCDs SpeX spectra of spectral standards using a $\chi^2$ minimization method, following the method of \cite{2010ApJS..190..100K}. We obtained a spectral type classification all available WISP and 3D-HST spectra. We also compared every spectrum to a straight line in the same wavelength region and measured $\chi^2$.  These two fits help distinguish between spectra that could potentially have absorption features in this region, and spectra that have no interesting features  and/or noisy spectra in this wavelength region. The  $\chi^2 $ of a line ($\chi^2 _L $) or a standard ($\chi^2 _T $) is given by 
+A quick look through data shows that the type of expected contaminants after the point-source cuts includes miss-classified galaxies and emission lines, flat spectra that corresponds to very low SNR objects and/or the continuum of other objects that show features in wavelength regions outside 1.1-1.6 \micron, and other artifacts. To further narrow down our selection of UCD after the J-SNR cut, we fitted each spectrum to UCDs SpeX spectra of standards using a $\chi^2$ minimization method, following the method of \cite{2010ApJS..190..100K}. Hence, we obtained a spectral type classification all point-sources. We also compared every spectrum to a straight line in the same wavelength region and measured $\chi^2$. These two fits help distinguish between spectra that could potentially have absorption features in this region, and spectra that have no interesting features spectra in this wavelength region. The  $\chi^2 $ of a line ($\chi^2 _L $) or a standard ($\chi^2 _T $) is given by 
 \begin{equation}
 \chi^2 _L  = \sum _{\lambda = 1.15 \micron} ^{ 1.65 \micron} \frac{(a + b \lambda-\text{Sp} )^2}{ \sigma ^2 }
 \end{equation}  
@@ -136,164 +131,129 @@ $\alpha$ is scale-factor defined as
 \begin{equation}\alpha= \sum _{\lambda = 1.15 \micron} ^{ 1.65 \micron} \frac{(\text{Sp} - \alpha T)^2}{\frac{T^2}{\sigma ^2 }} 
 \end{equation} $\text{Sp}  (\lambda)$ is a WISP or 3D-HST spectrum and $\sigma ^2 $ is the noise in the WISP or 3D-HST spectrum a and b are the parameters of the best-fit line from least-squares and  T is the template.
 
- We then use an F-fest as a statistical hypothesis testing static to separate noisy/linear spectra from the rest of the sample implemented by \texttt{Scipy} \citealt{scipy} as \texttt{scipy.stat.f.cdf}. A flat spectrum is defined as having F($\chi^2_s/ \chi ^2 _l)$ \textless 0.4 meaning that the probability of the standard being a better fit to the spectrum than a line is \textless than 40\%. This cut yields only 8148 objects, that is 18.9\% of point-sources with J-SNR\textgreater3, 7.3\% of all point-sources and 3\% of the original number of spectra we obtained from both surveys. These three steps eliminated most of the noisy contaminants.
+We used an F-fest as a statistical hypothesis testing static to separate noisy/linear spectra from the rest of the sample implemented. We decided to eliminate sources with F($\chi^2_s/ \chi ^2 _l)$ \textless 0.4 meaning that the probability of the standard being a better fit to the spectrum than a line is \textless than 40\%. This cut yields only 8148 objects, that is 18.9\% of point-sources with J-SNR\textgreater3, 7.3\% of all point-sources and 3\% of the original number of spectra we obtained from both surveys. These three steps eliminated most of the noisy contaminants.
 
 \subsection{Spectral Indices}
-
-After eliminating noisy and possible extra-galactic contaminants, we narrowed down the selection to true UCDs. UCDs display strong \meth and \wat molecular features in 1.1 $\micron$ \textless $\lambda$ \textless 1.7 $\micron$  region \citep{2001PhDT.......116B}, they can be separated from other stellar/galaxy populations using these features. Spectral Indices have traditionally been used to determine spectral types (\citealt{1999AJ....117.1010T}, \citealt{2000AJ....119.3019C}, \citealt{2007ApJ...657..511A}, \citealt{2007ApJ...658..557B}). Thus, we defined  spectral indices in five wavelength bands: 1.15--1.20 \micron, 1.246--1.295 \micron, 1.38--1.43 \micron,  1.56--1.61 \micron, or 1.62--1.67 \micron; denoted by H$_2$O-1, J-Cont, H$_2$O-1, H-Cont, and \meth respectively. Each index is the ratio of the median flux in these bands and the uncertainties for each index are estimated by random sampling, assuming these uncertainties are Gaussian-distributed. The index is
+After eliminating noisy and possible extra-galactic contaminants, we narrowed down the selection to true UCDs. As mentioned, UCDs display strong \meth and \wat molecular features in 1.1 $\micron$ \textless $\lambda$ \textless 1.7 $\micron$ region \citep{2001PhDT.......116B}. Spectral Indices have traditionally been used to determine spectral types (\citealt{1999AJ....117.1010T}, \citealt{2000AJ....119.3019C}, \citealt{2007ApJ...657..511A}, \citealt{2007ApJ...658..557B}). Thus, we defined  spectral indices in five wavelength bands: 1.15--1.20 \micron, 1.246--1.295 \micron, 1.38--1.43 \micron,  1.56--1.61 \micron, or 1.62--1.67 \micron; denoted by H$_2$O-1, J-Cont, H$_2$O-1, H-Cont, and \meth respectively. Each index is the ratio of the median flux in these bands and the uncertainties for each index are estimated by random sampling, assuming these uncertainties are Gaussian-distributed. The index is
  given by \begin{equation} Index=\frac{ \langle  F(\lambda_1<\lambda < \lambda_2) \rangle }{  \langle F(\lambda_1 < \lambda <\lambda_2) \rangle }\end{equation}, where at each wavelength i, we draw fluxes normally distributed according to the noise in the spectrum: \begin{equation} \{F(\lambda _i)\} \sim \text{Normal} (<F(\lambda_i)>, \sigma(\lambda_i )) \end{equation}. $\sigma(\lambda_i ))$ is the noise at that wavelength, and $<F(\lambda_i )>$ is the flux at that wavelength.
 
-%Best selection criteria for each subtype
-We defined selection criteria using boxes/parallelograms in each of 45 independent, index-spectral index spaces. We expect UCDs with similar spectral types to cluster or follow a linear trend, away from the contaminants while the evolution of the relative strength \wat and \meth bands with subtype should distinguish classes. We chose the following subtypes given their similarities : M7-L0, L0-L5, L5-L0, T0-T5, T5-T9, Y dwarfs and subdwarfs, however, these distinction need not be as rigid.
+After defining these indices based on the features of interest, we created a selection method that we will reefer to as selection criteria. We defined these selection criteria using geometric boxes/parallelograms in each of a given 2-dimensional index-index space. We expect UCDs with similar spectral types to cluster or follow a linear trend away from the contaminants, while the evolution of the relative strength \wat and \meth bands with subtype should distinguish subtype classes. We chose the following to group objects in the following subtypes: M7-L0, L0-L5, L5-L0, T0-T5, T5-T9, Y dwarfs and subdwarfs. 
 
-To define the parameters of each selection criterion/box, we fitted a characteristic line to each index pair (x-index, y-index) within a subtype, defining the slope/direction of the box: y=m$\times$x-index+b. Each box has four vertices (v$_1$, v$_2$, v$_3$, v$_4$)  computed as 
-$\text{(xmax, xmin)}= \text{median(x-index)} \pm 3 \times \text{std(x-index)}$. On the x-axis, if xmax is greater than the maximum of x-index, or  if xmin is less than the minimum of the x-index, i.e the box extends beyond the subtype, we set x-min and x-max and the minimum and maximum of x-index respectively. The extent of the boxes on the y-axis are determined by $\text{(ymax, ymin)}= m \times \text{(xmax, xmin)} + b \pm 0.4 \times dy$, where dy is the range of y-index (max(y-index)-min(y-index)). From these values, we define v1= (xmin, ymax), v2=(xmin, ymin), v3=(xmax, ymax), v4=(xmax, ymin). These boxes are designed to enclose most of the objects in each subytpe and to avoid outliers. We used rectangular boxes, for their simplicity, and low-contaminations for subtypes M7--L0, L0--L5, L5--T0, and Y dwarfs, where the vertices were determined in the same manner but with m=0 and b= median(y-index). 
+To define the parameters of each box, we fitted a characteristic line to each index pair (x-index, y-index) within a subtype, defining the slope/direction of the box: y=m$\times$x-index+b. Each box has four vertices (v$_1$, v$_2$, v$_3$, v$_4$) . These vertices are computed as v1= (xmin, ymax), v2=(xmin, ymin), v3=(xmax, ymax), v4=(xmax, ymin), where $\text{(xmax, xmin)}= \text{median(x-index)} \pm 3\times \text{std(x-index)}$. On the x-axis, if xmax is greater than the maximum of x-index, or if xmin is less than the minimum of the x-index, we set x-min and x-max and the minimum and maximum of x-index. The extent of the boxes on the y-axis are determined by $\text{(ymax, ymin)}= m \times \text{(xmax, xmin)} + b \pm 0.4 \times dy$, where dy is the range of y-index (max(y-index)-min(y-index)). This simple algorithm allows our selection boxes to enclose most of the objects in the subytpe, avoid outliers but not extend too far from away the defining sample. For M, L dwarfs, however, we used rectangular boxes, for their simplicity where the vertices were determined in the same manner but with a slope of zero for the line (m=0) and a y-intercept of b= median(y-index). 
 
-To assess the effectiveness of this method, we defined a completeness and a contamination statistic for each of the subtype group  as follows: 
+To assess the effectiveness of this method, we defined a completeness based on our calibration samples and a contamination statistic as follows: 
  \begin{equation} CP=\frac{TEMP_s}{TEMP_{tot}} \end{equation}
-\begin{equation} CT= \frac{WFC3_s}{WFC3_{tot}} \end{equation} where $TEMP_s$ is the number of templates selected by the box, $TEMP_{tot}$ is the total number of SpeX templates, $WFC3_s$ is the number of WISPS and/or 3D-HST spectra selected by the box, $WFC3_{tot}$ = 8148 is the total of spectra. We only employed criteria with the lowest contamination and highest completeness to select UCDs. The best criteria for each of the subtype groupings are  those with less than 1\% contamination (except for subdwarfs) and with \textgreater 90\% completeness; they are summarized in Table \ref{tab:criteria}. 
+\begin{equation} CT= \frac{WFC3_s}{WFC3_{tot}} \end{equation} where $TEMP_s$ is the number of templates selected by the box, $TEMP_{tot}$ is the total number of SpeX templates, $WFC3_s$ is the number of WISPS and/or 3D-HST spectra selected by the box, $WFC3_{tot}$ = 8148 is the total of spectra. We only employed criteria with the lowest contamination and highest completeness to select UCDs. 
 
-%THE BEST CRITERIA 
-As a naming convention, each criteria is named by the ratio of indices on the x-axis and the ratio of fluxes on the y-axis. The best selection criteria are the following for each subtype are: \indxwat-1/J-Cont \indxwat-2/\indxwat-1 for the subtype of L0-L5 sensitive to the \indxwat absorption feature in the J-band; \indxwat-1/J-Cont \indxmeth/H-Cont for the L5-T0 sampling the relative ratio of \indxwat and \meth features; \indxwat-1/J-Cont \indxmeth/\indxwat-1 for the M7-L0 subtypes, sensitive to the \wat in the J-band and \meth features; \indxwat-2/J-Cont \indxmeth/H-Cont for the T0-T5 subtypes, sensitive to the \wat and \meth in the H-band; H-cont/\indxwat-1 \indxmeth/J-Cont for the T5-T9 subtypes, sensitive to \wat and \meth. We use the index \indxmeth/\indxwat-1 \indxwat-2/J-Cont to select Y dwarfs from the Schneider sample and  \indxwat-1/J-Cont \indxmeth/J-Cont for the subdwarfs in the SpeX sample. In total, we selected 2910 spectra out of 8148. The large number comes from high contaminations for the M7-L0 and subdwarf boxes. 
- 
+%Best selection criteria for each subtype 
+As a naming convention, each criteria is named by the ratio of any two indices on the x-axis and the y-axis. To select Y dwarfs, indices are defined by adding the strength of \wat and \meth bands given that these features in weak for these subtypes. For the rest of the subtypes, we defined one best selection criteria with the lowest contamination and with $\sim$90\% completeness; they are summarized in Table \ref{tab:criteria}. The best selection criteria for each subtype are: (\indxwat-1/J-Cont,  \indxwat-2/\indxwat-1) for L0-L5 measuring the strength of \wat relative to the J-continuum, (  \indxwat-1/J-Cont, \indxmeth/H-Cont) for L5-T0 measuring the strength of \wat and \meth relative to both the J and H-continua, (\indxwat-1/J-Cont, \indxmeth/\indxwat-1) for M7-L0 measuring the strength of \wat and \meth relative to the J-continuum, (\indxwat-2/J-Cont, H-cont/J-Cont) for T0-T5 subtypes measuring the strength of \wat in the H-band and \meth relative to both continua,  (\indxwat-2/J-Cont, \indxmeth/H-Cont) for T5-T9 measuring the strength of \meth relative to both continua, and (\indxwat-1/J-Cont, H-cont/J-Cont) for subdwarfs measuring the strength of \wat and \meth relative to the J-continuum. There are 45 possible combinations of these 10 index ratios but we chose these for their low contamination. Finally, to select Y dwarfs, as stated, we added the strength of \wat and \meth in both bands given the flux in these regions for Y dwarfs is extremely weak. The index of choice is (\indxwat-2+\indxmeth/J-contm \indxwat-1+\indxmeth/H-cont) for Y dwarfs. Having decided on the selection criteria, we applied these to the 8148 objects. We selected a total of 2174 objects for visual inspection selected per subtype as follows: L0-L5=530, L5-T0=437, M7-L0=1413, T0-T5=160, T5-T9=14, Y dwarfs=19, subdwarfs=314. The greatest contribution to the contamination comes from the M7-L0 box given the relative weakness of absorption features for these earlier types. 
+
 As a final step, after all selection has been applied, we visually inspected all the candidates UCDs to confirm their spectral type, and to remove missed outliers. We estimated the false positive rates for our methods after visual inspection and characterization of the UCDS. The false positive rate (FP) is given by \begin{equation}
 FP=1-\frac{WFC3_{true}}{WFC3_{s}}
-\end{equation} where WFC3$_{true}$ is the total number of objects that are in the spectral type range, and that are true UCDs. Our best selection criteria have FPs \textgreater 90\% which is to box expected given the number of true UCDs is much smaller than the number of spectra. Nevertheless, the number of spectra targeted for visual contamination have been down-selected from more than 200000 to $\sim$ 3000. 
+\end{equation} where WFC3$_{true}$ is the total number of objects that are in the spectral type range, and that are true UCDs. Our best selection criteria all have FPs between 70-100\% which is to be expected given the number of true UCDs is much smaller than the number of spectra. Nevertheless, the number of spectra targeted for visual contamination have been down-selected from \textgreater 200000 to $\sim$ 2000. 
 
 
 \subsection{Random Forest Classifier}
+[MIGHT HAVE TO REMOVE THIS SECTION]
 %justification
-As an alternative to using selection boxes in 2D-space, we trained a random forest classifier by deploying \texttt{RandomForestClassifier} implementation by \texttt{scikit-learn} \citep{2012arXiv1201.0490P} to classify potential UCDs in both surveys. Random forests have been shown to reliably predict M-dwarf subytpes based on colors \citep{2019arXiv190505900H} analogous to spectral indices. In addition, random forests have been proven to perform star-galaxy classification in transient surveys, using photometry alone \citep{2017AJ....153...73M}. Random forest algorithms use a set of independent decision trees constructed based on a random set of features, they assign a final label by averaging the classifications obtained by each decision tree. Furthermore, random forests are a reliable method used to obtain classification for large datasets, given that the algorithm is relatively fast, unbiased by noisy features and easy to implement.
+As an alternative to using selection boxes in 2D-space, we trained a random forest classifier by deploying \texttt{RandomForestClassifier} implementation by \texttt{scikit-learn} \citep{2012arXiv1201.0490P} to classify potential UCDs in both surveys. Random forests have been shown to reliably predict M-dwarf subytpes based on their photometric colors \citep{2019arXiv190505900H}, which are analogous to spectral indices. In addition, random forests have been proven to perform star-galaxy classification in transient surveys, using photometry alone \citep{2017AJ....153...73M}. Random forest algorithms use a set of independent decision trees constructed from a random choice of features, they assign a final label by averaging the classifications obtained by each decision tree. Furthermore, random forests are practical method to classify large datasets, given that the algorithm is relatively fast, unbiased by noisy features.
+%training set
+ We constructed a training set of 6308 objects made of 3612 visually inspected contaminants obtained from several iteration of the box-selection method, 2677 objects from the spex-prism library and 19 objects from the Schneider set. We labeled these sources using two labels: UCDs, which are objects with spectral types $\geq$ M6, and non-UCDs which are objects with spectral types $\leq$ M6 and/or part of the set of visually confirmed contaminants. Although the difference between an M6 UCD and M7 UCD is not as rigid, we make this cut to reduced biases in selection objects with subtypes $\geq$ M7. In addition, all objects in the training set have a J-SNR $\geq$3. This labeling results in  4009 objects labeled as UCDs (label=1) 2299 and with label=0
+%features and results
+Choosing an appropriate set of features is an important part of designing a good machine learning classifier. By intuition, spectral indices are a good set of features to use. We added the J-SNR, $\chi^2 _L$ , $\chi^2 _T$ and the F-test value as additional features. For missing features, we replaced those values with -99999.9 and scaled all features in the range [0, 1] using \texttt{MinMaxScaler}. To test the accuracy of our classifier, we used 2-fold cross validation score (CV) and split the training by 50\% and 50\% partitions (similar to the procedure of \citealt{2017AJ....153...73M}) and obtained a CV accuracy score of $\sim$ 97.6\%. We then used the classifier on the 110930 point-source objects in both surveys with J-SNR\textgreater 3, classifying 78 sources as UCDs. The false positive rate (FP) for this method, using the same definition is $\sim$ 37\%. The great advantage of using a random forest is its low overall false positive rate compared to the previous method, making the visual inspection easier. In addition, this method selects . However, one needs a fully characterized training set to use this method.
 
- The training set of 11019 objects is composed of 8283 visually confirmed non-UCDs from several iteration of the box-selection method in the previous section, 77 objects from the Manjavacas set, 22 objects form the Schneider set. We labeled these sources using two labels: UCDs, which are objects with spectral types $\geq$ M7, and non-UCDs which are objects with spectral types $\leq$ M7 and/or part of the visually confirmed as non-UCDs.  his labeling results in 2148 objects labeled as UCDs (label=1) 8871 and with label=0. 
+\subsubsection{ Absolute Magnitude  Spectral Type Relations }\label{sec:absmags}
+Given the absence of reliable absolute F110W, F140W and  F160W absolute magnitude spectral type relations covering the spectral type range of M5-Y2 in literature, we created an absolute magnitude-spectral type relation to estimate distances of objects in our observed sample, created from J, H relations by \cite{Pecaut2013}. We computed an offset/color between J and H magnitudes and AB F110W, F140W, F160W magnitudes and used this offset to obtain new relations. We used a sample of 322 spectra the SpeX Prism library with measured parallaxes and measured the magnitude and a list of Y dwarfs from the Schneider sample [should change this to Y dwarfs with parallaxes] (\ref{sec:trainset}) and measured their absolute magnitudes by convolving  the flux-calibrated spectrum (the spectrum scaled to its absolute magnitude) with the filter profiles shown in \ref{fig:filterprofiles}.  The uncertainty in each convolution is computed by random sampling. The offset in convolutions between HST filters and J and H filters is then added to the absolute magnitude-spectral type relations in J, H from \cite{Pecaut2013} to obtain an absolute F110W, F140W, F160W magnitude. We then used an linear interpolation method to compute J, H magnitudes and a 6-degree polynomial fit to obtain the relations for F110W, F140W, and F160W.  Error propagation through for these steps is done by standard error propagation formula i.e $\sigma ^2 (F110W-J)$= $\sigma ^2 (J) + \sigma ^2 (F110W)$ for instance. We report these relations and their intrinsic scatter in Table \ref{tab:polynomials} and show them in Figure \ref{fig:absmagrelations}
 
-%feature selection and accuracy scores
-Choosing an appropriate set of features is an important part of designing a good machine learning classifier. By intuition, spectral indices, although they are correlated, are a good set of features to use. We added the signal-to-noise ratio in the J-continuum, the two $\chi^2$s and their ratio, and the F-test value as additional features. For missing features, we replaced those values with -99999.9 and scaled all features in the range [0, 1] using \texttt{MinMaxScaler}. To test the accuracy of our classifier, we use a procedure similar to that of \citep{2017AJ....153...73M}. We used 2-fold cross validation score and split the training by 50\% and 50\% partitions. We computed the accuracy by starting with one index as a feature and then adding additional features. We tracked the accuracy of the classification using cross-validation (CV) scores for each additional feature. With only one spectral index, we achieved a classification score of 75.4\%, with all additional features we achieved a CV score of 98.68 \%. We deployed the classifier on the 110930 point-source objects in both surveys with J-SNR\textgreater 3, classifying 490 sources as UCDs, among which 109 are real UCDs ( M7-T9). The false positive rate (FP) for this method, using the same definition is 77.7\%.
 
 \subsection{Sample Characterization}\label{sec:results}
+\subsubsection{M dwarfs \& General Sample Statistics}
+We found 121 objects with spectral types of M7--M9, these objects are defined by the \wat absorption features. We show the distance distribution of all the UCDs in the sample in Figure \ref{fig:candidedistances}, we find M and L dwarfs up to \sim 3kpc while T dwarfs are limited in the nearby $\sim$ 500 pc. The observed galactic distribution of the UCDs is consistent with the galactic distribution and depths of the pointings in the survey, with a few more sources in the northern fields. Many of the M dwarf detection are robust i.e the major \wat absorption feature between 1.3 -- 1.45 \micron is distinguishable from noise in the spectrum. For WISP spectra, there are additional G102 data displaying other \wat and FeH and TiO features present in UCD atmospheres, confirming their spectral type classification. As an additional check, we visually inspected photometric images obtained using the coordinate positions from the photometric catalogs, and reference images of each pointing in respective filters to visually confirm point-sources and eliminate galaxies or other extended objects missed by the point-source cut and our selection methods. Nevertheless, we included some borderline objects in our sample that possible UCDs based on their 1D G141 spectrum but with unidentifiable in the photometric image, given that source might have moved compared to the reference images used to derive positions of objects in the catalogs. That is the case for M7 GOODSN J1237+6210,  WISP J1224+6112, WISP J2005-4139, COSMOS J1000+0217 and WISP J1006-2953.
 
-\subsubsection{M dwarfs}
-We found 121 objects with spectral types of M7-M9, these objects are defined by the \wat absorption features at distances between 500 pc and 4 kpc. We show the distance distribution of all the UCDs in the sample in Figure (insert fig ). While T dwarfs are limited in the nearby $\sim$ 500 pc, M and L dwarfs are observed up to $\sim$ 3kpc; this includes sources outside our effective limiting magnitude. The observed galactic distribution of the UCDs is consistent with the galactic distribution and depths of the pointings in the survey. The farthest L dwarf is at xxx and the farthest T dwarf is xx at 2000 pc . This sample include 3 T dwarfs identified by \cite{2012ApJ...752L..14M} including perhaps the farthest spectroscopically-identified T dwarf to known. We report the magnitude distribution of our sample in fig xx and table xx. The faintest objects in the sample have magnitudes of F110W=24.3, F140W=25.2, F160W=25.2. 
+\subsubsection{ L \& T dwarfs}
+\paragraph{Early L0-L5 Dwarfs}
+We identified 26 early (L0-L5) L dwarfs in both surveys and 16 in WISP. There are four L0s all in WISP: WISP J1618+3340, WISP J0246-0104, WISP J1429+3224 WISP J1007+1004 and WISP J1715+0455. All four L0 are relatively good fit to the L0 spectral standards and have additional G102 data to confirm their spectral classification, in addition to being identifiable in their photometric cutouts. WISP J1715+0455 G102 spectrum is noisier that its G141, nevertheless the fit to the spectral standard is not robust. These objects are located at distances of $\sim$ 800 pc, 1.3 kpc, 1.1 kpc and 1.4 kpc respectively. We found seven objects classified as L1: UDS J0217-0509, WISP J0015-7955,WISP J1408+5657, GOODSS J0332-2742, WISP J1154+1941, WISP J0927+6027 and WISP J1150-2033 all identifiable in their photometric images except for GOODSS J0332-2742 whose F160W image obtained from the catalog position points to a nearby extended objects. Nevertheless, its 1D- G141 shows molecular absorption features present in UCDs with a J-SNR of 5. As a feature of the WISP survey, G102 spectra are nosier than G141 spectra but the fit to the spectral standard remains robust. We estimated spectro-photometric distances of $\sim$ 700 pc, 1.1koc, 1 kpc, 1.2kpc, 900 pc, 200 pc, and 260 pc respectively for these sources. The next subtype is L2 and we identified two objects all in the GOODS Northern field: GOODSN J1236+6211 and GOODSN J1236+6209 are both identifiable by their G141 spectra and as point-sources in their photometric images, despite GOODSN J1236+6211 being in a crowded field. We estimated distances of $\sim$ 900 pc and 2.4 kpc for both respectively. This makes GOODSN J1236+6211 with a J-SNR of 5, the most distant L/T dwarf in the sample. Next, we discovered three L3 dwarfs, all in the WISP fields: WISP J1544+4844, WISP J1154+1939 and WISPJ1133+0328. The first two objects are borderline cases given their low J-SNR, but all three L3s show strong \wat absorption at $\sim$ 1.4 \micron confirming their spectral types. We estimated distances of 1kpc, 1.3 kpc and 600 pc respectively. In terms of L4s, we found nine objects: WISP J0125-0001, COSMOS J1000+0219, GOODSS J0333-2751, WISP J1019+2743, WISP J1625+5721, GOODSN J1236+6209, WISP J1004+5258, GOODSN J1236+6214, GOODSS J0332-2749. Their spectral traces are all robust, except for WISP J1004+5258 which shows extra flux at 1.4 \micron from possible contamination with nearby objects. GOODSSJ0333-2751 is the highest SNR object in this set and it shows a poor fit on both ends of spectrum that we attribute to the contamination in the spectrum. These nine objects are located at distances of $\sim$ 1.1 kpc, 1.2 kpc, 500 pc, 750 pc, 500 pc, 1.9 kpc, 850 pc, 670 pc and 1.2 kpc respectively. Finally, GOODSN J1235+6211 is the lone L5 object in the sample located at $\sim$ 1kpc with no particular interesting features and a low J-SNR of 6.
 
+\paragraph{L/T transition objects}
+There are two mid-L objects: WISP J1124+4202 and UDS J0217-0509 are both low-SNR objects but they have robust \wat features confirming their classification. They are located at $\sim$ 460 pc and 960 pc respectively.
 
-\subsubsection{ Robust L \& T dwarfs}
-\paragraph{WISP L dwarfs}
-We identified x early (L0-L5) L dwarfs in WISP. WISP 0927+6027 is an L0 dwarf at $\sim$ 320 pc discovered in the Par21 pointing of the WISPS survey. It has an apparent magnitude of F140W=18.6 and fits to the L0 dwarf standard with good agreement except for the wavelength ranges of 1.35 to 1.5 \micron and 1.65 to 1.7 \micron due to a possible underestimation or overcorrection of the contamination in those wavelength regions. WISP 1429+3224 is classified as an L0 at $\sim$ 1.5 kpc discovered in the Par378 pointing of the WISP survey. Its apparent magnitude is F140W=22.4 a it has a low SNR (J-SNR=8). Major \wat strength defining that spectral class are present in the spectrum despite the the rise in noise in certain parts of the spectrum. The apparently visual companion is not a UCD, and was not selected by our methods. WISP 1605+1447 is an L0 dwarf at $\sim$ 1.5 kpc found in the Par240 field of the WISP survey. The fit to the standard is relatively poor, and there is a ramp-up of signal $\lambda$ 1.6 \micron, a typical feature in WISP spectra due to a less-precise estimation of the background. WISP 1004+5258 is an L1 dwarf at $\sim$ 1.8 kpc found in the Par438 field/pointing of the WISP survey. There is a puzzling extra flux at 1.3 micron. This object might not be a UCD. WISP 0246-0104 is an L1 dwarf at $\sim$ 1.5 kpc in the Par438 pointing of WISPS. It is a noisier spectrum, but with major features offering a good fit to the standard. WISP 1150-2033 is classified as L1 at $\sim$ 380 pc. It is a bright detection (F160W= 19.2) with a high SNR (J-SNR = 57). It's a good fit to the standard. WISP 0015-7955 is classified as L1 $\sim$ 1.5 kpc in the Par244 pointing. It is a faint source with a J-SNR of 6 and F140W=22.2 but a relatively good fit to the standard. WISP 1618+3340 is another bright L dwarf in WISPS. It has an apparent magnitude of F110W =21.7 putting it at a distance of $\sim$ 1kpc.  WISP 1133+0328 an L1 at $\sim$1 kpc with F140W=22.0  with no particular interesting features. WISP 1154+1941 is an L1 $\sim$1 kpc in a Par338. The spectrum shows a ramp-up in flux at longer wavelength, a common feature in WISP data. 
+\paragraph{T dwarfs}
+T dwarfs are characterized by stronger \wat absorption \meth features. In our sample, we identified 13 T dwarfs. WISP J1003+2854 is classified as T0 at $\sim$1 kpc. The G141 spectrum displays deep \wat feature at 1.4 \micron, but the spectrum is a poor fit to spectral standards towards the edge of the detector. This object has a magnitude of F160W=23.1 placing it at $\sim$ 600 pc. COSMOS J1000+0217 is also classified as T0 at a distance $\sim$ 900 pc. There 3 T1 objects in the sample: WISP J1115+5257, WISP J0326-1643 and WISP J1150-2033 at distances of 950 pc, 770 pc and 620 pc respectively. The first two objects have additional G102 spectra that further confirm their classification while WISP J1150-2033 does not appear in the photometric cutout, making it a borderline detection. For later types, the strength of the \meth absorption feature at $\sim$ 1.61 \micron is more pronounced. We found 2 T3 dwarfs: GOODSS J0332-2749 and WISP J0437-1106 at respective spectro-photometric distances of $\sim$ 450 and 820 pc respectively.  WISP J0437-1106 additional G102 data further confirms its spectral classification. In terms of mid-to late T dwarfs, we found 3 objects previously discovered by \cite{2012ApJ...752L..14M}. WISP0307-7243 is classified as T4 at $\sim$500 pc, WISP J1232-0033 is classified as T7 at $\sim$200 pc and  WISP1305-2538 is classified as T9 at $\sim$300 pc. Our classifications and distances agree with the previous classification. We found another T dwarf in AEGIS-03, AEGIS J1418+5242 is classified as T4, with a high SNR (J-SNR=21) and apparent magnitude of F140W=22.7 implying a distance of $\sim$500 pc. The spectrum is a good it to the spectral standard and there is no visible contamination by nearby objects in the field or other spectral orders. Finally, GOODSS J0332-2741 is latest T dwarf that in the sample that has not been identified by other works. The 1D G141 spectrum of this spectrum fits to the T6 spectral standard, although the water feature at 1.2 \micron is stronger. There is also excess flux in the continuum at 1.6 \micron not present in the spectral standard pointing to a possible bad telluric correction in the standard and/or poor estimation of the contamination of this object. Nevertheless, with a magnitudes of F140=22.1 and F160W=22.9, we estimate a spectro-photometric distance 254$\pm$51 pc for this object. 
 
-WISP 1124+4202 is the only late L dwarf in WISPS. Its G141 spectrum with J-SNR =11 is in a good agreement with the SpeX spectral standard. The object has an F160W=21.5 and an estimated distance of $\sim$650 pc.
-
-\paragraph{3D-HST L dwarfs}
-For early dwarfs, L1 GOODSS 0333-2751, a bright detection at $\sim$ 1.1 kpc with a brightness of F140W=21.4 and a J-SNR of 34. The G141 spectrum fits well to the standard except for the region $\lambda \in$ [1.3, 1.4] \micron. However, there is no visible contamination in the spectrum at that specific region, the poor fit might be attributed to the telluric correction. UDS 0217-0509 is an L1 dwarf in UDS-25, a nearly perfect fit to the standard. GOODSN 1236+6211 is an L2 dwarf in GOODSN-33 with a J-SNR of 12. The object is in close angular separation with other extra galactic contaminants, but the its spectrum has very little contamination. GOODSN 1236+6209 is a low-SNR detection (J-SNR = 5) classified as L2 at $\sim$4 kpc in the GOODSN-34 pointing. This object is the farthest early L dwarf in the sample. 
-
-\paragraph {WISP T dwarfs}
-There are only x early T dwarfs from WISPS in the sample. WISP 1003+2854 is classified as T0 at $\sim$1 kpc. The G141 spectrum displays deep \wat and \meth features with a J-SNR of 6. The spectrum is a poor fit to the standard in noisy regions. The object has a magnitude of F160W=23.1 placing it at $\sim$1 kpc. WISP 0437-1106 is another robust identification, classified as T3 and with an apparent magnitude of F110W=24.3 found in the Par463 pointing of WISP. The J-SNR of the spectrum is 4, and the estimated distance is $\sim$800 pc.
-
-In terms of mid-to late T dwarfs, we found 3 objects previously discovered by \cite{2012ApJ...752L..14M}. WISP0307-7243 is classified as T4 at $\sim$500 pc, WISP1232-0033 is classified as T7 at $\sim$200 pc and  WISP1305-2538 is classified as T9 at $\sim$300 pc. Our classifications and distances agree with the previous classification
-
-
-\paragraph {3D-HST T dwarfs}
-
-We find one early T dwarf is COSMOS-23: COSMOS1000+0217 is classified as T3 at $\sim$900 pc, with an apparent magnitude of F140W=23.8. The estimated J-SNR of this its G141 spectrum is 5, and the spectrum is a robust fit to the standard. However, given the crowded field, the image is difficult to identify. We found another T dwarf in AEGIS-03, AEGIS1418+5242 is classified as T4, with a high SNR (J-SNR=21) and apparent magnitude of F140W=22.7 implying a distance of $\sim$500 pc. The spectrum is a good it to the spectral standard and there is no visible contamination by nearby objects in the field or other spectral orders. Finally, we detected 2 T dwarfs in the GOODS fields: GOODSS0332-2741 is classified as T6 with a J-SNR=31 and F140W=22.1 placing it at a distance of $\sim$300 pc. GOODSS0332-2749 is classified as a T3 with a J-SNR of 13 at $\sim$500 pc. Both spectra are good fits to the spectral standards. 
-
-\subsubsection{ Subdwarfs, Y dwarfs  \& Binaries}
-
-[WORKING ON THIS SUBSECTION]
-We searched for subdwarfs and Y dwarfs by creating selection criteria for these subtypes. However, we did not find any obvious subdwarfs or binaries in the sample with the two methods. This is unsurprising given that estimates of the ratio of subdwarfs to dwarfs is 1/400 (ref) and the binary fraction of UCDs is very low \textless 10 \%. 
-
-\subsubsection{Borderline L \& T dwarfs }
-
-T
-
-\subsubsection{ Absolute Magnitude  Spectral Type Relations }
-
-We create an absolute magnitude-spectral type relation to estimate distances of objects in our observed sample. This relations are built from the relations of \cite{2012ApJS..201...19D}. We first computed an offset/color between 2MASS J and H magnitudes and AB Hubble magnitudes by convolving the SpeX standard for a given spectral type with the respective filter. This offset {}in convolutions is then added to the absolute magnitude-spectral type relations in 2MASS J, H filters to obtain the new relation in Hubble filters. Error propagation is done using Monte-Carlo sampling, we report these relations in Table \ref{tab:polynomials} and show them in Figure \ref{fig:absmagrelations}
+\subsubsection{ Subdwarfs, Y dwarfs  \& Spectral Binaries}
+We searched for subdwarfs and Y dwarfs by creating selection criteria for these subtypes. However, we did not find any obvious subdwarfs or binaries in the sample with the two methods. In general, the sample are relatively good fits to spectral standards with no peculiar excess fluxes that could not be attributed to the noise or the contamination in the spectrum. This is unsurprising given that estimates of the ratio of subdwarfs to dwarfs is 1/400 (ref) and the binary fraction of UCDs is very low \textless 10\%. 
 
 
 \section{Probing Galactic Structure}\label{sec:simulations}
 
-\subsubsection{ Limiting Magnitudes}
-We aim to constrain the number density of UCDs; an accurate estimate of the effective distance/volume of each pointing is crucial.  \citealt{Momcheva2016} reported the effective depths of all the pointings in 3D-HST, however, given the SNR cut, we expect the a brighter limit than these reported depths. Hence, we adopted the faintness limits of F110W=22.0, F140W=21.5, F160W=21.5 for WISP fields, and  F140W=22.5, F160W=22.5 for 3D-HST fields. For the bright end, we used the bright limits of F110W=18.0, F140W=16.0, F160W=16.0 for WISPS fields and F140W=16.0, F160W=16.0 for 3D-HST fields following the peak of the distribution of magnitudes (Figure \ref{fig:maglimit}) for all the point sources satisfying the SNR cut. These bright limits correspond to limiting distances hence effective volumes for each spectral type, using the absolute magnitude spectral type relation defined in this work. 
+\subsubsection{ Point-Source Limiting Magnitudes}
+\citealt{Momcheva2016} reported the effective depths of all the pointings in 3D-HST, however, given various cuts that we made and a variation in exposure times per pointing, we estimated a limiting magnitude for each individual pointing separately. We fitted a Gaussian kernel density estimator (KDE) to the distribution of magnitudes of point-sources with J-SNR \textgreater 3 in each filter, to obtain a probability distribution (PDF) of the magnitudes. The choice of using a KDE is advantageous for pointings with only a few point-sources, while using a simple histogram might be subject to visual biases depending on the width of the bins. The faint-limit is set at the maximum of the computed PDF while we set an automatic bright end at 16 based on the tail end of the overall distribution of magnitudes (Figure \ref{fig:maglimit}). These brightness and faintness limits are then used to estimate the effective volume of each pointing based on the absolute magnitude-spectral type relations defined in this work. 
 
 \subsection{Monte-Carlo Simulation}
-The observed number of UCDs as a function of spectral type depends on the local luminosity function, the probed effective volume, and selection biases. We construct a Monte-Carlo simulation to fully estimate these effects following methods from \cite{1999ApJ...521..613R} and \cite{2004ApJS..155..191B}. All these steps are illustrated in the graphical model in Figure \ref{fig:graph_model} and explained in this section.
+The observed number of stars in a given observational sample depends on the local luminosity function, the probed effective volume, and selection biases. For UCDs, it is also necessary to take into account brown dwarf evolution. We constructed a Monte-Carlo simulation to fully integrate these effects following methods based \cite{1999ApJ...521..613R} and \cite{2004ApJS..155..191B}, explained in this section.
 
-\subsubsection{ Local Luminosity Function} \label{step1simulation}
+\subsubsection{ Local Luminosity Function}
 %motivate: mass function and age distirbtuion are fundemental 
-The local luminosity function ($\Phi [mag ^{-1} pc^{-3}]$) of UCDs have been measured using various methods. However, this sample of UCD is distant ($\sim$ kpc), therefore, to avoid any biases, we simulate a "semi-empirical" luminosity function using two fundamental stellar distributions: the mass function and the age distribution as follows: 
+The local UCD luminosity function (LF=$\frac{dN}{dLog L}= \Phi_L$ in SpT$^{-1}$ pc$^{-3}$) of UCDs have been measured by several groups \citep{2003AJ....126.2449R,2007astro.ph..2034C,2010AJ....139.2679B,2008ApJ...676.1281M,Reyle2010a,2019ApJS..240...19K,2019arXiv190604166B}. \cite{2016AJ....151...92R} approaches this problem using a parametrized LF matched to observations. Because our sample of UCDs probes large distances, we simulated a luminosity function from two fundamental stellar distributions: the mass function and the age distribution. 
 
 \begin{itemize}
-\item \textbf{Mass (M), N$_0$ $\leftarrow$ $\alpha$ }: we draw a sample of 2$\times$10$^5$ objects from a power-law mass function parametrized by $\alpha$ for a range of masses between 0.001 \Msun and 0.15 \Msun. \begin{equation}  P(M) = \frac{dN}{dM} \sim \biggl( \frac{M}{M_\sun}\biggl)^{-0.6}\end{equation}. We define a normalization factor ($N_0$) given by \begin{equation} N_0 = 0.005 M_\sun^{-1}pc^{-3} \sum_{ M \in [0.01 M_\sun, 0.09 M_\sun] } M \cdot P(M) \end{equation} as the number density of objects in this simulated sample with masses between 0.01 and 0.9 in our simulation(\citealt{1999ApJ...521..613R}, \citealt{2001ApJ...554.1274C}). For this part of the simulation, the samples of masses were generated by inverting the cumulative distribution (CDF) and using a random number generator to obtain the corresponding values. The CDF (m) for a given mass m is given by \begin{equation} CDF(m) = \frac{1}{C} \int _{M=0.001} ^ {M=m} P(M) dM = \frac{1}{C} \int _{M=0.001} ^ {M=m} M^{-0.6} dM\end{equation}, where C is the normalization constant (i.e CDF for m=0.15). With this mapping, one can obtain different values of the of m by choosing random number x (x=CDF) $\in$ [0, 1.]. 
+\item \textbf{Mass (M)}: We draw a sample of 10$^5$ objects from a power-law mass function parametrized by $\alpha$ for masses between 0.001 \Msun and 0.1 \Msun. \begin{equation}  P(M) = \frac{dN}{dM} \sim \biggl( \frac{M}{M_\sun}\biggl)^{-\alpha}\end{equation}. We adopt $\alpha$ =0.6 based on results from \cite{2019ApJS..240...19K}, consistent with the mass function of UCD{}s in young clusters. Masses are drawn by inverting the the cumulative distribution (CDF) of the mass-function the mass function as $M= CDF^{-1} (x) $ for $x \in$ [0, 1.]. 
 
-\item \textbf{Age $\sim$ uniform }: we assigned each of these UCDs an age drawn from a uniform uniform age distribution spanning 100 Myr--10 Gyr. Although there are different parametrization of the star-formation history of the Galaxy, this age distribution correlates with the observed scale heights and velocity distribution of the UCD populations \citep{Ryan2017,2010ApJ...718.1171R,2009MNRAS.397.1286A}. We then keep the age uniform and vary the scale heights, given that varying the scale height is a simpler parametrization. 
+\item \textbf{Age ($\tau$)}: We assigned ages drawn from a uniform uniform age distribution spanning 100 Myr--10 Gyr. Although there are different parametrization of the star-formation history of the Galaxy (REFS), a uniform age distribution reasonably matches the local stellar population. 
 
-
-\item \textbf{T$_{eff}$ $\leftarrow$ SpT  $\leftarrow$ (Mass, Age) }: we assigned a temperature to each of the simulated objects, using a linear interpolation evolutionary model grids from \cite{2003IAUS..211...41B}. We then converted temperatures to a spectral types (M7-T8) using the polynomial relation from \cite{Filippazzo2015}. This resulting distribution of spectral types will then then be used to estimate our selection biases.
+\item \textbf{SpT $\leftarrow$ T$_{eff}$  $\leftarrow$ (Mass, Age) }: We determined effective temperatures, L$_{\text{bol}}$, Log g, radii to each of the simulated objects, using a log-linear interpolation of solar-metallicity evolutionary model grids of \cite{2003A&A...402..701B} valid for stellar masses of 0.0005 to 0.1 \Msun and solar-metallicity hybrid models of \cite{2008ApJ...689.1327S} valid for stellar masses of 0.0002 to 0.85 \Msun. We scaled these temperature distributions to the measured LF of \cite{2019ApJS..240...19K} of $\Phi$= 0.63 $\times$ 10 $^{-3}$pc$^{-3} K^{-1}$ for \teff values between 1650--1800 Kelvin and defined the scaling factor from the distribution of effective temperature n(\teff) as $N_0= 0.00063$ pc$^{-3}$ $\sum_{1650 K} ^ {1800 K}$ n(\teff). We then converted effective temperatures to spectral types (M7-T8) using a linear interpolation of \teff and spectral types from \cite{Pecaut2013} and accounting for the scatter in this relation of $\Delta$ T$_{eff}$= 108 K, that is the temperature is chosen from a Gaussian centered around the interpolated value with a width of 108K. A comparison between the prediction of from evolutionary models and the measured LF (Figure \ref{fig:lf}) shows a general agreement between models and the empirical LF of \cite{2019ApJS..240...19K} except for the parameter space where the models are invalid. As an additional check, we compared the luminosity functions of \cite{2019arXiv190604166B,2007astro.ph..2034C} to the predictions from models using a conversion between spectral type and absolute J magnitude of \cite{2012ApJS..201...19D} by normalizing the distribution of magnitude to $\Phi$ (J $\in$ [11.75, 12.25]) = 0.0015 mag $^{-1}$ pc$^{-3}$.Both sets of models show an agreement with the measurements of \cite{2019arXiv190604166B} within the domain of validity of the absolute-magnitude relations. Note that these models assume solar metallicity field predictions. As discussed further below, ratio of the number of field objects to metal-poor halo and thick disk objects is too small to be detected in sample of L \& T dwarfs $\sim$ 40.
 
 \end{itemize}
 
 \subsubsection{ Effective Volumes}
 The observed effective volume of each pointing depends on the scale height and the limiting magnitude of the survey. We compute these volumes using the following steps:
 \begin{itemize}
-\item The limiting magnitudes for both 3D-HST and WISPS are defined visually as the peak the of magnitude histogram as shown in Figure \ref{fig:maglimit} and explained in section \ref{mag_limits}. These magnitudes provide the distance limits for a given spectral type and pointing d$_{max, min}$ determined by \begin{equation} \log d_{min, max} =\frac{1}{5}(m-M(SpT))+1 \end{equation}
-where m in the faint or the bright limit of the survey and M(SpT) is the absolute magnitude for that spectral type. For pointings in 3D-HST, we use F140W magnitudes and for WISP pointings we use F110W magnitudes. Absolute magnitude calculations are described in section \ref{visual}. A complete treatment would account for the effect of dust extinction, however, the pointings in 3D-HST and WISPS are located away from the galactic plane to avoid this problem.
+\item Having obtained the limiting magnitude of each pointing, we computed distance limits for a given spectral type and pointing d$_{\text{lim}}$ determined by \begin{equation} \log d_{\text{lim}} =\frac{1}{5}(m_{\text{lim}}-M(\text{SpT}))+1 \end{equation}
+where m in the faint or the bright limit of the survey and M(SpT) is the absolute magnitude for that spectral type. We estimate the limiting distance in each available filters and obtain an effective limiting distances by average estimates in all filters using our absolute magnitude calculations described in Section \ref{sec:absmags}. An accurate treatment of the limiting depth would account for the effect of dust extinction; however, 3D-HST and WISPS pointings are located at high enough galactic latitudes to avoid this issue in this study.
 
-\item We adopt a 1-component galactic disk model parametrized by $\theta=(h, l)$ where h and l are the scale height and the the scale length of a given stellar population. Using \cite{2004ApJS..155..191B}, the spatial density of stars in given direction $\vec{p}$ and distance (d) by
-\begin{equation} \rho(\vec{p}, d) =\rho(r, z)= \rho _0 \cdot \text{sech} ^2 \biggl( {\frac{|z-Z_\sun|}{2h}} \biggl) \cdot \exp \biggl( {-\frac{R-R_\sun}{l}} \biggl)\end{equation}. L is fixed at 2600 pc while h is varied from values of 100 pc, 250 pc,  275 pc,  300 pc,  325 pc,  350 pc and 1000 pc drawn from possible values of scale heights predicted from cooling evolutionary models of UCDS  \citep{Ryan2017}. R$_\sun$ and Z$_\sun$ are the sun's position from the galactic center, fixed at 8300 pc and 27 pc respectively. The change from $\rho(\vec{p}, d)$ to $\rho(r, z)$ involves a coordinate transformation from sky to Galactic coordinates.
+\item We assume a simple single-component axisymmetric exponential disk model parametrized by $\theta=(H, L)$ where H and L are the vertical scale height and radial scale length of the stellar number density given by
+\begin{equation} \rho(\vec{r}) =\rho(R, z)= \rho _\sun \cdot \exp \biggl( {\frac{-|z-Z_\sun|}{H}} \biggl) \cdot \exp \biggl( {-\frac{R-R_\sun}{L}} \biggl)\end{equation} where R,z are cylindrical coordinates centered around the Galactic center, L is assumed at 2600 pc while H was allowed to vary from values of 200 pc, 250 pc,  275 pc,  300 pc,  325 pc,  350 pc and 1000 pc. R$_\sun$ and Z$_\sun$ are the sun's position from the galactic center, fixed at 8300 pc and 27 pc respectively. The vector $\vec{r}$ is the galacto-centric position vector and can be related to the star's distance from the Sun as \begin{equation} \vec{r} =  \biggl( R_\sun - d\cos(\beta) \cos(l), -d \cos(\beta) \cos(l), Z_\sun + d \sin (\beta)  \biggl) \end{equation} where $(\beta, l)$ are Sun-centric galactic coordinates for that star.
 
-\item \textbf{ V$_c$ $\leftarrow$ $\theta$=(h, l) and  V$_{eff}$ $\leftarrow$ (d$_{max}$, d$_{min}$, V$_c$)}: given the Galactic structure model, we compute a volume correction (V$_c$) up to distance d, in a given direction $\vec{p}$. This term is the ratio of exponential density to a uniform space density in a given direction. \begin{equation} V_c= \frac{\int_0 ^d\rho(x, \vec{p} ) \cdot x^2 dx} {\int_0 ^x x^2 dx}
-\end{equation}, where  x is the 3D-distance in that line of sight. The effective volume of each pointing ($\vec{p}$) and spectral type is \begin{equation}
-V_{eff} (\vec{p})= V_c(d_{max}-d_{min}, \vec{p}) \cdot (d_{max}^3-d_{min}^3) \cdot \Delta \Omega  \cdot \frac{1}{3}\end{equation}. Where the $\Delta \Omega$ is the solid angle of each pointing fixed at $\Delta \Omega$ 3.47$\times$ 10$^{-7}$radian$^2$ for each pointing.
+\item \textbf{ V$_{eff}$}: given the Galactic structure model, we compute the effective volume of a pointing along a line of sight (R, z) as \begin{equation}V_{eff}=\Delta \Omega \int _{d_{min}} ^{d_{max}} d|\vec{r}|  \cdot \frac{\rho(\vec{r})} {\rho _\sun}\cdot |\vec{r}|^2 \end{equation}. Where the $\Delta \Omega$ is the solid angle of each pointing in this study fixed at the field of view of the WFC3 with $\Delta \Omega$ 3.47$\times$ 10$^{-7}$radian$^2$ , $|\vec{r}|^2 = R^2 +z ^2$ is the distance along that line of sight, and $(d_{min}, d_{max})$ are the limiting depths $d_\text{lim}$. This is an one-dimensional integral along a line of sight ($\beta$, l).
 
 \end{itemize}
 
 \subsubsection{Selection Effects}
+Because we applied several selection criteria to narrow down our sample for visual confirmation, it is possible we may have missed a few UCDs in the WISPS/3D-HST fields; particularly low SNR or peculiar objects due, in part, to uncertainties in spectral indices. Hence, the observed volumes objects must corrected by a factor proportional to our selection biases. To fully quantify these effects, we generated a distribution of low-resolution spectra uniformly sampling our SNR distribution across a wide range of SNRs and measured their recovery rate through this selection process by augmenting the SpeX sample to cover 3 orders of magnitude in SNR. To create this sample, we picked the top 20 highest SNR spectra with a median SNR between 50 and 200 M7-T9 objects in the SpeX sample obtaining a total of 298 spectra. We also added the WFC3 spectra of the Schneider set to the sample. We then degraded each spectrum by Gaussian iteration of $10^2$ creating a new sample of 21800 spectra accross signal-to-noise. Each new "degraded" spectrum is created as \begin{equation} \{F(\lambda _i)\} \sim \text{Normal} (<F(\lambda_i)>, \sigma^t(\lambda_i )) \end{equation}. $\sigma^t(\lambda_i )$ is the the target noise at a wavelength $\lambda_i$, and $<F(\lambda_i )>$ is the flux of the original spectrum at that wavelength. We computed all relevant statistics for each of the degraded spectra, including J-SNR, spectral indices, F-test, and the two $\chi^2$s. We applied our selection processes to this sample of simulated spectra by measuring spectral indices and applying first F-test criterion where F-test \textless 0.4, box index-index selection criteria and the random forest classifier. 
 
-%%talk about  the sample generation and motivate
-Because we applied several selection criteria to narrow down our sample for visual confirmation, it is possible we may have missed a few UCDs in the WISPS/3D-HST fields; particularly low SNR or peculiar objects due, in part, to uncertainties in spectral indices. Hence, the observed volumes objects must corrected by a factor proportional to our selection biases. To fully quantify these effects, we generated a distribution of low-resolution spectra uniformly sampling our SNR distribution across a wide range of SNRs and measured their recovery rate through this selection process by augmenting the SpeX sample to cover 3 orders of magnitude in SNR. To create this sample, we picked the top 20 highest SNR spectra with a median SNR between 50 and 200 L0-T9 objects in the SpeX sample, we added Gaussian noise each spectrum for an iteration of $10^3$ steps creating a new sample of 21800 spectra. Each new "degraded" spectrum is created as \begin{equation} \{F(\lambda _i)\} \sim \text{Normal} (<F(\lambda_i)>, \sigma^t(\lambda_i )) \end{equation}. $\sigma^t(\lambda_i )$ is the the target noise at a wavelength $\lambda_i$, and $<F(\lambda_i )>$ is the flux of the original spectrum at that wavelength. We computed all relevant statistics for each of the degraded spectra, including J-SNR, spectral indices, F-test, and the two $\chi^2$s. We applied our selection processes to this sample of simulated spectra by measuring spectral indices and applying first F-test criterion where F-test \textless 0.4, box index-index selection criteria and the random forest classifier. 
-
-%talk about :"miss-calssifications
-In addition, after degrading the spectrum, the object will change its original classification. We defined a selection probability that accounts for the number of objects falling outside our classification range (M7-Y0) after degradation and the selection process itself in a given signa-to-noise range ($\Delta$ J-SNR bin of 2.0). We denote this probability of selection of $\mathcal{S}(\text{J-SNR, SpT})$
+With a perfect selection function, we would recover the entire ideal sample of spectra across signal-noise ratio, however, we expect to lose some of the lowest J-SNR objects. Hence, we defined our selection probability in a given sigma-to-noise range ($\Delta$ J-SNR bin of 2.0 as $\mathcal{S}(\text{J-SNR, SpT})$
 \begin{equation}\label{equasl}
-\mathcal{S}(\text{J-SNR}_i, \text{SpT})= \frac{N_{s, i} +N_{m, i}}{N_{tot, i}}
-\end{equation} where $N_s$ is the number selected spectral type and SNR bin, and $N_{tot}$ is the total number of objects in that bin. Where $N_{s, i}$ is the number of objects in a bin i, selected by our selection process and $N_{m, i}$ is the number of objects in a bin i that fall outside the spectral type range of M7-Y2 after degradation. $N_{tot, i}$ is the total number of spectra in that signal-to-noise ration bin. These selection probabilities are showcased in Figure x.
+\mathcal{S}(\text{J-SNR}_i, \text{SpT})= \frac{N_{s, i} }{N_{tot, i}}
+\end{equation} where $N_s$ is the number selected spectral type and SNR bin, and $N_{tot}$ is the total number of objects in that bin. Where $N_{s, i}$ is the number of objects in a bin (i) and $N_{tot, i}$ is the total number of spectra in that signal-to-noise ration bin. For instance, if we simulated 100 M7 objects for J-SNR $\in$[10, 12] and recovered 70 objects classified as M7, then $\mathcal{S}$(J-SNR $\in$ [10, 12], M7) =0.7. These selection probabilities for each selection method are showcased in Figure \ref{fig:selectionf}. As expected the highest signal-to-noise objects are selected across all spectral types, but lose a few of them for low-SNR as indices become more uncertain. However, our selection methods turn out to be generous selecting objects down to our SNR cut.
 
-For each simulated spectral type from the mass function (section \ref{step1simulation}), we computed a selection probability $\mathcal{S}$ parametrized by the expected signal-to-noise ratio (J-SNR) and spectral type (SpT) using the following steps:
 \begin{itemize}
-\item \textbf{ d $\leftarrow$ ($\theta$=(h, l), d$_{max}$, d$_{min}$)}: we assign a distance to each of drawn from the Galactic structure model. The likelihood of distance (d) given a spectral type  (SpT) pointing $\vec{p}$ \begin{equation}  P(d|\vec{p}) \sim \rho (d, \vec{p}) \cdot d^2 \end{equation}. We then assign each object a randomly drawn distance from all the 533 pointings/directions in both surveys. For a given spectral type the distance is limited to dmin/2 \textless d \textless 10 $\times$ dmax to account for objects scattered in the observed volume. Samples for this part of the simulation were generated using \textt{Pymc} for a number of samples N=20000, sampling each scale height independently using a standard Metropolis-Hastings Algorithm.
+\item \textbf{ Distance (d)}: To apply this selection process to our Monte-Carlo simulation, we assign a distance to each of drawn from the Galactic structure model. The likelihood of distance (d) is \begin{equation}  P(d) \sim \rho (d, \beta, l) \cdot d^2 \end{equation}, where $\beta$ and l are the direction a random pointing in 3D-HST or WISPS. We do not account for the directionality in this likelihood, they are drawn uniformly from the distribution of pointings in 3D-HST and WISPS for simplicity. For a given spectral type  we assign a distance is limited to dmin/2 \textless d \textless 5 $\times$ dmax to account for objects scattered in the observed volume. Samples for this part of the simulation were generated using \textt{Pymc} for a number of samples N=$10^4$, sampling each scale height independently using a standard Metropolis-Hastings Algorithm.  To make this step and the next steps pointing-independent, given that the limiting magnitudes are a function of pointing, we averaged the limiting magnitude and the limiting distances for within each subtype.
 
-\item \textbf{J-SNR  $\leftarrow$  (F110W, F140W, F160W) $\leftarrow$ (d, SpT) }: we estimate an observable signal-to-noise ratio of each object as observed by the WFC3 instrument based on the observed sample. We fit a second-degree polynomial to the observed magnitudes (F110W, F140W, F160W)  and SNR-J of our observed sample. We then use our derived absolute-magnitude spectral type relations to estimate the apparent magnitude of each object in our simulated sample based on its randomly-assigned distance and spectral type. The apparent magnitude- J-SNR relation is then used to estimate a signal-to-noise ratio as observed with the WFC3 instrument. 
+\item \textbf{ Signal-to-noise ratio (J-SNR) }: With this distance distribution, and parameters of the surveys, we can estimate an observable signal-to-noise ratio in the J-band (J-SNR) as observed by the WFC3 instrument based on the observed UCD sample. We fit a second-degree polynomial to the observed magnitudes (F110W, F140W, F160W)  and SNR-J of our observed sample ans use our derived absolute-magnitude spectral type relations to estimate the apparent magnitude of each object in our simulated sample based on its randomly-assigned distance and spectral type. The apparent magnitude- J-SNR relation is then used to estimate a signal-to-noise ratio as observed with the WFC3 instrument. We chose to use the apparent F140W magnitude to estimate the J-SNR for simplicity.
 
-\item \textbf{ $\mathcal{S}$  $\leftarrow$ (J-SNR, SpT)}: we assigned a selection probability, as previously defined, to every simulated object in the observed, that is an object with magnitude and signal-noise ratios within our cuts (J-SNR \textless 3 and F110W \textgreater 22.5 (the limiting magnitude from 3D-HST). 
+\item \textbf{ Selection Probability ($\mathcal{S}$) }: Given a J-SNR and SpT, we can now assign a selection probability $\mathcal{S}$ to each object. 
 
-\item The expected number of expected objects per spectral type is then by a simple product of selection probabilities, effective volume scaled by the normalization factor. 
+\item We compute the expected number of expected objects per spectral type by a simple product of selection probabilities, effective volume scaled by the normalization factor
 \begin{equation}
 N_{sim}(\text{SpT})= N_0 \cdot V_{eff} (\text{SpT}) \cdot \sum _i \mathcal{S}(\text{J-SNR}_i, \text{SpT}) \end{equation}. We compared these numbers to the observed numbers of UCDs for each age distribution in figure \ref{fig:simulationnbrs}
 
 \end{itemize}
 
 \subsection{Results}
-
-%spt distribution 
-The resulting spectral type distribution is consistent with expectations given atmospheric cooling effects (\citealt{2004ApJS..155..191B}) from evolutionary models. As UCDs age, they quickly pile up on at the lower end of the spectral type distribution and cooler temperatures. The effective volume for each spectral type and scale heights span 6 orders of magnitude in $pc^3$, and given that earlier spectral types probe larger volumes, the effect of scale heights is more distinguishable for these types (SpT $\leq$ T5). The resulting distribution of distances is smooth, given the simplicity of our Galactic structure model. \cite{Ryan2017} estimated a change in scale height of ($\Delta$h $\sim$50 pc) in the mid-L dwarf regime by comparing galactic models for different cooling scenarios; while the scale height in for late M dwarf and L is consistent with our simulations, and despite the high accuracy in spectral types for the sample of UCDs presented in this study, the relatively small sample size of L\& T dwarfs might not put meaningful constraints on the scale height variations. Nevertheless, the total number of observed M7-T8 dwarfs (136 $\pm$ 11) is consistent with a scale height between 325-350 pc. 
-
-
-We predict more T dwarfs  observed, in part due to a possible underestimation of the observed volume given that limiting magnitudes were visually estimated [there has be a more empirical way of doing this, like KDEs]. Moreover, the L/T transition region is sensitive to unresolved binaries (\citealt{2014ApJ...794..143B}). \cite{2007ApJ...659..655B} shows that given a spectral binary fraction of $\sim$ 10 \% , the surface densities for volume-limited sample of primaries and combined systems are similar but present a slight bump ($\Delta \Sigma$ $\lesssim$ 5$\times$ 10$^{-5}$ deg$^{-2}$) for early T dwarfs. Given our total search area of $\sim$ 0.6 deg$^2$, we do not expect a significant effect of the spectral binary fraction to the reported densities, hence we assumed that none of the UCDs  in this study are unresolved binaries in our simulation.
-
-%Binary fraction, subdwarf fraction & metallicity effethas no discernable effects (quote Burgasser 2007)
-Metallicity effects affect the number of subdwarfs we expected in this sample. UCDs in the thick disk and the halo have similar kinematic ages with stellar populations in these parts of the Galaxy; and UCDs at different metallicities follow different evolutionary tracks. L subdwarfs in the local neighborhood are therefore rare, and this study does not significantly probe large volumes in the thick disk and halo. \cite{Lodieu2017} found 0.04$\times$ deg$^{-2}$ L subdwarfs in the UKIDSS/SDSS fields; in fact, we expect the number of subdwarfs to be $\sim$ 400 times lower than the expected number of dwarfs in the sample. Although the parallel fields in 3D-HST \& WISP are deep, the total search area remains low, hence it is not surprising that we did not find any L subdwarfs in the sample. 
+The resulting \teff distribution (Figure \ref{fig:lf}) from interpolating mass and ages onto both evolutionary models grids is consistent with expectations given atmospheric cooling effects (\citealt{2004ApJS..155..191B}). As UCDs age, they quickly pile up on at the lower end of the spectral type distribution and cooler temperatures, though \cite{2008ApJ...689.1327S} models incorporate clouds and predict a bump at \teff $\sim$ 1200 K. Figure \ref{fig:simulationnbrs} shows the effect of scale height on the probed effective volume. The predicted number density (Figure \ref{fig:simulationnbrs}) matches scale height assumptions of $\sim$ 200-300 pc for late M and early L dwarfs and $\sim$ 200-400 pc for early T dwarfs, which are not inconsistent with compiled literature values. For L/T transition objects, we predict a slightly lower scale height and a slightly larger scale height for early T dwarfs compared to other typical members of their respective spectral classes. This mismatch between observations and predictions is perhaps due to a failure to truly resole the nature of L/T transition phase using our interpolation methods. Moreover, the L/T transition region is sensitive to unresolved binaries (\citealt{2014ApJ...794..143B}) and \cite{2007ApJ...659..655B} shows this effects causes an increase in the number of density of T0-T5 up to 10--15\%. Metallicity effects affect the number of subdwarfs we expected in this sample. UCDs in the thick disk and the halo have similar kinematic ages with stellar populations in these parts of the Galaxy; and UCDs at different metallicities follow different evolutionary tracks. L subdwarfs in the local neighborhood are therefore rare, and this study does not significantly probe large volumes in the thick disk and halo. \cite{Lodieu2017} found 0.04$\times$ deg$^{-2}$ L subdwarfs in the UKIDSS/SDSS fields; in fact, we expect the number of subdwarfs to be $\sim$ 400 times lower than the expected number of dwarfs in the sample. Nevertheless, the scale height of L5-T0 and late T dwarfs remains unconstrained by this sample given their small number. 
 
 \section{Summary}
 %summarize the selection process
-The WISPS \& 3D-HST surveys provide NIR G141 (1.1-1.14 \micron) spectroscopic data and broadband F140W, F110W \& F160W photometry for thousands of galaxies and point-sources observed in parallel mode with other on-going HST surveys. We made a point-source cut using in the surveys and obtained 271915 point-sources. Using NIR spectral indices that sample the prominent \wat and \meth absorption features in UCD atmospheres, we created selection criteria based on a calibration sample of templates. We have presented two methods for selecting UCDs in deep HST surveys potentially applicable future infrared parallel surveys. Both methods rely on spectral indices defined to trace \wat and \meth features prominent in the NIR band of UCDS. The box selection method is efficient (completeness \textgreater 90\%) but with relatively high contamination rates that could be significantly reduced by eliminating the lowest SNR sources. This method is not effective for selecting very low SNR sources due to large scatter in indices and early M-dwarfs as the absorption features in these wavelength ranges are shallow. However, these spectral indices are designed to selected T-dwarfs with high accuracy (completeness \textgreater 90\%, contamination \textless 1\%). The overall contamination/false positive rate for this method for spectral types of L0--L5 is $\sim$ 87\% . A second method uses a random forest classifier to distinguish UCDs from other extragalactic contaminants or artifacts with an accuracy score of 99.5\% in cross-validation. The false positive rate of this method  for spectral types of L0--L5 is $\sim$62\%. Both methods rely on a training set of known UCD samples and can be combined.
- With these two methods, we have used these data to obtain 166 spectra of M7-T9 UCDs up to distances $\sim$ 4 kpc. 
+The WISPS \& 3D-HST surveys provide NIR G141 (1.1-1.14 \micron) spectroscopic data and broadband F140W, F110W \& F160W photometry for thousands of galaxies and point-sources observed in parallel mode with other on-going HST surveys. We made a point-source cut using in the surveys and obtained 271915 point-sources. Using NIR spectral indices that sample the prominent \wat and \meth absorption features in UCD atmospheres, we created selection criteria based on a calibration sample of templates. We have presented two methods for selecting UCDs in deep HST surveys potentially applicable future infrared parallel surveys. Both methods rely on spectral indices defined to trace \wat and \meth features prominent in the NIR band of UCDS. The box selection method is efficient (completeness \textgreater 90\%) but with relatively high contamination rates that could be significantly reduced by eliminating the lowest SNR sources. This method is not effective for selecting very low SNR sources due to large scatter in indices and early M-dwarfs as the absorption features in these wavelength ranges are shallow. However, these spectral indices are designed to selected T-dwarfs with high accuracy (completeness \textgreater 90\%, contamination \textless 1\%). The overall contamination/false positive rate for this method for spectral types of L0--L5 is $\sim$ 87\% . A second method uses a random forest classifier to distinguish UCDs from other extragalactic contaminants or artifacts with an accuracy score of 99.5\% in cross-validation. The false positive rate of this method  for spectral types of L0--L5 is $\sim$62\%. Both methods rely on a training set of known UCD samples and can be combined. With these two methods, we have used these data to obtain 166 spectra of M7-T9 UCDs up to distances $\sim$ 4 kpc. 
 
 %summarize the simulation results
 We estimated the expected number of UCDs given a galactic structure model with scale height (h) as a free-parameter. Using a point-source limiting magnitude, we measured the effective volumes of the survey for various values of the scale height. To address intrinsic biases in our selection method, we use a Monte-Carlo simulation to reproduce a distribution of spectral type based on a set of fundamental distribution: mass function, age distribution and conversion/polynomial relation from UCD evolutionary models and our sample. We use the galactic structure model to draw a distribution of distances. With these distributions, we create a selection probability function based on sample of "degraded" templates. The final steps involve summing over selection probabilities. The predicted number of UCDs is consistent with a scale height of 325 pc$\leq$ h $\leq$ 350 pc.  
 
 %Implications for JSWT (quote ryan 2016)
-Future space missions such as JSWT, Euclid will be contaminated by UCDs. \cite{RyanJr.2016} predicted that the number density of UCDs (M8--T8) in JSWT fields peaks around J$\sim$24 mag with a total surface density of $\Sigma$ $\sim$ 0.3 arcmin$^{-2}$.  With the \textit{Large-Scale Synopitc Telescope} (LSST), and the \textit{Wide-Field Infrared Survey Telescope} (WFIRST), we expect in increase in both sample size and spectral type accuracy, expanding the parameter space necessary to put significant constraint on the star formation history of the MIlky Way in general and the mass function of UCDs in particular (\citealt{LSSTScienceCollaboration2009},\citealt{Spergel2015}).
+Future space missions such as JSWT, Euclid will be contaminated by UCDs. \cite{2016AJ....151...92R} predicted that the number density of UCDs (M8--T8) in JSWT fields peaks around J$\sim$24 mag with a total surface density of $\Sigma$ $\sim$ 0.3 arcmin$^{-2}$.  With the \textit{Large-Scale Synopitc Telescope} (LSST), and the \textit{Wide-Field Infrared Survey Telescope} (WFIRST), we expect in increase in both sample size and spectral type accuracy, expanding the parameter space necessary to put significant constraint on the star formation history of the MIlky Way in general and the mass function of UCDs in particular (\citealt{LSSTScienceCollaboration2009},\citealt{Spergel2015}).
 
 %Implications for Euclid deep fields
+
 
 \acknowledgements
 %Acknowledgements
@@ -316,8 +276,1024 @@ CA thanks the LSSTC Data Science Fellowship Program, which is funded by LSSTC, N
 
 \clearpage
 
-\input{figures.tex}
-\input{tables.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%				              FIGURES
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\figfolder}{/users/caganze/research/wisps/figures/}
+\newcommand{\spectrafolder}{/Users/caganze/research/wisps/figures/ltwarfs/}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.8]{\figfolder standards.pdf}
+    \caption{ Demonstration of spectral bands used to defined spectral indices in this study plotted against low-resolution SpeX spectral standards (\citealt{2010ApJS..190..100K}) }
+    \label{fig:indexdefinition}
+\end{figure}
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.8]{\figfolder fields_skymap.pdf}
+    \caption{Galactic distribution of pointings in WISPS and 3D-HST}
+    \label{fig:skymap}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.8]{\figfolder f_test_snr_distr.pdf}
+    \caption{J-SNR distributions of all Spectra in both surveys showing the cut at J-SNR=3}
+    \label{fig:ftestdistr}
+\end{figure}
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.75]{\figfolder filter_profiles.pdf}
+    \caption{Comparison between spectral coverage of different WFC3 and 2MASS filters used in this study plotted against a typical M7 and T5 dwarf}
+    \label{fig:filterprofiles}
+\end{figure}
+
+
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.8]{\figfolder sensitivity_illustration.pdf}
+\caption{ Example of two 3D-HST Spectra before and after continuum correction. The spectrum in green is the spectral standard showing a better fit to a continuum-corrected 3D-HST spectrum (black) and a poor fit to the original spectrum (blue). The spectrum sensitivity is shown in grey}
+\label{fig:sensitivity}
+\end{figure}
+
+\begin{sidewaysfigure}
+    \centering
+    \includegraphics[scale=0.7]{\figfolder index_index_plots.jpeg}
+    \caption{Best selection criteria for different subtype ranges. The grey points are the contaminants after we applied both a J-SNR cut and and F-test cut, the blue points are the set of templates (from the calibration samples) used to define these boxes. The crossed black points are the real UCDs confirmed after visual inspection and the orange crosses are the UCDs that have spectral types for each particular box (e.g a L2 UCD would be colored orange in the L0-L5 while an L7 would be colored black the L0-L5 box )}
+    \label{fig:indexplots}
+\end{sidewaysfigure}
+
+
+%
+%\end{figure}
+\begin{figure}
+    \centering
+    \gridline{\fig{\figfolder mass_hubble_colors.pdf}{0.8\textwidth}{(a)}}
+    \gridline{ \fig{\figfolder hst_relations.pdf}{0.8\textwidth}{(b)}}
+    %\includegraphics[scale=0.5]{\figfolder hst_relations.pdf}
+    \caption{ (a) Offsets between 2MASS J, H magnitudes and HST F110W, F140W, F160W magnitudes as a function of spectral type (b) Absolute  magnitude-spectral type relations for HST and 2 MASS filters. Orange points show derived relations using the J filter while blue points show derived relations using the H filter. We used the J filter, given its little deviation as function of spectral type for the relations in F110W and F140W and the H filter for the F60W relations for the same reason. The solid line shows a best-fit 6th-order polynomial. We report the coefficients of these polynomials in Table \ref{tab:polynomials}}
+    \label{fig:absmagrelations}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \gridline{
+    \fig{\figfolder candidate_distances.pdf}{1.\textwidth}{(i)}}
+    \gridline{
+    \fig{\figfolder candidate_skymap.pdf}{0.8\textwidth}{(ii)}
+    }
+    \caption{ (i) Distance distribution of the UCD sample
+    (ii) Galactic distribution of the sample. Grey symbols show pointings without any UCDs.}
+    \label{fig:candidedistances}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\gridline{\fig{\figfolder lfs_teffs.pdf}{0.7 \textwidth}{(a)}}
+\gridline{\fig{\figfolder lfs_js.pdf}{0.7 \textwidth}{(b)}}
+\caption{(a) Comparison between our simulated distribution of \teff using evolutionary models of \cite{2008ApJ...689.1327S} and 
+\cite{2003A&A...402..701B} scaled to the measured luminosity of \cite{2019ApJS..240...19K} (b) Comparison between simulated distributions of Jmags using SpT-mag relations of \cite{2012ApJS..201...19D} and measured LFs of \cite{2019arXiv190604166B,2007astro.ph..2034C} and the polynomial fit of \cite{2016AJ....151...92R}}
+\label{fig:lf}
+\end{figure}
+
+%\begin{figure}
+%    \centering
+%    \includegraphics[scale=0.5]{\figfolder simulation_dists.pdf}
+%    \caption{ Spectral type, mass and age distributions obtained from sampling their respective distributions and evolutionary models}
+%    \label{fig:simspts}
+%\end{figure}
+
+\begin{figure}
+\centering
+\gridline{\fig{\figfolder simulation_volumes.pdf}{0.7 \textwidth}{(a)}}
+\centering
+\gridline{\fig{\figfolder simulation_distances.pdf}{\textwidth}{(b)}}
+\caption{ Comparing the effects of scale height: (a) Dependence of computed effective volumes for each spectral type with a volumes = $\Delta \Omega \times $dlim$^3$. (b) comparison between distributions of distances drawn from all the pointings in this survey assuming two different scale heights (h) up to a distance of 10h}
+\label{fig:simdistr}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.6]{\figfolder snr_fits.pdf}
+    \caption{Linear fits between SNR-J and apparent F110W, F140W, F160W magnitudes using the sample of UCDs. These relations are reported in table \ref{tab:polynomials} and used to estimate SNR-J for different apparent magnitudes}
+    \label{fig:snrfits}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.8]{\figfolder selection_function_samples.pdf}
+    \caption{Visualization of our selection function as a function across spectral type and SNR-J. The label "F-test" indicates spectra with F-test \textless 0.4, the label "RF" indicates the spectra labeled as UCDs by the random forest classifier, and the label "Indices" indicates the spectra selected by our best selection criteria. The bar indicates the selection probability defined as the number of spectra selected over the total number of spectra in each SNR-J, spectral type bin. In the Monte-Carlo simulation, we use the most-selective selection function. }
+    \label{fig:selectionf}
+\end{figure}
+
+
+
+
+\begin{figure}
+    \centering
+    \gridline{\fig{\figfolder mag_limits_all.pdf}{0.8 \textwidth}{(a)}}
+    \gridline{\fig{\figfolder mag_limits_illustration.pdf}{0.8\textwidth}{(b)}}
+    \gridline{\fig{\figfolder mag_limit.pdf}{0.8\textwidth}{(c)}}
+    \caption{ (a) Distribution of magnitudes for sources in both surveys, dotted lines show point sources. (b) Illustration of the estimation of the limiting magnitude of for a select set of pointings. The orange line shows the KDE, while the black line shows the adopted faint limit based on the maxium of the PDF 
+    (c) Distribution of faint limits for all the pointings in this work plotted against the integration time in G141 for that pointing}
+    \label{fig:maglimit}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{\figfolder oberved_numbers.pdf}
+    \caption{Comparison between the measured number densities and the expected number densities based on the Monte-Carlo simulation based on different age distributions and models}
+    \label{fig:simulationnbrs}
+\end{figure}
+
+
+\begin{figure}
+\begin{tabular}{cc}
+  \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum0.jpeg} &  
+  \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum1.jpeg} \\
+
+ \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum2.jpeg} &  
+  \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum3.jpeg} \\
+
+\includegraphics[width=0.4\linewidth]{\spectrafolder spectrum4.jpeg} &  
+  \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum5.jpeg} \\
+  
+\includegraphics[width=0.4\linewidth]{\spectrafolder spectrum6.jpeg} &  
+  \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum7.jpeg} \\
+
+
+\end{tabular}
+\caption{ Spectra of UCDs in both surveys. The bottom plot shows the 1D spectrum fit to a spectral standard, The noise and the contamination are also shown, the top left plot shows the WFC3 image acquired in either F140W, F160W or F110W filter and the top-right plot shows the cutoff of the G141 spectrum for that extracted object.}
+\end{figure}
+
+
+\foreach \i in {8,...,23}{ 
+     \begin{figure} \ContinuedFloat
+     \begin{tabular}{cc}
+       \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i \relax.jpeg} &  
+       \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+1 \relax.jpeg} \\
+
+       \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+2 \relax.jpeg} &  
+       \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+3 \relax.jpeg}  \\
+
+       \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+4 \relax.jpeg}  &  
+       \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+5 \relax.jpeg} \\
+
+       \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+6 \relax.jpeg}  &  
+       \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum\number\numexpr 8*\i+7 \relax.jpeg}  \\
+
+   \end{tabular}
+   \caption{cont.}
+   \end{figure} 
+   \clearpage
+ }
+
+
+\begin{figure}\ContinuedFloat
+\begin{tabular}{cc}
+  \includegraphics[width=0.4\linewidth]{\spectrafolder spectrum192.jpeg} 
+
+\end{tabular}
+\caption{ cont.}
+\end{figure}
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%				              TABLES
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\begin{deluxetable}{ccccccccccc}
+\tabletypesize{\scriptsize}
+\tablecaption{Polynomial relations used in this work. They are computed as$y=\sum_{n=1}^{7}c_nx^n$ and the symbol E denotes powers of 10. \label{tab:polynomials}}
+\tablehead{\colhead{x}&\colhead{y}&\colhead{rms}&\multicolumn{7}{c}{coefficients}\\\hline\colhead{}&\colhead{}&\colhead{}&\colhead{c7}&\colhead{c6}&\colhead{c5}&\colhead{c4}&\colhead{c3}&\colhead{c2}&\colhead{c1}}
+\hspace{0.5cm}
+\startdata 
+SpT&AbsF110W & 0.06 & 3.63345085E-07 & -5.02613549E-05 & 2.84851659E-03 & -8.39195901E-02& 1.32290107 & -9.72381583 &  3.09629558E+01 \\
+SpT&AbsF140W & 0.06 & 4.22490192E-07 & -5.96021230e-05 & 3.42842203E-03 & -1.01908640E-01& 1.61590803 & -1.21235933E+01 & 3.83212564E+01 \\
+SpT&AbsF160W & 0.07 & 9.52399647E-07 & -1.35594583E-04 & 7.81820247E-03 & -2.32176348E-01& 3.70383710 & -2.92211368E01 &9.38498953E01 \\
+F110W&$\log$SNR-J&0.4&&&&-0.01948568 &  0.56986169 & -1.93458271 \\
+F140W&$\log$SNR-J&0.4&&&&  0.02524522 &-1.36255952 &18.89785712\\
+F160W&$\log$SNR-J&0.4&&&& 1.02681325E-02 & -7.04396841E-01 & 1.16675349E+01\\
+\enddata
+
+\end{deluxetable}
+
+
+
+
+\begin{deluxetable}{ccccccccccccccc}
+\tabletypesize{\scriptsize}
+\tablecaption{Selection Criteria\label{tab:criteria}}
+\tablehead{\colhead{SpTRange}&\colhead{X-axis}&\colhead{Y-axis}&
+\colhead{v1}&\colhead{v2}&\colhead{v3}&\colhead{v4}&\colhead{CP}&\colhead{CT} & \colhead{FP}}
+\hspace{0.5cm}
+\startdata  
+L0-L5 & \indxwat-1/J-Cont &  \indxwat-2/\indxwat-1 & (0.65, 0.82) & (0.97, 0.82) & (0.97, 0.48) & (0.65, 0.48) & 0.97 & 0.065  & 0.9 \\ 
+L5-T0 & \indxwat-1/J-Cont &  \indxmeth/H-Cont & (0.54, 1.21) & (0.92, 1.21) & (0.92, 0.9) & (0.54, 0.9) & 0.96 & 0.054  & 0.95 \\ 
+M7-L0 & \indxwat-1/J-Cont & \indxmeth/\indxwat-1 & (0.81, 0.97) & (1.09, 0.97) & (1.09, 0.48) & (0.81, 0.48) & 0.96 & 0.173  & 0.81 \\ 
+T0-T5 & \indxwat-2/J-Cont &  H-cont/J-Cont & (0.02, 0.78) & (0.39, 1.1) & (0.39, 0.58) & (0.02, 0.25) & 0.98 & 0.02  & 0.88 \\ 
+T5-T9 & \indxwat-2/J-Cont &  \indxmeth/H-Cont & (-0.01, 0.39) & (0.08, 0.61) & (0.08, 0.16) & (-0.01, -0.06) & 0.98 & 0.002  & 0.71 \\ 
+Y dwarfs & \indxwat-2+\indxmeth/J-cont &  \indxwat-1+\indxmeth/H-cont & (-0.22, 0.35) & (0.28, 0.35) & (0.28, -0.2) & (-0.22, -0.2) & 0.93 & 0.002  & 1.0 \\ 
+subdwarfs & \indxwat-1/J-Cont &  H-cont/J-Cont & (0.9, 0.61) & (1.06, 0.67) & (1.06, 0.56) & (0.9, 0.5) & 0.86 & 0.039  & 1.0 \\ 
+\enddata 
+ \end{deluxetable}
+
+
+\startlongtable
+\begin{deluxetable}{ccccccchchchcchhh}
+\tabletypesize{\scriptsize}
+\tablecaption{List of L0-T9 UCDs\label{tab:sample}}
+\tablehead{\colhead{ShortName}&
+\colhead{GrismID}&\colhead{SNR-J}&\colhead{SpT}&\colhead{RA}&
+\colhead{DEC}&\colhead{F110W}&\nocolhead{F110Wer}&
+\colhead{F140W}&\nocolhead{F140Wer}&
+\colhead{F160W}&\nocolhead{F160Wer}&\colhead{Distance(pc)}&
+\colhead{Distanceer} & \nocolhead{2MASS J} & \nocolhead{2MASS-Her} & \nocolhead{2MASS-Jer}  }
+\hspace{0.5cm}
+\startdata WISPJ1354+1801&PAR361-00004&145&M7&208.564117&18.033100&18.5&0.0&&&19.0&0.0&442&117&7.6&0.1&0.1\\
+WISPJ1550+3959&PAR59-00072&13&M7&237.595795&39.991620&&&22.8&0.0&&&2906&92&8.5&0.0&0.0\\
+WISPJ1402+0946&PAR143-00045&11&M7&210.603149&9.769180&22.1&0.0&&&21.9&0.0&1908&234&8.3&0.1&0.1\\
+WISPJ1427+2631&PAR218-00004&93&M7&216.788986&26.524500&&&18.3&0.0&&&366&11&7.6&0.0&0.0\\
+WISPJ0910+3328&PAR431-00028&11&M7&137.621338&33.466900&21.5&0.0&&&21.3&0.0&1468&201&8.2&0.1&0.1\\
+WISPJ2307+2112&PAR166-00041&17&M7&346.821686&21.208400&&&&&21.5&0.0&1834&79&8.3&0.0&0.0\\
+GOODSSJ0333-2751&GOODSS-28-G141\_12490&18&M7&53.262383&-27.853979&&&22.0&0.0&22.2&0.0&2238&213&8.3&0.0&0.0\\
+WISPJ1342+1841&PAR139-00010&70&M7&205.607071&18.696800&&&&&20.2&0.0&1002&42&8.0&0.0&0.0\\
+WISPJ1556+2107&PAR308-00020&12&M7&239.138168&21.131900&21.3&0.0&&&21.1&0.0&1341&190&8.1&0.1&0.1\\
+WISPJ1431+2447&PAR385-00049&11&M7&217.854019&24.797000&22.8&0.0&&&22.2&0.0&2436&106&8.4&0.0&0.0\\
+AEGISJ1418+5244&AEGIS-25-G141\_18460&10&M7&214.742126&52.745266&&&22.8&0.0&22.8&0.0&3141&219&8.5&0.0&0.0\\
+WISPJ0947+5126&PAR478-00038&17&M7&146.750015&51.442600&22.3&0.0&&&21.6&0.0&1867&90&8.3&0.0&0.0\\
+WISPJ1847-6858&PAR134-00163&9&M7&281.901306&-68.969000&&&&&22.6&0.0&3013&127&8.5&0.0&0.0\\
+WISPJ1556+2108&PAR308-00050&6&M7&239.120377&21.136500&22.5&0.0&&&22.5&0.0&2409&405&8.4&0.1&0.1\\
+WISPJ1250-2331&PAR325-00034&20&M7&192.672379&-23.530000&21.6&0.0&&&21.3&0.0&1492&138&8.2&0.0&0.0\\
+WISPJ0944-1940&PAR293-00045&13&M7&146.159622&-19.679000&&&21.5&0.0&&&1639&52&8.2&0.0&0.0\\
+WISPJ1437-0149&PAR66-00029&20&M7&219.364258&-1.828590&21.4&0.0&&&21.6&0.0&1541&340&8.2&0.1&0.1\\
+WISPJ1847-6858&PAR134-00071&24&M7&281.901581&-68.969000&&&&&21.2&0.0&1554&63&8.2&0.0&0.0\\
+WISPJ2040-0644&PAR248-00079&17&M7&310.109924&-6.737800&&&21.6&0.0&&&1731&55&8.2&0.0&0.0\\
+GOODSNJ1236+6218&GOODSN-16-G141\_33587&22&M7&189.242218&62.314220&&&21.8&0.0&21.8&0.0&1995&108&8.3&0.0&0.0\\
+WISPJ1005-2305&PAR349-00092&5&M7&151.402130&-23.096000&23.0&0.0&&&22.9&0.0&3018&453&8.5&0.1&0.1\\
+WISPJ1323+3434&PAR186-00091&6&M7&200.928772&34.578900&&&22.2&0.0&&&2292&73&8.4&0.0&0.0\\
+GOODSNJ1236+6209&GOODSN-21-G141\_04680&11&M7&189.057877&62.161026&&&22.5&0.0&22.5&0.0&2684&173&8.4&0.0&0.0\\
+WISPJ1009+3000&PAR39-00033&10&M7&152.409225&30.012280&21.7&0.0&22.0&0.0&21.1&0.0&1654&318&8.2&0.1&0.1\\
+WISPJ2225-7212&PAR404-00044&15&M7&336.405060&-72.208000&21.9&0.0&&&21.7&0.0&1759&239&8.2&0.1&0.1\\
+GOODSSJ0332-2752&GOODSS-13-G141\_07509&16&M7&53.123314&-27.874628&&&22.0&0.0&22.0&0.0&2181&117&8.3&0.0&0.0\\
+WISPJ1427+2631&PAR218-00032&13&M7&216.803177&26.519000&&&21.4&0.0&&&1566&49&8.2&0.0&0.0\\
+WISPJ1832+5345&PAR124-00065&13&M7&278.138306&53.753000&22.1&0.0&&&22.1&0.0&2051&342&8.3&0.1&0.1\\
+WISPJ2205-0017&PAR94-00043&13&M7&331.366730&-0.285350&22.2&0.0&&&22.0&0.0&2002&271&8.3&0.1&0.1\\
+GOODSSJ0332-2745&GOODSS-09-G141\_32414&17&M7&53.080120&-27.762650&&&22.3&0.0&22.1&0.0&2378&101&8.4&0.0&0.0\\
+WISPJ1242+3538&PAR439-00106&4&M7&190.664185&35.638200&24.1&0.0&&&23.4&0.0&4228&160&8.6&0.0&0.0\\
+WISPJ1011-0447&PAR406-00062&11&M7&152.756714&-4.798300&22.5&0.0&&&22.4&0.0&2411&358&8.4&0.1&0.1\\
+UDSJ0217-0513&UDS-15-G141\_15337&160&M7&34.263683&-5.226482&&&19.0&0.0&19.0&0.0&537&32&7.7&0.0&0.0\\
+AEGISJ1419+5253&AEGIS-06-G141\_12749&10&M7&214.981369&52.892410&&&22.6&0.0&22.5&0.0&2768&126&8.4&0.0&0.0\\
+WISPJ1046+1302&PAR116-00048&11&M7&161.706467&13.044400&&&&&22.2&0.0&2488&101&8.4&0.0&0.0\\
+WISPJ1256+5430&PAR110-00085&15&M7&194.249939&54.515200&&&&&22.4&0.0&2686&113&8.4&0.0&0.0\\
+WISPJ1410+2954&PAR222-00091&4&M7&212.550674&29.914000&&&23.1&0.0&&&3500&108&8.5&0.0&0.0\\
+UDSJ0217-0509&UDS-25-G141\_36035&42&M7&34.340759&-5.155810&&&21.0&0.0&21.0&0.0&1381&82&8.1&0.0&0.0\\
+WISPJ2345+1510&PAR77-00045&12&M7&356.250092&15.176390&&&&&21.7&0.0&1962&81&8.3&0.0&0.0\\
+WISPJ0926+1239&PAR92-00011&27&M7&141.534668&12.664310&&&&&20.7&0.0&1262&53&8.1&0.0&0.0\\
+WISPJ0944-1941&PAR293-00059&8&M7&146.153305&-19.696000&&&21.9&0.0&&&2013&63&8.3&0.0&0.0\\
+WISPJ0948+1350&PAR427-00039&21&M7&147.228485&13.841600&22.4&0.0&&&22.1&0.0&2172&274&8.3&0.1&0.1\\
+WISPJ2333+3921&PAR68-00027&38&M7&353.408569&39.359250&20.5&0.0&&&20.3&0.0&927&118&8.0&0.1&0.1\\
+WISPJ1024-1843&PAR179-00069&13&M7&156.183685&-18.723000&&&22.0&0.0&&&2049&66&8.3&0.0&0.0\\
+WISPJ1832+5344&PAR124-00053&18&M7&278.104370&53.743200&21.9&0.0&&&21.8&0.0&1789&271&8.2&0.1&0.1\\
+WISPJ2222+0937&PAR50-00007&64&M7&335.595337&9.619006&&&19.7&0.0&&&715&22&7.9&0.0&0.0\\
+UDSJ0217-0513&UDS-09-G141\_17647&21&M7&34.317680&-5.217520&&&21.6&0.0&21.6&0.0&1824&124&8.3&0.0&0.0\\
+GOODSSJ0332-2755&GOODSS-05-G141\_01783&13&M7&53.086269&-27.917154&&&22.1&0.0&22.1&0.0&2269&145&8.4&0.0&0.0\\
+WISPJ2133-4904&PAR133-00012&87&M7&323.482574&-49.083000&&&&&19.6&0.0&753&31&7.9&0.0&0.0\\
+WISPJ1427+5751&PAR5-00055&19&M7&216.801208&57.850704&22.6&0.0&22.4&0.0&&&2297&173&8.4&0.0&0.0\\
+WISPJ1340+2825&PAR433-00047&14&M7&205.238373&28.421200&21.9&0.0&&&22.2&0.0&2026&489&8.3&0.1&0.1\\
+WISPJ1703+6136&PAR155-00040&22&M7&255.800537&61.614300&&&&&21.6&0.0&1925&77&8.3&0.0&0.0\\
+WISPJ0122-2837&PAR128-00034&16&M7&20.700928&-28.631500&&&&&21.9&0.0&2202&91&8.3&0.0&0.0\\
+UDSJ0216-0513&UDS-21-G141\_14877&41&M7&34.248672&-5.227246&&&20.9&0.0&20.8&0.0&1275&66&8.1&0.0&0.0\\
+WISPJ2307+2112&PAR166-00044&15&M7&346.819458&21.202500&&&&&21.6&0.0&1886&77&8.3&0.0&0.0\\
+WISPJ1545+0933&PAR138-00108&7&M7&236.393112&9.559070&&&&&22.8&0.1&3269&136&8.5&0.0&0.0\\
+UDSJ0217-0508&UDS-05-G141\_41125&36&M7&34.384212&-5.136668&&&20.9&0.0&20.9&0.0&1316&87&8.1&0.0&0.0\\
+GOODSSJ0332-2750&GOODSS-19-G141\_16588&35&M7&53.069553&-27.835718&&&21.2&0.0&21.1&0.0&1463&77&8.2&0.0&0.0\\
+WISPJ1023+0409&PAR347-00017&37&M7&155.843842&4.156480&20.7&0.0&&&20.5&0.0&1001&126&8.0&0.1&0.1\\
+WISPJ1720+4805&PAR398-00028&32&M7&260.024841&48.085900&21.3&0.0&&&20.8&0.0&1227&91&8.1&0.0&0.0\\
+WISPJ0307-7245&PAR130-00076&8&M7&46.930344&-72.760500&&&&&22.4&0.0&2775&116&8.4&0.0&0.0\\
+COSMOSJ1000+0212&COSMOS-14-G141\_02407&23&M7&150.114136&2.203750&&&21.4&0.0&21.4&0.0&1653&109&8.2&0.0&0.0\\
+WISPJ1303+2952&PAR35-00023&43&M7&195.952576&29.867760&20.9&0.0&20.8&0.0&20.5&0.0&1107&92&8.0&0.0&0.0\\
+WISPJ1556+6345&PAR154-00054&17&M7&239.238632&63.751900&&&&&22.1&0.0&2366&100&8.4&0.0&0.0\\
+AEGISJ1419+5253&AEGIS-11-G141\_37605&23&M7&214.830063&52.883358&&&21.7&0.0&21.7&0.0&1883&90&8.3&0.0&0.0\\
+GOODSNJ1236+6207&GOODSN-31-G141\_01429&23&M7&189.105484&62.131878&&&22.0&0.0&22.0&0.0&2155&130&8.3&0.0&0.0\\
+WISPJ1305-2538&PAR32-00044&17&M7&196.330322&-25.638200&22.4&0.0&22.0&0.0&22.4&0.1&2234&354&8.3&0.1&0.1\\
+UDSJ0217-0515&UDS-14-G141\_05410&31&M7&34.396893&-5.259149&&&21.3&0.0&21.2&0.0&1525&88&8.2&0.0&0.0\\
+WISPJ1419+0606&PAR345-00016&46&M7&214.868134&6.107460&20.8&0.0&&&20.7&0.0&1079&158&8.0&0.1&0.1\\
+WISPJ1545+1155&PAR290-00009&76&M7&236.311707&11.916900&&&19.2&0.0&&&556&17&7.7&0.0&0.0\\
+GOODSSJ0332-2748&GOODSS-02-G141\_21166&11&M7&53.075310&-27.812702&&&22.5&0.0&22.5&0.0&2731&188&8.4&0.0&0.0\\
+WISPJ2005-4140&PAR371-00100&7&M7&301.439331&-41.667000&22.6&0.0&&&22.5&0.0&2448&372&8.4&0.1&0.1\\
+WISPJ1703+6135&PAR155-00094&7&M7&255.803131&61.589400&&&&&22.6&0.0&3013&120&8.5&0.0&0.0\\
+WISPJ1007+5013&PAR98-00038&21&M7&151.942719&50.227020&&&&&21.5&0.0&1788&77&8.3&0.0&0.0\\
+WISPJ1147-1406&PAR177-00049&5&M7&176.790482&-14.103000&&&22.5&0.1&&&2681&90&8.4&0.0&0.0\\
+GOODSNJ1237+6215&GOODSN-36-G141\_22694&47&M7&189.333832&62.252960&&&20.8&0.0&20.8&0.0&1257&79&8.1&0.0&0.0\\
+WISPJ1348+2451&PAR243-00025&10&M7&207.047501&24.864700&&&21.7&0.0&&&1792&57&8.3&0.0&0.0\\
+WISPJ1534+1252&PAR457-00025&16&M7&233.733124&12.881000&21.5&0.0&&&21.6&0.0&1569&293&8.2&0.1&0.1\\
+GOODSSJ0333-2751&GOODSS-28-G141\_12948&22&M7&53.288685&-27.851252&&&21.7&0.0&21.9&0.0&1951&183&8.3&0.0&0.0\\
+UDSJ0217-0514&UDS-14-G141\_11264&21&M7&34.419510&-5.239141&&&21.7&0.0&21.7&0.0&1855&103&8.3&0.0&0.0\\
+WISPJ2005-4139&PAR371-00045&19&M7&301.436218&-41.656000&21.3&0.0&&&21.2&0.0&1368&203&8.1&0.1&0.1\\
+WISPJ0935+0201&PAR34-00057&9&M7&143.753418&2.025816&22.0&0.0&22.6&0.0&22.3&0.0&2300&494&8.4&0.1&0.1\\
+WISPJ0950+3544&PAR192-00026&18&M7&147.742004&35.734600&&&21.5&0.0&&&1608&50&8.2&0.0&0.0\\
+WISPJ1135+2558&PAR183-00051&5&M7&173.825058&25.980000&22.5&0.0&&&22.4&0.0&2376&352&8.4&0.1&0.1\\
+WISPJ1410+2955&PAR222-00047&8&M7&212.553284&29.928500&&&22.1&0.0&&&2178&68&8.3&0.0&0.0\\
+WISPJ1005-2421&PAR336-00047&10&M7&151.336197&-24.362000&22.1&0.0&&&22.0&0.0&2003&321&8.3&0.1&0.1\\
+GOODSNJ1237+6210&GOODSN-43-G141\_05553&78&M7&189.291306&62.168911&&&20.3&0.0&20.3&0.0&981&67&8.0&0.0&0.0\\
+WISPJ0243-7211&PAR127-00028&33&M7&40.788712&-72.193700&&&&&20.7&0.0&1226&51&8.1&0.0&0.0\\
+UDSJ0217-0513&UDS-15-G141\_14762&17&M7&34.261978&-5.227352&&&21.9&0.0&21.9&0.0&2068&99&8.3&0.0&0.0\\
+WISPJ0914+4755&PAR299-00070&12&M7&138.669785&47.929800&22.7&0.0&&&22.4&0.0&2477&263&8.4&0.0&0.0\\
+GOODSNJ1236+6210&GOODSN-43-G141\_05338&88&M7&189.236938&62.167187&&&20.0&0.0&19.9&0.0&837&47&7.9&0.0&0.0\\
+WISPJ1402+5410&PAR458-00004&107&M7&210.689911&54.173500&19.1&0.0&&&18.9&0.0&479&65&7.7&0.1&0.1\\
+WISPJ1611+5221&PAR161-00061&11&M7&242.944473&52.355100&&&&&22.3&0.0&2658&109&8.4&0.0&0.0\\
+GOODSNJ1236+6214&GOODSN-13-G141\_20147&29&M7&189.076431&62.240665&&&21.8&0.0&21.7&0.0&1921&104&8.3&0.0&0.0\\
+WISPJ1330+2810&PAR52-00082&7&M7&202.618713&28.175410&&&23.2&0.0&&&3587&118&8.6&0.0&0.0\\
+WISPJ1325+2233&PAR436-00037&20&M7&201.376205&22.555500&21.8&0.0&&&21.2&0.0&1529&90&8.2&0.0&0.0\\
+GOODSSJ0332-2751&GOODSS-06-G141\_10354&57&M7&53.232479&-27.862617&&&20.5&0.0&20.4&0.0&1052&58&8.0&0.0&0.0\\
+WISPJ1224+6112&PAR422-00561&4&M7&186.122742&61.211100&&&26.5&0.2&&&16818&653&9.2&0.0&0.0\\
+WISPJ1225-0248&PAR38-00076&9&M7&186.307083&-2.805970&22.9&0.0&22.8&0.0&22.1&0.0&2611&254&8.4&0.0&0.0\\
+WISPJ1420+2541&PAR301-00038&9&M7&215.205597&25.691600&&&21.9&0.0&&&1932&62&8.3&0.0&0.0\\
+WISPJ2139-3824&PAR309-00023&29&M7&324.799408&-38.403000&21.2&0.0&&&20.9&0.0&1230&129&8.1&0.0&0.0\\
+GOODSSJ0332-2751&GOODSS-06-G141\_11322&7&M7&53.219978&-27.857151&&&23.2&0.0&23.0&0.0&3576&150&8.6&0.0&0.0\\
+WISPJ2005-4139&PAR371-00055&20&M7&301.420959&-41.655000&21.5&0.0&&&20.9&0.0&1346&62&8.1&0.0&0.0\\
+COSMOSJ1000+0217&COSMOS-12-G141\_10098&54&M7&150.127716&2.283806&&&20.3&0.0&20.4&0.0&1007&71&8.0&0.0&0.0\\
+WISPJ2005-4139&PAR371-00080&10&M7&301.422119&-41.650000&22.2&0.0&&&21.8&0.0&1942&178&8.3&0.0&0.0\\
+WISPJ1102+1053&PAR11-00046&11&M7&165.566360&10.897610&22.1&0.0&22.2&0.0&21.6&0.0&1978&240&8.3&0.1&0.1\\
+WISPJ1514+3617&PAR71-00034&10&M7&228.531723&36.291910&22.1&0.0&&&21.9&0.0&1921&249&8.3&0.1&0.1\\
+COSMOSJ1000+0218&COSMOS-26-G141\_12464&16&M7&150.081543&2.306208&&&21.7&0.0&21.7&0.0&1854&109&8.3&0.0&0.0\\
+GOODSNJ1236+6217&GOODSN-15-G141\_29162&4&M7&189.171143&62.285847&&&25.1&0.1&24.8&0.1&8556&353&8.9&0.0&0.0\\
+WISPJ1500+4127&PAR391-00011&33&M8&225.079330&41.457200&20.9&0.0&&&20.7&0.0&899&123&8.3&0.1&0.1\\
+WISPJ1006-2953&PAR170-00081&13&M8&151.730759&-29.894000&&&&&21.9&0.0&1757&74&8.6&0.0&0.0\\
+WISPJ2335-3536&PAR359-00007&58&M8&353.832611&-35.602000&19.9&0.0&&&19.6&0.0&542&66&8.1&0.1&0.1\\
+WISPJ2345-4239&PAR356-00057&8&M8&356.253845&-42.658000&23.0&0.0&&&22.7&0.0&2275&232&8.7&0.0&0.0\\
+WISPJ1605+2547&PAR148-00044&21&M8&241.354004&25.794100&&&&&21.9&0.0&1765&76&8.6&0.0&0.0\\
+WISPJ1351+2751&PAR444-00034&16&M8&207.753510&27.852400&21.8&0.0&&&21.5&0.0&1293&153&8.4&0.1&0.1\\
+GOODSSJ0332-2742&GOODSS-30-G141\_44380&74&M8&53.100697&-27.703068&&&20.1&0.0&20.1&0.0&723&35&8.2&0.0&0.0\\
+WISPJ2139-3824&PAR309-00046&9&M8&324.795837&-38.402000&22.3&0.0&&&22.4&0.0&1826&346&8.6&0.1&0.1\\
+GOODSSJ0332-2747&GOODSS-02-G141\_24465&13&M8&53.075794&-27.796272&&&22.3&0.0&22.2&0.0&1959&100&8.6&0.0&0.0\\
+WISPJ0839+6456&PAR250-00051&7&M8&129.813751&64.949100&&&22.3&0.0&&&1940&61&8.6&0.0&0.0\\
+COSMOSJ1000+0222&COSMOS-25-G141\_19163&9&M8&150.107285&2.374017&&&22.5&0.0&22.3&0.0&2130&80&8.7&0.0&0.0\\
+UDSJ0217-0510&UDS-23-G141\_31620&9&M8&34.259209&-5.170456&&&22.7&0.0&22.7&0.0&2418&180&8.7&0.0&0.0\\
+WISPJ1006-2953&PAR171-00081&13&M8&151.730759&-29.894000&&&&&21.9&0.0&1757&72&8.6&0.0&0.0\\
+WISPJ0908+3246&PAR417-00014&30&M8&137.048172&32.776600&20.8&0.0&&&20.3&0.0&774&61&8.2&0.0&0.0\\
+WISPJ2038-2021&PAR197-00054&12&M8&309.592621&-20.363000&&&21.1&0.0&&&1101&35&8.4&0.0&0.0\\
+WISPJ2333+3922&PAR68-00017&146&M8&353.398834&39.370580&18.7&0.0&&&18.7&0.0&339&63&7.9&0.1&0.1\\
+WISPJ1427+2352&PAR346-00021&29&M8&216.753586&23.878400&21.0&0.0&&&20.9&0.0&958&169&8.3&0.1&0.1\\
+WISPJ2333+3925&PAR153-00002&518&M8&353.414642&39.418100&&&&&15.7&0.0&102&4&7.3&0.0&0.0\\
+WISPJ1604+1446&PAR240-00051&10&M8&241.234528&14.782200&&&22.2&0.0&&&1863&59&8.6&0.0&0.0\\
+WISPJ1547+2057&PAR335-00113&7&M8&236.926895&20.951200&23.3&0.0&&&23.0&0.0&2654&297&8.8&0.0&0.1\\
+GOODSNJ1237+6219&GOODSN-27-G141\_34168&20&M8&189.308624&62.318092&&&21.8&0.0&21.8&0.0&1583&98&8.5&0.0&0.0\\
+WISPJ0854+4351&PAR319-00085&7&M8&133.500824&43.853300&23.2&0.0&&&22.9&0.0&2502&274&8.7&0.0&0.0\\
+COSMOSJ1000+0227&COSMOS-08-G141\_26927&13&M8&150.126282&2.459579&&&22.0&0.0&21.9&0.0&1690&73&8.6&0.0&0.0\\
+UDSJ0217-0514&UDS-10-G141\_10211&46&M8&34.368454&-5.242865&&&20.7&0.0&20.7&0.0&959&42&8.3&0.0&0.0\\
+WISPJ0455-2201&PAR194-00039&7&M8&73.960762&-22.023700&&&22.2&0.0&&&1811&56&8.6&0.0&0.0\\
+WISPJ0911+1832&PAR271-00055&10&M8&137.887695&18.541900&22.2&0.0&&&21.8&0.0&1562&143&8.5&0.0&0.0\\
+WISPJ0137-0908&PAR317-00032&17&M8&24.328993&-9.148480&21.7&0.0&&&21.1&0.0&1170&79&8.4&0.0&0.0\\
+WISPJ1319+2727&PAR47-00010&39&M8&199.900848&27.450940&20.6&0.0&20.5&0.0&20.5&0.0&813&107&8.2&0.1&0.1\\
+WISPJ0502+0732&PAR189-00077&7&M8&75.559814&7.535803&&&22.2&0.0&&&1863&60&8.6&0.0&0.0\\
+WISPJ0122-2838&PAR128-00052&14&M8&20.687748&-28.646200&&&&&22.3&0.0&2116&84&8.7&0.0&0.0\\
+WISPJ2131-1202&PAR342-00050&6&M8&322.946167&-12.045000&22.9&0.0&&&22.6&0.0&2161&250&8.7&0.1&0.1\\
+WISPJ1604+1445&PAR240-00058&8&M8&241.243622&14.766600&&&22.4&0.0&&&2013&64&8.6&0.0&0.0\\
+WISPJ1224+6110&PAR422-00021&30&M8&186.109833&61.182500&&&21.4&0.0&&&1233&38&8.4&0.0&0.0\\
+WISPJ1112+3536&PAR44-00044&19&M8&168.058868&35.607950&21.6&0.0&22.2&0.0&21.6&0.0&1457&312&8.5&0.1&0.1\\
+WISPJ1125+5319&PAR477-00009&32&M8&171.342133&53.331300&20.8&0.0&&&20.4&0.0&814&84&8.2&0.0&0.0\\
+WISPJ1023+0409&PAR347-00037&14&M8&155.843643&4.164820&22.2&0.0&&&22.0&0.0&1594&213&8.5&0.1&0.1\\
+WISPJ0105+0215&PAR231-00012&89&M9&16.310194&2.257870&&&18.9&0.0&&&335&10&8.1&0.0&0.0\\
+WISPJ1605+1447&PAR240-00040&17&M9&241.256699&14.783400&&&22.0&0.0&&&1343&43&8.7&0.0&0.0\\
+WISPJ1007+1004&PAR343-00036&15&M9&151.918076&10.079000&21.5&0.0&&&21.2&0.0&942&136&8.6&0.1&0.1\\
+WISPJ1432+0958&PAR428-00062&9&M9&218.003204&9.968530&22.2&0.0&&&22.0&0.0&1327&194&8.7&0.1&0.1\\
+WISPJ1618+3340&PAR65-00035&19&L0&244.707458&33.671520&21.7&0.0&&&21.3&0.0&832&116&8.8&0.1&0.1\\
+WISPJ0246-0104&PAR483-00077&9&L0&41.721233&-1.079250&23.0&0.0&&&22.1&0.0&1346&52&9.0&0.0&0.0\\
+WISPJ1429+3224&PAR378-00052&8&L0&217.333206&32.416400&22.4&0.0&&&21.9&0.0&1142&119&8.9&0.0&0.0\\
+WISPJ1007+1004&PAR343-00083&6&L0&151.936081&10.079100&23.0&0.0&&&22.4&0.1&1452&111&9.0&0.0&0.0\\
+WISPJ1715+0455&PAR239-00118&6&L0&258.758057&4.925150&&&22.1&0.0&&&1198&38&8.9&0.0&0.0\\
+UDSJ0217-0509&UDS-25-G141\_36758&31&L1&34.318333&-5.153692&&&21.3&0.0&21.0&0.0&712&26&9.0&0.0&0.0\\
+WISPJ0015-7955&PAR244-00072&6&L1&3.785810&-79.930220&&&22.2&0.0&&&1073&34&9.1&0.0&0.0\\
+WISPJ1408+5657&PAR353-00055&13&L1&212.082855&56.956800&22.5&0.0&&&22.0&0.0&1000&125&9.1&0.1&0.1\\
+GOODSSJ0332-2742&GOODSS-35-G141\_43501&5&L1&53.110023&-27.707857&&&22.4&0.0&22.2&0.0&1211&52&9.2&0.0&0.0\\
+WISPJ1154+1941&PAR338-00035&13&L1&178.716644&19.684700&22.2&0.0&&&21.9&0.0&937&159&9.1&0.1&0.1\\
+WISPJ0927+6027&PAR21-00005&324&L1&141.989319&60.462970&&&18.6&0.0&&&199&6&8.4&0.0&0.0\\
+WISPJ1150-2033&PAR199-00009&57&L1&177.706833&-20.561000&&&19.2&0.0&&&266&8&8.5&0.0&0.0\\
+GOODSNJ1236+6211&GOODSN-33-G141\_09283&12&L2&189.223923&62.188259&&&22.2&0.0&22.0&0.0&941&40&9.4&0.0&0.0\\
+GOODSNJ1236+6209&GOODSN-31-G141\_04491&5&L2&189.082870&62.159412&&&24.3&0.0&24.1&0.0&2474&147&9.8&0.0&0.0\\
+WISPJ1544+4844&PAR54-00072&6&L3&236.225174&48.738480&&&22.9&0.0&&&1092&33&9.8&0.0&0.0\\
+WISPJ1154+1939&PAR338-00136&4&L3&178.720154&19.660000&24.1&0.0&&&23.1&0.0&1359&70&9.9&0.0&0.0\\
+WISPJ1133+0328&PAR27-00036&10&L3&173.274353&3.477643&21.6&0.0&22.0&0.0&21.4&0.0&602&133&9.5&0.1&0.1\\
+WISPJ0125-0001&PAR365-00156&4&L4&21.396976&-0.027310&5.6&-99.0&&&24.2&0.0&1056&1057&10.1&0.4&0.4\\
+COSMOSJ1000+0219&COSMOS-03-G141\_14879&6&L4&150.093170&2.331386&&&23.2&0.0&23.0&0.0&1174&65&10.2&0.0&0.0\\
+GOODSSJ0333-2751&GOODSS-28-G141\_10859&34&L4&53.267498&-27.860249&&&21.4&0.0&21.3&0.0&512&45&9.8&0.0&0.0\\
+WISPJ1019+2743&PAR201-00044&4&L4&154.888565&27.720400&&&22.4&0.0&&&772&24&10.0&0.0&0.0\\
+WISPJ1625+5721&PAR156-00041&19&L4&246.353882&57.357600&&&&&21.4&0.0&569&25&9.9&0.0&0.0\\
+GOODSNJ1236+6209&GOODSN-32-G141\_05180&4&L4&189.159195&62.164200&&&24.2&0.0&24.1&0.0&1902&135&10.4&0.0&0.0\\
+WISPJ1004+5258&PAR438-00051&10&L4&151.204559&52.974800&&&22.6&0.0&&&850&27&10.1&0.0&0.0\\
+GOODSNJ1236+6214&GOODSN-24-G141\_21552&19&L4&189.161880&62.247669&&&22.0&0.0&21.8&0.0&672&36&10.0&0.0&0.0\\
+GOODSSJ0332-2749&GOODSS-20-G141\_19648&6&L4&53.103283&-27.820263&&&23.2&0.0&23.2&0.0&1207&89&10.2&0.0&0.0\\
+GOODSNJ1235+6211&GOODSN-11-G141\_10603&6&L5&188.967987&62.194958&&&23.3&0.0&23.0&0.0&1063&44&10.5&0.0&0.0\\
+WISPJ1124+4202&PAR106-00047&11&L6&171.034760&42.042900&&&&&21.5&0.0&469&20&10.5&0.0&0.0\\
+UDSJ0217-0509&UDS-23-G141\_32939&4&L9&34.250679&-5.165653&&&23.9&0.1&23.7&0.0&967&37&11.5&0.0&0.0\\
+UDSJ0217-0512&UDS-11-G141\_18287&7&T0&34.451412&-5.214653&&&24.7&0.1&24.5&0.1&1335&57&11.8&0.0&0.0\\
+COSMOSJ1000+0220&COSMOS-09-G141\_16730&4&T0&150.178040&2.349691&&&24.5&0.1&25.0&0.1&1414&185&11.8&0.1&0.1\\
+COSMOSJ1000+0217&COSMOS-23-G141\_10232&5&T0&150.145950&2.283675&&&23.8&0.0&23.8&0.0&910&35&11.6&0.0&0.0\\
+UDSJ0217-0514&UDS-12-G141\_10759&9&T0&34.435657&-5.240000&&&25.2&0.2&25.2&0.1&1796&85&11.9&0.0&0.0\\
+WISPJ1003+2854&PAR191-00077&6&T0&150.918884&28.912800&&&&&23.1&0.0&661&28&11.5&0.0&0.0\\
+WISPJ1115+5257&PAR468-00163&5&T1&168.809311&52.951400&24.3&0.0&&&24.4&0.1&942&210&11.7&0.1&0.1\\
+WISPJ0326-1643&PAR467-00135&3&T1&51.511295&-16.722500&23.9&0.0&&&23.9&0.1&770&159&11.7&0.1&0.1\\
+WISPJ1150-2033&PAR199-00124&6&T1&177.704559&-20.565000&&&23.2&0.0&&&626&21&11.6&0.0&0.0\\
+GOODSSJ0332-2749&GOODSS-04-G141\_17402&13&T3&53.161709&-27.831562&&&22.6&0.0&22.9&0.0&453&48&11.6&0.0&0.0\\
+WISPJ0437-1106&PAR463-00176&4&T3&69.490608&-11.104400&24.3&0.1&&&24.3&0.1&816&134&11.9&0.1&0.1\\
+WISPJ0307-7243&PAR130-00092&12&T4&46.921608&-72.732600&&&&&22.7&0.0&410&18&11.8&0.0&0.0\\
+AEGISJ1418+5242&AEGIS-03-G141\_17053&21&T4&214.710007&52.716480&&&22.7&0.0&23.1&0.0&440&51&11.8&0.1&0.1\\
+GOODSSJ0332-2741&GOODSS-01-G141\_45889&31&T6&53.242542&-27.695446&&&22.1&0.0&22.9&0.0&254&51&12.3&0.1&0.1\\
+WISPJ1232-0033&PAR58-00112&11&T8&188.176712&-0.551850&&&23.1&0.0&&&144&5&13.7&0.0&0.0\\
+WISPJ1305-2538&PAR32-00075&11&T9&196.356232&-25.641300&23.1&0.0&23.0&0.0&22.7&0.1&56&12&14.5&0.1&0.1\\ \enddata
+\end{deluxetable}
+
+
+
+\begin{deluxetable}{cccccc}
+\tabletypesize{\scriptsize}
+\tablecaption{ Number of UCDs expected as a function of scale height \label{tab:simnumbers}}
+\tablehead{ \colhead{h} & \colhead{M7-L0} & \colhead{L0-L5} & \colhead{L5-T0} & \colhead{T0-T5} & \colhead{T5-Y0}}
+\hspace{0.5cm}
+\startdata 
+ 100 &     3 &    3 &    1 &    1 &    0\\
+ 200 &    40 &   25 &    7 &    2 &    1 \\
+ 250 &    87 &   44 &   10 &    2 &    1 \\
+ 300 &   160 &   70 &   15 &    3 &    1 \\
+ 350 &   272 &  105 &   18 &    4 &    1 \\
+ 400 &   372 &  133 &   20 &    4 &    2 \\
+ 600 &  1014 &  259 &   32 &    6 &    2\\
+ observed &  148 & 26 & 3 &12 & 2\\
+\enddata
+\end{deluxetable}
+
+\startlongtable
+\begin{deluxetable*}{cccccccc}
+
+\tabletypesize{\footnotesize}
+\tablewidth{0pt}
+\tablecaption{List of pointings searched in this study \label{tab:pointings}}
+\tablehead{
+\colhead{Pointing} & \colhead{l} & \colhead{b} &  \colhead{G141 Exp (s)} &     \colhead{Observation Date} 
+ &  \colhead{Lim F110} &  \colhead{Lim F140 }&  \colhead{Lim F160} }
+\hspace{0.5cm}
+
+\startdata 
+AEGIS-01&96d26m22.7957s&59d29m44.8363s&6618&2011-05-05&&23.8&23.7\\
+AEGIS-02&96d22m11.4361s&59d30m03.2299s&5112&2011-05-03&&23.5&23.4\\
+AEGIS-03&96d26m09.5835s&59d40m26.0968s&5112&2011-06-13&&23.4&23.3\\
+AEGIS-04&96d29m48.3635s&59d36m39.0879s&5012&2011-03-16&&23.6&23.4\\
+AEGIS-05&96d29m39.136s&59d39m03.5108s&5112&2011-03-16&&23.9&23.8\\
+AEGIS-06&96d21m14.8403s&59d26m16.0626s&5112&2011-10-11&&23.7&23.6\\
+AEGIS-07&96d21m23.877s&59d24m09.3001s&5112&2011-10-30&&23.7&23.6\\
+AEGIS-08&96d25m54.1875s&59d23m59.1794s&5012&2011-10-24&&23.7&23.6\\
+AEGIS-09&96d25m52.9447s&59d35m31.4419s&5112&2011-06-20&&23.5&23.4\\
+AEGIS-10&96d25m29.2378s&59d25m56.7607s&5112&2011-10-23&&23.7&23.6\\
+AEGIS-12&96d22m19.4975s&59d39m15.5591s&5112&2011-06-18&&23.4&23.4\\
+AEGIS-13&96d27m07.2075s&59d36m27.7698s&5112&2011-08-31&&24.1&23.9\\
+AEGIS-14&96d26m30.6171s&59d33m15.9555s&5112&2011-06-27&&23.4&23.2\\
+AEGIS-15&96d22m22.9309s&59d36m31.0191s&5112&2011-06-21&&23.7&23.5\\
+AEGIS-18&96d21m39.6734s&59d37m39.4974s&5112&2011-09-03&&23.7&23.6\\
+AEGIS-19&96d29m48.4966s&59d25m36.9587s&5112&2011-10-27&&23.7&23.6\\
+AEGIS-21&96d22m04.2749s&59d28m10.0006s&5012&2011-10-28&&23.7&23.6\\
+AEGIS-23&96d28m47.1281s&59d31m59.0613s&5112&2011-12-02&&23.6&23.5\\
+AEGIS-24&96d27m45.2658s&59d38m29.4777s&5112&2011-09-02&&23.9&23.8\\
+AEGIS-25&96d25m23.0474s&59d38m05.6042s&5112&2011-06-20&&23.3&23.2\\
+AEGIS-26&96d21m04.5639s&59d22m11.6393s&5112&2011-10-28&&23.6&23.5\\
+AEGIS-27&96d29m28.3251s&59d21m43.0347s&5112&2011-10-28&&23.6&23.5\\
+AEGIS-28&96d22m35.2627s&59d34m00.8421s&5012&2011-06-27&&23.5&23.4\\
+AEGIS-11&96d31m14.5693s&59d29m18.8023s&5112&2011-05-02&&23.4&23.5\\
+COSMOS-01&236d34m20.2409s&42d11m45.8981s&4712&2011-04-16&&23.1&23.0\\
+COSMOS-03&236d38m59.2639s&42d09m42.5814s&4612&2011-04-06&&23.5&23.4\\
+COSMOS-04&236d45m34.3324s&42d13m31.4764s&4712&2011-06-05&&23.5&23.4\\
+COSMOS-05&236d43m26.5122s&42d06m56.048s&4712&2011-06-05&&23.5&23.3\\
+COSMOS-06&236d45m54.0556s&42d05m47.3817s&4712&2011-06-09&&23.3&23.2\\
+COSMOS-07&236d31m49.2007s&42d12m52.8501s&4712&2011-06-09&&23.7&23.6\\
+COSMOS-08&236d32m27.3238s&42d15m07.9461s&4612&2011-06-10&&23.3&23.2\\
+COSMOS-09&236d43m01.6542s&42d14m31.6546s&4712&2011-06-11&&23.6&23.4\\
+COSMOS-10&236d39m41.3114s&42d11m56.3185s&4612&2012-03-09&&23.5&23.4\\
+COSMOS-11&236d33m05.7552s&42d17m21.5883s&4712&2011-06-17&&23.4&23.3\\
+COSMOS-12&236d44m01.1661s&42d09m08.8201s&4712&2011-06-17&&23.5&23.4\\
+COSMOS-13&236d46m29.7279s&42d08m00.2618s&4712&2011-06-12&&23.7&23.6\\
+COSMOS-14&236d48m54.611s&42d06m41.8829s&4712&2011-06-12&&23.4&23.2\\
+COSMOS-15&236d35m46.9137s&42d16m21.5521s&4512&2010-11-03&&23.4&23.3\\
+COSMOS-16&236d38m08.2079s&42d15m12.9157s&4712&2010-10-30&&23.5&23.4\\
+COSMOS-17&236d40m24.5941s&42d14m19.9295s&4412&2010-11-03&&23.4&23.3\\
+COSMOS-18&236d40m43.7599s&42d15m38.6336s&4712&2011-03-27&&23.4&23.3\\
+COSMOS-19&236d50m28.3721s&42d10m34.6583s&4512&2012-03-02&&23.5&23.4\\
+COSMOS-20&236d42m52.4314s&42d12m55.7431s&4512&2010-11-03&&23.3&23.2\\
+COSMOS-21&236d47m08.6916s&42d10m13.0784s&4712&2011-06-12&&23.6&23.5\\
+COSMOS-22&236d48m21.1083s&42d12m13.2377s&4512&2012-03-04&&23.7&23.6\\
+COSMOS-23&236d44m46.5672s&42d11m20.6701s&4612&2011-04-07&&23.5&23.4\\
+COSMOS-24&236d42m05.8367s&42d10m40.8589s&4512&2010-11-03&&23.0&22.9\\
+COSMOS-25&236d37m29.2179s&42d12m57.1516s&4612&2010-12-11&&23.2&23.1\\
+COSMOS-26&236d41m19.1745s&42d08m25.8472s&4512&2010-11-03&&23.0&22.9\\
+COSMOS-27&236d36m53.985s&42d10m43.5386s&4512&2010-11-03&&23.3&23.2\\
+COSMOS-28&236d35m14.0373s&42d14m06.8982s&4512&2010-11-04&&23.4&23.3\\
+COSMOS-02&236d49m33.0991s&42d08m53.2557s&4712&2011-05-27&&23.4&23.3\\
+UDS-01&169d56m39.106s&-59d54m06.9111s&4712&2011-11-28&&23.8&23.7\\
+UDS-02&169d59m35.3003s&-59d55m48.9718s&4712&2011-11-30&&23.4&23.3\\
+UDS-03&170d02m31.5858s&-59d57m31.0715s&4712&2011-11-30&&23.8&23.7\\
+UDS-04&169d53m35.8828s&-59d55m24.1621s&4712&2011-12-04&&23.8&23.7\\
+UDS-05&169d45m19.0766s&-59d56m35.9337s&4612&2011-08-20&&24.0&23.9\\
+UDS-06&169d50m22.491s&-59d58m16.764s&4712&2011-08-27&&23.8&23.8\\
+UDS-07&169d51m10.577s&-60d00m21.8937s&4712&2012-01-23&&23.9&23.8\\
+UDS-08&169d47m19.7632s&-60d00m48.0749s&4712&2012-01-13&&24.0&23.9\\
+UDS-09&169d47m48.6102s&-60d03m02.0572s&4712&2012-01-14&&24.1&23.9\\
+UDS-10&169d51m44.5632s&-60d02m35.8008s&4712&2012-01-14&&24.1&24.0\\
+UDS-11&169d56m31.3347s&-59d57m05.9724s&4712&2011-11-22&&24.0&23.9\\
+UDS-12&169d59m27.295s&-59d58m50.2587s&4712&2011-11-24&&24.1&24.0\\
+UDS-13&169d46m34.0227s&-59d58m47.1916s&4512&2011-08-27&&23.8&23.7\\
+UDS-14&169d56m27.9345s&-60d00m09.8173s&4612&2011-12-01&&23.7&23.6\\
+UDS-15&169d42m24.9819s&-60d04m41.9412s&4712&2012-01-20&&24.1&23.9\\
+UDS-17&169d53m32.7427s&-59d58m28.4647s&4712&2011-12-21&&24.0&23.8\\
+UDS-18&170d06m20.9901s&-59d49m36.8853s&4612&2012-01-28&&23.7&23.8\\
+UDS-20&169d36m23.932s&-60d03m09.9533s&4612&2012-01-14&&23.9&23.9\\
+UDS-21&169d38m31.9934s&-60d05m07.0527s&4712&2012-01-20&&23.9&23.9\\
+UDS-22&169d42m28.4973s&-60d06m33.0776s&4712&2012-01-20&&24.2&24.1\\
+UDS-23&169d35m33.8044s&-60d01m15.2368s&4712&2011-08-20&&24.0&24.0\\
+UDS-24&169d50m30.1081s&-59d56m42.4416s&4612&2011-12-16&&23.9&23.8\\
+UDS-25&169d41m57.2879s&-59d57m58.7204s&4712&2011-08-23&&24.1&24.0\\
+UDS-26&169d39m03.4028s&-60d00m10.5448s&4612&2011-08-23&&24.1&24.0\\
+UDS-27&169d40m16.1112s&-60d02m24.685s&4612&2011-08-28&&23.9&23.8\\
+UDS-28&169d53m32.8421s&-60d01m29.9887s&4712&2011-12-21&&24.0&23.9\\
+UDS-16&169d46m16.6063s&-60d04m38.2467s&4712&2012-01-14&&24.1&24.1\\
+UDS-19&169d43m09.4875s&-60d00m08.4711s&4612&2011-08-28&&24.1&24.0\\
+GOODSN-11&126d04m25.445s&54d50m09.1776s&4612&2010-04-15&&23.4&23.4\\
+GOODSN-111&126d04m25.445s&54d50m09.1776s&2506&2011-04-19&&24.8&24.7\\
+GOODSN-114&125d56m48.3881s&54d46m34.9693s&5012&2011-04-20&&23.8&23.7\\
+GOODSN-12&126d01m52.7561s&54d48m57.9318s&3812&2010-04-15&&24.3&24.2\\
+GOODSN-13&125d59m20.2713s&54d47m46.4697s&3812&2010-04-15&&23.4&23.3\\
+GOODSN-14&125d56m48.3881s&54d46m34.9693s&4312&2010-04-16&&23.8&23.7\\
+GOODSN-15&125d54m16.7094s&54d45m23.2533s&5312&2010-04-22&&23.4&23.3\\
+GOODSN-16&125d51m45.5105s&54d44m11.5073s&5312&2010-09-25&&23.7&23.7\\
+GOODSN-18&125d46m43.7789s&54d41m47.6692s&5312&2010-09-26&&23.6&23.5\\
+GOODSN-23&125d56m58.7504s&54d49m26.6386s&4512&2010-04-17&&23.6&23.5\\
+GOODSN-24&125d54m26.6825s&54d48m14.9297s&4612&2010-04-17&&23.4&23.3\\
+GOODSN-25&125d51m54.9752s&54d47m03.1973s&5312&2010-04-22&&23.7&23.5\\
+GOODSN-26&125d49m23.6108s&54d45m51.3422s&5312&2010-09-21&&23.3&23.2\\
+GOODSN-27&125d46m52.5728s&54d44m39.2654s&5312&2009-09-16&&24.0&23.9\\
+GOODSN-28&125d44m21.8943s&54d43m27.1663s&5212&2009-09-16&&23.4&23.4\\
+GOODSN-31&125d59m41.8598s&54d53m29.7889s&4512&2010-04-18&&23.6&23.5\\
+GOODSN-32&125d57m08.9541s&54d52m18.3172s&5112&2010-04-18&&23.5&23.4\\
+GOODSN-34&125d52m04.3999s&54d49m54.8893s&5312&2010-04-20&&23.4&23.3\\
+GOODSN-35&125d49m32.7678s&54d48m43.0338s&5312&2009-09-25&&23.2&23.1\\
+GOODSN-36&125d47m01.3421s&54d47m30.9631s&5112&2010-04-23&&23.5&23.4\\
+GOODSN-41&125d57m19.3625s&54d55m09.9839s&5312&2010-03-07&&23.7&23.6\\
+GOODSN-42&125d54m46.3923s&54d53m58.2959s&5312&2010-04-19&&23.8&23.7\\
+GOODSN-43&125d52m14.0268s&54d52m46.5699s&5312&2010-04-21&&23.6&23.5\\
+GOODSN-44&125d49m41.7634s&54d51m34.7343s&5112&2010-04-21&&23.3&23.2\\
+GOODSN-45&125d47m10.0701s&54d50m22.6629s&5312&2010-04-09&&23.5&23.5\\
+GOODSN-46&125d44m38.496s&54d49m10.5819s&5312&2010-04-23&&23.2&23.2\\
+GOODSS-01&223d24m10.3726s&-54d17m46.6259s&4712&2011-11-27&&23.5&23.4\\
+GOODSS-02&223d33m36.5207s&-54d28m54.8594s&4712&2011-10-18&&23.5&23.4\\
+GOODSS-03&223d22m30.2755s&-54d23m16.2548s&4712&2011-10-13&&23.3&23.2\\
+GOODSS-04&223d38m20.6751s&-54d24m26.6376s&4712&2012-03-22&&23.5&23.4\\
+GOODSS-05&223d43m50.911s&-54d28m38.6367s&4712&2012-03-20&&23.5&23.4\\
+GOODSS-06&223d40m53.9592s&-54d21m45.7524s&4712&2011-03-23&&23.7&23.7\\
+GOODSS-08&223d34m42.8975s&-54d22m12.619s&4712&2011-10-13&&23.5&23.4\\
+GOODSS-09&223d30m02.966s&-54d28m35.0602s&4712&2012-01-22&&23.5&23.4\\
+GOODSS-10&223d39m12.9866s&-54d26m40.1329s&4612&2012-03-21&&23.7&23.7\\
+GOODSS-11&223d24m54.1865s&-54d23m40.386s&4712&2012-01-22&&23.4&23.3\\
+GOODSS-12&223d26m17.3983s&-54d28m03.6025s&4712&2012-01-22&&23.6&23.5\\
+GOODSS-13&223d42m36.1571s&-54d26m11.6958s&4712&2012-03-21&&23.6&23.5\\
+GOODSS-14&223d45m09.5167s&-54d23m29.8534s&4712&2012-03-22&&23.7&23.6\\
+GOODSS-15&223d46m54.4452s&-54d27m55.458s&4712&2012-03-21&&24.0&24.0\\
+GOODSS-16&223d46m01.4244s&-54d25m42.4359s&4712&2012-03-22&&23.5&23.4\\
+GOODSS-17&223d29m32.2206s&-54d26m25.2381s&4712&2012-01-28&&23.7&23.6\\
+GOODSS-18&223d31m12.1782s&-54d21m58.6349s&4712&2011-09-30&&23.5&23.4\\
+GOODSS-19&223d37m06.6053s&-54d29m03.4224s&4712&2011-10-16&&23.4&23.2\\
+GOODSS-20&223d36m27.3672s&-54d26m45.8557s&4712&2011-10-20&&23.5&23.4\\
+GOODSS-21&223d41m44.0431s&-54d23m59.0473s&4712&2012-03-22&&23.5&23.4\\
+GOODSS-22&223d44m18.9127s&-54d21m17.899s&4712&2012-03-22&&23.6&23.7\\
+GOODSS-24&223d27m56.614s&-54d30m00.1967s&4512&2011-06-02&&23.3&23.2\\
+GOODSS-25&223d32m00.3355s&-54d30m05.9971s&4712&2011-12-04&&23.5&23.4\\
+GOODSS-26&223d40m10.3543s&-54d28m21.5254s&4712&2011-06-22&&23.4&23.3\\
+GOODSS-27&223d37m30.1933s&-54d22m14.0921s&4712&2011-04-04&&23.7&23.6\\
+GOODSS-28&223d41m27.817s&-54d18m29.8464s&4712&2011-02-15&&23.1&23.1\\
+GOODSS-29&223d27m51.4148s&-54d21m59.0649s&4712&2012-01-24&&23.5&23.4\\
+GOODSS-30&223d25m45.9696s&-54d25m53.5297s&4612&2012-01-30&&23.3&23.2\\
+GOODSS-31&223d32m56.7649s&-54d26m36.3236s&4712&2011-10-24&&23.7&23.5\\
+GOODSS-32&223d32m03.2433s&-54d24m17.59s&4712&2011-10-19&&23.4&23.3\\
+GOODSS-33&223d28m40.4044s&-54d24m11.7319s&4712&2012-01-29&&23.6&23.5\\
+GOODSS-34&223d32m17.6862s&-54d23m37.6375s&4712&2011-08-21&&23.6&23.5\\
+GOODSS-35&223d23m20.0732s&-54d25m34.7626s&4712&2011-10-20&&23.6&23.4\\
+GOODSS-36&223d32m12.6925s&-54d23m27.1715s&4612&2011-08-22&&23.6&23.5\\
+GOODSS-37&223d32m27.7173s&-54d23m41.5538s&4612&2011-08-24&&23.4&23.2\\
+GOODSS-38&223d32m28.113s&-54d23m31.2004s&4712&2011-08-29&&23.8&23.7\\
+GOODSN-17&125d49m14.4136s&54d42m59.6527s&5212&2009-09-23&&23.7&23.5\\
+GOODSN-21&126d02m03.881s&54d51m49.4868s&3912&2010-04-16&&23.2&23.1\\
+GOODSN-22&125d59m31.1441s&54d50m38.1246s&4212&2010-04-16&&23.5&23.5\\
+GOODSN-33&125d54m36.6173s&54d51m06.6083s&5212&2010-04-19&&23.6&23.5\\
+GOODSS-07&223d35m17.0277s&-54d24m32.5701s&4712&2011-10-13&&23.6&23.5\\
+GOODSN-123&125d56m58.7504s&54d49m26.6386s&4812&2011-04-22&&23.6&23.5\\
+WISPS-334&248d01m37.1871s&51d34m40.522s&2409&2014-04-09&23.4&&23.1\\
+WISPS-1&128d21m15.0574s&-47d33m50.0238s&2609&2009-11-24&22.4&21.3&21.3\\
+WISPS-10&169d37m01.1985s&44d59m58.1595s&2209&2010-01-02&22.4&22.1&22.0\\
+WISPS-101&337d40m43.7467s&62d06m39.7407s&4112&2011-03-11&&&22.2\\
+WISPS-103&140d28m45.8345s&27d52m16.1255s&3009&2011-03-19&&&22.2\\
+WISPS-104&238d34m58.5529s&42d42m14.9265s&7218&2011-03-13&23.6&&23.4\\
+WISPS-105&340d47m35.3546s&26d43m02.8523s&4112&2011-04-09&&&22.0\\
+WISPS-106&167d21m48.1265s&66d46m38.0512s&2006&2011-04-25&&&21.8\\
+WISPS-107&107d57m44.8793s&69d25m24.3327s&4615&2011-04-26&&22.6&\\
+WISPS-108&161d33m40.7812s&76d56m49.2195s&4515&2011-04-27&&&22.3\\
+WISPS-11&239d56m49.3962s&59d38m54.7978s&2006&2010-01-03&22.0&22.0&21.6\\
+WISPS-110&121d10m48.8118s&62d35m18.5169s&3309&2011-05-09&&&22.2\\
+WISPS-111&348d18m17.7931s&-65d17m53.2129s&2206&2011-05-10&&&22.1\\
+WISPS-114&241d05m37.2252s&52d33m39.8043s&2909&2011-05-27&23.7&&22.8\\
+WISPS-115&257d16m00.4351s&56d43m06.3875s&2106&2011-05-28&24.1&&23.2\\
+WISPS-116&232d30m58.4278s&57d39m38.6771s&5215&2011-05-30&&&22.5\\
+WISPS-119&209d10m36.4938s&69d04m21.8025s&4515&2011-06-02&&&22.4\\
+WISPS-12&144d21m59.7364s&69d37m03.6496s&3009&2010-01-04&22.5&22.9&22.2\\
+WISPS-120&2d36m26.7952s&71d49m34.8193s&1806&2011-06-10&22.5&&22.2\\
+WISPS-121&284d59m39.4219s&47d11m07.5533s&1806&2011-07-25&22.1&&21.8\\
+WISPS-122&95d15m56.1391s&48d37m33.8597s&2809&2011-06-12&&&22.1\\
+WISPS-123&39d55m47.9629s&63d31m29.2718s&4515&2011-06-18&&&22.4\\
+WISPS-124&82d39m09.492s&24d16m52.9963s&1906&2011-06-21&22.8&&22.6\\
+WISPS-125&96d13m19.4386s&34d09m46.3115s&2909&2011-06-22&&&22.3\\
+WISPS-126&333d40m29.5448s&64d53m13.6619s&3612&2011-06-27&&&22.0\\
+WISPS-127&291d43m26.9965s&-42d25m04.5331s&2006&2011-06-29&&&21.8\\
+WISPS-128&227d02m34.5156s&-82d55m04.0317s&4815&2011-06-29&&&22.4\\
+WISPS-129&221d07m16.59s&64d21m38.2839s&2206&2011-06-30&22.8&&22.2\\
+WISPS-13&128d22m32.9706s&-47d34m13.0982s&2409&2010-01-09&22.3&22.1&21.8\\
+WISPS-130&290d14m27.2003s&-40d51m26.9849s&2006&2011-06-30&&&21.7\\
+WISPS-132&264d09m11.6865s&54d36m40.0913s&1806&2011-07-03&22.9&&22.4\\
+WISPS-133&349d02m56.2243s&-46d22m41.0644s&2406&2011-07-10&&&22.0\\
+WISPS-134&326d12m55.1256s&-24d50m39.1408s&2506&2011-07-14&&&22.1\\
+WISPS-135&143d47m35.1047s&55d31m30.3336s&1906&2011-07-15&23.0&&22.6\\
+WISPS-136&286d32m14.9124s&67d27m29.0153s&7318&2011-07-15&23.6&&23.3\\
+WISPS-137&51d01m10.2903s&35d43m35.1234s&2509&2011-07-18&&&22.1\\
+WISPS-138&18d14m24.8476s&45d24m14.9623s&4515&2011-07-19&&&22.0\\
+WISPS-139&359d54m20.0031s&75d33m37.9s&4515&2011-07-22&&&22.5\\
+WISPS-14&174d30m24.7964s&-56d14m37.0116s&2809&2010-01-09&22.4&22.7&21.3\\
+WISPS-140&335d48m49.9238s&59d30m11.0296s&4112&2011-07-26&&&21.9\\
+WISPS-141&18d14m21.6844s&59d31m51.0118s&2709&2011-07-27&&&22.1\\
+WISPS-143&350d13m13.22s&65d53m21.5411s&3109&2011-08-06&23.4&&22.7\\
+WISPS-144&308d26m59.178s&52d07m57.9138s&2309&2011-08-16&&&21.1\\
+WISPS-145&172d58m06.4623s&-67d10m49.8642s&2406&2011-08-17&&&22.1\\
+WISPS-146&171d05m25.005s&-62d34m04.7433s&1806&2011-08-21&22.6&&22.4\\
+WISPS-147&83d51m12.4292s&-68d59m23.8183s&2106&2011-08-23&23.2&&22.5\\
+WISPS-148&42d38m20.9726s&46d49m45.7815s&4615&2011-09-01&&&22.0\\
+WISPS-149&180d30m14.8975s&-24d13m45.8153s&3812&2011-09-16&&&21.9\\
+WISPS-15&34d53m40.9433s&72d31m37.58s&2609&2010-02-12&23.7&23.6&21.8\\
+WISPS-150&175d18m58.8179s&-23d36m11.3898s&3812&2011-09-16&&&21.6\\
+WISPS-151&44d17m15.0997s&55d23m22.0092s&3712&2011-09-17&&&22.0\\
+WISPS-152&49d56m57.7973s&63d18m34.6899s&4212&2011-09-23&&&22.4\\
+WISPS-153&106d56m21.7529s&-21d01m29.1953s&4212&2011-09-25&&&22.3\\
+WISPS-154&97d01m18.0033s&42d53m03.5092s&2809&2011-10-05&&&22.0\\
+WISPS-155&91d10m28.0679s&36d25m07.6444s&2809&2011-10-05&&&21.9\\
+WISPS-156&87d13m51.2822s&42d01m48.9903s&2809&2011-10-17&&&22.1\\
+WISPS-157&93d29m41.8327s&52d03m46.6439s&2809&2011-10-19&&&22.2\\
+WISPS-158&90d44m55.8226s&47d51m18.3292s&2809&2011-10-19&&&21.8\\
+WISPS-159&43d39m21.9361s&-29d53m50.9123s&4012&2011-10-20&&&21.9\\
+WISPS-16&174d29m20.313s&-56d14m44.9874s&2509&2010-02-16&22.3&20.9&20.3\\
+WISPS-160&89d27m49.4896s&54d42m22.8911s&2709&2011-10-21&&&22.2\\
+WISPS-161&81d15m40.5606s&45d13m42.0826s&3309&2011-10-21&&&22.2\\
+WISPS-162&60d54m08.5451s&37d30m29.5894s&653&2011-10-29&&21.1&\\
+WISPS-163&181d19m07.9237s&56d54m22.594s&703&2011-10-29&&21.2&\\
+WISPS-165&92d43m44.8306s&-35d29m35.3573s&1906&2011-11-02&&&21.9\\
+WISPS-166&92d45m22.9256s&-35d29m18.7975s&1906&2011-11-02&&&21.5\\
+WISPS-167&141d03m09.7294s&-47d28m47.8637s&1806&2011-11-07&22.8&&22.2\\
+WISPS-168&131d59m21.0999s&-20d34m48.2153s&1406&2011-11-09&&21.8&\\
+WISPS-169&278d08m56.1591s&24d51m06.9246s&2509&2011-11-09&&&21.7\\
+WISPS-17&152d00m55.68s&-45d15m47.0239s&3409&2010-02-18&22.4&21.5&22.2\\
+WISPS-170&265d21m44.3806s&20d43m46.1929s&2206&2011-11-20&&&21.7\\
+WISPS-171&265d21m44.3806s&20d43m46.1929s&2206&2011-11-20&&&21.7\\
+WISPS-172&15d39m27.0251s&-29d19m02.7019s&1406&2011-11-28&&21.2&\\
+WISPS-173&165d49m21.7985s&-66d25m31.4953s&4515&2011-12-04&&&22.2\\
+WISPS-174&86d49m10.3985s&49d19m35.3457s&2709&2011-12-18&&&22.3\\
+WISPS-175&212d49m28.2952s&-50d34m22.6997s&1906&2012-01-06&&22.3&\\
+WISPS-176&212d45m26.3898s&-50d33m10.9251s&1906&2012-01-06&&22.5&\\
+WISPS-177&280d14m28.0841s&45d56m06.165s&903&2012-01-06&&21.6&\\
+WISPS-179&261d05m54.3s&31d58m12.9997s&1606&2012-01-21&&21.6&\\
+WISPS-18&284d14m07.5396s&72d47m46.5254s&3918&2010-02-19&22.8&21.9&22.5\\
+WISPS-181&218d51m04.5556s&86d38m00.5214s&1806&2012-01-29&22.2&&22.1\\
+WISPS-182&100d40m32.2556s&-33d47m19.3217s&1203&2012-01-29&&21.2&\\
+WISPS-183&212d27m09.1675s&72d56m43.005s&1806&2012-02-01&22.8&&22.3\\
+WISPS-186&82d03m12.8489s&79d49m48.4413s&703&2012-02-15&&21.2&\\
+WISPS-188&202d59m50.3396s&23d53m47.6013s&1606&2012-02-23&&21.5&\\
+WISPS-189&192d44m35.1182s&-20d11m13.6786s&2309&2012-02-26&&21.9&\\
+WISPS-19&174d29m06.2462s&-56d14m46.1583s&2809&2010-02-20&22.3&21.4&21.8\\
+WISPS-190&248d03m19.6943s&-41d27m17.1088s&1206&2012-03-11&&22.1&\\
+WISPS-191&200d04m14.6013s&53d06m56.5437s&2509&2012-03-11&&&21.7\\
+WISPS-192&188d42m58.1646s&50d54m14.5878s&1406&2012-03-18&&21.8&\\
+WISPS-193&151d29m37.7767s&48d12m30.6226s&803&2012-04-03&&21.3&\\
+WISPS-194&221d59m58.5269s&-34d44m24.5841s&653&2012-04-04&&21.1&\\
+WISPS-195&110d33m48.3142s&63d26m03.7236s&803&2012-04-05&&21.9&\\
+WISPS-196&239d47m23.7223s&68d19m26.324s&1406&2012-04-07&&21.7&\\
+WISPS-197&24d57m38.343s&-32d17m10.7193s&803&2012-04-08&&20.9&\\
+WISPS-198&299d36m32.078s&-65d54m42.6822s&903&2012-04-10&&21.3&\\
+WISPS-199&284d16m41.1946s&40d06m13.6428s&1003&2012-04-19&&21.7&\\
+WISPS-2&133d15m48.4472s&-40d32m25.203s&1906&2009-12-12&22.0&21.2&21.6\\
+WISPS-20&34d54m36.769s&72d31m57.4805s&2812&2010-02-21&23.5&22.2&\\
+WISPS-200&239d18m09.5265s&53d53m12.5349s&1606&2012-04-20&&21.8&\\
+WISPS-201&202d59m09.8488s&56d25m25.6905s&653&2012-04-20&&21.1&\\
+WISPS-202&255d28m33.0203s&56d17m21.0267s&1406&2012-04-24&&21.8&\\
+WISPS-203&78d31m36.2082s&-24d41m34.0807s&803&2012-04-24&&21.0&\\
+WISPS-204&255d17m46.6094s&58d17m37.806s&1606&2012-04-27&&21.7&\\
+WISPS-205&299d37m51.4683s&22d56m14.0725s&803&2012-04-28&&21.2&\\
+WISPS-206&269d43m59.7841s&25d22m39.4473s&1003&2012-05-06&&21.6&\\
+WISPS-209&327d59m48.9054s&60d27m03.8566s&803&2012-05-18&&21.5&\\
+WISPS-21&154d06m26.7606s&42d20m50.023s&2006&2010-03-05&&22.8&\\
+WISPS-210&290d19m13.0785s&74d26m26.5068s&653&2012-05-19&&21.3&\\
+WISPS-211&193d08m58.5433s&82d44m06.9122s&653&2012-05-20&&21.6&\\
+WISPS-212&144d51m41.0893s&69d34m41.8715s&1806&2012-05-20&&21.9&\\
+WISPS-214&187d10m06.3456s&54d09m52.6955s&703&2012-06-19&&21.1&\\
+WISPS-215&190d29m28.588s&57d02m57.4169s&653&2012-06-19&&21.1&\\
+WISPS-216&293d01m16.8512s&60d02m20.1614s&1103&2012-06-19&&21.3&\\
+WISPS-217&175d26m58.0091s&87d08m46.4057s&1606&2012-06-22&&21.6&\\
+WISPS-218&36d47m32.1902s&68d39m40.852s&703&2012-06-23&&21.1&\\
+WISPS-219&210d39m20.5767s&74d29m03.5823s&703&2012-06-23&&20.8&\\
+WISPS-22&224d47m22.5184s&28d16m51.5388s&1806&2010-03-05&&22.4&\\
+WISPS-220&245d06m55.0491s&66d58m53.4354s&703&2012-06-24&&21.3&\\
+WISPS-221&350d38m23.0977s&55d49m55.5438s&1706&2012-06-27&&21.7&\\
+WISPS-222&46d43m43.2053s&72d29m57.0152s&1906&2012-06-28&&21.9&\\
+WISPS-224&136d55m02.3926s&72d17m49.975s&1206&2012-07-04&&21.9&\\
+WISPS-226&136d56m03.9679s&72d17m55.2971s&803&2012-07-07&&22.0&\\
+WISPS-227&136d55m02.3926s&72d17m49.975s&1206&2012-07-11&&21.9&\\
+WISPS-228&123d44m20.0898s&34d29m21.5171s&1706&2012-07-15&&21.7&\\
+WISPS-229&294d55m53.4458s&-57d52m43.1983s&1206&2012-07-18&&21.5&\\
+WISPS-23&230d04m06.5448s&40d19m31.2837s&4115&2010-03-06&&19.4&\\
+WISPS-231&129d56m43.446s&-60d26m30.4506s&1706&2012-07-19&&22.6&\\
+WISPS-232&293d13m14.0338s&-80d56m40.9514s&1406&2012-07-20&&21.9&\\
+WISPS-233&139d02m33.7352s&70d25m02.4052s&603&2012-07-28&&21.0&\\
+WISPS-234&345d50m36.7836s&-58d27m14.7313s&2006&2012-07-28&&22.6&\\
+WISPS-235&1d40m08.5156s&47d36m05.6478s&1406&2012-07-30&&21.7&\\
+WISPS-236&3d25m29.8479s&44d31m55.0273s&1609&2012-06-10&&21.8&\\
+WISPS-237&123d46m11.9635s&77d19m58.473s&1806&2012-08-01&&21.8&\\
+WISPS-238&122d56m44.2357s&70d34m36.7083s&1303&2012-08-04&&22.0&\\
+WISPS-239&26d05m16.942s&23d40m07.2384s&703&2012-08-04&&21.4&\\
+WISPS-24&190d04m01.7752s&82d18m03.7607s&1806&2010-03-21&&19.6&\\
+WISPS-240&27d43m45.609s&43d27m18.3994s&2106&2012-08-05&&22.0&\\
+WISPS-241&191d32m15.5142s&-23d01m28.7155s&703&2012-08-08&&21.1&\\
+WISPS-242&150d48m20.3257s&-54d31m45.4858s&1206&2012-08-13&&21.7&\\
+WISPS-243&26d03m56.247s&77d04m12.2577s&1606&2012-08-24&&21.8&\\
+WISPS-244&304d54m19.741s&-37d03m35.6467s&803&2012-09-09&&21.5&\\
+WISPS-245&160d08m18.659s&47d08m06.0442s&803&2012-09-13&&21.0&\\
+WISPS-246&157d51m49.3158s&47d57m15.0682s&1906&2012-09-14&&22.1&\\
+WISPS-247&120d03m00.8711s&-75d39m27.9399s&1103&2012-09-17&&21.3&\\
+WISPS-248&39d34m58.8552s&-27d17m03.1403s&1906&2012-09-23&&21.8&\\
+WISPS-249&305d28m36.3929s&-42d41m46.6499s&703&2012-09-23&&22.4&\\
+WISPS-25&232d38m43.401s&46d36m21.9884s&4115&2010-03-29&22.6&22.2&22.3\\
+WISPS-250&150d39m12.8668s&35d43m59.8832s&1406&2012-09-25&&21.4&\\
+WISPS-251&189d29m46.0432s&-28d57m14.2944s&803&2012-10-01&&21.4&\\
+WISPS-252&189d30m19.7944s&-29d00m06.7566s&803&2012-10-01&&20.9&\\
+WISPS-256&200d50m43.0134s&68d25m26.4439s&1706&2012-10-17&21.9&&21.6\\
+WISPS-257&227d31m08.3971s&-64d37m01.9404s&3512&2012-10-17&23.2&&22.9\\
+WISPS-258&244d54m49.8005s&-66d19m23.5286s&2309&2012-11-02&22.6&&22.3\\
+WISPS-259&197d05m10.1345s&74d36m11.2377s&1706&2012-11-06&&21.6&\\
+WISPS-26&202d41m08.1345s&34d37m45.2722s&2209&2010-04-01&22.8&21.9&22.5\\
+WISPS-260&320d39m39.5995s&-65d18m58.6253s&2909&2012-11-07&23.4&&23.0\\
+WISPS-261&96d11m39.2815s&-67d40m17.4024s&2309&2012-11-10&23.0&&22.5\\
+WISPS-262&237d14m11.5197s&60d00m19.3047s&1406&2012-11-11&&21.3&\\
+WISPS-263&69d50m07.0953s&-28d11m05.5678s&603&2012-11-12&&20.7&\\
+WISPS-264&239d47m23.7358s&59d21m35.2024s&1606&2012-11-15&&21.5&\\
+WISPS-267&193d55m27.5541s&47d41m22.1238s&1406&2012-11-21&&21.2&\\
+WISPS-268&185d07m48.823s&20d52m44.3029s&1303&2012-11-22&&20.8&\\
+WISPS-269&181d53m58.5933s&-57d59m11.6114s&653&2012-11-29&&21.4&\\
+WISPS-27&261d11m28.5319s&59d49m49.9219s&2206&2010-04-02&21.6&21.8&21.3\\
+WISPS-270&298d57m14.3776s&65d06m28.9483s&1506&2012-12-01&22.0&&21.6\\
+WISPS-271&210d22m21.5669s&39d00m33.0933s&1506&2012-12-02&22.5&&22.1\\
+WISPS-272&181d53m34.9726s&-57d58m56.5142s&1103&2012-12-06&&22.0&\\
+WISPS-273&164d16m05.7071s&-54d57m12.6234s&1003&2012-12-15&&21.7&\\
+WISPS-275&147d08m55.6188s&-45d57m11.6791s&1406&2012-12-18&&21.7&\\
+WISPS-277&193d40m13.896s&53d20m41.0186s&1406&2013-01-08&&21.7&\\
+WISPS-279&345d49m07.5754s&55d04m31.3743s&1906&2013-01-25&&21.5&\\
+WISPS-28&218d14m40.0482s&42d51m36.5265s&3515&2010-04-02&22.6&21.8&22.4\\
+WISPS-281&186d04m00.5935s&-55d18m16.7816s&803&2013-01-27&&21.7&\\
+WISPS-288&227d20m43.4831s&40d09m33.9684s&1706&2013-02-22&22.0&&21.6\\
+WISPS-289&293d02m41.1787s&80d09m50.7787s&2206&2013-02-25&&21.9&\\
+WISPS-29&143d57m46.4309s&67d00m46.0505s&1906&2010-04-09&22.3&21.6&22.0\\
+WISPS-290&21d09m35.6644s&46d35m16.9432s&1706&2013-02-25&&21.6&\\
+WISPS-292&32d38m22.9535s&67d23m32.4342s&703&2013-03-08&&21.4&\\
+WISPS-293&253d51m54.1763s&24d54m10.3794s&1203&2013-03-11&&21.6&\\
+WISPS-294&304d28m01.1536s&29d38m12.0766s&1706&2013-03-16&23.0&&22.5\\
+WISPS-295&283d52m00.0001s&72d47m27.007s&1706&2013-03-23&22.3&&22.1\\
+WISPS-297&264d40m13.4694s&59d00m39.927s&1706&2013-04-11&22.7&&22.4\\
+WISPS-299&171d23m14.7388s&43d25m29.2291s&5615&2013-05-05&23.3&&22.7\\
+WISPS-30&181d26m20.7418s&57d56m49.0383s&1806&2010-04-21&21.8&22.0&21.5\\
+WISPS-300&175d47m15.3943s&39d23m56.8053s&2709&2013-05-12&22.8&&22.5\\
+WISPS-301&33d52m47.993s&69d58m11.0161s&803&2013-05-19&&21.6&\\
+WISPS-302&226d20m46.5698s&-64d59m03.7871s&3012&2013-05-27&22.9&&22.6\\
+WISPS-303&33d36m02.1452s&77d15m58.0255s&2809&2013-06-02&23.1&&22.8\\
+WISPS-304&94d10m25.2173s&58d40m38.3751s&5215&2013-05-29&23.9&&23.3\\
+WISPS-307&13d08m10.5712s&-78d06m11.7184s&3012&2013-06-15&23.5&&22.6\\
+WISPS-308&35d12m53.8258s&47d34m52.5536s&803&2013-06-21&22.4&&22.1\\
+WISPS-309&4d35m42.4947s&-48d32m11.0014s&2209&2013-06-25&23.3&&22.6\\
+WISPS-31&198d36m57.5975s&35d12m44.2693s&4412&2010-04-21&22.4&22.4&22.1\\
+WISPS-311&88d42m04.7459s&44d48m55.6229s&3009&2013-07-20&23.2&&22.8\\
+WISPS-312&226d24m09.2188s&-64d30m51.8404s&2309&2013-08-09&22.6&&22.3\\
+WISPS-313&227d34m11.7937s&-64d11m17.4168s&2809&2013-08-11&23.5&&22.9\\
+WISPS-314&24d19m40.2884s&71d41m25.532s&6621&2013-08-13&23.5&&23.1\\
+WISPS-315&313d09m50.6072s&-44d50m48.5682s&2409&2013-08-20&23.0&&22.7\\
+WISPS-317&156d08m45.3535s&-69d00m32.9386s&1706&2013-09-13&22.4&&22.1\\
+WISPS-319&177d01m17.8023s&40d00m57.4424s&3309&2013-10-30&22.9&&22.5\\
+WISPS-32&306d51m50.7528s&37d07m50.4335s&3512&2010-05-13&22.1&22.1&21.8\\
+WISPS-320&200d27m35.0953s&20d31m48.0962s&5115&2013-12-06&24.1&&23.5\\
+WISPS-321&210d30m48.1403s&-21d01m58.0684s&4915&2013-11-28&23.6&&23.2\\
+WISPS-322&212d08m12.6142s&30d51m31.321s&2509&2013-12-09&23.0&&22.7\\
+WISPS-324&152d52m45.4658s&-28d35m33.022s&4915&2013-12-18&23.3&&22.9\\
+WISPS-325&302d42m32.0182s&39d20m22.2696s&3612&2013-12-21&22.9&&22.5\\
+WISPS-326&210d17m50.7267s&-21d26m30.3808s&4315&2014-02-18&23.6&&23.2\\
+WISPS-328&166d26m55.0713s&54d39m30.1657s&2609&2014-03-13&22.4&&22.1\\
+WISPS-330&186d20m13.1358s&53d49m50.3956s&2709&2014-03-17&23.3&&22.8\\
+WISPS-332&11d25m47.6208s&-31d58m17.5188s&2709&2014-04-02&22.7&&22.4\\
+WISPS-333&226d17m34.8224s&48d56m21.4803s&6518&2014-04-05&23.8&&23.2\\
+WISPS-335&34d01m56.8344s&49d29m06.5561s&3812&2014-04-11&23.9&&23.3\\
+WISPS-336&261d14m10.9059s&24d45m35.0511s&2709&2014-04-13&23.2&&23.0\\
+WISPS-337&248d02m22.22s&56d04m37.5775s&2409&2014-04-14&22.9&&22.5\\
+WISPS-338&239d52m14.6116s&75d03m24.8336s&2309&2014-04-15&22.8&&22.4\\
+WISPS-34&232d22m16.5768s&36d45m00.1444s&4215&2010-05-19&21.9&22.3&21.7\\
+WISPS-340&111d36m35.9388s&84d32m53.085s&2909&2014-05-01&23.0&&22.6\\
+WISPS-341&208d54m35.7326s&52d45m36.3077s&2309&2014-03-20&22.6&&22.3\\
+WISPS-342&40d39m30.283s&-40d57m59.2649s&2709&2014-05-13&23.0&&22.5\\
+WISPS-343&228d48m55.2626s&47d52m42.2671s&2309&2014-05-15&22.4&&22.2\\
+WISPS-345&351d46m53.3333s&60d20m46.3883s&3209&2014-05-29&23.2&&22.9\\
+WISPS-346&29d43m23.746s&68d12m56.5332s&2709&2014-05-31&22.8&&22.5\\
+WISPS-347&239d22m44.0819s&47d52m15.3813s&4412&2014-06-03&23.1&&22.7\\
+WISPS-348&51d55m44.9997s&87d45m02.8268s&1806&2014-06-04&23.1&&22.8\\
+WISPS-349&260d21m48.0329s&25d45m44.8284s&2409&2014-06-05&23.0&&22.5\\
+WISPS-35&79d07m23.7057s&86d08m01.8116s&3812&2010-05-21&22.9&22.5&22.6\\
+WISPS-350&71d49m11.0757s&73d59m44.1828s&2309&2014-06-14&23.3&&22.9\\
+WISPS-352&267d31m26.9512s&52d40m49.582s&2709&2014-06-01&22.9&&22.5\\
+WISPS-353&103d35m25.7623s&57d12m17.4834s&2709&2014-06-28&22.6&&22.2\\
+WISPS-354&86d13m08.6916s&-38d08m59.8513s&2709&2014-07-06&23.5&&23.2\\
+WISPS-355&350d17m34.003s&-67d40m05.1254s&2609&2014-07-07&23.7&&23.2\\
+WISPS-356&339d37m08.5376s&-69d25m58.0458s&3009&2014-07-10&24.4&&23.6\\
+WISPS-357&289d52m13.8166s&68d24m24.9566s&3712&2014-05-31&23.2&&22.7\\
+WISPS-358&335d56m20.5676s&-69d39m32.2209s&4312&2014-07-08&23.1&&22.8\\
+WISPS-359&0d37m50.4659s&-71d42m42.2342s&2309&2014-07-13&22.8&&22.5\\
+WISPS-36&90d49m13.748s&72d32m32.6482s&2809&2010-05-27&23.4&23.4&23.1\\
+WISPS-360&347d26m35.2091s&55d08m28.3092s&3109&2014-07-30&22.7&&22.3\\
+WISPS-361&4d05m41.7452s&72d54m49.31s&2709&2014-07-31&22.7&&22.4\\
+WISPS-362&89d01m18.0985s&85d06m25.0798s&2809&2014-08-09&22.7&&22.4\\
+WISPS-364&205d26m40.221s&-46d14m15.6529s&2709&2014-08-20&23.0&&22.7\\
+WISPS-365&141d10m36.1029s&-61d40m08.0345s&8123&2014-08-23&5.6&&23.6\\
+WISPS-367&2d36m57.6685s&50d17m17.9157s&2509&2014-08-29&22.5&&22.3\\
+WISPS-368&5d21m23.0419s&-69d30m24.6956s&2809&2014-08-29&23.3&&22.9\\
+WISPS-369&38d16m39.2835s&-43d20m45.4203s&3612&2014-09-03&23.2&&22.9\\
+WISPS-37&90d49m13.748s&72d32m32.6482s&2809&2010-05-30&23.1&23.0&22.8\\
+WISPS-370&3d25m52.0175s&28d29m05.8585s&2709&2014-09-03&23.2&&22.8\\
+WISPS-371&358d37m35.269s&-30d59m38.3471s&2509&2014-09-06&23.0&&22.8\\
+WISPS-372&309d03m48.5634s&-35d26m33.2661s&5112&2014-08-25&23.8&&23.4\\
+WISPS-374&65d08m15.1787s&-64d52m12.6691s&5815&2014-10-26&25.2&&9.2\\
+WISPS-375&265d41m59.4804s&23d40m35.617s&2709&2014-11-23&23.8&&23.3\\
+WISPS-377&94d18m00.0754s&36d06m57.3593s&2709&2014-12-01&23.5&&22.9\\
+WISPS-378&52d50m08.1551s&68d08m42.9162s&2609&2014-12-08&22.5&&22.2\\
+WISPS-38&289d59m36.9996s&59d23m33.2791s&4312&2010-05-31&22.8&22.7&22.5\\
+WISPS-380&229d05m48.0735s&58d59m57.4851s&2006&2014-12-21&23.0&&22.7\\
+WISPS-381&205d05m58.4209s&-44d32m53.6941s&2309&2015-01-05&23.2&&22.7\\
+WISPS-382&72d13m09.2013s&31d16m15.3992s&4915&2015-01-13&23.6&&23.3\\
+WISPS-385&32d39m11.827s&67d25m44.5151s&2709&2015-03-29&23.4&&23.1\\
+WISPS-386&357d38m41.2383s&54d07m13.1932s&2709&2015-06-14&23.1&&22.7\\
+WISPS-387&199d40m25.9927s&42d54m31.6677s&2309&2015-11-30&&22.6&\\
+WISPS-388&232d36m11.8501s&57d50m06.5625s&2809&2015-12-01&&22.4&\\
+WISPS-389&195d20m38.7511s&82d26m41.4987s&3012&2015-12-05&&23.0&\\
+WISPS-39&198d29m12.386s&54d32m25.3887s&1706&2010-06-04&21.4&21.5&21.1\\
+WISPS-391&69d50m56.3952s&60d00m12.6597s&4112&2015-12-21&24.2&&23.5\\
+WISPS-394&80d53m13.3786s&51d22m17.5987s&4712&2015-12-24&&22.9&\\
+WISPS-395&298d33m00.779s&80d32m28.4007s&2509&2016-01-08&22.4&&21.9\\
+WISPS-396&113d04m30.9197s&-46d37m26.8218s&1806&2016-01-17&22.2&&21.7\\
+WISPS-397&284d45m37.1934s&74d14m57.4674s&2809&2016-01-24&23.5&&23.3\\
+WISPS-398&74d24m47.3271s&34d44m34.5395s&2809&2016-02-08&23.5&&23.1\\
+WISPS-40&252d16m08.6767s&-68d40m54.1628s&4112&2010-06-04&22.7&22.5&21.8\\
+WISPS-400&141d15m57.292s&-41d51m52.0463s&2409&2016-02-15&22.9&&22.5\\
+WISPS-403&24d09m40.372s&84d40m57.5136s&1806&2016-03-08&22.4&&22.0\\
+WISPS-404&316d47m10.1292s&-40d45m34.7176s&4012&2016-03-13&24.3&&23.4\\
+WISPS-405&194d13m24.4505s&82d27m14.4826s&3012&2016-03-10&23.1&&22.7\\
+WISPS-406&246d14m58.365s&39d48m43.7572s&3109&2016-03-13&23.7&&23.2\\
+WISPS-408&246d08m42.0093s&39d46m07.227s&1406&2016-03-18&22.5&&22.1\\
+WISPS-409&7d58m45.5009s&46d54m37.5622s&2809&2016-03-19&23.3&&22.9\\
+WISPS-41&144d53m17.9827s&69d36m22.2476s&2909&2010-06-14&23.0&22.8&22.6\\
+WISPS-411&284d06m11.8136s&66d22m26.8718s&2309&2016-03-21&22.5&&22.2\\
+WISPS-412&348d31m51.5325s&60d03m21.5937s&1606&2016-03-22&22.1&&21.8\\
+WISPS-413&246d01m22.4795s&64d16m18.8025s&2309&2016-03-23&24.0&&23.6\\
+WISPS-416&246d33m44.1867s&65d08m04.8993s&3912&2016-05-17&23.0&&22.7\\
+WISPS-417&191d59m18.038s&41d51m50.9014s&1406&2016-03-30&23.1&&22.1\\
+WISPS-420&137d07m49.3901s&57d50m12.5969s&4612&2016-04-09&21.9&22.6&21.6\\
+WISPS-422&128d41m25.5655s&55d37m37.7774s&4712&2016-04-13&&22.9&\\
+WISPS-425&144d30m36.2173s&84d26m23.8364s&2409&2016-04-19&23.2&&22.8\\
+WISPS-427&220d52m39.3643s&45d30m06.2306s&14635&2016-05-06&24.5&&24.1\\
+WISPS-428&1d49m56.0154s&60d45m11.5829s&1806&2016-05-05&22.9&&22.3\\
+WISPS-43&42d02m17.8471s&-32d47m15.1396s&2809&2010-06-16&24.0&23.1&23.8\\
+WISPS-430&289d00m25.9284s&48d10m09.7165s&4612&2016-05-20&23.5&&23.1\\
+WISPS-431&191d09m25.8797s&42d26m11.2638s&1606&2016-05-11&21.9&&21.4\\
+WISPS-432&0d43m48.4737s&75d20m46.5543s&1906&2016-05-15&22.2&22.3&\\
+WISPS-433&42d28m12.2153s&78d59m06.7198s&3712&2016-05-16&23.6&&23.3\\
+WISPS-434&261d14m58.9697s&64d31m03.4199s&2509&2016-05-20&23.5&&23.2\\
+WISPS-435&90d12m39.0017s&55d00m27.6752s&4712&2016-05-25&&22.8&\\
+WISPS-436&4d10m04.8508s&81d01m19.484s&2509&2016-05-26&22.5&&22.2\\
+WISPS-437&185d54m12.6986s&77d07m36.7918s&1909&2016-06-03&&22.1&\\
+WISPS-438&161d17m45.4628s&49d50m47.8451s&4712&2016-06-06&&23.0&\\
+WISPS-439&134d45m41.2053s&81d17m43.1378s&3812&2016-06-09&23.2&&22.8\\
+WISPS-44&184d52m08.1369s&67d16m16.8103s&4415&2010-06-17&22.7&23.1&22.3\\
+WISPS-440&140d01m26.7768s&53d55m16.1388s&4612&2016-06-09&&22.7&\\
+WISPS-441&298d09m59.3528s&80d42m11.146s&3412&2016-06-19&23.0&&22.7\\
+WISPS-442&165d07m31.0269s&49d53m12.9162s&2009&2016-06-23&&22.0&\\
+WISPS-443&333d28m08.0629s&68d15m46.9292s&2509&2016-06-30&22.5&&22.2\\
+WISPS-444&39d34m29.1373s&76d46m59.0899s&2509&2016-07-01&23.0&&22.6\\
+WISPS-445&33d13m51.1794s&48d19m05.569s&2509&2016-07-01&23.2&&22.7\\
+WISPS-446&4d00m44.9211s&40d00m52.4218s&4112&2016-07-03&23.5&&22.9\\
+WISPS-449&356d22m30.1143s&33d41m04.4014s&3112&2016-07-16&23.5&&23.1\\
+WISPS-45&294d55m00.0008s&64d04m33.8374s&4812&2010-06-20&22.7&22.2&21.9\\
+WISPS-450&30d18m10.801s&73d08m43.1771s&3812&2016-07-10&23.3&&22.9\\
+WISPS-451&215d57m41.1663s&80d27m55.2878s&2809&2016-07-16&22.8&&22.5\\
+WISPS-452&61d25m35.8377s&59d19m06.7235s&2109&2016-07-18&22.4&&22.2\\
+WISPS-453&44d13m45.843s&45d09m37.4636s&3912&2016-07-22&24.5&&24.0\\
+WISPS-454&246d11m03.6985s&-54d06m04.3193s&6218&2016-08-01&24.4&&23.9\\
+WISPS-456&44d17m00.8638s&57d25m35.6713s&3009&2016-08-10&23.0&&22.7\\
+WISPS-457&20d43m56.2909s&49d15m38.2353s&2409&2016-08-11&23.0&&22.4\\
+WISPS-458&101d58m53.7361s&59d58m03.8465s&2109&2016-08-13&23.6&&23.2\\
+WISPS-46&41d09m46.1193s&-58d14m22.935s&1906&2010-06-20&22.3&22.0&22.0\\
+WISPS-461&205d11m03.063s&-27d07m58.0769s&1406&2016-09-16&22.3&&22.0\\
+WISPS-462&206d08m36.8265s&-54d07m59.5172s&3112&2016-09-20&22.5&&22.1\\
+WISPS-463&207d43m15.3143s&-34d37m46.8497s&1406&2016-09-22&22.6&&22.1\\
+WISPS-464&206d31m34.4167s&-27d26m53.1313s&1406&2016-09-22&22.2&&22.0\\
+WISPS-465&211d28m55.4328s&-56d49m52.6827s&2009&2016-09-23&22.2&&21.9\\
+WISPS-466&203d51m08.1249s&-54d35m09.0773s&1909&2016-09-24&23.1&&22.1\\
+WISPS-467&204d51m12.5556s&-52d50m16.0555s&1206&2016-09-25&22.5&&22.1\\
+WISPS-468&151d04m18.4141s&58d37m14.0962s&3009&2016-09-28&22.8&&22.5\\
+WISPS-469&176d06m58.2024s&37d04m40.433s&4612&2016-09-29&&22.6&\\
+WISPS-47&37d26m21.4362s&83d44m56.6229s&3212&2010-06-25&21.9&21.9&21.5\\
+WISPS-471&175d15m23.2774s&63d22m55.5701s&2609&2016-10-05&23.4&&22.7\\
+WISPS-472&191d06m06.7993s&42d33m24.5743s&4215&2016-10-05&&&22.0\\
+WISPS-473&63d36m12.9816s&-55d24m10.7824s&803&2016-10-11&22.3&&22.0\\
+WISPS-474&252d43m31.9984s&67d21m37.9431s&2309&2016-11-04&21.7&&21.4\\
+WISPS-476&105d41m48.4885s&57d21m16.3737s&703&2016-11-21&22.5&&22.1\\
+WISPS-477&148d21m12.9553s&59d19m34.0088s&1906&2016-12-06&22.5&&22.2\\
+WISPS-478&164d56m12.5677s&47d50m25.4586s&3109&2016-12-09&23.3&&22.8\\
+WISPS-480&227d55m43.8798s&-30d22m25.4031s&4212&2016-12-23&23.3&&22.9\\
+WISPS-481&280d13m01.3509s&45d48m46.3564s&3112&2016-12-22&22.8&&22.4\\
+WISPS-482&232d10m43.7925s&-57d40m10.9808s&4318&2016-12-31&23.1&&22.7\\
+WISPS-483&174d31m38.9379s&-51d59m50.8383s&3912&2017-01-05&23.8&&23.1\\
+WISPS-49&56d44m51.9685s&64d40m54.5777s&2406&2010-07-02&23.2&22.9&\\
+WISPS-5&100d51m27.2544s&54d58m33.0291s&5515&2009-12-20&23.1&22.8&\\
+WISPS-50&73d13m37.98s&-38d28m19.5488s&1906&2010-07-08&&22.2&\\
+WISPS-51&59d22m30.8036s&58d38m50.1858s&2006&2010-07-09&&22.3&\\
+WISPS-52&42d09m24.3987s&81d18m55.8204s&4218&2010-07-16&&22.4&\\
+WISPS-53&66d47m53.8345s&58d19m28.9777s&1806&2010-07-17&&22.3&\\
+WISPS-54&77d47m57.0117s&50d17m32.4415s&2006&2010-07-18&&22.3&\\
+WISPS-55&287d35m45.8759s&59d52m48.8779s&2809&2010-07-22&22.6&22.3&\\
+WISPS-56&19d50m26.4694s&37d12m11.7511s&4312&2010-07-28&&22.5&\\
+WISPS-57&131d25m26.5314s&68d56m12.2941s&4615&2010-07-30&&22.4&\\
+WISPS-58&292d56m46.4097s&61d56m54.5761s&4315&2010-08-01&&22.2&\\
+WISPS-59&63d54m43.6985s&51d01m31.1233s&4515&2010-08-04&&22.8&\\
+WISPS-6&144d20m36.2097s&-47d20m24.6613s&5015&2009-12-24&22.8&22.9&22.5\\
+WISPS-64&348d34m28.0356s&51d23m30.072s&2306&2010-08-17&22.4&&22.1\\
+WISPS-65&54d31m08.9384s&45d15m05.1431s&2306&2010-08-19&23.1&&22.8\\
+WISPS-66&348d34m26.4218s&51d23m24.4951s&2909&2010-08-22&22.9&&22.7\\
+WISPS-68&106d53m47.3527s&-21d04m42.7273s&3009&2010-10-14&24.0&&23.3\\
+WISPS-69&14d45m23.7916s&50d09m01.3366s&2309&2010-09-12&22.8&&22.4\\
+WISPS-71&58d49m09.8116s&58d30m29.7994s&2009&2011-08-04&22.7&&22.4\\
+WISPS-72&58d11m27.5063s&50d18m37.8146s&2609&2010-09-21&23.5&23.5&23.3\\
+WISPS-73&91d41m09.9366s&65d24m50.0281s&2509&2010-09-30&22.6&&22.4\\
+WISPS-74&219d48m21.4612s&35d34m17.9533s&2306&2010-10-02&23.1&&22.8\\
+WISPS-75&171d17m06.9739s&43d35m27.0099s&1003&2010-10-06&&&21.5\\
+WISPS-76&102d44m19.5004s&71d10m54.3411s&2006&2010-10-07&22.8&&22.3\\
+WISPS-77&100d05m08.7756s&-44d44m20.3622s&1906&2010-10-13&&&21.5\\
+WISPS-79&134d00m06.9281s&-64d53m23.9233s&2809&2010-11-08&22.9&&22.5\\
+WISPS-80&133d59m05.9633s&-64d50m27.2583s&2809&2010-11-18&23.3&&23.1\\
+WISPS-81&133d59m00.4512s&-64d50m27.096s&2809&2010-11-19&23.2&&22.6\\
+WISPS-82&91d51m58.2489s&43d07m48.3724s&2809&2010-11-21&&&22.0\\
+WISPS-83&134d00m41.2864s&-64d52m13.8975s&2109&2010-11-23&22.3&&22.0\\
+WISPS-84&133d59m18.0365s&-64d53m22.856s&2809&2010-11-24&22.9&&22.6\\
+WISPS-85&196d10m06.0218s&39d10m41.9065s&1906&2010-11-28&&&21.7\\
+WISPS-86&167d43m19.8135s&64d59m56.3996s&1806&2010-11-29&22.7&&22.1\\
+WISPS-87&171d02m36.9501s&48d52m18.0918s&1906&2010-12-03&22.9&&22.3\\
+WISPS-88&223d49m57.3884s&45d03m28.4517s&3615&2010-12-04&&&21.5\\
+WISPS-89&133d59m30.9096s&-64d50m27.7825s&2809&2010-12-07&23.4&&23.0\\
+WISPS-90&127d43m56.323s&-60d20m56.6463s&4812&2010-12-10&&&22.2\\
+WISPS-91&133d58m11.5593s&-64d53m19.2713s&2209&2010-12-10&22.7&&22.3\\
+WISPS-92&219d09m36.2989s&39d58m30.6745s&1806&2010-12-10&&&21.7\\
+WISPS-93&191d06m46.5877s&82d20m11.1929s&1806&2010-12-23&&&21.7\\
+WISPS-94&59d53m01.5262s&-41d59m04.743s&3309&2010-12-13&23.3&&22.7\\
+WISPS-95&133d57m19.1573s&-64d53m14.663s&2209&2011-01-02&22.8&&22.5\\
+WISPS-96&166d03m32.5449s&-60d53m34.31s&11429&2010-12-16&23.9&&23.7\\
+WISPS-97&133d57m57.9196s&-64d52m00.5156s&2109&2011-01-16&22.3&&21.9\\
+WISPS-98&165d03m24.9011s&51d18m57.8371s&2006&2011-01-22&&&21.9\\
+WISPS-99&197d48m56.2667s&47d26m53.1188s&3812&2011-01-28&22.2&22.3&21.9\\
+\enddata
+
+\end{deluxetable*}
+
+\clearpage
+
 \bibliography{library.bib}
 \end{document}
 

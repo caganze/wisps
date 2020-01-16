@@ -81,12 +81,12 @@ def make_data(spectra, **kwargs):
     iterables=([spectra, snrs])
 
     method=partial(add_multiple_noises)
-    with ThreadPoolExecutor(max_workers=1000) as executor:
-        results=list(tqdm(executor.map( method, *iterables, timeout=None, chunksize=100)))
+    with ThreadPoolExecutor(max_workers=100) as executor:
+        futures=list(executor.map( method, *iterables, timeout=None, chunksize=10))
 
-    #results=[x for x in futures]
+    results=[x for x in futures]
 
-    return pd.concat(pd.DataFrame.from_records(results))
+    return pd.DataFrame.from_records(results)
 
 def create_selection_function(**kwargs):
     """

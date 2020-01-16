@@ -11,15 +11,10 @@ import warnings
 
 
 from ..utils.tools import *
-##giving me a hard time
 
-try: 
-    import seaborn
-    seaborn.set_style("ticks")
-except:
-    print ('could not import seaborn')
-    pass
 
+import seaborn
+seaborn.set_style("ticks")
 
 
 #environment variables
@@ -47,4 +42,8 @@ else:
     #definitions
     INDEX_NAMES=np.array(['H_2O-1/J-Cont',  'H_2O-2/H_2O-1', 'H-cont/H_2O-1', 'CH_4/H_2O-1',   'H_2O-2/J-Cont',   'H-cont/J-Cont', 'CH_4/J-Cont',    
                 'H-cont/H_2O-2',         'CH_4/H_2O-2',  'CH_4/H-Cont'] ) 
+    
+    #colorscheme for filters 
+    FILTER_COLOR_SCHEME={'F110W':'#0074D9' , 'F140W':'#FF851B', 'F160W':'#FF4136'}
+
 

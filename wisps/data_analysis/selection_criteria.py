@@ -11,7 +11,7 @@ from itertools import combinations
 import pickle 
 from functools import reduce
 from .spectrum_tools import *
-from wispshapes import Box
+from shapey import Box
 from .indices import*
 from .spex_indices import *
 from .initialize import *
@@ -29,11 +29,18 @@ import matplotlib
 
 #load a previous sample of potential brown dwarfs
 
-df200=datasets['candidates']
-mjdf=datasets['manjavacas']
-scndf=datasets['schneider']
-############################################
+def add_ydwarf_index(df):
+    #new index that I added later
+    dfx=Annotator.reformat_table(df).reset_index(drop=True)
+    df['H_2O-2+CH_4/J-cont']=(dfx['CH_4/J-Cont']+dfx['H_2O-2/J-Cont']).apply(lambda x: (x, 0)).values
+    df['H_2O-1+CH_4/H-cont']=(dfx['CH_4/H-Cont']+1./dfx['H-cont/H_2O-1']).apply(lambda x: (x, 0)).values
+    return df.reset_index(drop=True)
 
+
+#df200=add_ydwarf_index(datasets['candidates'])
+mjdf=add_ydwarf_index(datasets['manjavacas'])
+scndf=add_ydwarf_index(datasets['schneider'])
+############################################
 
 class IndexSpace(object):
     """
@@ -58,9 +65,10 @@ class IndexSpace(object):
         self.xkey=kwargs.get('xkey', ' ')
         self.ykey=kwargs.get('ykey', ' ')
         self._spex_sample=None
-        self._subdwarfs=None
+        self._subdwarfs=kwargs.get('subdwarfs', None)
         self._false_negative=None
-        #self._name=None
+        if not self._subdwarfs is None: self.subdwarfs=self._subdwarfs
+
     def __repr__(self):
         return 'index-index space of '+ self.name
         
@@ -120,7 +128,6 @@ class IndexSpace(object):
     
     @subdwarfs.setter
     def subdwarfs(self, sds):
-        #print (sds)
         sds=sds.dropna(how='any')
         #print (sds)
         sds=sds[[self.xkey, self.ykey, 'Names', 'Spts']]
@@ -492,7 +499,6 @@ def crts_from_file(**kwargs):
     filename=kwargs.get('filename',OUTPUT_FILES+'/id_id_spaces_cpl_all_shapes.pkl')
     return pd.read_pickle(filename)
 
-
 def save_criteria(**kwargs):
     """
     creates selection criteria
@@ -501,7 +507,8 @@ def save_criteria(**kwargs):
     #load templates (will return spectral type and 10 indices for each object
     #completeness =kwargs.get('completeness', 0.9)
     all_spex=datasets['spex']
-
+    all_spex=all_spex[all_spex.snr1>10]
+    
     all_spex['Spts']=all_spex.spt.apply(splat.typeToNum).apply(float)
     all_spex['Names']=all_spex.grism_id
 
@@ -534,7 +541,23 @@ def save_criteria(**kwargs):
         #print (len(idspace.templates[idspace.templates['spt_range']=='L0-L5']))
         idspace.contaminants=conts
         index_spaces.append(idspace)
-        
+    #create extra indices for y dwarfs 
+    
+
+    sd_ids=add_ydwarf_index(sd_ids)
+    tpl_ids=add_ydwarf_index(tpl_ids)
+    conts=add_ydwarf_index(conts)
+
+    idspacey1=IndexSpace(xkey='H_2O-2+CH_4/J-cont', ykey='H_2O-1+CH_4/H-cont')
+
+    idspacey1.subdwarfs=sd_ids
+    idspacey1.templates=tpl_ids[[idspacey1.xkey, idspacey1.ykey, 'Names', 'Spts']]
+    idspacey1.contaminants=conts
+
+    index_spaces.append(idspacey1)
+
+   
+
     #save all 45 id-id spaces in a file
     names=[x.name for x in index_spaces]
     idx_space_dict=dict(zip(*[names, index_spaces]))

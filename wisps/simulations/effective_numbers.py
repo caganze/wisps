@@ -6,25 +6,20 @@ from scipy.interpolate import interp1d
 
 import wisps
 from .initialize import SELECTION_FUNCTION, SPGRID
+from wisps import drop_nan
 
-from .core import  simulate_spts
+from .core import  simulate_spts, HS
 import numba
-
-SIMULATED_DIST=simulate_spts()
 
 
 BAYESIAN_DISTANCES_VOLUMES=np.load(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', allow_pickle=True)
-DISTANCE_LIMITS=np.load(wisps.OUTPUT_FILES+'/distance_limits.pkl',allow_pickle=True)
-#bayesian distances
 
-def drop_nan(x):
-    x=np.array(x)
-    return x[(~np.isnan(x)) & (~np.isinf(x)) ]
-
-
-def interpolated_lf(spts, lumin):
-    f = interp1d(spts, lumin)
-    return f(SPGRID)
+pnts=wisps.OBSERVED_POINTINGS
+#some re-arragments because the limiting distance depends on the pointing
+dist_arrays=pd.DataFrame.from_records([x.dist_limits for x in pnts]).applymap(lambda x:np.vstack(x).astype(float))
+DISTANCE_LIMITS={}
+for s in SPGRID:
+    DISTANCE_LIMITS[s]=dist_arrays[s].mean(axis=0)
 
 def probability_of_selection(vals, method='idx_ft_label'):
     """
@@ -35,16 +30,7 @@ def probability_of_selection(vals, method='idx_ft_label'):
     #self.data['spt']=self.data.spt.apply(splat.typeToNum)
     floor=np.floor(spt)
     floor2=np.log10(np.floor(snr))
-    if floor2 < np.log10(3.):
-        return 0.
-    if floor2 > np.log10(2.0):
-        return 1.
-
-    if floor <17 or  floor >42:
-        return 0.0
-
-    else:
-        return np.nanmean(ref_df[method][(ref_df.spt==floor) &(ref_df.snr.apply(np.log10).between(floor2, floor2+.3))])
+    return np.nanmean(ref_df[method][(ref_df.spt==floor) &(ref_df.snr.apply(np.log10).between(floor2, floor2+.3))])
 
 @np.vectorize
 def selection_function(spt, snr):
@@ -54,13 +40,15 @@ def compute_effective_numbers(spts,SPGRID, h):
     ##given a distribution of masses, ages, teffss
     ## based on my polynomial relations and my own selection function
     spts=wisps.make_spt_number(spts)
+
     DISTANCE_WITHIN_LIMITS={}
+    #LONGS=(BAYESIAN_DISTANCES_VOLUMES['ls'][h]).flatten()
+    #LATS=(BAYESIAN_DISTANCES_VOLUMES['bs'][h]).flatten()
+    POINTINGS=wisps.OBSERVED_POINTINGS
+
     for k in DISTANCE_LIMITS.keys():
         dx=BAYESIAN_DISTANCES_VOLUMES['distances'][h]
-        if k < 37:
-            DISTANCE_WITHIN_LIMITS[k]= dx[ dx< 15* DISTANCE_LIMITS[k][1]]
-        if k >= 37:
-            DISTANCE_WITHIN_LIMITS[k]= dx[ dx< 50* DISTANCE_LIMITS[k][1]]
+        DISTANCE_WITHIN_LIMITS[k]= dx[ dx< 5* np.max(DISTANCE_LIMITS[k])]
     
     @np.vectorize
     def match_dist_to_spt(spt):
@@ -75,134 +63,99 @@ def compute_effective_numbers(spts,SPGRID, h):
         #new idea, distance is a not a function of spt
         #scracth that
         "-------------"
+        #assign distance
         spt_r=np.floor(spt)
         d=np.nan
         if (spt_r in DISTANCE_WITHIN_LIMITS.keys()) and (len(DISTANCE_WITHIN_LIMITS[spt_r]) >0) :
             d= np.random.choice(DISTANCE_WITHIN_LIMITS[spt_r])
         return d
 
-    ds=(BAYESIAN_DISTANCES_VOLUMES['distances'])[h]
 
-    #group similar spts then draw distances
-    #dists_for_spts=[]
-    #for k in tqdm(DISTANCE_LIMITS.keys()):
-    #    spts_to_use=np.logical_and(spts <=k, spts<k+1)
-    #    upper, lower=DISTANCE_LIMITS[k]
-    #    d_choose= ds[np.logical_and(ds>lower, ds<upper*2)] #only choose between dmin and twice dmax
-    #    dists_for_spts.append(np.random.choice(d_choose, len(spts_to_use)))
-        
     #polynomial relations
     rels=wisps.POLYNOMIAL_RELATIONS
-    #effective volumes
-    #assign distances
-    #dis
+
     
     #dists_for_spts=np.random.choice(dists_to_use, len(spts))
     dists_for_spts= match_dist_to_spt(spts)
-   
+
+    #add pointings
+    volumes=np.vstack([np.nansum(list(x.volumes[h].values())) for x in POINTINGS]).flatten()
+    pntindex=np.arange(0, len(POINTINGS))
+    names=np.array([x.name for x in POINTINGS])
+    pnts=names[wisps.random_draw(pntindex, volumes, nsample=len(spts))]
+
     
     #compute magnitudes absolute mags
-    f110s= rels['sp_F110W'](spts)
-    f140s= rels['sp_F140W'](spts)
-    f160s= rels['sp_F160W'](spts)
+    f110s= np.random.normal(rels['sp_F110W'](spts), rels['sigma_sp_F110W'])
+    f140s= np.random.normal(rels['sp_F140W'](spts), rels['sigma_sp_F140W'])
+    f160s= np.random.normal(rels['sp_F160W'](spts), rels['sigma_sp_F160W'])
     #compute apparent magnitudes
     appf140s=f140s+5*np.log10(dists_for_spts/10.0)
     appf110s=f110s+5*np.log10(dists_for_spts/10.0)
     appf160s=f160s+5*np.log10(dists_for_spts/10.0)
-    #compute snr based on my relations
-    #only use F140W for SNRJS
-    #offset them by the scatter in the relation
-    f140_snrj_scatter=rels['sigma_log_f140']
-    snrjs=10**np.random.normal(np.array(rels['snr_F140W'](appf140s)), f140_snrj_scatter)
-    #apply the selection function (this is the slow part)
+    
+    snrjs=10**np.random.normal(np.array(rels['snr_F140W'](appf140s)),rels['sigma_log_f140'])
+
     sl= selection_function(spts, snrjs)
-    #the probabliy of smearing
-    #vts=np.random.uniform(0, 100, len(dists_for_spts))
-    #mus=proper_motion(vts, dists_for_spts)
-    #smearing_p=probability_of_detection_smearing(mus)
-
-    #group these by spt
-    df=pd.DataFrame()
-    df['spt']=spts
-    #df['ps_sme']=smearing_p*sl #selection probability including proper motion
-    df['appF140']=appf140s
-    df['appF110']=appf110s
-    df['appF160']=appf160s
-    df['snr']=snrjs
-    #round the spt for groupings
-    df.spt=df.spt.apply(round)
-    
-    #make selection cuts 
-    flag_snr=(df.snr > 3.0).values
-    flag0=  (df.appF140.between( wisps.MAG_LIMITS['hst3d']['F140W'][1], wisps.MAG_LIMITS['hst3d']['F140W'][0])).values 
-    flag1=  (df.appF110.between( wisps.MAG_LIMITS['wisps']['F110W'][1], wisps.MAG_LIMITS['wisps']['F110W'][0])).values
-    flag2=  (df.appF110.between( wisps.MAG_LIMITS['hst3d']['F160W'][1], wisps.MAG_LIMITS['hst3d']['F160W'][0])).values
-
-    flag= ~ np.logical_and.reduce((flag0, flag1, flag2, flag_snr))
-
-    #cut the dataframe, these are the things you should select
-    #the selection function is the number of things you select /number of things you should select
-    #not the number of things you simulate
-
     
 
-    #probablity of selection > 1.
-    df['ps']=sl
+    return f110s, f140s, f160s, dists_for_spts, appf140s,  appf110s,  appf160s, snrjs, sl, pnts
 
-    #share meeting 
-    df.loc[flag, 'ps']=0.0
 
-    #just return the selection probabilities 
-    return f110s, f140s, f160s, dists_for_spts, appf140s,  appf110s,  appf160s, snrjs, df.ps.values
+def get_all_values_from_model(model, **kwargs):
+    """
+    For a given set of evolutionary models obtain survey values
+    """
+    #obtain spectral types from models
+    spts=drop_nan((simulate_spts(name=model)['spts']).flatten())
+    hs=kwargs.get("hs", HS)
+    #comput the rest from the survey
+    f110s=[]
+    f140s=[]
+    f160s=[]
+    dists=[]
+    snrjs=[]
+    phis=[]
+    appf140s=[]
+    appf110s=[]
+    appf160s=[]
+    sl_probs=[]
+    pntings=[]
+    for h in tqdm(hs):
+         f110, f140, f160, dists_for_spts, appf140, appf110, appf160, snrj, sl_prob, p=compute_effective_numbers(spts,SPGRID, h)
+         f110s.append(f110)
+         f140s.append(f140)
+         f160s.append(f160)
+         dists.append(dists_for_spts)
+         snrjs.append(snrj)
+         appf140s.append(appf140)
+         appf110s.append(appf110)
+         appf160s.append(appf160)
+         sl_probs.append(sl_prob)
+         pntings.append(p)
+         
+    values={"f110": f110s, "f140": f140s, "hs": hs, "f160": f160s, "appf140s": appf140s,"appf110s": appf110s,
+     "appf160s": appf160s, "dists":dists, "snrjs": snrjs, "spgrid": SPGRID, 'spts': spts,
+     'sl_prob': np.array(sl_probs), 'pointing': pntings}
 
+    return values
 
 def simulation_outputs(**kwargs):
     """
     Purpose:compute number densities
     """
-    hs=kwargs.get("hs", [200, 250, 275, 300, 325, 350, 1000])
     recompute=kwargs.get("recompute", False)
 
+    #recompute for different evolutionary models
+    models=kwargs.get('models', ['saumon', 'baraffe03'])
     if recompute:
-         #BAYESIAN_DISTANCES= BAYESIAN_DISTANCES_VOLUMES['distances']
-         BAYESIAN_VOLUMES= BAYESIAN_DISTANCES_VOLUMES['volumes']
-         vols=[[vols[s] for s in SPGRID] for vols in BAYESIAN_VOLUMES]
-         VOLUMES=np.nansum(np.array(vols), axis=0)*(4.1*(u.arcmin**2).to(u.radian**2))
-         #for g, gr in enumerate(SPGRID):
-         #    BAYESIAN_DICT[gr]=dict(zip( hs, BAYESIAN_DISTANCES[:,g,: ]))
-         f110s=[]
-         f140s=[]
-         f160s=[]
-         dists=[]
-         snrjs=[]
-         phis=[]
-         appf140s=[]
-         appf110s=[]
-         appf160s=[]
-         sl_probs=[]
-         for h in tqdm(hs):
-             spts=drop_nan(SIMULATED_DIST['spts'][0])
-             f110, f140, f160, dists_for_spts, appf140, appf110, appf160, snrj, sl_prob=compute_effective_numbers(spts,SPGRID, h)
-             f110s.append(f110)
-             f140s.append(f140)
-             f160s.append(f160)
-             dists.append(dists_for_spts)
-             snrjs.append(snrj)
-             appf140s.append(appf140)
-             appf110s.append(appf110)
-             appf160s.append(appf160)
-             sl_probs.append(sl_prob)
-
-             
-         values={"f110": f110s, "f140": f140s, "hs": hs, "f160": f160s, "appf140s": appf140s,"appf110s": appf110s,
-         "appf160s": appf160s, "dists":dists, "snrjs": snrjs, "spgrid": SPGRID, "vol": VOLUMES, 
-         'sl_prob': np.array(sl_probs)}
-         
-         import pickle
-         with open(wisps.OUTPUT_FILES+'/effective_numbers_from_sims', 'wb') as file:
-             pickle.dump(values,file)
+        dict_values={}
+        for model in models: dict_values[model]= get_all_values_from_model(model)
+        import pickle
+        with open(wisps.OUTPUT_FILES+'/effective_numbers_from_sims', 'wb') as file:
+            pickle.dump(dict_values,file)
     else:
-        values=pd.read_pickle(wisps.OUTPUT_FILES+'/effective_numbers_from_sims')
-    return values
+        dict_values=pd.read_pickle(wisps.OUTPUT_FILES+'/effective_numbers_from_sims')
+    return dict_values
 
 
