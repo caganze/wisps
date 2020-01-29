@@ -20,7 +20,8 @@ splat.initializeStandards()
 ###############
 from wisps.utils import memoize_func
 
-mamjk=ascii.read('/users/caganze/research/wisps/data/mamajek_relations.txt').to_pandas().replace('None', np.nan)
+
+
 
 class Annotator(object):
     """
@@ -115,22 +116,30 @@ def splat_teff_to_spt(teff):
     teffsc=np.random.normal(teff, scatter)
     return np.interp(teffsc, np.array(rel['values'])[spt_sorted_idx], np.array(rel['spt'])[spt_sorted_idx])
 
+@numba.jit
+def make_spt_number(spt):
+    ##make a spt a number
+    if isinstance(spt, str):
+        return splat.typeToNum(spt)
+    else:
+        return spt
+
+#pecaut constants
+mamjk=ascii.read('/users/caganze/research/wisps/data/mamajek_relations.txt').to_pandas().replace('None', np.nan)
+pec_js=mamjk.M_J.apply(float).values
+pec_jminush=mamjk['J-H'].apply(float).values
+pec_hs=pec_js-pec_jminush
+pec_spts=mamjk.SpT.apply(make_spt_number).apply(float).values
+pec_hsortedindex=np.argsort(pec_hs)
+pec_jsortedindex=np.argsort(pec_js)
+
 def absolute_magnitude_jh(spt):
     """
     returns J and H magnitudes by interpolating between values from pecaut2013
     must probably sort spt if spt is a list bfeore passing it through the interpolator
-    """
-    js=mamjk.M_J.apply(float).values
-    jminush=mamjk['J-H'].apply(float).values
-    hs=js-jminush
-    
-    spts=mamjk.SpT.apply(make_spt_number).apply(float).values
-    
-    hsortedindex=np.argsort(hs)
-    jsortedindex=np.argsort(js)
-    
-    hval=np.interp(spt,  spts[hsortedindex], hs[hsortedindex])
-    jval=np.interp(spt,  spts[jsortedindex], js[jsortedindex])
+    """    
+    hval=np.interp(spt,  pec_spts[pec_hsortedindex], pec_hs[pec_hsortedindex])
+    jval=np.interp(spt,  pec_spts[pec_jsortedindex], pec_js[pec_jsortedindex])
     
     return [jval, hval]
 
@@ -157,13 +166,6 @@ def stats_kde(x, **kwargs):
     model=kde.KDEMultivariate(x, bw='normal_reference', var_type='c')
     return grid, model.cdf(grid), model.pdf(grid)
 
-@numba.jit
-def make_spt_number(spt):
-    ##make a spt a number
-    if isinstance(spt, str):
-        return splat.typeToNum(spt)
-    else:
-        return spt
         
 def drop_nan(x):
     x=np.array(x)
@@ -199,7 +201,8 @@ def is_in_that_classification(spt, subclass):
 
 def random_draw(xvals, cdfvals, nsample=10):
     """
-    randomly drawing x distances in a given direction
+    randomly drawing from a discrete distribution
+
     """
     @numba.vectorize("int32(float64)")
     def invert_cdf(i):

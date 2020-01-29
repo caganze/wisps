@@ -33,15 +33,12 @@ spgrid=wispsim.SPGRID
 pnts=wisps.OBSERVED_POINTINGS
 print (pnts[0].survey)
 COORDS=SkyCoord([p.coord for p in wisps.OBSERVED_POINTINGS ])
-LBS=np.vstack([[x.coord.galactic.l.radian,x.coord.galactic.b.radian] for x in pnts ])
-
-
 galc=COORDS.transform_to('galactic')
 
+LBS=np.vstack([[x.coord.galactic.l.radian,x.coord.galactic.b.radian] for x in pnts ])
+
 LS=galc.l.radian
-
 BS=galc.b.radian
-
 
 #OBSERVED_DIST=np.concatenate(np.array([v for v in pnts[0].dist_limits.values()]))
 #---------------------------
@@ -53,26 +50,25 @@ def sample_distances(nsample=1000, h=300):
     sample the galaxy given a scale height
     
     """
-    def logprior(l, b):
-        return tt.switch(( abs(b) < 0.35),-np.inf, 0)
-
     def logp(l, b, r, z, d, h):
-        return np.log((d**2)*wispsim.density_function(r, z, h))+logprior(l, b)
+        return np.log((d**2)*wispsim.density_function(r, z, h))
 
     with pm.Model() as model:
-        l=pm.Uniform('l', lower=-np.pi, upper=np.pi, testval=np.pi/2)
-        b=pm.Uniform('b', lower=-np.pi/2, upper=np.pi/2, testval=np.pi/3)
+        l=pm.Uniform('l', lower=-2*np.pi, upper=2*np.pi, testval=np.pi/2, observed=LS)
+        b=pm.Uniform('b', lower=-2*np.pi, upper=2*np.pi, testval=np.pi/3, observed=BS)
     
-        d=pm.Uniform('d', lower=0., upper=5000., testval=500.)
+        d=pm.Uniform('d', lower=0., upper=6000, testval=500., shape=BS.shape)
         
         x=pm.Deterministic('x',  Rsun-d*np.cos(b)*np.cos(l))
         y=pm.Deterministic('y', -d*np.cos(b)*np.sin(l))
         r=pm.Deterministic('r', (x**2+y**2)**0.5 )
         z=pm.Deterministic('z', Zsun+ d * np.sin(b))
-        
+
         like = pm.DensityDist('likelihood', logp, observed={'l':l, 'b':b,
                              'r': r, 'z': z, 'd':d, 'h':h})
+
         trace = pm.sample(draws=int(nsample), cores=2, step=pm.Metropolis())
+
     return trace
 
 
@@ -125,20 +121,21 @@ if __name__ =='__main__':
     for h in wispsim.HS:
         traces.append(sample_distances(nsample=10000, h=h))
 
-
     dists=np.array([t['d'] for t in traces])
-    ls=np.array([t['l'] for t in traces])
-    bs=np.array([t['b'] for t in traces])
+    rs=np.array([t['r'] for t in traces])
+    zs=np.array([t['z'] for t in traces])
+
+    print ((traces[0]).d.shape)
 
    
     dists=np.array(dists)
 
     dist_dict=dict(zip(wispsim.HS, dists))
-    ls_dict=dict(zip(wispsim.HS, ls))
-    bs_dict=dict(zip(wispsim.HS, bs))
+    rs_dict=dict(zip(wispsim.HS, rs))
+    zs_dict=dict(zip(wispsim.HS, zs))
 
 
-    full_dict={ 'distances': dist_dict, 'ls': ls_dict, 'bs': bs_dict}
+    full_dict={ 'distances': dist_dict, 'rs':rs_dict, 'zs': zs_dict}
 
     import pickle
     with open(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', 'wb') as file:

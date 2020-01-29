@@ -1,4 +1,5 @@
 
+##adds survey parameters such as magnitude etc. to things
 
 from .initialize import *
 from tqdm import tqdm
@@ -8,8 +9,10 @@ import wisps
 from .initialize import SELECTION_FUNCTION, SPGRID
 from wisps import drop_nan
 
-from .core import  simulate_spts, HS
+from .core import  HS
+from .binaries import make_systems
 import numba
+
 
 
 BAYESIAN_DISTANCES_VOLUMES=np.load(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', allow_pickle=True)
@@ -41,17 +44,17 @@ def compute_effective_numbers(spts,SPGRID, h):
     ## based on my polynomial relations and my own selection function
     spts=wisps.make_spt_number(spts)
 
-    DISTANCE_WITHIN_LIMITS={}
+    DISTANCE_WITHIN_LIMITS_BOOLS={}
     #LONGS=(BAYESIAN_DISTANCES_VOLUMES['ls'][h]).flatten()
     #LATS=(BAYESIAN_DISTANCES_VOLUMES['bs'][h]).flatten()
     POINTINGS=wisps.OBSERVED_POINTINGS
 
     for k in DISTANCE_LIMITS.keys():
         dx=BAYESIAN_DISTANCES_VOLUMES['distances'][h]
-        DISTANCE_WITHIN_LIMITS[k]= dx[ dx< 5* np.max(DISTANCE_LIMITS[k])]
-    
+        DISTANCE_WITHIN_LIMITS_BOOLS[k]= dx < 5* np.max(DISTANCE_LIMITS[k][0])
+
     @np.vectorize
-    def match_dist_to_spt(spt):
+    def match_dist_to_spt(spt, idxn):
         """
         one to one matching between distance and spt
         to avoid all sorts of interpolations or binning
@@ -66,23 +69,30 @@ def compute_effective_numbers(spts,SPGRID, h):
         #assign distance
         spt_r=np.floor(spt)
         d=np.nan
-        if (spt_r in DISTANCE_WITHIN_LIMITS.keys()) and (len(DISTANCE_WITHIN_LIMITS[spt_r]) >0) :
-            d= np.random.choice(DISTANCE_WITHIN_LIMITS[spt_r])
+        if (spt_r in DISTANCE_WITHIN_LIMITS_BOOLS.keys()):
+            bools=(DISTANCE_WITHIN_LIMITS_BOOLS[spt_r])[idxn]
+            dist_array=((BAYESIAN_DISTANCES_VOLUMES['distances'][h])[idxn])
+            if len(dist_array[bools]) <= 0 : pass
+            else: d= np.random.choice(dist_array[bools])
         return d
 
 
     #polynomial relations
     rels=wisps.POLYNOMIAL_RELATIONS
 
-    
-    #dists_for_spts=np.random.choice(dists_to_use, len(spts))
-    dists_for_spts= match_dist_to_spt(spts)
+   
 
     #add pointings
     volumes=np.vstack([np.nansum(list(x.volumes[h].values())) for x in POINTINGS]).flatten()
+    volumes_cdf=np.cumsum(volumes)/np.nansum(volumes)
     pntindex=np.arange(0, len(POINTINGS))
     names=np.array([x.name for x in POINTINGS])
-    pnts=names[wisps.random_draw(pntindex, volumes, nsample=len(spts))]
+    pntindex_to_use=wisps.random_draw(pntindex, volumes_cdf, nsample=len(spts))
+    pnts=names[pntindex_to_use]
+
+
+    #dists_for_spts=np.random.choice(dists_to_use, len(spts))
+    dists_for_spts= match_dist_to_spt(spts,  pntindex_to_use)
 
     
     #compute magnitudes absolute mags
@@ -97,7 +107,7 @@ def compute_effective_numbers(spts,SPGRID, h):
     snrjs=10**np.random.normal(np.array(rels['snr_F140W'](appf140s)),rels['sigma_log_f140'])
 
     sl= selection_function(spts, snrjs)
-    
+
 
     return f110s, f140s, f160s, dists_for_spts, appf140s,  appf110s,  appf160s, snrjs, sl, pnts
 
@@ -106,8 +116,9 @@ def get_all_values_from_model(model, **kwargs):
     """
     For a given set of evolutionary models obtain survey values
     """
-    #obtain spectral types from models
-    spts=drop_nan((simulate_spts(name=model)['spts']).flatten())
+    #obtain spectral types from modelss
+    syst=make_systems(model_name=model, bfraction=0.1)
+    spts=(syst['system_spts']).flatten()
     hs=kwargs.get("hs", HS)
     #comput the rest from the survey
     f110s=[]
@@ -136,7 +147,7 @@ def get_all_values_from_model(model, **kwargs):
          
     values={"f110": f110s, "f140": f140s, "hs": hs, "f160": f160s, "appf140s": appf140s,"appf110s": appf110s,
      "appf160s": appf160s, "dists":dists, "snrjs": snrjs, "spgrid": SPGRID, 'spts': spts,
-     'sl_prob': np.array(sl_probs), 'pointing': pntings}
+     'sl_prob': np.array(sl_probs), 'pointing': pntings, 'mass': (syst['system_mass']).flatten(), 'age': (syst['system_age']).flatten()}
 
     return values
 
@@ -147,7 +158,8 @@ def simulation_outputs(**kwargs):
     recompute=kwargs.get("recompute", False)
 
     #recompute for different evolutionary models
-    models=kwargs.get('models', ['saumon', 'baraffe03'])
+    models=kwargs.get('models', ['saumon2008', 'baraffe2003', 'marley2019'])
+
     if recompute:
         dict_values={}
         for model in models: dict_values[model]= get_all_values_from_model(model)

@@ -156,8 +156,6 @@ class Pointing(object):
 
 
 def make_pointings():
-
-    maglimits=wisps.MAG_LIMITS
     
     obs=pd.read_csv(wisps.OUTPUT_FILES+'/observation_log.csv')
     obs=obs.drop(columns=['Unnamed: 0']).drop_duplicates(subset='POINTING').reindex()
@@ -187,68 +185,3 @@ def make_pointings():
     output_file=wisps.OUTPUT_FILES+'/pointings.pkl'
     with open(output_file, 'wb') as file:
         pickle.dump(pnts,file)
-
-
-def simulate_spts(**kwargs):
-    """
-    simulate a distribution of spectral types using a mass function and evolutionary models
-    """
-    recompute=kwargs.get('recompute', False)
-    model_name=kwargs.get('name','saumon')
-
-    #use hybrid models that predit the T dwarf bump for Saumon Models
-    if model_name=='saumon':
-        cloud='hybrid'
-    else:
-        cloud=False
-    
-    if recompute:
-
-        nsim = kwargs.get('nsample', 1e5)
-        spts=np.arange(17, 42)
-
-        # simulation
-        masses = spsim.simulateMasses(nsim,range=[0.001,0.15],distribution='power-law',alpha=0.6)
-       
-        ages=[]
-        teffs=[]
-        spts=[]
-
-        #uniform distribution
-        ages_unif= spsim.simulateAges(nsim,range=[0.1,10.], distribution='uniform')
-        teffs_unif = spev.modelParameters(mass=masses,age=ages_unif, set=model_name, cloud=cloud)['temperature'].value
-        spts_unif = splat_teff_to_spt(teffs_unif)
-   
-        #rujopakarn
-        #ages_ruj= spsim.simulateAges(nsim,range=[0.1,10.], distribution='rujopakarn')
-        #teffs_ruj = spev.modelParameters(mass=masses,age=ages_ruj, set='saumon')['temperature'].value
-        #spts_ruj = splat_teff_to_spt(teffs_ruj)
-
-        #aumer
-        #ages_aum= spsim.simulateAges(nsim,range=[0.1,10.], distribution='aumer')
-        #teffs_aum = spev.modelParameters(mass=masses,age=ages_aum, set='saumon')['temperature'].value
-        #spts_aum = splat_teff_to_spt(teffs_aum)
-
-        ages.append(ages_unif)
-        spts.append(spts_unif)
-        teffs.append(teffs_unif)
-
-        #ages.append(ages_ruj)
-        #spts.append(spts_ruj)
-        #teffs.append(teffs_ruj)
-
-        #ages.append(ages_aum)
-        #spts.append(spts_aum)
-        #teffs.append(teffs_aum)
-
-        values={'mass': masses, 'ages':np.array(ages), 'teffs':np.array(teffs), 'spts':np.array(spts)}
-
-        import pickle
-        with open(wisps.OUTPUT_FILES+'/mass_age_spcts_{}.pkl'.format(model_name), 'wb') as file:
-           pickle.dump(values,file)
-    else:
-
-        values=pd.read_pickle(wisps.OUTPUT_FILES+'/mass_age_spcts_{}.pkl'.format(model_name))
-
-
-    return values
