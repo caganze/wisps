@@ -185,12 +185,13 @@ def plot_source(sp, **kwargs):
             ax3.add_patch(rect)
             ax3.text(wrng[0], 1.0,wlabel, {'fontsize':16} )
 
-    if splat.typeToNum(sp.spectral_type) >39:
-        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+sp.spectral_type+') '+std.name), 
+    spt_label=splat.typeToNum(make_spt_number(sp.spectral_type))
+    if  make_spt_number(sp.spectral_type) >39:
+        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+spt_label+') '+'standard'), 
                loc=(1.01, 0.15), fontsize=15) 
 
-    if splat.typeToNum(sp.spectral_type) <=39:
-        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+sp.spectral_type+') '+std.shortname), 
+    if  make_spt_number(sp.spectral_type) <=39:
+        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+spt_label+') '+'standard'), 
                loc=(1.01, 0.15), fontsize=15) 
     plt.tight_layout()
     if save: plt.savefig(filename,  bbox_extra_artists=(lgd,), bbox_inches='tight')

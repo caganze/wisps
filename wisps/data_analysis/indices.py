@@ -24,7 +24,7 @@ def measure_indices(s,**kwargs):
     sp=s.splat_spectrum
     sample_type=kwargs.get("sample","median")
     ns=kwargs.get("nsamples", 100)
-    #names = ['index-1','index-2', 'index-3', 'index-4', 'index-5', 'index-6','index-7', 'index-8', 'index-9', 'index-10' ]
+
     names=INDEX_NAMES
     inds = np.zeros(len(names))
     errs = np.zeros(len(names))
@@ -39,22 +39,43 @@ def measure_indices(s,**kwargs):
     inds[8], errs[8]= __measure_index(sp, [1.62,1.67],   [1.38, 1.43],method='ratio',sample=sample_type,nsamples=ns)
     inds[9], errs[9]= __measure_index(sp, [1.62,1.67],   [1.56, 1.61],method='ratio',sample=sample_type,nsamples=ns)
 
+    inds[10], errs[10]=__measure_index(sp, [1.38, 1.43],  [1.15, 1.20],   [1.246, 1.295],method='add',sample=sample_type,nsamples=ns)
+    inds[11], errs[11]=__measure_index(sp, [1.38, 1.43],  [1.15, 1.20],   [1.56, 1.61],method='add',sample=sample_type,nsamples=ns)
+    inds[12], errs[12]=__measure_index(sp, [1.15, 1.20], [1.62,1.67],  [1.246, 1.295],method='add',sample=sample_type,nsamples=ns)
+    inds[13], errs[13]=__measure_index(sp, [1.15, 1.20], [1.62,1.67],   [1.56, 1.61],method='add',sample=sample_type,nsamples=ns)
+    inds[14], errs[14]=__measure_index(sp, [1.38, 1.43], [1.62,1.67], [1.246, 1.295],method='add',sample=sample_type,nsamples=ns)
+    inds[15], errs[15]=__measure_index(sp, [1.38, 1.43], [1.62,1.67],   [1.56, 1.61],method='add',sample=sample_type,nsamples=ns)
+
+
     if kwargs.get('return_unc', False):
         result = {names[i]: (inds[i],errs[i]) for i in np.arange(len(names))}
     if not kwargs.get('return_unc', False):
         result = {names[i]: inds[i] for i in np.arange(len(names))}
     return result
 
-def fast_measure_indices(sp, regions, labels, **kwargs):
-    #fast wway to measure indices without monte-carlo sampling or interpolation
-    res=pd.Series()
-    res.columns=labels
-    #loop over ratios 
-    for r, l in zip(regions, labels):
-        flx1=sp.flux(np.where((sp.wave>r[0][0]) & (sp.wave<r[0][1]))[0])
-        flx2=sp.flux(np.where((sp.wave>r[1][0]) & (sp.wave<r[1][1]))[0])
-        res[l]= flx1/flx2
-    return dict(res)
+
+def simple_measure_index(sp,*args,**kwargs):
+    # keyword parameters
+    method = kwargs.get('method','ratio')
+    sample = kwargs.get('sample','integrate')
+    nsamples = kwargs.get('nsamples',1000)
+    noiseFlag = kwargs.get('nonoise',False)
+
+    #make the measurement 
+    w = np.where(np.isnan(sp.flux) == False)
+    f = interp1d(sp.wave.value[w],sp.flux.value[w],bounds_error=False,fill_value=0.)
+    w = np.where(np.isnan(sp.noise) == False)
+
+    #create nsample spectra centered around their 
+    for i,waveRng in enumerate(args):
+        mask=np.logical_and(w < waveRng[0], w < waveRng[1] )
+        wave=w[mask]
+        flux=f(wave)
+        f=flux*np.random.normal(nsample)
+        vals=np.nanmedian()
+
+    return 
+
 
 def __measure_index(sp,*args,**kwargs):
     """
@@ -88,6 +109,8 @@ def __measure_index(sp,*args,**kwargs):
     # define the sample vectors
     value = np.zeros(len(args))
     value_sim = np.zeros((len(args),nsamples))
+
+
     # loop over all sampling regions
     for i,waveRng in enumerate(args):
         xNum = (np.arange(0,nsamples+1.0)/nsamples)* \
@@ -108,6 +131,8 @@ def __measure_index(sp,*args,**kwargs):
         else:
             value[i] = np.nanmean(yNum)
         # now do MonteCarlo measurement of value and uncertainty
+
+        #avoid nested loops, vectorize this
         for j in np.arange(0,nsamples):
             # sample variance
             if (np.isnan(yNum_e[0]) == False):
@@ -131,6 +156,7 @@ def __measure_index(sp,*args,**kwargs):
                 value_sim[i,j] = np.nanmin(yVar)
             else:
                 value_sim[i,j] = np.nanmean(yVar)
+
     # compute index based on defined method
     # default is a simple ratio
     if (method == 'ratio'):
@@ -139,6 +165,9 @@ def __measure_index(sp,*args,**kwargs):
     elif (method == 'line'):
         val = 0.5*(value[0]+value[1])/value[2]
         vals = 0.5*(value_sim[0,:]+value_sim[1,:])/value_sim[2,:]
+    elif (method == 'add'):
+        val = (value[0]+value[1])/value[2]
+        vals = (value_sim[0,:]+value_sim[1,:])/value_sim[2,:]
     elif (method == 'inverse_line'):
         val = 2.*value[0]/(value[1]+value[2])
         vals = 2.*value_sim[0,:]/(value_sim[1,:]+value_sim[2,:])

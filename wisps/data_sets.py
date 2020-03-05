@@ -2,9 +2,8 @@
 
 from wisps.data_analysis.initialize import  *
 
-
 datasets=dict()
-datasets['spex']=pd.read_pickle(LIBRARIES+'/spex_data_set.pkl')
+datasets['spex']=pd.read_pickle(LIBRARIES+'/spex_data_set_table.pkl')
 datasets['stars']=COMBINED_PHOTO_SPECTRO_DATA
 datasets['candidates']=pd.read_pickle(LIBRARIES+'/candidates.pkl')
 datasets['traing_set']=pd.read_pickle(LIBRARIES+'/training_set.pkl')

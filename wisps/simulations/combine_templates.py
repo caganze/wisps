@@ -7,30 +7,43 @@ import pandas as pd
 import numpy as np
 from itertools import combinations
 from tqdm import tqdm
-
+import splat.empirical as spe
 
 
 from concurrent.futures import ThreadPoolExecutor, wait , ALL_COMPLETED
 from  functools import partial
 
+def proper_classification(sp):
+    """
+    Uses splat.classifyByStandard to classify spectra using spex standards
+    """ 
+    val=wisps.classify(sp, stripunits=True)
+    return val
+
 def combine_two_spectra(sp10, sp20):
 	"""
 	sp1 and sp2 are splat objects
-	"""
+	"""	
 	sp1=sp10.splat_spectrum
 	sp2=sp20.splat_spectrum
+
+	sp1.fluxCalibrate('2MASS J',  wisps.absolute_magnitude_jh(wisps.make_spt_number(sp10.spectral_type))[0])
+	sp2.fluxCalibrate('2MASS J',  wisps.absolute_magnitude_jh(wisps.make_spt_number(sp20.spectral_type))[0])
+
 	sp3=sp1+sp2
 	types={}
 	types={'primary': [sp10.spectral_type, sp20.spectral_type], 
-	'system': splat.classifyByStandard(sp3,  comprange=[[1.2, 1.6]], dwarf=True,subdwarf=False,  statistic='chisqr')[0],
+	'system': proper_classification(sp3),
 	'spectrum': sp3}
 	return types
 
+
 def make_binaries():
     ##
-    tpls=pd.read_pickle(wisps.OUTPUT_FILES+'/l_t_dwarfs_spex.pkl')
-    templates=np.random.choice(tpls,300)
-    iterables=list(np.array([(x, y) for x, y in combinations(templates, 2)]).T)
+    tpls=pd.read_pickle(wisps.OUTPUT_FILES+'/binary_spex.pkl')
+    templates=tpls.spectra
+    iterables=list(np.array([(x, y) for x, y in tqdm(combinations(templates, 2))]).T)
+    print (np.vstack(iterables).shape)
 
     method=partial(combine_two_spectra)
     with ThreadPoolExecutor(max_workers=100) as executor:

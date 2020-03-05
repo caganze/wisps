@@ -29,17 +29,12 @@ import matplotlib
 
 #load a previous sample of potential brown dwarfs
 
-def add_ydwarf_index(df):
-    #new index that I added later
-    dfx=Annotator.reformat_table(df).reset_index(drop=True)
-    df['H_2O-2+CH_4/J-cont']=(dfx['CH_4/J-Cont']+dfx['H_2O-2/J-Cont']).apply(lambda x: (x, 0)).values
-    df['H_2O-1+CH_4/H-cont']=(dfx['CH_4/H-Cont']+1./dfx['H-cont/H_2O-1']).apply(lambda x: (x, 0)).values
-    return df.reset_index(drop=True)
+
 
 
 #df200=add_ydwarf_index(datasets['candidates'])
-mjdf=add_ydwarf_index(datasets['manjavacas'])
-scndf=add_ydwarf_index(datasets['schneider'])
+mjdf=datasets['manjavacas']
+scndf=datasets['schneider']
 ############################################
 
 class IndexSpace(object):
@@ -183,8 +178,8 @@ class IndexSpace(object):
         #    print ()
         #create a box
         box=Box()
-        if name.lower().startswith('l') or name.lower().startswith('y') or name.lower().startswith('m'): 
-            box=Box(shapetype='rectangle')
+        #if name.lower().startswith('l') or name.lower().startswith('y') or name.lower().startswith('m'): 
+        #    box=Box(shapetype='rectangle')
         box.scatter_coeff=coeff
         box.alpha=.1
         box.color=color
@@ -543,21 +538,6 @@ def save_criteria(**kwargs):
         index_spaces.append(idspace)
     #create extra indices for y dwarfs 
     
-
-    sd_ids=add_ydwarf_index(sd_ids)
-    tpl_ids=add_ydwarf_index(tpl_ids)
-    conts=add_ydwarf_index(conts)
-
-    idspacey1=IndexSpace(xkey='H_2O-2+CH_4/J-cont', ykey='H_2O-1+CH_4/H-cont')
-
-    idspacey1.subdwarfs=sd_ids
-    idspacey1.templates=tpl_ids[[idspacey1.xkey, idspacey1.ykey, 'Names', 'Spts']]
-    idspacey1.contaminants=conts
-
-    index_spaces.append(idspacey1)
-
-   
-
     #save all 45 id-id spaces in a file
     names=[x.name for x in index_spaces]
     idx_space_dict=dict(zip(*[names, index_spaces]))

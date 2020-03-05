@@ -21,8 +21,6 @@ splat.initializeStandards()
 from wisps.utils import memoize_func
 
 
-
-
 class Annotator(object):
     """
     Contains static method to manipulate index-index tables 
@@ -202,7 +200,6 @@ def is_in_that_classification(spt, subclass):
 def random_draw(xvals, cdfvals, nsample=10):
     """
     randomly drawing from a discrete distribution
-
     """
     @numba.vectorize("int32(float64)")
     def invert_cdf(i):

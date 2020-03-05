@@ -49,6 +49,22 @@ STD_DICTS.update(splat.STDS_ESD_SPEX)
 
 ###############
 #@numba.jitclass()
+
+
+def interpolated_standards():
+    stds=splat.STDS_DWARF_SPEX
+    interpstds={}
+    for k in stds.keys():
+        s=stds[k]
+        s.normalize()
+        interpstds[k]=interpolate.interp1d(s.wave.value, s.flux.value)
+    return interpstds
+
+
+INTERPOLATED_STANDARD_DICT=interpolated_standards()
+
+
+#used for classification
 class Spectrum(object):
     """
     
@@ -194,13 +210,7 @@ class Spectrum(object):
         """
         Uses splat.classifyByStandard to classify spectra using spex standards
         """ 
-        comprange=[[1.2, 1.5]]
-        val=splat.classifyByStandard(self.splat_spectrum, **kwargs)
-        if  np.nanmin(self.wave) <=.85:
-            comprange=[[0.95, 1.6]]
-        if make_spt_number(val[0]) > 39:
-            val=splat.classifyByStandard( self.splat_spectrum, comprange=comprange,  stat = 'stddev' )
-        self._spectral_type=val[0]
+        self._spectral_type=classify(self, **kwargs)
 
     def normalize(self, **kwargs):
         """
@@ -439,9 +449,9 @@ def f_test(spectrum, **kwargs):
     linefit=fit_a_line(spectrum)
     line= linefit[0]
     linechi=linefit[1]
-    spectrum.classify_by_standard(return_statistic=True,  comprange=[[1.2, 1.6]], statistic='chisqr', scale=True, plot=False, **kwargs)
+    spectrum.classify_by_standard()
     spt=spectrum.spectral_type
-    std=STD_DICTS[spt]
+    std=STD_DICTS[splat.typeToNum(spt)]
 
     std.normalize(waverange=[1.2, 1.6])
     spexchi=splat.compareSpectra(s, std,  comprange=[[1.2, 1.6]], statistic='chisqr', scale=True)[0].value
@@ -454,6 +464,50 @@ def f_test(spectrum, **kwargs):
     result={'spex_chi':spexchi, 'line_chi':linechi, \
     'x':x, 'f':f, '_best_fit_line': [line, linechi]}
     return result
+
+def compute_chi_square(flux, noise, model):
+    if (noise==0.0).all(): noise=1.
+    scale=np.nansum((flux*model)/noise**2)/np.nansum(model**2/noise**2)
+    return float(np.nansum((flux-scale*model)**2/(noise**2)))
+
+def classify(sp, **kwargs):
+    """
+    My own classify by standard 
+    must be vectorizable and faster than splat
+
+    sp= wisp spectrum object
+    """
+    #normalize both spectra
+    comprange=kwargs.get('comprange', [1.15, 1.65])
+    dof=169
+    if kwargs.get('stripunits', False):
+        #mask
+        mask=np.logical_and(sp.wave.value<= comprange[1], sp.wave.value >=comprange[0]  )
+
+        wave=sp.wave.value[mask]
+        flux=sp.flux.value[mask]
+        noise=sp.noise.value[mask]
+        dof=sp.dof
+
+    else:
+        #mask
+        mask=np.logical_and(sp.wave <= comprange[1], sp.wave >=comprange[0]  )
+
+        wave=sp.wave[mask]
+        flux=sp.flux[mask]
+        noise=sp.noise[mask]
+        dof=sp.splat_spectrum.dof
+
+
+    chisqrs=[]
+    for k in splat.STDS_DWARF_SPEX.keys():
+        model_f=INTERPOLATED_STANDARD_DICT[k]
+        model=model_f(wave)
+        chisqrs.append([compute_chi_square(flux, noise, model), float(make_spt_number(k))])
+
+    #smallest_chi_Square is the clasification
+    chisqrs=np.vstack(chisqrs)
+    return np.round(splat.weightedMeanVar(make_spt_number(chisqrs[:,1]), chisqrs[:,0], method='ftest',dof=dof)[0])
 
 def distance(mags, spt):
     """

@@ -4,7 +4,7 @@ import numpy as np
 import glob
 from .photometry import Source
 from .spectrum_tools import Spectrum
-
+from ..utils.tools import get_distance, make_spt_number
 
 
 import numba

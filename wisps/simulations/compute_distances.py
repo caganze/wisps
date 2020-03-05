@@ -67,7 +67,7 @@ def sample_distances(nsample=1000, h=300):
         like = pm.DensityDist('likelihood', logp, observed={'l':l, 'b':b,
                              'r': r, 'z': z, 'd':d, 'h':h})
 
-        trace = pm.sample(draws=int(nsample), cores=2, step=pm.Metropolis())
+        trace = pm.sample(draws=int(nsample), cores=4, step=pm.Metropolis(), tune=int(nsample/20), discard_tuned_samples=True)
 
     return trace
 
@@ -114,34 +114,31 @@ def compute_distance_limits(pnt):
 
 #----------------------------------
 #save stuff 
-if __name__ =='__main__':
-    
+
+def save_all_stuff():
     #sample the galactic structure model
-    traces=[]
-    for h in wispsim.HS:
-        traces.append(sample_distances(nsample=10000, h=h))
-
-    dists=np.array([t['d'] for t in traces])
-    rs=np.array([t['r'] for t in traces])
-    zs=np.array([t['z'] for t in traces])
-
-    print ((traces[0]).d.shape)
-
-   
-    dists=np.array(dists)
-
-    dist_dict=dict(zip(wispsim.HS, dists))
-    rs_dict=dict(zip(wispsim.HS, rs))
-    zs_dict=dict(zip(wispsim.HS, zs))
-
-
-    full_dict={ 'distances': dist_dict, 'rs':rs_dict, 'zs': zs_dict}
-
     import pickle
+
+    full_dict={}
+
+    for h in wispsim.HS:
+        trace=sample_distances(nsample=2.5e4, h=h)
+        #save each scale height separetly to avoid overloading the disk
+        dists=np.array(trace['d'])
+        rs=np.array(trace['r']) 
+        zs=np.array(trace['z'])
+        full_dict[h]={ 'distances': dists, 'rs':rs, 'zs': zs}
+
     with open(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', 'wb') as file:
                pickle.dump(full_dict,file)
+    return 
 
+if __name__ =='__main__':
+    #save_all_stuff()
     import wisps.simulations.effective_numbers as eff
     eff.simulation_outputs(recompute=True, hs=wispsim.HS)
+
+    import wisps.simulations as wispsim
+    wispsim.make_pointings()
 
 

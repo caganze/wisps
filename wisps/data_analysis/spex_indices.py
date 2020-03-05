@@ -8,7 +8,9 @@ from .initialize import *
 from .spectrum_tools import *
 
 import splat
-    
+import splat.plot as splt
+from matplotlib.backends.backend_pdf import PdfPages
+
 def spex_sample_ids(**kwargs):
     """
     This function loads indices measured for spectral standardards, templates, subdwarfs and esds either by reading the saved file or re-computing them
@@ -25,59 +27,71 @@ def spex_sample_ids(**kwargs):
     #sometimes files are empty, re-calculate the indices, save them 
     if not from_file:
         print ("calculating spectral indices")
-        t=_load_and_save_spex_indices(stype,OUTPUT_FILES+'/'+str(stype)+'spex_sample.pkl' )
+        t=_load_and_save_spex_indices(OUTPUT_FILES+'/'+str(stype)+'spex_sample.pkl' )
     return t 
 
-def _load_and_save_spex_indices(stype, filename):
+def create_wisp_spectrum(filename):
+    try:
+        splat_spectrum=splat.getSpectrum(filename=filename)[0]
+        s=Spectrum(wave=splat_spectrum.wave.value,
+                         flux=splat_spectrum.flux.value,
+                         noise=splat_spectrum.noise.value)
+        s.classify_by_standard
+        return [s, splat_spectrum]
+    except:
+        return [None, None]
+
+def plot_sp_sp(s, a, shortname):
+
+    std=splat.STDS_DWARF_SPEX[splat.typeToNum(s.spectral_type)]
+    std.normalize(waverange=[1.1, 1.7])
+
+    mask2=np.logical_and(std.wave.value>0.8, std.wave.value<2.5)
+    mask=np.logical_and(s.wave>0.8, s.wave<2.5)
+
+    a.plot(s.wave[mask], s.flux[mask], label=shortname)
+    a.plot(std.wave.value[mask2], std.flux.value[mask2], linestyle='--', label='std')
     
+    a.set_title("{} ".format(s.spectral_type ))
+    a.legend()
+
+def _load_and_save_spex_indices(fname, **kwargs):
     """
-    Avoiding to repeat some code
-    
+    save splat stuff
     """
-    #load spectra
+    if kwargs.get('reload', False):
+        splat_db=splat.searchLibrary(vlm=True, giant=False)
+        ss=splat_db.DATA_FILE.apply(create_wisp_spectrum)
+        spectra=np.vstack(ss.dropna().values)[:, 0]
+        splat_spectra=np.vstack(ss.dropna().values)[:, 1]
+        spectra=spectra[spectra != np.array(None)]
+
+        splat_spectra=splat_spectra[splat_spectra != np.array(None)]
+        legends=[x.shortname for x in splat_spectra]
+
+        df=pd.DataFrame()
+        df['splat']= splat_spectra
+        df['wisps']=spectra
+        df['shortname']=legends
+
+        df.to_pickle(fname)
+
+    else:
+        df=pd.read_pickle(fname)
+
+    #splt.plotBatch(list(splat_spectra), classify=True, legend=list(legends), output= OUTPUT_FIGURES+'/multipage_splat_stuff_2nd.pdf')
+    with PdfPages(OUTPUT_FIGURES+'/multipage_splat_stuff_2nd.pdf') as pdf:
+
+        for g in np.array_split(df, int(len(df)/4)):
+
+            fig, ax=plt.subplots(ncols=2, nrows=2)
+            plot_sp_sp(g.wisps.iloc[0], ax[0][0], g.shortname.iloc[0])
+            plot_sp_sp(g.wisps.iloc[1], ax[0][1],  g.shortname.iloc[1])
+            plot_sp_sp(g.wisps.iloc[2], ax[1][0],  g.shortname.iloc[2])
+            plot_sp_sp(g.wisps.iloc[3], ax[1][1],  g.shortname.iloc[3])
+
+            pdf.savefig() 
+            plt.close()
+
     
-    dict_keys=['M5', 'M6', 'M7', 'M8', 'M9',
-               'L0', 'L1', 'L2', 'L3', 'L4', 
-               'L5','L6', 'L7', 'L8', 'L9', 
-               'T0', 'T1', 'T2', 'T3', 'T4',
-               'T5', 'T6', 'T7', 'T8', 'T9']
-    if stype=='spex_sample':
-        db= splat.searchLibrary(spt=[17, 39], vlm=True, giant=False )
-        spectra= [splat.Spectrum(x) for x in db['DATA_FILE']]
-        spts=np.array(db['SPTN'])
-    if stype=='std':
-        spectra=[splat.getStandard(x) for x in dict_keys]
-        spts=[splat.typeToNum(x) for x in  dict_keys]
-    if stype=='sd':
-        db=splat.searchLibrary(spt=[17, 39], subdwarf=True)
-        spectra= [splat.Spectrum(x) for x in db['DATA_FILE']]
-        spts=np.array(db['SPTN'])
-    if stype =='esd':
-        spectra=[splat.core.getStandard(x, esd=True) for x in dict_keys]
-    #print ( splat_spectra)
-    names=[s.name for s in spectra]
-    #print (names)
-    filenames=[s.filename for s in spectra]
-    
-    #print (names)
-    # for x in splat_spectra:
-    #     try:
-    #      x.plot()
-    #     except:
-    #         continue
-    
-    nempty=[i for i, x in enumerate(names) if x]
-    wisp_spectra= [Spectrum(wave=s.wave.value, flux=s.flux.value, noise=s.noise.value ) for s in np.array(spectra)[nempty]]
-    #classifyByStandard
-    chis=[ splat.classifyByStandard(s.splat_spectrum, return_statistic=True, plot=False)[1] for s in wisp_spectra]
-    #measure indices
-    ids= pd.DataFrame([s.indices for s in wisp_spectra ])
-    #get different measures of snrs
-    snrs=[s.snr for s in wisp_spectra ]
-    #save the file
-    final_dict={'Names':names, 'Spts': np.array(spts)[nempty],  'Snr':snrs, 'Chis':chis, 'spectra': wisp_spectra}
-    t= pd.DataFrame(final_dict)
-    for k in ids.columns: t[k]=ids[k]
-    t.to_pickle(filename)
-    
-    return t
+    return df

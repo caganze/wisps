@@ -41,7 +41,8 @@ else:
     COMBINED_PHOTO_SPECTRO_DATA=pd.read_hdf(COMBINED_PHOTO_SPECTRO_FILE, key='all_phot_spec_data')
     #definitions
     INDEX_NAMES=np.array(['H_2O-1/J-Cont',  'H_2O-2/H_2O-1', 'H-cont/H_2O-1', 'CH_4/H_2O-1',   'H_2O-2/J-Cont',   'H-cont/J-Cont', 'CH_4/J-Cont',    
-                'H-cont/H_2O-2',         'CH_4/H_2O-2',  'CH_4/H-Cont'] ) 
+                'H-cont/H_2O-2',         'CH_4/H_2O-2',  'CH_4/H-Cont', 'H_2O-1+H_2O-2/J-Cont', 'H_2O-1+H_2O-2/H-Cont', 'H_2O-1+CH_4/J-Cont',
+                'H_2O-2+CH_4/J-Cont',  'H_2O-1+CH_4/H-Cont', 'H_2O-2+CH_4/H-Cont'] ) 
     
     #colorscheme for filters 
     FILTER_COLOR_SCHEME={'F110W':'#0074D9' , 'F140W':'#FF851B', 'F160W':'#FF4136'}

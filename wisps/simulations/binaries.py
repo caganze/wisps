@@ -5,14 +5,19 @@ from ..utils.tools import drop_nan, splat_teff_to_spt,kernel_density
 from tqdm import tqdm
 import splat.simulate as spsim
 import splat.evolve as spev
+import splat.empirical as spe
 import wisps
 import pymc3 as pm
 from scipy.interpolate import griddata
 import theano.tensor as tt
 from theano.compile.ops import as_op
 import astropy.units as u
+import numba
 
 BINARY_TABLE=pd.read_pickle(wisps.OUTPUT_FILES+'/binary_lookup_table.pkl')
+BINARY_TABLE_SYS=(BINARY_TABLE['sys']).values
+BINARY_TABLE_PRIM=(BINARY_TABLE['prim']).values
+BINARY_TABLE_SEC=(BINARY_TABLE['sec']).values
 
 def log_mass_function(m, alpha):
     """
@@ -27,11 +32,11 @@ def log_mass_ratio(q, gamma):
     m2 is secondary mass """
     return np.log(q**gamma)
 
-def total_likelihood(m1, m2, alpha, gamma):
-    return log_mass_function(m1, alpha)+log_mass_function(m2, alpha)+log_mass_ratio(m1/m2, gamma)
+def total_likelihood(m1, q, alpha, gamma):
+    return log_mass_function(m1, alpha)+log_mass_ratio(q, gamma)
 
 
-def simulate_binary(nstuff):
+def simulate_binary(nstuff, mass_range):
     """
     Simulate a distribution of binaries from simple assumptions
     This is much faster than splat
@@ -39,23 +44,27 @@ def simulate_binary(nstuff):
     gamma=4
     with pm.Model() as model:
         alpha=0.6
-        prim=pm.Uniform('m1', lower=0.001, upper=.2) #primaries
-        q=pm.Uniform('q', lower=0.1, upper=1.)
-        sec=pm.Deterministic('m2', prim/q)
+        prim=pm.Uniform('m1', lower=mass_range[0], upper=mass_range[1]) #primaries
+        q=pm.Uniform('q', lower=.1, upper=1.)
+
+        sec=pm.Deterministic('m2', prim*q)
         age=pm.Uniform('t', lower=0.1, upper=10) #system age
-        like = pm.DensityDist('likelihood', total_likelihood, observed={'m1': prim, 'm2': sec, 
+        like = pm.DensityDist('likelihood', total_likelihood, observed={'m1': prim, 'q': q, 
 	                                                                   'alpha': alpha, 'gamma': gamma})
         trace = pm.sample(draws=nstuff,  cores=4,  tune=int(nstuff/20), discard_tuned_samples=True, init='advi')
 
     return [trace.m1, trace.m2, trace.t]
 
-
-@np.vectorize
 def get_system_type(pr, sc):
     """
     use the lookup table to get a spectral type for the binary
+    using a linear interpolation to avoid nans
     """
-    return np.nanmean(BINARY_TABLE['sys'][(BINARY_TABLE.prim==np.round(pr)) &(BINARY_TABLE.sec==np.round(sc))])
+    #where secondary are nans set to primaries
+    sc[np.isnan(sc)]=pr[np.isnan(sc)]
+    interpoints=np.array([BINARY_TABLE_PRIM, BINARY_TABLE_SEC ]).T
+    comb=griddata(interpoints, BINARY_TABLE_SYS , (pr, sc), method='linear')
+    return comb
 
 
 def evolutionary_model_interpolator(mass, age, model):
@@ -74,25 +83,31 @@ def evolutionary_model_interpolator(mass, age, model):
     #use the full cloud treatment for saumon models
     if model=='saumon2008':
          evolutiomodel=evolutiomodel[evolutiomodel.cloud=='hybrid']
-
-    valuest=evolutiomodel.temperature.values
+ 
+    #make age, teff, mass logarithm scale
+    valuest=np.log10(evolutiomodel.temperature.values)
     valueslogg=evolutiomodel.gravity.values
-    valuesrads=evolutiomodel.radius.values
     valueslumn=evolutiomodel.luminosity.values
 
-    evolpoints=np.array([evolutiomodel.mass.values, evolutiomodel.age.values]).T
+    valuesm=np.log10(evolutiomodel.mass.values)
+    valuesag=np.log10(evolutiomodel.age.values)
 
-    teffs=griddata(evolpoints, valuest , (mass, age), method='linear')
-    lumn=griddata(evolpoints, valueslumn , (mass, age), method='linear')
+    evolpoints=np.array([valuesm, valuesag ]).T
 
-    return {'mass': mass*u.Msun, 'age': age*u.Gyr, 'temperature': teffs*u.Kelvin, 'luminosity': lumn*u.Lsun}
+    teffs=griddata(evolpoints, valuest , (np.log10(mass), np.log10(age)), method='linear')
+    lumn=griddata(evolpoints, valueslumn , (np.log10(mass), np.log10(age)), method='linear')
+
+
+    return {'mass': mass*u.Msun, 'age': age*u.Gyr, 'temperature': 10**teffs*u.Kelvin, 
+    'luminosity': lumn*u.Lsun}
 
 
 
 
 def simulate_spts(**kwargs):
     """
-    add binaries
+    Simulate parameters from mass function,
+    mass ratio distribution and age distribution
     """
     recompute=kwargs.get('recompute', False)
     model_name=kwargs.get('name','baraffe2003')
@@ -102,48 +117,60 @@ def simulate_spts(**kwargs):
         cloud='hybrid'
     else:
         cloud=False
+
+    #automatically set maxima and minima to avoid having too many nans
+    #mass age and age,  min, max
+    acceptable_values={'baraffe2003': [0.0005, 0.1, 0.001, 10.0],
+    'marley2019': [0.0005, 0.08, 0.001, 15.0], 'saumon2008':[0.002, 0.09, 0.003, 15.0]}
     
     if recompute:
 
         nsim = kwargs.get('nsample', 1e5)
+
+        ranges=acceptable_values[model_name]
         
         # masses for singles [this can be done with pymc but nvm]
-        m_singles = spsim.simulateMasses(nsim,range=[0.001,0.2],distribution='power-law',alpha=0.6)
+        m_singles = spsim.simulateMasses(nsim,range=[ranges[0], ranges[1]],distribution='power-law',alpha=0.6)
         #ages for singles
-        ages_singles= spsim.simulateAges(nsim,range=[0.1,10.], distribution='uniform')
+        ages_singles= spsim.simulateAges(nsim,range=[ranges[2], ranges[3]], distribution='uniform')
 
         #parameters for binaries
-        binrs=simulate_binary(int(nsim))
-        #evol parameters
+        binrs=simulate_binary(int(nsim), [ranges[0], ranges[1]])
+
         #single_evol=spev.modelParameters(mass=m_singles,age=ages_singles, set=model_name, cloud=cloud)
         single_evol=evolutionary_model_interpolator(m_singles, ages_singles, model_name)
-
 
         #primary_evol=spev.modelParameters(mass=binrs[0],age=binrs[-1], set=model_name, cloud=cloud)
         primary_evol=evolutionary_model_interpolator(binrs[0],binrs[-1], model_name)
 
-
         #secondary_evol=spev.modelParameters(mass=binrs[1],age=binrs[-1], set=model_name, cloud=cloud)
         secondary_evol=evolutionary_model_interpolator(binrs[1],binrs[-1], model_name)
         #save luminosities
-
 
         #temperatures
         teffs_singl =single_evol['temperature'].value
         teffs_primar=primary_evol['temperature'].value
         teffs_second=secondary_evol['temperature'].value
 
-        #spectratypes
-        spts_singl = splat_teff_to_spt(teffs_singl)
+        #spectraltypes
+        spts_singl =splat_teff_to_spt(teffs_singl)
+
+        #the singles will be fine, remove nans from systems 
         spt_primar=splat_teff_to_spt(teffs_primar)
         spt_second=splat_teff_to_spt(teffs_second)
-        spt_binr=get_system_type(spt_primar, spt_second)
+
+        #remove nans 
+        print (spt_primar.shape, spt_second.shape)
+
+        xy=np.vstack([np.round(np.array(spt_primar), decimals=0), np.round(np.array(spt_second), decimals=0)]).T
+
+        spt_binr=get_system_type(xy[:,0], xy[:,1])
 
    
         values={ 'sing_evol': single_evol, 'sing_spt':spts_singl,
         		 'prim_evol': primary_evol, 'prim_spt':spt_primar,
         		 'sec_evol': secondary_evol, 'sec_spt': spt_second,
-        		'binary_spt': spt_binr}
+        		'binary_spt': spt_binr }
 
         import pickle
         with open(wisps.OUTPUT_FILES+'/mass_age_spcts_with_bin{}.pkl'.format(model_name), 'wb') as file:
@@ -156,21 +183,29 @@ def simulate_spts(**kwargs):
 
 def make_systems(**kwargs):
     """
-    Purpose:who knows
-    """
+    choose a random sets of primaries and secondaries 
+    and a sample of single systems based off a preccomputed-evolutionary model grid 
+    and an unresolved binary fraction
 
+    """
     #recompute for different evolutionary models
-    model=kwargs.get('model_name', 'baraffe03')
-    binary_fraction=kwargs.get('bfraction', 0.1)
+    model=kwargs.get('model_name', 'baraffe2003')
+    binary_fraction=kwargs.get('bfraction', 0.2)
+
     model_vals=simulate_spts(name=model)
 
     nbin= int(len(model_vals['sing_spt'])*binary_fraction) #number of binaries
 
-    nan_idx=np.isnan(model_vals['binary_spt'])
 
-    vs={'system_spts': np.concatenate([model_vals['sing_spt'], ((model_vals['binary_spt'])[~nan_idx])[:nbin]]),
-     		'system_age':  np.concatenate([(model_vals['sing_evol']['age']).value, ((model_vals['prim_evol']['age']).value)[:nbin]]),
-     		'system_mass': np.concatenate([model_vals['sing_evol']['mass'].value, 
-                                     (model_vals['prim_evol']['mass'].value)[:nbin]+(model_vals['sec_evol']['mass'].value)[:nbin]])}
+    nans=np.isnan(model_vals['binary_spt'])
+    
+    choices={'spt': np.random.choice(model_vals['binary_spt'][~nans], nbin),
+            'teff': np.random.choice(model_vals['prim_evol']['temperature'].value[~nans], nbin), 
+            'age': np.random.choice(model_vals['prim_evol']['age'].value[~nans],nbin)}
+
+
+    vs={'system_spts': np.concatenate([model_vals['sing_spt'], choices['spt']]), 
+            'system_teff':  np.concatenate([(model_vals['sing_evol']['temperature']).value, choices['teff']]),
+            'system_age':  np.concatenate([(model_vals['sing_evol']['age']).value,  choices['age']])}
 
     return vs

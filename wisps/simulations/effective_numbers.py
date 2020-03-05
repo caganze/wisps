@@ -50,7 +50,7 @@ def compute_effective_numbers(spts,SPGRID, h):
     POINTINGS=wisps.OBSERVED_POINTINGS
 
     for k in DISTANCE_LIMITS.keys():
-        dx=BAYESIAN_DISTANCES_VOLUMES['distances'][h]
+        dx=(BAYESIAN_DISTANCES_VOLUMES[h])['distances']
         DISTANCE_WITHIN_LIMITS_BOOLS[k]= dx < 5* np.max(DISTANCE_LIMITS[k][0])
 
     @np.vectorize
@@ -69,12 +69,23 @@ def compute_effective_numbers(spts,SPGRID, h):
         #assign distance
         spt_r=np.floor(spt)
         d=np.nan
+        r=np.nan
+        z=np.nan
         if (spt_r in DISTANCE_WITHIN_LIMITS_BOOLS.keys()):
             bools=(DISTANCE_WITHIN_LIMITS_BOOLS[spt_r])[idxn]
-            dist_array=((BAYESIAN_DISTANCES_VOLUMES['distances'][h])[idxn])
-            if len(dist_array[bools]) <= 0 : pass
-            else: d= np.random.choice(dist_array[bools])
-        return d
+            dist_array=((BAYESIAN_DISTANCES_VOLUMES[h]['distances'])[idxn])
+            rs=((BAYESIAN_DISTANCES_VOLUMES[h]['rs'])[idxn])
+            zs=((BAYESIAN_DISTANCES_VOLUMES[h]['zs'])[idxn])
+            #draw a distance
+            if len(dist_array[bools]) <= 0 : 
+                pass
+            else: 
+                bidx=np.random.choice(len(dist_array[bools]))
+                d= (dist_array[bools])[bidx]
+                r=(rs[bools])[bidx]
+                z=(zs[bools])[bidx]
+
+        return d, r, z
 
 
     #polynomial relations
@@ -92,7 +103,7 @@ def compute_effective_numbers(spts,SPGRID, h):
 
 
     #dists_for_spts=np.random.choice(dists_to_use, len(spts))
-    dists_for_spts= match_dist_to_spt(spts,  pntindex_to_use)
+    dists_for_spts, rs, zs= match_dist_to_spt(spts,  pntindex_to_use)
 
     
     #compute magnitudes absolute mags
@@ -109,7 +120,8 @@ def compute_effective_numbers(spts,SPGRID, h):
     sl= selection_function(spts, snrjs)
 
 
-    return f110s, f140s, f160s, dists_for_spts, appf140s,  appf110s,  appf160s, snrjs, sl, pnts
+    return {'f110':f110s, 'f140':f140s, 'f160':f160s, 'd':dists_for_spts, 'r':rs, 'z':zs, 'appf140':appf140s,  
+    'appf110':appf110s,  'appf160':appf160s, 'snrj':snrjs, 'sl':sl, 'pnt':pnts}
 
 
 def get_all_values_from_model(model, **kwargs):
@@ -117,39 +129,18 @@ def get_all_values_from_model(model, **kwargs):
     For a given set of evolutionary models obtain survey values
     """
     #obtain spectral types from modelss
-    syst=make_systems(model_name=model, bfraction=0.1)
+    syst=make_systems(model_name=model, bfraction=0.2)
     spts=(syst['system_spts']).flatten()
     hs=kwargs.get("hs", HS)
     #comput the rest from the survey
-    f110s=[]
-    f140s=[]
-    f160s=[]
-    dists=[]
-    snrjs=[]
-    phis=[]
-    appf140s=[]
-    appf110s=[]
-    appf160s=[]
-    sl_probs=[]
-    pntings=[]
+    outdata={}
     for h in tqdm(hs):
-         f110, f140, f160, dists_for_spts, appf140, appf110, appf160, snrj, sl_prob, p=compute_effective_numbers(spts,SPGRID, h)
-         f110s.append(f110)
-         f140s.append(f140)
-         f160s.append(f160)
-         dists.append(dists_for_spts)
-         snrjs.append(snrj)
-         appf140s.append(appf140)
-         appf110s.append(appf110)
-         appf160s.append(appf160)
-         sl_probs.append(sl_prob)
-         pntings.append(p)
-         
-    values={"f110": f110s, "f140": f140s, "hs": hs, "f160": f160s, "appf140s": appf140s,"appf110s": appf110s,
-     "appf160s": appf160s, "dists":dists, "snrjs": snrjs, "spgrid": SPGRID, 'spts': spts,
-     'sl_prob': np.array(sl_probs), 'pointing': pntings, 'mass': (syst['system_mass']).flatten(), 'age': (syst['system_age']).flatten()}
+         outdata[h]=compute_effective_numbers(spts,SPGRID, h)
+         outdata[h]['spts']=spts
+         #outdata[h]['mass']=syst['system_mass']
+         outdata[h]['teff']=syst['system_teff']
 
-    return values
+    return outdata
 
 def simulation_outputs(**kwargs):
     """
