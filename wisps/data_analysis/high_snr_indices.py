@@ -17,12 +17,14 @@ import numba
 
 
 def get_object(filename):
-    print (filename)
-    sp=wisps.Spectrum(name=filename)
-    f_test={"f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi, 'spt_new': sp.spectral_type, 'spt': sp.spectral_type}
-    res_dict= {**sp.snr, **sp.indices, **f_test}
-    return res_dict
-
+	try:
+		sp=wisps.Spectrum(name=filename)
+		f_test={"grism_id": filename, "f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi, 'spt_new': sp.spectral_type, 'spt': sp.spectral_type}
+		res_dict= {**sp.snr, **sp.indices, **f_test}
+		return res_dict
+	except IndexError:
+		print ("could not find {}".format(filename))
+		return {} 
 
 
 def make_data(spectranames, **kwargs):
@@ -32,7 +34,7 @@ def make_data(spectranames, **kwargs):
     results=[]
     iterables=([spectranames])
     method=partial(get_object)
-    with ThreadPoolExecutor(max_workers=100) as executor:
+    with ThreadPoolExecutor(max_workers=1000) as executor:
         futures=list(executor.map( method, *iterables, timeout=None, chunksize=10))
 
     results=[x for x in futures]
@@ -42,10 +44,11 @@ def run_objects():
  	#important=
 	pred_df=(wisps.datasets['stars'])
 	pred_df=pred_df[pred_df.snr2>3.]
-	d=make_data(pred_df['grism_id'])
+	d=make_data((pred_df['grism_id']).apply(lambda x: x.replace('g141', 'G141')))
 
 	d.to_pickle(wisps.OUTPUT_FILES+'/highsnr_obejcts.pkl')
 
 if __name__=='__main__':
-    run_objects()
+	run_objects()
+	#get_object('par128-00025')
 
