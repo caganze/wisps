@@ -68,11 +68,11 @@ class Source(Spectrum):
             
         if self._distance is None: self._calculate_distance()
         if self._filename is not None: self.name=self._filename
-        
+
         self.original = copy.deepcopy(self)
 
     def __repr__(self):
-        if self._wisp_name is None:
+        if self._filename is None:
             return 'anon spectrum'
         else:
             return self._filename
@@ -149,6 +149,7 @@ class Source(Spectrum):
         img.pixels_per_imagep=self.pixels_per_image
         self._image=img
         self.original = copy.deepcopy(self)
+        self._calculate_distance()
     
         
         
