@@ -31,23 +31,10 @@ Baraffe, I., Chabrier, G., Barman, T., Allard, F., \& Hauschildt, P. 2003,
   $\backslash$apj, 794, 143
 
 \bibitem[{{Bardalez Gagliuffi} {et~al.}(2019){Bardalez Gagliuffi}, {Burgasser},
-  {Schmidt}, {Theissen}, {Gagne}, {Gillon}, {Sahlmann}, {Faherty}, {Gelino}, \&
-  {Cruz}}]{2019arXiv190604166B}
+  {Schmidt}, {Theissen}, {Gagn{\'e}}, {Gillon}, {Sahlmann}, {Faherty},
+  {Gelino}, {Cruz}, {Skrzypek}, \& {Looper}}]{2019ApJ...883..205B}
 {Bardalez Gagliuffi}, D.~C., {Burgasser}, A.~J., {Schmidt}, S.~J., {et~al.}
-  2019, arXiv e-prints, arXiv:1906.04166
-
-\bibitem[{Basri(1998)}]{1998ASPC..134..394B}
-Basri, G. 1998, in Astronomical Society of the Pacific Conference Series, Vol.
-  134, Brown Dwarfs and Extrasolar Planets, ed. R.~Rebolo, E.~Martin, \&
-  M.~{Zapatero Osorio}, 394--+
-
-\bibitem[{Bate {et~al.}(2002)Bate, Bonnell, \& Bromm}]{2002MNRAS.332L..65B}
-Bate, M., Bonnell, I., \& Bromm, V. 2002, $\backslash$mnras, 332, L65
-
-\bibitem[{Bate {et~al.}(2003)Bate, Bonnell, \& Bromm}]{2003ASPC..287..427B}
-Bate, M., Bonnell, I., \& Bromm, V. 2003, in Astronomical Society of the
-  Pacific Conference Series, Vol. 287, Galactic Star Formation Across the
-  Stellar Mass Spectrum, ed. J.~{De Buizer} \& N.~van~der Bliek, 427--432
+  2019, \apj, 883, 205
 
 \bibitem[{{Belokurov} {et~al.}(2018){Belokurov}, {Erkal}, {Evans}, {Koposov},
   \& {Deason}}]{2018MNRAS.478..611B}
@@ -56,6 +43,17 @@ Bate, M., Bonnell, I., \& Bromm, V. 2003, in Astronomical Society of the
 
 \bibitem[{Bertin \& Arnouts(1996)}]{1996A&AS..117..393B}
 Bertin, E., \& Arnouts, S. 1996, $\backslash$aaps, 117, 393
+
+\bibitem[{Best {et~al.}(2013)Best, Liu, Magnier, Aller, Deacon, Dupuy,
+  Redstone, Burgett, Chambers, Hodapp, Kaiser, Kudritzki, Morgan, Price, Tonry,
+  \& Wainscoat}]{2013ApJ...777...84B}
+Best, W., Liu, M., Magnier, E., {et~al.} 2013, $\backslash$apj, 777, 84
+
+\bibitem[{{Best} {et~al.}(2015){Best}, {Liu}, {Magnier}, {Deacon}, {Aller},
+  {Redstone}, {Burgett}, {Chambers}, {Draper}, {Flewelling}, {Hodapp},
+  {Kaiser}, {Metcalfe}, {Tonry}, {Wainscoat}, \&
+  {Waters}}]{2015ApJ...814..118B}
+{Best}, W. M.~J., {Liu}, M.~C., {Magnier}, E.~A., {et~al.} 2015, \apj, 814, 118
 
 \bibitem[{Bochanski {et~al.}(2010)Bochanski, Hawley, Covey, West, Reid,
   Golimowski, \& Ivezi{\'{c}}}]{2010AJ....139.2679B}
@@ -66,36 +64,16 @@ Bochanski, J., Hawley, S., Covey, K., {et~al.} 2010, $\backslash$aj, 139, 2679
 {Boubert}, D., {Guillochon}, J., {Hawkins}, K., {et~al.} 2018, \mnras, 479,
   2789
 
-\bibitem[{Boubert {et~al.}(2018)Boubert, Guillochon, Hawkins, Ginsburg, Evans,
-  \& Strader}]{Boubert_2018}
-Boubert, D., Guillochon, J., Hawkins, K., {et~al.} 2018, Monthly Notices of the
-  Royal Astronomical Society, 479, 2789–2795
-
-\bibitem[{Brammer {et~al.}(2012{\natexlab{a}})Brammer, van Dokkum, Franx,
-  Fumagalli, Patel, Rix, Skelton, Kriek, Nelson, Schmidt, Bezanson, da~Cunha,
-  Erb, Fan, {F{\"{o}}rster Schreiber}, Illingworth, Labb{\'{e}}, Leja,
-  Lundgren, Magee, Marchesini, McCarthy, Momcheva, Muzzin, Quadri, Steidel,
-  Tal, Wake, Whitaker, \& Williams}]{2012ApJS..200...13B}
-Brammer, G., van Dokkum, P., Franx, M., {et~al.} 2012{\natexlab{a}},
-  $\backslash$apjs, 200, 13
-
-\bibitem[{Brammer {et~al.}(2012{\natexlab{b}})Brammer, van Dokkum, Franx,
-  Fumagalli, Patel, Rix, Skelton, Kriek, Nelson, Schmidt, Bezanson, da~Cunha,
-  Erb, Fan, {F{\"{o}}rster Schreiber}, Illingworth, Labb{\'{e}}, Leja,
-  Lundgren, Magee, Marchesini, McCarthy, Momcheva, Muzzin, Quadri, Steidel,
-  Tal, Wake, Whitaker, \& Williams}]{Brammer2012}
-Brammer, G.~B., van Dokkum, P.~G., Franx, M., {et~al.} 2012{\natexlab{b}}, The
-  Astrophysical Journal Supplement Series, 200, 13
-
-\bibitem[{{Bromm} \& {Loeb}(2003)}]{2003Natur.425..812B}
-{Bromm}, V., \& {Loeb}, A. 2003, \nat, 425, 812
-
-\bibitem[{Burgasser(2001)}]{2001PhDT.......116B}
-Burgasser, A. 2001, PhD thesis, AA(Department of Physics, California Institute
-  of Technology)
+\bibitem[{Brammer {et~al.}(2012)Brammer, van Dokkum, Franx, Fumagalli, Patel,
+  Rix, Skelton, Kriek, Nelson, Schmidt, Bezanson, da~Cunha, Erb, Fan,
+  {F{\"{o}}rster Schreiber}, Illingworth, Labb{\'{e}}, Leja, Lundgren, Magee,
+  Marchesini, McCarthy, Momcheva, Muzzin, Quadri, Steidel, Tal, Wake, Whitaker,
+  \& Williams}]{2012ApJS..200...13B}
+Brammer, G., van Dokkum, P., Franx, M., {et~al.} 2012, $\backslash$apjs, 200,
+  13
 
 \bibitem[{Burgasser(2004)}]{2004ApJS..155..191B}
----. 2004, $\backslash$apjs, 155, 191
+Burgasser, A. 2004, $\backslash$apjs, 155, 191
 
 \bibitem[{Burgasser(2007)}]{2007ApJ...659..655B}
 ---. 2007, $\backslash$apj, 659, 655
@@ -103,10 +81,18 @@ Burgasser, A. 2001, PhD thesis, AA(Department of Physics, California Institute
 \bibitem[{Burgasser(2014{\natexlab{a}})}]{2014arXiv1406.4887B}
 ---. 2014{\natexlab{a}}, ArXiv e-prints, arXiv:1406.4887
 
+\bibitem[{Burgasser \& Blake(2009)}]{2009AJ....137.4621B}
+Burgasser, A., \& Blake, C. 2009, $\backslash$aj, 137, 4621
+
 \bibitem[{Burgasser {et~al.}(2007)Burgasser, Looper, Kirkpatrick, \&
   Liu}]{2007ApJ...658..557B}
 Burgasser, A., Looper, D., Kirkpatrick, J., \& Liu, M. 2007, $\backslash$apj,
   658, 557
+
+\bibitem[{Burgasser {et~al.}(2003)Burgasser, Kirkpatrick, Burrows, Liebert,
+  Reid, Gizis, McGovern, Prato, \& McLean}]{2003ApJ...592.1186B}
+Burgasser, A., Kirkpatrick, J., Burrows, A., {et~al.} 2003, $\backslash$apj,
+  592, 1186
 
 \bibitem[{Burgasser(2014{\natexlab{b}})}]{Burgasser2014}
 Burgasser, A.~J. 2014{\natexlab{b}}, arXiv:1406.4887
@@ -119,16 +105,17 @@ Burgasser, A.~J. 2014{\natexlab{b}}, arXiv:1406.4887
 Burningham, B., Cardoso, C., Smith, L., {et~al.} 2013, $\backslash$mnras, 433,
   457
 
-\bibitem[{Burrows {et~al.}(2001)Burrows, Hubbard, Lunine, \&
-  Liebert}]{2001RvMP...73..719B}
-Burrows, A., Hubbard, W., Lunine, J., \& Liebert, J. 2001, Reviews of Modern
-  Physics, 73, 719
-
 \bibitem[{{Carnero Rosell} {et~al.}(2019){Carnero Rosell}, {Santiago}, {dal
   Ponte}, {Burningham}, {da Costa}, {James}, {Marshall}, {McMahon}, {Bechtol},
-  \& {De Paris}}]{2019arXiv190310806C}
-{Carnero Rosell}, A., {Santiago}, B., {dal Ponte}, M., {et~al.} 2019, arXiv
-  e-prints, arXiv:1903.10806
+  {De Paris}, {Li}, {Pieres}, {Garc{\'\i}a-Bellido}, {Abbott}, {Annis},
+  {Avila}, {Bernstein}, {Brooks}, {Burke}, {Carrasco Kind}, {Carretero}, {De
+  Vicente}, {Drlica-Wagner}, {Fosalba}, {Frieman}, {Gaztanaga}, {Gruendl},
+  {Gschwend}, {Gutierrez}, {Hollowood}, {Maia}, {Menanteau}, {Miquel},
+  {Plazas}, {Roodman}, {Sanchez}, {Scarpine}, {Schindler}, {Serrano},
+  {Sevilla-Noarbe}, {Smith}, {Sobreira}, {Soares-Santos}, {Suchyta}, {Swanson},
+  {Tarle}, {Vikram}, {Walker}, \& {DES Collaboration}}]{2019MNRAS.489.5301C}
+{Carnero Rosell}, A., {Santiago}, B., {dal Ponte}, M., {et~al.} 2019, \mnras,
+  489, 5301
 
 \bibitem[{Chabrier \& Baraffe(2000)}]{2000ARA&A..38..337C}
 Chabrier, G., \& Baraffe, I. 2000, $\backslash$araa, 38, 337
@@ -156,15 +143,13 @@ Cruz, K., Kirkpatrick, J., Burgasser, A., {et~al.} 2007{\natexlab{a}}, ArXiv
 Cruz, K., Reid, I., Kirkpatrick, J., {et~al.} 2007{\natexlab{b}},
   $\backslash$aj, 133, 439
 
+\bibitem[{Cushing {et~al.}(2005)Cushing, Rayner, \&
+  Vacca}]{2005ApJ...623.1115C}
+Cushing, M., Rayner, J., \& Vacca, W. 2005, $\backslash$apj, 623, 1115
+
 \bibitem[{Cushing {et~al.}(2000)Cushing, Tokunaga, \&
   Kobayashi}]{2000AJ....119.3019C}
 Cushing, M., Tokunaga, A., \& Kobayashi, N. 2000, $\backslash$aj, 119, 3019
-
-\bibitem[{Cushing {et~al.}(2011)Cushing, Kirkpatrick, Gelino, Griffith,
-  Skrutskie, Mainzer, Marsh, Beichman, Burgasser, Prato, Simcoe, Marley,
-  Saumon, Freedman, Eisenhardt, \& Wright}]{2011ApJ...743...50C}
-Cushing, M., Kirkpatrick, J., Gelino, C., {et~al.} 2011, $\backslash$apj, 743,
-  50
 
 \bibitem[{Davis {et~al.}(2007)Davis, Guhathakurta, Konidaris, Newman, Ashby,
   Biggs, Barmby, Bundy, Chapman, Coil, Conselice, Cooper, Croton, Eisenhardt,
@@ -198,6 +183,11 @@ Delfosse, X., Tinney, C.~G., Forveille, T., {et~al.} 1999, Astron. Astrophys.
 
 \bibitem[{Dupuy \& Liu(2012)}]{2012ApJS..201...19D}
 Dupuy, T., \& Liu, M. 2012, $\backslash$apjs, 201, 19
+
+\bibitem[{{Erkal} {et~al.}(2019){Erkal}, {Boubert}, {Gualandris}, {Evans}, \&
+  {Antonini}}]{2019MNRAS.483.2007E}
+{Erkal}, D., {Boubert}, D., {Gualandris}, A., {Evans}, N.~W., \& {Antonini}, F.
+  2019, \mnras, 483, 2007
 
 \bibitem[{Faherty {et~al.}(2018)Faherty, Bochanski, Gagne, Nelson, Coker,
   Smithka, Desir, \& Vasquez}]{Faherty2018}
@@ -337,22 +327,20 @@ Gould, A., Bahcall, J., \& Flynn, C. 1997, $\backslash$apj, 482, 913
 {Hardegree-Ullman}, K.~K., {Cushing}, M.~C., {Muirhead}, P.~S., \&
   {Christiansen}, J.~L. 2019, arXiv e-prints, arXiv:1905.05900
 
+\bibitem[{Hawley \& Others(2002)}]{2002AJ....123.3409H}
+Hawley, S., \& Others. 2002, $\backslash$aj, 123, 3409
+
 \bibitem[{Hayashi \& Nakano(1963)}]{1963PThPh..30..460H}
 Hayashi, C., \& Nakano, T. 1963, Progress of Theoretical Physics, 30, 460
 
-\bibitem[{Haywood {et~al.}(2013)Haywood, {Di Matteo}, Lehnert, Katz, \&
-  G{\'{o}}mez}]{2013A&A...560A.109H}
-Haywood, M., {Di Matteo}, P., Lehnert, M., Katz, D., \& G{\'{o}}mez, A. 2013,
-  $\backslash$aap, 560, A109
+\bibitem[{{Haywood} {et~al.}(2013){Haywood}, {Di Matteo}, {Lehnert}, {Katz}, \&
+  {G{\'o}mez}}]{2013A&A...560A.109H}
+{Haywood}, M., {Di Matteo}, P., {Lehnert}, M.~D., {Katz}, D., \& {G{\'o}mez},
+  A. 2013, \aap, 560, A109
 
 \bibitem[{{Helmi} {et~al.}(2018){Helmi}, {Babusiaux}, {Koppelman}, {Massari},
   {Veljanoski}, \& {Brown}}]{2018Natur.563...85H}
 {Helmi}, A., {Babusiaux}, C., {Koppelman}, H.~H., {et~al.} 2018, \nat, 563, 85
-
-\bibitem[{Holwerda {et~al.}(2014)Holwerda, Trenti, Clarkson, Sahu, Bradley,
-  Stiavelli, Pirzkal, {De Marchi}, Andersen, Bouwens, \& Ryan}]{Holwerda2014}
-Holwerda, B.~W., Trenti, M., Clarkson, W., {et~al.} 2014, The Astrophysical
-  Journal, 788, 77
 
 \bibitem[{{Hunter}(2007)}]{4160265}
 {Hunter}, J.~D. 2007, Computing in Science Engineering, 9, 90
@@ -360,6 +348,9 @@ Holwerda, B.~W., Trenti, M., Clarkson, W., {et~al.} 2014, The Astrophysical
 \bibitem[{{Ivezi{\'c}} {et~al.}(2012){Ivezi{\'c}}, {Beers}, \&
   {Juri{\'c}}}]{2012ARA&A..50..251I}
 {Ivezi{\'c}}, {\v{Z}}., {Beers}, T.~C., \& {Juri{\'c}}, M. 2012, \araa, 50, 251
+
+\bibitem[{Jeffries \& Oliveira(2005)}]{2005MNRAS.358...13J}
+Jeffries, R., \& Oliveira, J. 2005, $\backslash$mnras, 358, 13
 
 \bibitem[{Juri{\'{c}} {et~al.}(2008)Juri{\'{c}}, Ivezi{\'{c}}, Brooks, Lupton,
   Schlegel, Finkbeiner, Padmanabhan, Bond, Sesar, Rockosi, Knapp, Gunn, Sumi,
@@ -369,12 +360,12 @@ Holwerda, B.~W., Trenti, M., Clarkson, W., {et~al.} 2014, The Astrophysical
 Juri{\'{c}}, M., Ivezi{\'{c}}, {\v{Z}}., Brooks, A., {et~al.} 2008,
   $\backslash$apj, 673, 864
 
-\bibitem[{{Kerins}(1997)}]{1997A&A...328....5K}
-{Kerins}, E.~J. 1997, \aap, 328, 5
+\bibitem[{{Kakazu} {et~al.}(2010){Kakazu}, {Hu}, {Liu}, {Wang}, {Wainscoat}, \&
+  {Capak}}]{2010ApJ...723..184K}
+{Kakazu}, Y., {Hu}, E.~M., {Liu}, M.~C., {et~al.} 2010, \apj, 723, 184
 
-\bibitem[{Kiman {et~al.}(2019)Kiman, Schmidt, Angus, Cruz, Faherty, \&
-  Rice}]{2019AJ....157..231K}
-Kiman, R., Schmidt, S.~J., Angus, R., {et~al.} 2019, \aj, 157, 231
+\bibitem[{Kerins(1997)}]{1997A&A...328....5K}
+Kerins, E. 1997, $\backslash$aap, 328, 5
 
 \bibitem[{Kimble {et~al.}(2008)Kimble, MacKenty, O'Connell, \&
   Townsend}]{doi:10.1117/12.789581}
@@ -400,10 +391,12 @@ Kirkpatrick, J., Looper, D., Burgasser, A., {et~al.} 2010, $\backslash$apjs,
 Kirkpatrick, J., Cushing, M., Gelino, C., {et~al.} 2011, $\backslash$apjs, 197,
   19
 
-\bibitem[{Kirkpatrick {et~al.}(2000)Kirkpatrick, Reid, Liebert, Gizis,
-  Burgasser, Monet, Dahn, Nelson, \& Williams}]{Kirkpatrick2000}
-Kirkpatrick, J.~D., Reid, I.~N., Liebert, J., {et~al.} 2000, The Astronomical
-  Journal, 120, 447
+\bibitem[{{Kirkpatrick} {et~al.}(2016){Kirkpatrick}, {Kellogg}, {Schneider},
+  {Fajardo-Acosta}, {Cushing}, {Greco}, {Mace}, {Gelino}, {Wright},
+  {Eisenhardt}, {Stern}, {Faherty}, {Sheppard}, {Lansbury}, {Logsdon},
+  {Martin}, {McLean}, {Schurr}, {Cutri}, \& {Conrow}}]{2016ApJS..224...36K}
+{Kirkpatrick}, J.~D., {Kellogg}, K., {Schneider}, A.~C., {et~al.} 2016, \apjs,
+  224, 36
 
 \bibitem[{{Kirkpatrick} {et~al.}(2019){Kirkpatrick}, {Martin}, {Smart},
   {Cayago}, {Beichman}, {Marocco}, {Gelino}, {Faherty}, {Cushing}, \&
@@ -439,6 +432,12 @@ Kirkpatrick, J.~D., Reid, I.~N., Liebert, J., {et~al.} 2000, The Astronomical
 {Koppelman}, H.~H., {Helmi}, A., {Massari}, D., {Price-Whelan}, A.~M., \&
   {Starkenburg}, T.~K. 2019, arXiv e-prints, arXiv:1909.08924
 
+\bibitem[{Kumar(1962)}]{1962AJ.....67S.579K}
+Kumar, S. 1962, $\backslash$aj, 67, 579
+
+\bibitem[{Kumar(1963)}]{1963ApJ...137.1121K}
+---. 1963, $\backslash$apj, 137, 1121
+
 \bibitem[{K{\"{u}}mmel {et~al.}(2009)K{\"{u}}mmel, Walsh, Pirzkal, Kuntschner,
   \& Pasquali}]{Kummel2009}
 K{\"{u}}mmel, M., Walsh, J.~R., Pirzkal, N., Kuntschner, H., \& Pasquali, A.
@@ -455,9 +454,17 @@ Laughlin, G., Bodenheimer, P., \& Adams, F. 1997, $\backslash$apj, 482, 420
 \bibitem[{Lawrence \& Others(2007)}]{2007MNRAS.379.1599L}
 Lawrence, A., \& Others. 2007, $\backslash$mnras, 379, 1599
 
-\bibitem[{{Leggett} {et~al.}(1998){Leggett}, {Ruiz}, \&
-  {Bergeron}}]{1998ApJ...497..294L}
-{Leggett}, S.~K., {Ruiz}, M.~T., \& {Bergeron}, P. 1998, \apj, 497, 294
+\bibitem[{Leggett {et~al.}(1998)Leggett, Ruiz, \&
+  Bergeron}]{1998ApJ...497..294L}
+Leggett, S., Ruiz, M., \& Bergeron, P. 1998, $\backslash$apj, 497, 294
+
+\bibitem[{L{\'{e}}pine \& Scholz(2008)}]{2008ApJ...681L..33L}
+L{\'{e}}pine, S., \& Scholz, R.-D. 2008, $\backslash$apjl, 681, L33
+
+\bibitem[{Liu {et~al.}(2011)Liu, Deacon, Magnier, Dupuy, Aller, Bowler,
+  Redstone, Goldman, Burgett, Chambers, Hodapp, Kaiser, Kudritzki, Morgan,
+  Price, Tonry, \& Wainscoat}]{2011ApJ...740L..32L}
+Liu, M., Deacon, N., Magnier, E., {et~al.} 2011, $\backslash$apjl, 740, L32
 
 \bibitem[{Lodieu {et~al.}(2017)Lodieu, {Espinoza Contreras}, {Zapatero Osorio},
   Solano, Aberasturi, Mart{\'{i}}n, \& Rodrigo}]{Lodieu2017}
@@ -509,9 +516,6 @@ Lopez‐Santiago, J., Montes, D., Crespo‐Chacon, I., \& Fernandez‐Figueroa,
 {LSST Science Collaboration}, L.~S., Abell, P.~A., Allison, J., {et~al.} 2009,
   arXiv:0912.0201
 
-\bibitem[{Luhman \& Mamajek(2012)}]{luhman2012}
-Luhman, K.~L., \& Mamajek, E.~E. 2012, The Astrophysical Journal, 758, 31
-
 \bibitem[{{Malhan} {et~al.}(2018){Malhan}, {Ibata}, \&
   {Martin}}]{2018MNRAS.481.3442M}
 {Malhan}, K., {Ibata}, R.~A., \& {Martin}, N.~F. 2018, \mnras, 481, 3442
@@ -530,10 +534,10 @@ Manjavacas, E., Apai, D., Zhou, Y., {et~al.} 2018, arXiv:1812.03963
 Marocco, F., Jones, H. R.~A., Day-Jones, A.~C., {et~al.} 2015, Monthly Notices
   of the Royal Astronomical Society, 449, 3651
 
-\bibitem[{Martin {et~al.}(2017)Martin, Mace, McLean, Logsdon, Rice,
-  Kirkpatrick, Burgasser, McGovern, \& Prato}]{martin2017}
-Martin, E.~C., Mace, G.~N., McLean, I.~S., {et~al.} 2017, The Astrophysical
-  Journal, 838, 73
+\bibitem[{{Mart{\'\i}n} {et~al.}(2018){Mart{\'\i}n}, {Lodieu}, {Pavlenko}, \&
+  {B{\'e}jar}}]{2018ApJ...856...40M}
+{Mart{\'\i}n}, E.~L., {Lodieu}, N., {Pavlenko}, Y., \& {B{\'e}jar}, V. J.~S.
+  2018, \apj, 856, 40
 
 \bibitem[{Masters {et~al.}(2012)Masters, McCarthy, Burgasser, Hathi, Malkan,
   Ross, Siana, Scarlata, Henry, Colbert, Atek, Rafelski, Teplitz, Bunker, \&
@@ -579,6 +583,10 @@ Pecaut, M.~J., \& Mamajek, E.~E. 2013, The Astrophysical Journal Supplement
 {Pedregosa}, F., {Varoquaux}, G., {Gramfort}, A., {et~al.} 2012, arXiv
   e-prints, arXiv:1201.0490
 
+\bibitem[{Phan-Bao {et~al.}(2003)Phan-Bao, Crifo, Delfosse, Forveille, Guibert,
+  Borsenberger, Epchtein, Fouqu{\'{e}}, Simon, \& Vetois}]{2003A&A...401..959P}
+Phan-Bao, N., Crifo, F., Delfosse, X., {et~al.} 2003, $\backslash$aap, 401, 959
+
 \bibitem[{Pirzkal {et~al.}(2005)Pirzkal, Sahu, Burgasser, Moustakas, Xu,
   Malhotra, Rhoads, Koekemoer, Nelan, Windhorst, Panagia, Gronwall, Pasquali,
   \& Walsh}]{2005ApJ...622..319P}
@@ -598,8 +606,10 @@ Reid, I. 2003, $\backslash$aj, 126, 2449
 Reid, I., Kirkpatrick, J., Liebert, J., {et~al.} 1999, $\backslash$apj, 521,
   613
 
-\bibitem[{Reyl{\'{e}}(2018)}]{Reyle2018}
-Reyl{\'{e}}, C. 2018, Astronomy {\&} Astrophysics, 619, L8
+\bibitem[{{Reid} {et~al.}(1996){Reid}, {Yan}, {Majewski}, {Thompson}, \&
+  {Smail}}]{1996AJ....112.1472R}
+{Reid}, I.~N., {Yan}, L., {Majewski}, S., {Thompson}, I., \& {Smail}, I. 1996,
+  \aj, 112, 1472
 
 \bibitem[{Reyle {et~al.}(2010)Reyle, Delorme, Willott, Albert, Delfosse,
   Forveille, Artigau, Malo, Hill, \& Doyon}]{Reyle2010a}
@@ -632,15 +642,21 @@ Salvatier, J., Wiecki, T.~V., \& Fonnesbeck, C. 2016, PeerJ Computer Science,
 \bibitem[{Saumon \& Marley(2008)}]{2008ApJ...689.1327S}
 Saumon, D., \& Marley, M. 2008, $\backslash$apj, 689, 1327
 
-\bibitem[{Schmidt {et~al.}(2014)Schmidt, West, Bochanski, Hawley, \&
-  Kielty}]{2014PASP..126..642S}
-Schmidt, S., West, A., Bochanski, J., Hawley, S., \& Kielty, C. 2014,
-  $\backslash$pasp, 126, 642
-
 \bibitem[{Schmidt {et~al.}(2010)Schmidt, West, Hawley, \&
   Pineda}]{2010AJ....139.1808S}
 Schmidt, S., West, A., Hawley, S., \& Pineda, J. 2010, $\backslash$aj, 139,
   1808
+
+\bibitem[{Schmidt {et~al.}(2014)Schmidt, West, Bochanski, Hawley, \&
+  Kielty}]{2014PASP..126..642S}
+Schmidt, S.~J., West, A.~A., Bochanski, J.~J., Hawley, S.~L., \& Kielty, C.
+  2014, \pasp, 126, 642
+
+\bibitem[{{Schneider} {et~al.}(2016){Schneider}, {Greco}, {Cushing},
+  {Kirkpatrick}, {Mainzer}, {Gelino}, {Fajardo-Acosta}, \&
+  {Bauer}}]{2016ApJ...817..112S}
+{Schneider}, A.~C., {Greco}, J., {Cushing}, M.~C., {et~al.} 2016, \apj, 817,
+  112
 
 \bibitem[{Schneider {et~al.}(2015)Schneider, Cushing, Kirkpatrick, Gelino,
   Mace, Wright, Eisenhardt, Skrutskie, Griffith, \& Marsh}]{Schneider2015}
@@ -666,6 +682,9 @@ Skelton, R.~E., Whitaker, K.~E., Momcheva, I.~G., {et~al.} 2014, The
   {Faherty}}]{2016A&A...589A..49S}
 {Skrzypek}, N., {Warren}, S.~J., \& {Faherty}, J.~K. 2016, \aap, 589, A49
 
+\bibitem[{Song {et~al.}(2002)Song, Bessell, \& Zuckerman}]{2002ApJ...581L..43S}
+Song, I., Bessell, M., \& Zuckerman, B. 2002, $\backslash$apjl, 581, L43
+
 \bibitem[{Sorahana {et~al.}(2018)Sorahana, Nakajima, \&
   Matsuoka}]{Sorahana2018}
 Sorahana, S., Nakajima, T., \& Matsuoka, Y. 2018, arXiv:1811.07496
@@ -680,6 +699,11 @@ Sorahana, S., Nakajima, T., \& Matsuoka, Y. 2018, arXiv:1811.07496
   Zhao}]{Spergel2015}
 Spergel, D., Gehrels, N., Baltay, C., {et~al.} 2015, arXiv:1503.03757
 
+\bibitem[{Stauffer {et~al.}(1998)Stauffer, Schultz, \&
+  Kirkpatrick}]{1998ApJ...499L.199S}
+Stauffer, J., Schultz, G., \& Kirkpatrick, J. 1998, $\backslash$apjl, 499,
+  L199+
+
 \bibitem[{{Theissen} {et~al.}(2017){Theissen}, {West}, {Shippee}, {Burgasser},
   \& {Schmidt}}]{2017AJ....153...92T}
 {Theissen}, C.~A., {West}, A.~A., {Shippee}, G., {Burgasser}, A.~J., \&
@@ -691,11 +715,6 @@ Tokunaga, A., \& Kobayashi, N. 1999, $\backslash$aj, 117, 1010
 \bibitem[{{Tolstoy} {et~al.}(2009){Tolstoy}, {Hill}, \&
   {Tosi}}]{2009ARA&A..47..371T}
 {Tolstoy}, E., {Hill}, V., \& {Tosi}, M. 2009, \araa, 47, 371
-
-\bibitem[{{Van Vledder} {et~al.}(2016){Van Vledder}, {Van Der Vlugt}, Holwerda,
-  Kenworthy, Bouwens, \& Trenti}]{Vledder2016}
-{Van Vledder}, I., {Van Der Vlugt}, D., Holwerda, B.~W., {et~al.} 2016, Monthly
-  Notices of the Royal Astronomical Society, 458, 425
 
 \bibitem[{{Virtanen} {et~al.}(2019){Virtanen}, {Gommers}, {Oliphant},
   {Haberland}, {Reddy}, {Cournapeau}, {Burovski}, {Peterson}, {Weckesser},
@@ -716,5 +735,10 @@ Waskom, M., Botvinnik, O., Hobson, P., {et~al.} 2014, seaborn: v0.5.0 (November
 
 \bibitem[{York \& Others(2000)}]{2000AJ....120.1579Y}
 York, D., \& Others. 2000, $\backslash$aj, 120, 1579
+
+\bibitem[{{Zhang} {et~al.}(2019){Zhang}, {Burgasser}, {G{\'a}lvez-Ortiz},
+  {Lodieu}, {Zapatero Osorio}, {Pinfield}, \& {Allard}}]{2019MNRAS.486.1260Z}
+{Zhang}, Z.~H., {Burgasser}, A.~J., {G{\'a}lvez-Ortiz}, M.~C., {et~al.} 2019,
+  \mnras, 486, 1260
 
 \end{thebibliography}

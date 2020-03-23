@@ -1,25 +1,31 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.2}{Data}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{3D-HST survey data}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{WISP survey data}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.1}{WISP survey data}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{3D-HST survey data}{section.2}% 4
 \BOOKMARK [1][-]{section.3}{Selection of UCDs}{}% 5
-\BOOKMARK [2][-]{subsection.3.1}{Calibration Samples}{section.3}% 6
-\BOOKMARK [2][-]{subsection.3.2}{Pre-selection}{section.3}% 7
-\BOOKMARK [3][-]{subsubsection.3.2.1}{Point-source Cut}{subsection.3.2}% 8
-\BOOKMARK [3][-]{subsubsection.3.2.2}{J-band SNR rejection }{subsection.3.2}% 9
-\BOOKMARK [2][-]{subsection.3.3}{Spectral Fitting and F-test}{section.3}% 10
-\BOOKMARK [2][-]{subsection.3.4}{Spectral Indices}{section.3}% 11
-\BOOKMARK [2][-]{subsection.3.5}{Random Forest Classifier}{section.3}% 12
-\BOOKMARK [3][-]{subsubsection.3.5.1}{ Absolute Magnitude Spectral Type Relations }{subsection.3.5}% 13
-\BOOKMARK [2][-]{subsection.3.6}{Sample Characterization}{section.3}% 14
-\BOOKMARK [3][-]{subsubsection.3.6.1}{M dwarfs \046 General Sample Statistics}{subsection.3.6}% 15
-\BOOKMARK [3][-]{subsubsection.3.6.2}{ L \046 T dwarfs}{subsection.3.6}% 16
-\BOOKMARK [3][-]{subsubsection.3.6.3}{ Subdwarfs, Y dwarfs \046 Spectral Binaries}{subsection.3.6}% 17
-\BOOKMARK [1][-]{section.4}{Probing Galactic Structure}{}% 18
-\BOOKMARK [2][-]{subsubsection.4.0.1}{ Point-Source Limiting Magnitudes}{section.4}% 19
-\BOOKMARK [2][-]{subsection.4.1}{Monte-Carlo Simulation}{section.4}% 20
-\BOOKMARK [3][-]{subsubsection.4.1.1}{ Local Luminosity Function}{subsection.4.1}% 21
-\BOOKMARK [3][-]{subsubsection.4.1.2}{ Effective Volumes}{subsection.4.1}% 22
-\BOOKMARK [3][-]{subsubsection.4.1.3}{Selection Effects}{subsection.4.1}% 23
-\BOOKMARK [2][-]{subsection.4.2}{Results}{section.4}% 24
-\BOOKMARK [1][-]{section.5}{Summary}{}% 25
+\BOOKMARK [2][-]{subsection.3.1}{Spectral Calibration Sample}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Pre-selection Constraints}{section.3}% 7
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Point-Source Selection}{subsection.3.2}% 8
+\BOOKMARK [3][-]{subsubsection.3.2.2}{J-band Signal-to-Noise Rejection}{subsection.3.2}% 9
+\BOOKMARK [3][-]{subsubsection.3.2.3}{Spectral Template and Line Fitting}{subsection.3.2}% 10
+\BOOKMARK [2][-]{subsection.3.3}{Spectral Index Selection}{section.3}% 11
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Defining Spectral Indices}{subsection.3.3}% 12
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Completeness and Contamination}{subsection.3.3}% 13
+\BOOKMARK [3][-]{subsubsection.3.3.3}{Visual Selection}{subsection.3.3}% 14
+\BOOKMARK [2][-]{subsection.3.4}{Selection by Random Forest Classifier}{section.3}% 15
+\BOOKMARK [3][-]{subsubsection.3.4.1}{ Training Set and Classification Features}{subsection.3.4}% 16
+\BOOKMARK [3][-]{subsubsection.3.4.2}{Results}{subsection.3.4}% 17
+\BOOKMARK [1][-]{section.4}{Sample Characterization}{}% 18
+\BOOKMARK [2][-]{subsection.4.1}{ Absolute Magnitude-Spectral Type Relations }{section.4}% 19
+\BOOKMARK [2][-]{subsection.4.2}{M dwarfs \046 General Sample Statistics}{section.4}% 20
+\BOOKMARK [2][-]{subsection.4.3}{ L \046 T dwarfs}{section.4}% 21
+\BOOKMARK [2][-]{subsection.4.4}{ Subdwarfs, Y dwarfs \046 Spectral Binaries}{section.4}% 22
+\BOOKMARK [1][-]{section.5}{Probing Galactic Structure}{}% 23
+\BOOKMARK [2][-]{subsection.5.1}{ Point-Source Limiting Magnitudes}{section.5}% 24
+\BOOKMARK [2][-]{subsection.5.2}{Monte-Carlo Simulation}{section.5}% 25
+\BOOKMARK [3][-]{subsubsection.5.2.1}{ Local Luminosity Function }{subsection.5.2}% 26
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Spectral Type Classification \046 Binaries}{subsection.5.2}% 27
+\BOOKMARK [3][-]{subsubsection.5.2.3}{Effective Volumes}{subsection.5.2}% 28
+\BOOKMARK [3][-]{subsubsection.5.2.4}{Selection Effects}{subsection.5.2}% 29
+\BOOKMARK [2][-]{subsection.5.3}{Results}{section.5}% 30
+\BOOKMARK [1][-]{section.6}{Summary}{}% 31

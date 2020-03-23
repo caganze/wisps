@@ -27,7 +27,7 @@ def spex_sample_ids(**kwargs):
     #sometimes files are empty, re-calculate the indices, save them 
     if not from_file:
         print ("calculating spectral indices")
-        t=_load_and_save_spex_indices(OUTPUT_FILES+'/'+str(stype)+'spex_sample.pkl' )
+        t=_load_and_save_spex_indices(OUTPUT_FILES+'/'+str(stype)+'spex_sample.pkl' , reload=True)
     return t 
 
 def create_wisp_spectrum(filename):
@@ -37,6 +37,7 @@ def create_wisp_spectrum(filename):
                          flux=splat_spectrum.flux.value,
                          noise=splat_spectrum.noise.value)
         s.classify_by_standard
+        print (filename)
         return [s, splat_spectrum]
     except:
         return [None, None]

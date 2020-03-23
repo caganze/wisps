@@ -17,14 +17,10 @@ import numba
 
 
 def get_object(filename):
-	try:
 		sp=wisps.Spectrum(name=filename)
 		f_test={"grism_id": filename, "f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi, 'spt_new': sp.spectral_type, 'spt': sp.spectral_type}
 		res_dict= {**sp.snr, **sp.indices, **f_test}
-		return res_dict
-	except IndexError:
-		print ("could not find {}".format(filename))
-		return {} 
+		return res_dict 
 
 
 def make_data(spectranames, **kwargs):
@@ -51,4 +47,3 @@ def run_objects():
 if __name__=='__main__':
 	run_objects()
 	#get_object('par128-00025')
-

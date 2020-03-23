@@ -26,7 +26,7 @@ except:
 mpl.rcParams['grid.color'] = 'k'
 mpl.rcParams['grid.linestyle'] = '--'
 mpl.rcParams['grid.linewidth'] = 0.5
-mpl.rcParams['axes.linewidth'] = 0.9
+mpl.rcParams['axes.linewidth'] = 1.5
 mpl.rcParams['figure.figsize'] = [8.0, 6.0]
 mpl.rcParams['figure.dpi'] = 80
 mpl.rcParams['savefig.dpi'] = 100
@@ -34,13 +34,16 @@ mpl.rcParams['font.size'] = 18
 mpl.rcParams['legend.fontsize'] = 'large'
 mpl.rcParams['figure.titlesize'] = 'large'
 mpl.rcParams['xtick.bottom']=True
+mpl.rcParams['xtick.top']=True
 mpl.rcParams['xtick.major.width']=0.9
 mpl.rcParams['xtick.minor.width']=0.9
 mpl.rcParams['ytick.major.width']=0.9
 mpl.rcParams['ytick.minor.width']=0.9
 mpl.rcParams['ytick.right']=True
+mpl.rcParams['ytick.left']=True
 mpl.rcParams['xtick.direction']='in'
 mpl.rcParams['ytick.direction']='in'
+
 
 
 mpl.rc('xtick', labelsize=18) 

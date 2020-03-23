@@ -30,11 +30,8 @@ import matplotlib
 #load a previous sample of potential brown dwarfs
 
 
-
-
-#df200=add_ydwarf_index(datasets['candidates'])
-mjdf=datasets['manjavacas']
-scndf=datasets['schneider']
+#mjdf=datasets['manjavacas']
+#scndf=datasets['schneider']
 ############################################
 
 class IndexSpace(object):
@@ -208,7 +205,7 @@ class IndexSpace(object):
                 #print('name of the group ...{} length ... {}'.format(name, len(group)))
                 to_use=df[[self.xkey, self.ykey]]
                 to_use.columns=['x', 'y']
-                self.add_box(to_use, name, '#0074D9', 3.0)
+                self.add_box(to_use, name, '#0074D9', 3.5)
 
 
         #add an extra box of late ts from manjavacas et al
@@ -504,12 +501,14 @@ def save_criteria(**kwargs):
     all_spex=datasets['spex']
     all_spex=all_spex[all_spex.snr1>10]
     
-    all_spex['Spts']=all_spex.spt.apply(splat.typeToNum).apply(float)
-    all_spex['Names']=all_spex.grism_id
+    all_spex['Spts']=all_spex.spt.apply(make_spt_number).apply(float)
+    all_spex['Names']=all_spex.data_file
 
-    tpl_ids=all_spex[all_spex['metallicity_cls'] !='d/sd']
+    sd_bools=(all_spex['metallicity_class']=='sd') | (all_spex['metallicity_class']=='d/sd')
+
+    tpl_ids=all_spex[~sd_bools]
     #templates['data_type']= 'templates'
-    sd_ids=all_spex[all_spex['metallicity_cls'] =='d/sd']
+    sd_ids=all_spex[sd_bools]
     #subdwarfs['data_type']= 'subdwarf
 
     print (tpl_ids.shape, sd_ids.shape)
@@ -528,7 +527,7 @@ def save_criteria(**kwargs):
         #print (idspace.name)
         #print (idspace.xkey, idspace.ykey)
         #pass subdwarfs first 
-        idspace.subdwarfs=sd_ids
+        idspace.subdwarfs=sd_ids[[x_key, y_key, 'Names', 'Spts']]
         idspace.templates=tpl_ids[[x_key, y_key, 'Names', 'Spts']]
         #idspace._spex_sample=tpl_ids
         #annotated_df=Annotator.group_by_spt(tpl_ids)

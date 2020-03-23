@@ -26,6 +26,8 @@ from ..utils import memoize_func
 import numba
 from scipy import stats
 from ..utils.tools import get_distance, make_spt_number
+from ..data_sets import datasets
+
 
 POLYNOMIAL_RELATIONS= pd.read_pickle(OUTPUT_FILES+'/polynomial_relations.pkl')
 
@@ -49,7 +51,7 @@ STD_DICTS.update(splat.STDS_ESD_SPEX)
 
 ###############
 #@numba.jitclass()
-
+UCD_SPECTRA=datasets['ucd_data']
 
 def interpolated_standards():
     stds=splat.STDS_DWARF_SPEX
@@ -102,8 +104,9 @@ class Spectrum(object):
         self._sensitivity=None
         self._spectrum_image_path=None
         self._indices=None
-        self._spectral_type=None
+        self._spectral_type=kwargs.get('spt',None)
         self._best_fit_line=None
+        self.is_ucd=kwargs.get('is_ucd', False) #flag for UCD candidates
 
         #load spectrum if given filename 
         
@@ -118,7 +121,7 @@ class Spectrum(object):
         if (self._filepath is not None):
         	self.filepath=self._filepath
         	
-        if (self._wave is not None) and (self.filepath is None):
+        if (self._wave is not None) and (self.filepath is None) and (not self.is_ucd):
             self._compute_snr()
             self._splat_spectrum=splat.Spectrum(wave=self._wave, flux=self._flux, noise=self._noise, instrument='WFC3')
             self._best_fit_line=fit_a_line(self)
@@ -126,7 +129,26 @@ class Spectrum(object):
             for key in  ftest.keys(): 
                 setattr(self, key, ftest[key])
             self.normalize()
+
+        if self._spectral_type is not None:
+            self.spectral_type=self._spectral_type
+
         #keep a copy of this object as an attribute
+        #read the file locallly for UCDs
+        if (self._wave is None ) and self.is_ucd:
+            row=(UCD_SPECTRA[UCD_SPECTRA.grism_id==self._filename]).iloc[0]
+            self._wave=row.wave
+            self._flux=row.flux
+            self._noise=row.noise
+            self._contam=row.contam
+            self._compute_snr()
+            self._splat_spectrum=splat.Spectrum(wave=self._wave, flux=self._flux, noise=self._noise, instrument='WFC3')
+            self._best_fit_line=fit_a_line(self)
+            ftest=f_test(self)
+            for key in  ftest.keys(): 
+                setattr(self, key, ftest[key])
+            self.normalize()
+
         self.original=copy.deepcopy(self)
 
     
@@ -174,7 +196,10 @@ class Spectrum(object):
     @property
     def spectral_type(self):
         return self._spectral_type
-    
+
+    @spectral_type.setter
+    def spectral_type(self, new_type):
+        self._spectral_type=new_type
 
     @property
     def empty_flag(self):
@@ -378,14 +403,14 @@ class Spectrum(object):
     def filename(self, new_filename):
         #this is how I know I have not ran the parser before (I'm trying to avoid duplicating things)
         #print ('self filepath', self._filepath )
-        if self._filepath is None:
+        #re-reading files is inefficient 
+        self._filename=new_filename
+        if (self._filepath is None ) and (not self.is_ucd):
             survey, spectrum_path, stamp_image_path=parse_path(new_filename, 'v5')
             self._filename=spectrum_path.split('/')[-1]
             self._spectrum_image_path=stamp_image_path
             self._survey=survey
             self.filepath= spectrum_path
-        else:
-            self._filename=new_filename
         
     @property
     def survey(self):
@@ -394,18 +419,22 @@ class Spectrum(object):
     @property
     def spectrum_image(self):
         imgdata=None
-        if self._survey == 'wisps':
+        if (self._survey == 'wisps') & (not self.is_ucd):
             with fits.open(self._spectrum_image_path, memmap=False) as imghdu:
                 imgdata=imghdu[0].data
-            return  imgdata
             imghdu.close()
-            del mgdata
-        else:
+            del imghdu
+        if (self._survey != 'wisps') & (not self.is_ucd):
             with fits.open(self._spectrum_image_path, memmap=False) as imghdu:
                 imgdata=imghdu[5].data-imghdu[8].data
-            return imgdata
             imghdu.close()
-            del mgdata
+            del imghdu
+
+        if self.is_ucd:
+            row=(UCD_SPECTRA[UCD_SPECTRA.grism_id==self._filename]).iloc[0]
+            imgdata=row.spectrum_image
+        return imgdata
+
 
     
     @property
@@ -449,8 +478,10 @@ def f_test(spectrum, **kwargs):
     linefit=fit_a_line(spectrum)
     line= linefit[0]
     linechi=linefit[1]
-    spectrum.classify_by_standard()
-    spt=spectrum.spectral_type
+    if spectrum.spectral_type is None:
+        spectrum.classify_by_standard()
+    
+    spt=spectrum.spectral_type[0]
     std=STD_DICTS[splat.typeToNum(spt)]
 
     std.normalize(waverange=[1.2, 1.6])
@@ -507,7 +538,7 @@ def classify(sp, **kwargs):
 
     #smallest_chi_Square is the clasification
     chisqrs=np.vstack(chisqrs)
-    return np.round(splat.weightedMeanVar(make_spt_number(chisqrs[:,1]), chisqrs[:,0], method='ftest',dof=dof)[0])
+    return np.round(splat.weightedMeanVar(make_spt_number(chisqrs[:,1]), chisqrs[:,0], method='ftest',dof=dof))
 
 def distance(mags, spt):
     """
@@ -541,7 +572,7 @@ def kde_statsmodels_m(x, x_grid, **kwargs):
     """
     model=kde.KDEMultivariate(x, bw='normal_reference', var_type='c')
     return model.cdf(x_grid)
-    
+
 if __name__=='__main__':
 	pass
     

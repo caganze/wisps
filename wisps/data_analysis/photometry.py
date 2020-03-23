@@ -14,7 +14,7 @@ from .initialize import *
 from astropy.io import ascii
 from astropy.table import hstack, Table, vstack
 import glob
-from .spectrum_tools import*
+from .spectrum_tools import *
 from .image import*
 from .plot_spectrum import plot_source
 from ..utils.tools import get_distance
@@ -49,9 +49,6 @@ class Source(Spectrum):
         >> print ('mags {} distance {} coords {}'.format(s.mags, s.distance, s.coords))
     """
     def __init__(self, **kwargs):
-        super().__init__()
-        self._wisp_name=kwargs.get('name', None)
-        self._wisp_name=kwargs.get('filename', None)
         self._coords=None
         self._ra=None
         self._dec=None
@@ -59,24 +56,26 @@ class Source(Spectrum):
         self._distance=None
         self._spectrum=None
         self.designation=None
-        self._star_flag=kwargs.get('is_star', True)
         self._shortname= None
         self._image=None
         self._flags=None
         self._phot_img_pixel=kwargs.get('pixel_per_img', 100)
+
+        super().__init__(**kwargs)
+    
         if 'mags' in kwargs:
             self.mags=kwargs.get('mags')
-        if 'name' in kwargs:
-            self.name=kwargs.get('name')
             
-        if self._star_flag and  self._distance is None: self._calculate_distance()
+        if self._distance is None: self._calculate_distance()
+        if self._filename is not None: self.name=self._filename
+        
         self.original = copy.deepcopy(self)
 
     def __repr__(self):
         if self._wisp_name is None:
             return 'anon spectrum'
         else:
-            return self._wisp_name
+            return self._filename
     
     #to do : ras, decs & should stuff probably be one property (e.g a big dictionary) 
     #for simplicity and elegance?
@@ -103,7 +102,7 @@ class Source(Spectrum):
         """
         This must be an astropy skycoord object
         """
-        if self._star_flag and  self._distance is None: self._calculate_distance()
+        if self._distance is None: self._calculate_distance()
         return self._coords
         
     @coords.setter
@@ -115,14 +114,14 @@ class Source(Spectrum):
     
     @property
     def name(self):
-        return self._wisp_name
+        return self._filename
     
     @name.setter
     def name(self, new_name):
         """
         setting up a source object by searching its grism id throughout the master table
         """
-        self._wisp_name=new_name
+        self._filename=new_name
         if new_name.endswith('.ascii'): new_name=new_name.split('.ascii')[0].split('.')[0]
         if  new_name.endswith('.dat'): new_name=new_name.split('.dat')[0]
         if new_name.endswith('.1D'): new_name=new_name.split('.1D')[0]
@@ -132,7 +131,7 @@ class Source(Spectrum):
         #this is the master table that contains everything i.e after the snr cut 
         # to see how this is created look at pre_processing.py
         df=COMBINED_PHOTO_SPECTRO_DATA
-        s=df.loc[df['grism_id'].apply(lambda x: x.lower()).isin([new_name.lower()])].reset_index().ix[0]
+        s=df.loc[df['grism_id'].apply(lambda x: x.lower()).isin([new_name.lower()])].reset_index().iloc[0]
         
         self._mags={'F110W': (s.F110[0], s.F110[1]), 
                              'F160W': (s.F160[0], s.F160[1]),
@@ -143,15 +142,14 @@ class Source(Spectrum):
         self._flags=s['class_star']
         
         #populate image data 
-        img=Image()
+        img=Image(is_ucd=self.is_ucd)
         img._ra=s.RA # i shouldn' be doing this :(
         img._dec=s.DEC
         img.name=new_name
         img.pixels_per_imagep=self.pixels_per_image
         self._image=img
         self.original = copy.deepcopy(self)
-        
-        #print (self._mags)
+    
         
         
     @property
@@ -263,7 +261,7 @@ class Source(Spectrum):
             self.spectral_type = splat.classifyByStandard(self.splat_spectrum, comprange=[[1.2, 1.6]], dwarf=True,subdwarf=False,  statistic='chisqr') [0]
             
         
-        self._distance= distance(self.mags, self.spectral_type)
+        self._distance= distance(self.mags, self.spectral_type[0])
         if self._distance is not None:
             self.coords=SkyCoord(ra=self._ra, dec=self._dec,  distance=self.distance['val'].value*u.pc)
         

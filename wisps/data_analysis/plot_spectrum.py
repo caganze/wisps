@@ -112,7 +112,7 @@ def plot_source(sp, **kwargs):
     
     #compare to standards
     #if True:
-    std=splat.getStandard(sp.spectral_type)
+    std=splat.getStandard(sp.spectral_type[0])
     std.normalize(range=[1.2, 1.5])
     chi, scale=splat.compareSpectra(sp.splat_spectrum, std,  comprange=[[1.2, 1.5]], statistic='chisqr', scale=True) 
     std.scale(scale)
@@ -185,12 +185,12 @@ def plot_source(sp, **kwargs):
             ax3.add_patch(rect)
             ax3.text(wrng[0], 1.0,wlabel, {'fontsize':16} )
 
-    spt_label=splat.typeToNum(make_spt_number(sp.spectral_type))
-    if  make_spt_number(sp.spectral_type) >39:
+    spt_label=splat.typeToNum(make_spt_number(sp.spectral_type[0]))
+    if  make_spt_number(sp.spectral_type[0]) >39:
         lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+spt_label+') '+'standard'), 
                loc=(1.01, 0.15), fontsize=15) 
 
-    if  make_spt_number(sp.spectral_type) <=39:
+    if  make_spt_number(sp.spectral_type[0]) <=39:
         lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+spt_label+') '+'standard'), 
                loc=(1.01, 0.15), fontsize=15) 
     plt.tight_layout()

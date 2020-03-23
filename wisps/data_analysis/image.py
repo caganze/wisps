@@ -10,6 +10,7 @@ import glob
 from .initialize import *
 from astropy.wcs.utils import skycoord_to_pixel
 from astropy.coordinates import SkyCoord
+from .spectrum_tools import UCD_SPECTRA
 
 class Image(object):
     """
@@ -26,6 +27,7 @@ class Image(object):
         self.survey=None
         self._phot_img_pixel=40.0
         self.path=None
+        self.is_ucd=kwargs.get('is_ucd', False) #flag for UCD candidates
         if 'name' in  kwargs: self.name=kwargs.get('name')
         
     def __repr__(self):
@@ -40,12 +42,18 @@ class Image(object):
     
     @name.setter
     def name(self, new_name):
-    	#get images
-    	self._name=new_name
-    	self._f110=self._grab_object_from_field_image('F110')
-    	self._f140=self._grab_object_from_field_image('F140')
-    	self._f160=self._grab_object_from_field_image('F160')
-    	
+        #get images
+        self._name=new_name
+        if not self.is_ucd:
+        	self._f110=self._grab_object_from_field_image('F110')
+        	self._f140=self._grab_object_from_field_image('F140')
+        	self._f160=self._grab_object_from_field_image('F160')
+            
+        if self.is_ucd:
+            row=(UCD_SPECTRA[UCD_SPECTRA.grism_id==self._name]).iloc[0]
+            self._f110=row.f110img
+            self._f140=row.f140img
+            self._f160=row.f160img
     @property
     def ra(self):
     	return self._ra
@@ -89,18 +97,10 @@ class Image(object):
         The number of pixels around the object to show in photometry image
         """
         return self._phot_img_pixel
-    
-    @pixels_per_image.setter
-    def pixels_per_image(self, new_pixels):
-        """
-        The number of pixels around the object to show in photometry image
-        """
-        self._phot_img_pixel=new_pixels
-        #rescale the image
-        self._f110=self._grab_object_from_field_image('F110')
-        self._f140=self._grab_object_from_field_image('F140')
-        self._f160=self._grab_object_from_field_image('F160')
-    	
+
+        
+
+        	
     def _grab_object_from_field_image(self, filt, **kwargs):
         """
         This function grabs an image given ra, dec and a filter
