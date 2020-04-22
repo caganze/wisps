@@ -102,6 +102,7 @@ class Annotator(object):
         for k in df.columns: 
             if isinstance(df[k].iloc[0], tuple):
                 new_df[k]=np.array(np.apply_along_axis(list, 0, df[k].values))[:,0]
+                new_df[k+'_er']=np.array(np.apply_along_axis(list, 0, df[k].values))[:,1]
             else:
                 new_df[k]=df[k].values
         return new_df
@@ -131,15 +132,45 @@ pec_spts=mamjk.SpT.apply(make_spt_number).apply(float).values
 pec_hsortedindex=np.argsort(pec_hs)
 pec_jsortedindex=np.argsort(pec_js)
 
+kirkpa2019pol={'pol':np.poly1d(np.flip([36.9714, -8.66856, 1.05122 ,-0.0344809])), 
+                'scatter':.67, 'range':[36, 44]}
+
+#best_dict={'2MASS J': {\
+#            'spt': [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39], \
+#            'values': [10.36,10.77,11.15,11.46,11.76,12.03,12.32,12.77,13.51,13.69,14.18,14.94,14.90,14.46,14.56,15.25,14.54,14.26,13.89,14.94,15.53,16.78,17.18,17.75],\
+#            'rms': [0.30,0.30,0.42,0.34,0.18,0.15,0.21,0.24,0.28,0.25,0.60,0.20,0.13,0.71,0.5,0.12,0.06,0.16,0.36,0.12,0.27,0.76,0.51,0.5]},
+#        '2MASS H': {\
+#            'spt': [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39], \
+#            'values': [9.76,10.14,10.47,10.74,11.00,11.23,11.41,11.82,12.45,12.63,13.19,13.82,13.77,13.39,13.62,14.39,13.73,13.67,13.57,14.76,15.48,16.70,17.09,17.51],\
+#            'rms': [0.30,0.31,0.43,0.35,0.23,0.21,0.25,0.29,0.3,0.30,0.62,0.31,0.20,0.73,0.5,0.18,0.15,0.24,0.40,0.24,0.37,0.78,0.5,0.5]}}
+
+def absolute_mag_kirkpatrick(spt, filt):
+    if filt != '2MASS H':
+        return np.nan
+    else:
+        if (spt > 36) and (spt <44):
+            pol=kirkpa2019pol['pol']
+            unc=kirkpa2019pol['scatter']
+            return np.random.normal(pol(spt-30), unc)
+            
+        else:
+            return np.nan
+
+@np.vectorize
 def absolute_magnitude_jh(spt):
     """
     returns J and H magnitudes by interpolating between values from pecaut2013
     must probably sort spt if spt is a list bfeore passing it through the interpolator
-    """    
-    hval=np.interp(spt,  pec_spts[pec_hsortedindex], pec_hs[pec_hsortedindex])
-    jval=np.interp(spt,  pec_spts[pec_jsortedindex], pec_js[pec_jsortedindex])
-    
-    return [jval, hval]
+    """ 
+    jval, hval=(np.nan, np.nan)
+    if spt <=37:
+        hval=np.interp(spt,  pec_spts[pec_hsortedindex], pec_hs[pec_hsortedindex])
+        jval=np.interp(spt,  pec_spts[pec_jsortedindex], pec_js[pec_jsortedindex])
+    else:
+        hval=absolute_mag_kirkpatrick(spt, '2MASS H')
+
+    return jval, hval
+
 
 
 @numba.vectorize("float64(float64, float64)", target='cpu')

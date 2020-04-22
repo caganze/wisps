@@ -43,8 +43,6 @@ BS=galc.b.radian
 #OBSERVED_DIST=np.concatenate(np.array([v for v in pnts[0].dist_limits.values()]))
 #---------------------------
 
-#define functions
-
 def sample_distances(nsample=1000, h=300):
     """
     sample the galaxy given a scale height

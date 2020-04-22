@@ -27,7 +27,7 @@ def plot_image(sp, ax, cmap='inferno'):
         image_data_dict={'F140W' : sp.photo_image.f140,
                     'F160W': sp.photo_image.f160,
                     'F110W': sp.photo_image.f110}
-      
+
         image_key_to_use=[ k for k in image_data_dict.keys() if image_data_dict[k]['grid'] is not None  ][0]
     
 

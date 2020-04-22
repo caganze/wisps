@@ -30,9 +30,12 @@ import matplotlib
 #load a previous sample of potential brown dwarfs
 
 
-#mjdf=datasets['manjavacas']
-#scndf=datasets['schneider']
+mjdf=datasets['manjavacas']
+scndf=datasets['schneider']
 ############################################
+
+mjdf['spt']= np.vstack(mjdf.spt.apply(make_spt_number).values)[:,0]
+scndf['spt']= np.vstack(scndf.spt.apply(make_spt_number).values)[:,0]
 
 class IndexSpace(object):
     """
@@ -501,7 +504,7 @@ def save_criteria(**kwargs):
     all_spex=datasets['spex']
     all_spex=all_spex[all_spex.snr1>10]
     
-    all_spex['Spts']=all_spex.spt.apply(make_spt_number).apply(float)
+    all_spex['Spts']=np.vstack(all_spex.spt.apply(make_spt_number).values)[:,0]
     all_spex['Names']=all_spex.data_file
 
     sd_bools=(all_spex['metallicity_class']=='sd') | (all_spex['metallicity_class']=='d/sd')

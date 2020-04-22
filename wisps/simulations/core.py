@@ -75,8 +75,8 @@ def compute_distance_limits(mag_limits):
     if np.isnan([ x for x in mag_limits.values()]).all():
         return {}
     for s in SPGRID:
-        dmaxs=wisps.distance(faint_dict, s)
-        dmins=wisps.distance(bright_dict, s)
+        dmaxs=wisps.distance(faint_dict, s, 0.0)
+        dmins=wisps.distance(bright_dict, s, 0.0)
         dmx=np.nanmean([dmaxs['distF110W'],dmaxs['distF140W'], dmaxs['distF160W']])
         dmin=np.nanmean([dmins['distF110W'],dmins['distF140W'], dmins['distF160W']])
         distances.append([dmx, dmin])
@@ -114,13 +114,14 @@ def get_mag_limit(pnt, key, mags):
         if key=='F110':
             return maglt
 
-    if len(mags) < 50:
+    if (len(mags) < 50) or (mags==mags).all():
         magpol=MAG_LIMITS[survey][key][0]
         magsctt=MAG_LIMITS[survey][key][1]
         maglt=np.nanmean(np.random.normal(magpol(np.log10(pnt.exposure_time)), magsctt, 100))
+        #maglt=get_max_value(mags)
 
     #use KDEs for more than 50
-    if len(mags) >= 50:
+    if not  ((len(mags) < 50) or (mags==mags).all()):
         maglt=get_max_value(mags)
     return maglt
 
@@ -138,12 +139,14 @@ class Pointing(object):
         self.dist_limits={}
         self.volumes={}
         self.exposure_time=None
+        self.exposure_times=None
         self.observation_date=None
 
         #compute volumes after initialization
         if self.name is not None:
             df=STARS[STARS.pointing==self.name.lower()]
             self.exposure_time=(df['exposure_time']).values.mean()
+            self.exposure_times=(df['exposure_time']).values
             self.observation_date=(df['observation_date']).values
             for k in ['F110', 'F140', 'F160']:
                 self.mags[k]=df[k].values

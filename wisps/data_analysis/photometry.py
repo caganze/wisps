@@ -6,6 +6,7 @@
 """
 This is the main module for  adding photometry information given a spectrum(grism id)
 
+
 @author: caganze
 
 
@@ -26,6 +27,9 @@ import copy
 import wisps
 
 from functools import lru_cache
+
+from concurrent.futures import ThreadPoolExecutor, wait , ALL_COMPLETED
+from  functools import partial
 
 class Source(Spectrum):
     """
@@ -67,7 +71,7 @@ class Source(Spectrum):
             self.mags=kwargs.get('mags')
             
         if self._distance is None: self._calculate_distance()
-        if self._filename is not None: self.name=self._filename
+        if self._filename is not None: self.name=kwargs.get('filename', self._filename)
 
         self.original = copy.deepcopy(self)
 
@@ -136,6 +140,10 @@ class Source(Spectrum):
         self._mags={'F110W': (s.F110[0], s.F110[1]), 
                              'F160W': (s.F160[0], s.F160[1]),
                              'F140W': (s.F140[0], s.F140[1])}
+
+        #replace --99 by nan
+        for k, val in self._mags.items():
+            if (val[0]<0. or val[1] <0.): self._mags[k]=(np.nan, np.nan)
            
         self.coords=SkyCoord(ra=s.RA, dec=s.DEC, unit='deg')
         #self.spectral_type=s.Spts
@@ -158,22 +166,22 @@ class Source(Spectrum):
     #using splat tricks to create shortnames
         if (self.name is not None ) and not np.isnan(self.ra):
             if self.name.lower().startswith('par'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'WISP J')
+                self._shortname=self.designation.replace('J', 'WISP J')
                 
             elif self.name.lower().startswith('aegis'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'AEGIS J')
+                self._shortname=self.designation.replace('J', 'AEGIS J')
                 
             elif self.name.lower().startswith('goodss'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'GOODSS J')
+                self._shortname=self.designation.replace('J', 'GOODSS J')
             
             elif self.name.lower().startswith('goodsn'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'GOODSN J')
+                self._shortname=self.designation.replace('J', 'GOODSN J')
                 
             elif self.name.lower().startswith('uds'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'UDS J')
+                self._shortname=self.designation.replace('J', 'UDS J')
                 
             elif self.name.lower().startswith('cosmos'):
-                self._shortname=spl.designationToShortName(self.designation).replace('J', 'COSMOS J')
+                self._shortname=self.designation.replace('J', 'COSMOS J')
 
         return self._shortname
     
@@ -212,16 +220,17 @@ class Source(Spectrum):
         """
         #print (self.distances)
         if self._distance is None:
-            return self._calculate_distance()
-        else:
-            ds=[self.distances[k] for k in self.distances.keys() if ('dist'  in k) and ('dist_er'  not in k)]
-            ers=[self.distances[k] for k in self.distances.keys() if 'dist_er'  in k]
+            self._calculate_distance()
 
-            #print (self._distance)
-            #print (ds)
-            val=np.nanmean(ds)*u.pc
-            unc= np.sqrt(np.nanstd(ds)**2+np.nanmean(ers)**2)*u.pc
-            return {'val':val, 'er':unc}
+        ds=np.array([self.distances[k] for k in self.distances.keys() if ('dist'  in k) and ('dist_er'  not in k)])
+        ers=np.array([self.distances[k] for k in self.distances.keys() if 'dist_er'  in k])
+
+        #distance is the weighted mean and std 
+        nans=np.isnan(ds)
+        val, unc=spl.weightedMeanVar(ds[~nans], ers[~nans])
+        #dont forget the other uncertainties
+        unc_tot=(unc**2+(ers[~nans]**2).sum())**0.5
+        return {'val':val*u.pc, 'er':unc_tot*u.pc}
     
     @property
     #@lru_cache(maxsize=128)
@@ -262,7 +271,7 @@ class Source(Spectrum):
             self.spectral_type = splat.classifyByStandard(self.splat_spectrum, comprange=[[1.2, 1.6]], dwarf=True,subdwarf=False,  statistic='chisqr') [0]
             
         
-        self._distance= distance(self.mags, self.spectral_type[0])
+        self._distance= distance(self.mags, self.spectral_type[0],  self.spectral_type[1])
         if self._distance is not None:
             self.coords=SkyCoord(ra=self._ra, dec=self._dec,  distance=self.distance['val'].value*u.pc)
         
@@ -281,3 +290,53 @@ class Source(Spectrum):
     
         """
         plot_source(self, **kwargs)
+
+
+def getter_function_source(filename):
+    """
+    partial does not use kwargs so our options are limitted here
+    """
+    try:
+        return Source(filename=filename, is_ucd=False)
+    except:
+        print ('yikes .....  {}'.format(filename))
+        return 
+
+def getter_function_spectrum(filename):
+    """
+    partial does not use kwargs so our options are limitted here
+    """
+    return Spectrum(filename=filename, is_ucd=False)
+
+
+def get_multiple_sources(filenames, **kwargs):
+    """
+    Load multiple sources at once using multprocessing
+
+    Parameters:
+        filenames=filenames
+        kwargs: keyword arguemnts
+    """
+    source_type=kwargs.get('source_type', 'source')
+
+    if source_type=='spectrum':
+        method=partial(getter_function_spectrum)
+
+    if source_type=='source':
+        method=partial(getter_function_source)
+
+    iterables=[filenames]
+
+    with ThreadPoolExecutor(max_workers=100) as executor:
+        futures=list(executor.map( method, *iterables, timeout=None, chunksize=20))
+
+    results=[x for x in futures]
+
+    return results
+
+
+
+
+
+
+

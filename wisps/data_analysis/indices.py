@@ -6,6 +6,7 @@ borrowed from a previous version of splat (github.com/aburgasser/splat)
 """
 
 __author__= 'caganze'
+
 from .initialize import * 
 
 #def meaure_indices()

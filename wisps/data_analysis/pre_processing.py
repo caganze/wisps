@@ -27,14 +27,16 @@ def hst3d_phot_spec():
     """ combining all of HST-3D photometry catalogs and not ignoring columns
     """
     #photome
-    cat_files=glob.glob('/users/caganze/*_3dhst*/Catalog/*.cat')
+    cat_files=glob.glob('/users/caganze/*_3dhst.v4.1.cats/Catalog/*.cat')
     cats=[]
     for c in cat_files:
         t=ascii.read(c).to_pandas()
         t['field']=c.split('_3dhst')[0].split('/')[-1]
         cats.append(t)
     phot=pd.concat(cats)
+    #phot=ascii.read(cat_files[0]).to_pandas()
     phot=phot.rename(columns={'id':'phot_id'})
+
 
     #get grism_ids from the spectrum catalog
     hdu=(fits.open(REMOTE_PHOT_CATALOGS+'3dhst.v4.1.5.master.fits')[1])
@@ -49,7 +51,7 @@ def hst3d_phot_spec():
         #combined is a pandas table with flux and flux_error
     		if  np.isnan(combined['flux']):
     			return np.nan
-    		else: return abs(0.434*2.5*combined['flux_error']/combined['flux'])
+    		else: return abs(0.434*combined['flux_error']/combined['flux'])
     #compute magnitudes
     for f in ['160', '140']:
         phot['F'+f+'_mag']= phot['f_F'+f+'W'].apply(magnitude)
@@ -71,12 +73,18 @@ def hst3d_phot_spec():
     #this is done in order to obtain grism ids
     phot['unique_id']=phot['phot_id'].apply(int).apply(str)+phot['field'].apply(lambda x: x.lower())
     spec['unique_id']=spec['phot_id'].apply(str)+spec['field'].apply(lambda x: x.lower())
+
     phot['unique_id']=phot['unique_id'].apply(lambda x:  x.replace('-', '').strip())
     spec['unique_id']=spec['unique_id'].apply(lambda x: x.strip())
 
-    merged=pd.merge(spec, phot, on='unique_id', how='inner', validate='one_to_one')
+    phot=phot.reset_index(drop=True)
+    spec=spec.reset_index(drop=True)
+    
+    print (phot.unique_id.sample(n=10), spec.unique_id.sample(n=10))
+    print (spec.shape, phot.shape)
 
-    print (merged[merged.grism_id.str.contains('good')])
+    merged=pd.merge(spec, phot, on='unique_id', how='outer', validate='one_to_one')
+
 
     merged.to_csv(OUTPUT_FILES+'/hst3d_photometry_all.csv')
     
@@ -108,8 +116,8 @@ def wisp_phot_spec():
                 print (f)
                 data=pd.read_table(f, skiprows=np.arange(0, 16), sep='\t')['#'].apply(reformat_phot_table)
                 #print ('data {}, type {}'.format(len(data), type(data)))
-                phot['NIMCOS_'+ f.split('_f')[-1].split('w_v6')[0]+'W']=data[12]
-                phot['NIMCOS_'+ f.split('_f')[-1].split('w_v6')[0]+'W_ER']=data[13]
+                phot['F'+ f.split('_f')[-1].split('w_v6')[0]+'W']=data[12]
+                phot['F'+ f.split('_f')[-1].split('w_v6')[0]+'W_ER']=data[13]
                 phot['EXTRACTION_FLAG']=data[15]
                 phot['star_flag']=data[14]
                 datas.append(data)

@@ -12,10 +12,11 @@ from wisps import drop_nan
 from .core import  HS
 from .binaries import make_systems
 import numba
+import dask
 
 
 
-BAYESIAN_DISTANCES_VOLUMES=np.load(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', allow_pickle=True)
+
 
 pnts=wisps.OBSERVED_POINTINGS
 #some re-arragments because the limiting distance depends on the pointing
@@ -43,7 +44,8 @@ def compute_effective_numbers(spts,SPGRID, h):
     ##given a distribution of masses, ages, teffss
     ## based on my polynomial relations and my own selection function
     spts=wisps.make_spt_number(spts)
-
+    BAYESIAN_DISTANCES_VOLUMES=np.load(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', allow_pickle=True)
+    
     DISTANCE_WITHIN_LIMITS_BOOLS={}
     #LONGS=(BAYESIAN_DISTANCES_VOLUMES['ls'][h]).flatten()
     #LATS=(BAYESIAN_DISTANCES_VOLUMES['bs'][h]).flatten()
@@ -51,7 +53,7 @@ def compute_effective_numbers(spts,SPGRID, h):
 
     for k in DISTANCE_LIMITS.keys():
         dx=(BAYESIAN_DISTANCES_VOLUMES[h])['distances']
-        DISTANCE_WITHIN_LIMITS_BOOLS[k]= dx < 5* np.max(DISTANCE_LIMITS[k][0])
+        DISTANCE_WITHIN_LIMITS_BOOLS[k]= dx < 10* np.max(DISTANCE_LIMITS[k][0])
 
     @np.vectorize
     def match_dist_to_spt(spt, idxn):
@@ -142,6 +144,8 @@ def get_all_values_from_model(model, **kwargs):
 
     return outdata
 
+#use dask parallelization for this emberassaingly parallel problem 
+
 def simulation_outputs(**kwargs):
     """
     Purpose:compute number densities
@@ -149,7 +153,7 @@ def simulation_outputs(**kwargs):
     recompute=kwargs.get("recompute", False)
 
     #recompute for different evolutionary models
-    models=kwargs.get('models', ['saumon2008', 'baraffe2003', 'marley2019'])
+    models=kwargs.get('models', ['saumon2008', 'baraffe2003', 'marley2019', 'phillips2020'])
 
     if recompute:
         dict_values={}

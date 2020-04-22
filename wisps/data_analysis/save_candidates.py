@@ -2,7 +2,7 @@ from .initialize import *
 import pandas as pd
 import numpy as np
 import glob
-from .photometry import Source
+from .photometry import Source, get_multiple_sources
 from .spectrum_tools import Spectrum
 from ..utils.tools import get_distance, make_spt_number
 
@@ -20,14 +20,6 @@ def plot_name(name):
 	#plot(name, fname)
 	if os.path.isfile(fname) : pass
 	else: plot(name, fname)
-	
-def plot(n, fname):
-	try:
-		print (n.strip().replace('g141', 'G141'))
-		s=Source(name=n.strip().replace('g141', 'G141'))
-		s.plot(save=True, filename=fname.strip())
-	except:
-		print ("could not save {}".format(n.strip().replace('g141', 'G141')))
 		
 def get_cand_grism_ids():
 	@numba.jit
@@ -45,7 +37,7 @@ def get_cand_grism_ids():
 	#df=	COMBINED_PHOTO_SPECTRO_DATA
 	#print ((df[df.grism_id.isin(lcands)]).grism_id.values)
 	#df[df.grism_id.isin(lcands)].to_pickle(LIBRARIES+'/candidates.pkl')
-	pd.DataFrame(lcands).to_pickle(LIBRARIES+'/candidates.pkl')
+	pd.DataFrame(lcands).to_pickle(LIBRARIES+'/candidates_ids.pkl')
 	return lcands
 
 def save_cands():
@@ -57,9 +49,22 @@ def save_again():
 	df=pd.read_pickle(LIBRARIES+'/candidates.pkl')
 	df.grism_id.apply(plot_name)
 
+
 def look_at_all():
 	import wisps
 	df=wisps.datasets['rf_classified']
-	print (len(df))
-	df.grism_id.apply(plot_name)
+
+	#remove files where file names exist
+	fnames=np.array([SPECTRA_PATH+'/indices/'+name.replace('-', '_')+'.jpeg' for name in df.grism_id.values])
+
+	exist_flag=np.array([os.path.isfile(fname) for fname in fnames])
+
+	df['grism_id']=df.grism_id.apply(lambda x : x.replace('g141', 'G141'))
+	sources=get_multiple_sources(df.grism_id.values[~exist_flag])
+	
+
+	for s, fname in zip(sources, fnames[~exist_flag]):
+		if s is not None:
+			s.plot(save=True, filename=fname.strip())
+
 

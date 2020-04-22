@@ -511,6 +511,8 @@ def classify(sp, **kwargs):
     #normalize both spectra
     comprange=kwargs.get('comprange', [1.15, 1.65])
     dof=169
+
+  
     if kwargs.get('stripunits', False):
         #mask
         mask=np.logical_and(sp.wave.value<= comprange[1], sp.wave.value >=comprange[0]  )
@@ -540,7 +542,7 @@ def classify(sp, **kwargs):
     chisqrs=np.vstack(chisqrs)
     return np.round(splat.weightedMeanVar(make_spt_number(chisqrs[:,1]), chisqrs[:,0], method='ftest',dof=dof))
 
-def distance(mags, spt):
+def distance(mags, spt, spt_unc):
     """
     mags is a dictionary of bright and faint mags
 
@@ -558,11 +560,17 @@ def distance(mags, spt):
     for k in mags.keys():
         #take the standard deviation
         spt=make_spt_number(spt)
+
         absmag_scatter=relations['sigma_sp_'+k]
-        absmags=np.random.normal(relations['sp_'+k](spt), absmag_scatter, nsample)
-        relmags=mags[k][0]+np.random.random(nsample)*mags[k][1]
+        spts=np.random.normal(spt, spt_unc, nsample)
+        absmags=relations['sp_'+k](spts)
+
+        #total_uncertainty
+        mag_unc=(absmag_scatter**2+mags[k][1]**2)**0.5
+
+        relmags=np.random.normal(mags[k][0], mag_unc, nsample)
         dists=get_distance(absmags, relmags)
-        res[str('dist')+k]=np.nanmean(dists)
+        res[str('dist')+k]=np.nanmedian(dists)
         res[str('dist_er')+k]=np.nanstd(dists)
 
     return res

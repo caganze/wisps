@@ -121,7 +121,8 @@ def simulate_spts(**kwargs):
     #automatically set maxima and minima to avoid having too many nans
     #mass age and age,  min, max
     acceptable_values={'baraffe2003': [0.0005, 0.1, 0.001, 10.0],
-    'marley2019': [0.0005, 0.08, 0.001, 15.0], 'saumon2008':[0.002, 0.09, 0.003, 15.0]}
+    'marley2019': [0.0005, 0.08, 0.001, 15.0], 'saumon2008':[0.002, 0.09, 0.003, 15.0], 
+    'phillips2020':[0.0005, 0.075, 0.001, 10.0 ]}
     
     if recompute:
 
