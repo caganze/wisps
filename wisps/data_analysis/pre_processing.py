@@ -32,6 +32,7 @@ def hst3d_phot_spec():
     for c in cat_files:
         t=ascii.read(c).to_pandas()
         t['field']=c.split('_3dhst')[0].split('/')[-1]
+        t['unique_id']=t['id'].apply(int).apply(str)+t['field'].apply(lambda x: x.lower())
         cats.append(t)
     phot=pd.concat(cats)
     #phot=ascii.read(cat_files[0]).to_pandas()
@@ -41,7 +42,7 @@ def hst3d_phot_spec():
     #get grism_ids from the spectrum catalog
     hdu=(fits.open(REMOTE_PHOT_CATALOGS+'3dhst.v4.1.5.master.fits')[1])
     spec=Table(hdu.data).to_pandas()
-    spec=spec[spec.grism_id !='00000']
+    #spec=spec[spec.grism_id !='00000']
 
     #magnitudes are calculated to 25 zero-point
     def magnitude(flux):
@@ -51,7 +52,7 @@ def hst3d_phot_spec():
         #combined is a pandas table with flux and flux_error
     		if  np.isnan(combined['flux']):
     			return np.nan
-    		else: return abs(0.434*combined['flux_error']/combined['flux'])
+    		else: return abs(0.434*2.5*combined['flux_error']/combined['flux'])
     #compute magnitudes
     for f in ['160', '140']:
         phot['F'+f+'_mag']= phot['f_F'+f+'W'].apply(magnitude)
@@ -71,7 +72,6 @@ def hst3d_phot_spec():
 
     #merge spec and phot on unique id, from photid, because photid is only unique within each field
     #this is done in order to obtain grism ids
-    phot['unique_id']=phot['phot_id'].apply(int).apply(str)+phot['field'].apply(lambda x: x.lower())
     spec['unique_id']=spec['phot_id'].apply(str)+spec['field'].apply(lambda x: x.lower())
 
     phot['unique_id']=phot['unique_id'].apply(lambda x:  x.replace('-', '').strip())
@@ -83,7 +83,7 @@ def hst3d_phot_spec():
     print (phot.unique_id.sample(n=10), spec.unique_id.sample(n=10))
     print (spec.shape, phot.shape)
 
-    merged=pd.merge(spec, phot, on='unique_id', how='outer', validate='one_to_one')
+    merged=pd.merge(spec, phot, on='unique_id', how='inner', validate='one_to_one')
 
 
     merged.to_csv(OUTPUT_FILES+'/hst3d_photometry_all.csv')

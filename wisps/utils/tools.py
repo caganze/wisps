@@ -12,14 +12,16 @@ import matplotlib
 from astropy import stats as astrostats
 from scipy import stats
 import bisect
-
+import os
 #from . import *
 
 #################
 splat.initializeStandards()
 ###############
-from wisps.utils import memoize_func
 
+from wisps.utils import memoize_func
+WISP_PATH=os.environ['WISP_CODE_PATH']
+DATA_FILES=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//data//')
 
 class Annotator(object):
     """
@@ -124,7 +126,7 @@ def make_spt_number(spt):
         return spt
 
 #pecaut constants
-mamjk=ascii.read('/users/caganze/research/wisps/data/mamajek_relations.txt').to_pandas().replace('None', np.nan)
+mamjk=ascii.read(DATA_FILES+'/mamajek_relations.txt').to_pandas().replace('None', np.nan)
 pec_js=mamjk.M_J.apply(float).values
 pec_jminush=mamjk['J-H'].apply(float).values
 pec_hs=pec_js-pec_jminush
