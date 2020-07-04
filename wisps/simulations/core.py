@@ -29,7 +29,7 @@ def get_proper_pointing(grism_id):
 
 
 #constants
-STARS=wisps.Annotator.reformat_table(datasets['stars'])
+STARS= (wisps.COMBINED_PHOTO_SPECTRO_DATA[ wisps.COMBINED_PHOTO_SPECTRO_DATA.class_star !=0]).reset_index(drop=True)
 STARS['pointing']=STARS.grism_id.apply(get_proper_pointing)
 STARS=STARS[STARS.snr1 >=3.]
 
@@ -77,8 +77,8 @@ def compute_distance_limits(mag_limits):
     for s in SPGRID:
         dmaxs=wisps.distance(faint_dict, s, 0.0)
         dmins=wisps.distance(bright_dict, s, 0.0)
-        dmx=np.nanmean([dmaxs['distF110W'],dmaxs['distF140W'], dmaxs['distF160W']])
-        dmin=np.nanmean([dmins['distF110W'],dmins['distF140W'], dmins['distF160W']])
+        dmx=np.nanmin([dmaxs['distF110W'],dmaxs['distF140W'], dmaxs['distF160W']])
+        dmin=np.nanmin([dmins['distF110W'],dmins['distF140W'], dmins['distF160W']])
         distances.append([dmx, dmin])
     return  dict(zip(SPGRID, distances))
     

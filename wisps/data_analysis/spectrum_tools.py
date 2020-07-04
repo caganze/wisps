@@ -245,6 +245,14 @@ class Spectrum(object):
         :Example:
         """
         sp=self.splat_spectrum
+
+        #rescale the spectrum for lower stuff 
+        if self._wave.min() < 1.17:
+            up_wave=np.logical_and(self._wave> 1.17, self._wave<1.17+0.7)
+            down_wave=np.logical_and(self._wave> 1.17-0.7, self._wave<1.17)
+            scale=np.nanmedian(self._flux[up_wave])/np.nanmedian(self._flux[down_wave])
+            self._flux[self._wave< 1.17]=(self._flux[self._wave< 1.17])*scale
+
         sp.normalize(**kwargs)
         self._wave= sp.wave.value
         self._flux=sp.flux.value
@@ -301,6 +309,7 @@ class Spectrum(object):
         self._noise= np.array([x*snr0/snr for x in self.noise])
         self._flux =self.flux+(np.random.normal(np.zeros(len(self.noise)), self.noise))
         self._compute_snr()
+        self.classify_by_standard()
         ftest=f_test(self)
         ns=kwargs.get('nsample', 100)
         if kwargs.get('recompute_indices', False):
@@ -325,7 +334,7 @@ class Spectrum(object):
         returns a wisp spectrum, given filepath/filename
         """
         #raise error is path does not exist
-        #print(new_file_path)
+        print(new_file_path)
         if not os.path.exists(new_file_path):
             raise NameError('\nCould not find file {}'.format(new_file_path))
         
@@ -347,24 +356,20 @@ class Spectrum(object):
         
         #print (self._filename)
         #sometimes column keys are "col1', 'col2', 'col3', etc.. instead of wave, flux, error
-        try:
-            wv= data['col1'] 
-            flux=data['col2']
-            noise=data['col3']
-            contam=data['col4']
-        except (ValueError, KeyError):
-            wv= data['wave'] 
-            flux=data['flux']
-            noise=data['error']
-            contam=data['contam']
+       
+        wv= data['wave'] 
+        flux=data['flux']
+        noise=data['error']
+        contam=data['contam']
         self._wave=np.array(wv)/10000.0
         
         self._noise=np.array(noise)
         self._contam=np.array(contam)
-        # subtract the contamination
+
+        # subtract the contamination as prescribed by wisps people
         self._flux=np.array(flux)-np.array(contam)
-        #add constant to the flux if is negative
-        #if np.any(self._flux<0.0):
+
+        ##apply sensitivity correction from 3d-hst
         if not self._survey == 'wisps':
             with  fits.open(self._spectrum_image_path, memmap=False) as hdu:
                 self._sensitivity=hdu[10].data
@@ -372,6 +377,7 @@ class Spectrum(object):
             self._flux=self._flux/self._sensitivity
             hdu.close()
             del hdu[10].data
+
         
         #add offset if some of the flux is negative
         #print (self._wave)
@@ -554,16 +560,16 @@ def distance(mags, spt, spt_unc):
     f140w=mags['F140W']
     f160w=mags['F160W']
 
-    relations=POLYNOMIAL_RELATIONS
+    relations=POLYNOMIAL_RELATIONS['abs_mags']
     nsample=1000
 
     for k in mags.keys():
         #take the standard deviation
         spt=make_spt_number(spt)
 
-        absmag_scatter=relations['sigma_sp_'+k]
+        absmag_scatter=relations[k][1]
         spts=np.random.normal(spt, spt_unc, nsample)
-        absmags=relations['sp_'+k](spts)
+        absmags=(relations[k][0])(spts)
 
         #total_uncertainty
         mag_unc=(absmag_scatter**2+mags[k][1]**2)**0.5

@@ -73,7 +73,7 @@ def plot_source(sp, **kwargs):
         xlim=[0.85, 1.65]
     mask0=np.logical_and(sp.wave > xlim[0], sp.wave < xlim[1])
     
-    ylim=kwargs.get('ylim', [0., 1.1])
+    #ylim=kwargs.get('ylim', [0., 1.1])
     xlabel=kwargs.get('xlabel','Wavelength ($\mu m$)')
     ylabel=kwargs.get('ylabel','Flux + c')
     if sp.survey=='hst3d':
@@ -84,7 +84,7 @@ def plot_source(sp, **kwargs):
     
     #create the grid
     gs = gridspec.GridSpec(2, 3, height_ratios=(1, 2))
-    fig=plt.figure(figsize=(8,6))
+    fig=plt.figure(figsize=(8, 8))
     ax1 = plt.subplot(gs[0, 0]) 
     ax2 = plt.subplot(gs[0, 1:3]) 
     ax3 = plt.subplot(gs[1, :]) 
@@ -171,10 +171,10 @@ def plot_source(sp, **kwargs):
     
     #print (np.nanmax(sp.flux[(1.25<sp.wave) & (sp.wave<1.6)]))
     #print (xlim)
-    flux_max=np.nanmax(sp.flux[np.logical_and(sp.wave>1.15, sp.wave<1.65)])
+    flux_max=np.nanmax(sp.flux[np.logical_and(sp.wave>1.0, sp.wave<1.2)])
     ax3.set_xlim(xlim)
     ax3.set_xticks(np.arange(xlim[0], xlim[1], 0.01), minor=True)
-    ax3.set_ylim([0.0, flux_max])
+    ax3.set_ylim([0.0, 1.2])
 
     bands=[[1.246, 1.295],[1.15, 1.20], [1.62,1.67], [1.56, 1.61], [1.38, 1.43]]
     bandlabels=['J-cont', '$H_2O-1$', '$CH_4$', 'H-cont', '$H_2O-2$']
@@ -183,7 +183,7 @@ def plot_source(sp, **kwargs):
         for wrng, wlabel in zip(bands,  bandlabels):
             rect=patches.Rectangle((wrng[0], 0), wrng[1]-wrng[0], 1.0, angle=0.0, color='#DDDDDD')
             ax3.add_patch(rect)
-            ax3.text(wrng[0], 1.0,wlabel, {'fontsize':16} )
+            ax3.text(wrng[0], 0.05,wlabel, {'fontsize':14} )
 
     spt_label=splat.typeToNum(make_spt_number(sp.spectral_type[0]))
     if  make_spt_number(sp.spectral_type[0]) >39:
@@ -192,9 +192,9 @@ def plot_source(sp, **kwargs):
 
     if  make_spt_number(sp.spectral_type[0]) <=39:
         lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+spt_label+') '+'standard'), 
-               loc=(1.01, 0.15), fontsize=15) 
+               loc='best', fontsize=15) 
     plt.tight_layout()
-    if save: plt.savefig(filename,  bbox_extra_artists=(lgd,), bbox_inches='tight')
+    if save: plt.savefig(filename,  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=600)
     
     #plt.close()
     #fig.close()

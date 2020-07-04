@@ -25,7 +25,7 @@ class Image(object):
         self._f140=None
         self._f160=None
         self.survey=None
-        self._phot_img_pixel=40.0
+        self._phot_img_pixel=kwargs.get('image_size', 40.0)
         self.path=None
         self.is_ucd=kwargs.get('is_ucd', False) #flag for UCD candidates
         if 'name' in  kwargs: self.name=kwargs.get('name')
@@ -97,6 +97,13 @@ class Image(object):
         The number of pixels around the object to show in photometry image
         """
         return self._phot_img_pixel
+
+    @pixels_per_image.setter
+    def pixels_per_image(self,new_pixel_res):
+        self._phot_img_pixel=new_pixel_res
+        self._f110=self._grab_object_from_field_image('F110')
+        self._f140=self._grab_object_from_field_image('F140')
+        self._f160=self._grab_object_from_field_image('F160')
 
         
 

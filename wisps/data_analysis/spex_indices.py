@@ -51,11 +51,12 @@ def spex_sample_ids(**kwargs):
 def create_wisp_spectrum(filename):
     try:
         splat_spectrum=splat.getSpectrum(filename=filename)[0]
+        #put it on the wisp resolution
+        splat_spectrum.toInstrument('WFC3-G141')
         s=Spectrum(wave=splat_spectrum.wave.value,
                          flux=splat_spectrum.flux.value,
                          noise=splat_spectrum.noise.value)
         s.classify_by_standard
-        print (filename)
         return [s, splat_spectrum]
     except:
         return [None, None]

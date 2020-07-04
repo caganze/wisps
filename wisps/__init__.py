@@ -15,12 +15,10 @@ from wisps.utils import *
 import matplotlib as mpl 
 
 ##giving me a hard time
-try: 
-    import seaborn
-    seaborn.set_style("ticks")
-except:
-	print ('could not import seaborn')
-	pass
+
+import seaborn
+seaborn.set_style("ticks")
+
 
 #matplotlib defaults
 mpl.rcParams['grid.color'] = 'k'

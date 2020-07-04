@@ -23,12 +23,17 @@ import wisps.simulations as wispsim
 #constant distance
 
 EUCLID_SOUTH=SkyCoord(l=24.6*u.deg, b=-82.0*u.deg , frame='galactic').galactic
+EUCLID_NORTH=SkyCoord("18:0:0 66:33:0", obstime="J2000", unit=u.deg).galactic
 EUCLID_FORNAX=SkyCoord("3:32:28.0 -27:48:30" , obstime="J2000", unit=u.deg).galactic
 
 #mag limits
 
-EUCLID_MAG_LIMITS={'J': 27, 'H': 27}
-absol=wisps.absolute_magnitude_jh(wispsim.SPGRID)[1]
+EUCLID_MAG_LIMITS={'J': 27., 'H': 27.}
+#absol=#wisps.absolute_magnitude_jh(wispsim.SPGRID)[1]
+#RELJ=wisps.POLYNOMIAL_RELATIONS['abs_mags']['EUCLID_J']
+RELH=wisps.POLYNOMIAL_RELATIONS['abs_mags']['EUCLID_H']
+
+absol=(RELH[0])(np.random.normal(wispsim.SPGRID, RELH[1]))
 
 DMAXS=dict(zip(wispsim.SPGRID, (wisps.get_distance(absol, np.ones_like(absol)*EUCLID_MAG_LIMITS['H']))))
 
@@ -91,18 +96,20 @@ def expected_numbers(model, field='fornax', h=300):
     dists=None
     ds=np.zeros(len(spts))
 
-
+    coordinate_field=None
     if field=='fornax':
-    	for k in DMAXS.keys():
-    		trace=distance_sampler(EUCLID_FORNAX.l.radian, EUCLID_FORNAX.b.radian, dmax=DMAXS[k], nsample=1000, h=h)
-    		indx= (round_spts==k)
-    		ds[indx]=np.random.choice(trace['d'].flatten(), len(round_spts[indx]))
+        coordinate_field=EUCLID_FORNAX
 
     if field=='south':
-    	for k in DMAXS.keys():
-    		trace=distance_sampler(EUCLID_SOUTH.l.radian, EUCLID_SOUTH.b.radian, dmax=DMAXS[k], nsample=1000, h=h)
-    		indx=(round_spts==k)
-    		ds[indx]=np.random.choice(trace['d'].flatten(), len(round_spts[indx]))
+        coordinate_field=EUCLID_SOUTH
+    
+    if field=='north':
+        coordinate_field=EUCLID_NORTH
+        
+    for k in DMAXS.keys():
+        trace=distance_sampler(coordinate_field.l.radian, coordinate_field.b.radian, dmax=DMAXS[k], nsample=1000, h=h)
+        indx= (round_spts==k)
+        ds[indx]=np.random.choice(trace['d'].flatten(), len(round_spts[indx]))
 
 
     absjs, abshs=wisps.absolute_magnitude_jh(spts)

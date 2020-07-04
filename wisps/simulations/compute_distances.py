@@ -120,7 +120,7 @@ def save_all_stuff():
     full_dict={}
 
     for h in wispsim.HS:
-        trace=sample_distances(nsample=2.5e4, h=h)
+        trace=sample_distances(nsample=2.5e3, h=h)
         #save each scale height separetly to avoid overloading the disk
         dists=np.array(trace['d'])
         rs=np.array(trace['r']) 
@@ -132,7 +132,7 @@ def save_all_stuff():
     return 
 
 if __name__ =='__main__':
-    #save_all_stuff()
+    save_all_stuff()
     import wisps.simulations.effective_numbers as eff
     eff.simulation_outputs(recompute=True, hs=wispsim.HS)
 

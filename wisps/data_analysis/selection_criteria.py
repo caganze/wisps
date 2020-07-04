@@ -172,7 +172,9 @@ class IndexSpace(object):
         #reformat the data
         x=np.array([*list(df.x.values)])
         y=np.array([*list(df.y.values)])
+
         ddf=pd.DataFrame([x[:,0], y[:,0]]).transpose().dropna()
+
 
         #if name =='Y dwarfs':
         #    print ()
@@ -221,11 +223,10 @@ class IndexSpace(object):
         sdf= scndf[[self.xkey, self.ykey, 'spt']]
         sdf.columns=['x', 'y', 'spt']
 
-        ydwarfs=(mdf[mdf['spt'].apply(make_spt_number)>38].append(sdf)).reset_index(drop=True)
-       
+        #ydwarfs=(mdf[mdf['spt'].apply(make_spt_number)>38].append(sdf)).reset_index(drop=True)
+        #print (ydwarfs)
 
-
-        self.add_box(ydwarfs, 'Y dwarfs', '#0074D9', 3.0)
+        self.add_box(sdf, 'Y dwarfs', '#0074D9', 3.0)
 
         #print (self.completeness)
 
@@ -520,7 +521,7 @@ def save_criteria(**kwargs):
     #tpl_ids[INDEX_NAMES]=(Annotator.reformat_table(tpl_ids[INDEX_NAMES]).applymap(float)+.1).applymap(np.log10)
     #sd_ids[INDEX_NAMES]=(Annotator.reformat_table(sd_ids[INDEX_NAMES]).applymap(float)+1.).applymap(np.log10)
     
-    conts=kwargs.get('conts', COMBINED_PHOTO_SPECTRO_DATA)
+    conts=kwargs.get('conts', None)
     #print(conts)
     conts=Annotator.reformat_table(conts.rename(columns={'grism_id': 'Names'}))
     keys=INDEX_NAMES
@@ -577,12 +578,7 @@ def plot_cont_compl(**kwargs):
     fig.savefig( OUTPUT_FIGURES+'/completeness_contamination.pdf', bbox_inches='tight')
     
     return 
-		
-def pick_by_contamination(input_dict):
-	"""
-	Given a contamination cut and
-	input dictionary should 
-	"""
+
 
 
 if __name__ =="__main__":

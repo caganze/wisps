@@ -27,20 +27,24 @@ def hst3d_phot_spec():
     """ combining all of HST-3D photometry catalogs and not ignoring columns
     """
     #photome
-    cat_files=glob.glob('/users/caganze/*_3dhst.v4.1.cats/Catalog/*.cat')
+    cat_files=glob.glob('/users/caganze/*_3dhst*/Catalog/*.cat')
     cats=[]
     for c in cat_files:
+        print (c)
         t=ascii.read(c).to_pandas()
         t['field']=c.split('_3dhst')[0].split('/')[-1]
         t['unique_id']=t['id'].apply(int).apply(str)+t['field'].apply(lambda x: x.lower())
-        cats.append(t)
+        cats.append(t.reset_index(drop=True))
+
     phot=pd.concat(cats)
     #phot=ascii.read(cat_files[0]).to_pandas()
     phot=phot.rename(columns={'id':'phot_id'})
 
+    print(phot.sample(n=10))
+
 
     #get grism_ids from the spectrum catalog
-    hdu=(fits.open(REMOTE_PHOT_CATALOGS+'3dhst.v4.1.5.master.fits')[1])
+    hdu=(fits.open('/users/caganze/3dhst.v4.1.5.master.fits')[1])
     spec=Table(hdu.data).to_pandas()
     #spec=spec[spec.grism_id !='00000']
 
@@ -72,18 +76,17 @@ def hst3d_phot_spec():
 
     #merge spec and phot on unique id, from photid, because photid is only unique within each field
     #this is done in order to obtain grism ids
-    spec['unique_id']=spec['phot_id'].apply(str)+spec['field'].apply(lambda x: x.lower())
+    spec['unique_id']=spec['phot_id'].apply(int).apply(str)+spec['field'].apply(lambda x: x.lower())
 
     phot['unique_id']=phot['unique_id'].apply(lambda x:  x.replace('-', '').strip())
-    spec['unique_id']=spec['unique_id'].apply(lambda x: x.strip())
+    spec['unique_id']=spec['unique_id'].apply(lambda x:  x.replace('-', '').strip())
 
     phot=phot.reset_index(drop=True)
     spec=spec.reset_index(drop=True)
-    
-    print (phot.unique_id.sample(n=10), spec.unique_id.sample(n=10))
-    print (spec.shape, phot.shape)
 
     merged=pd.merge(spec, phot, on='unique_id', how='inner', validate='one_to_one')
+
+    print (merged.shape)
 
 
     merged.to_csv(OUTPUT_FILES+'/hst3d_photometry_all.csv')
@@ -101,7 +104,7 @@ def wisp_phot_spec():
         
         files=[]
         for filterfile in filterfiles_names:
-            	filepaths=REMOTE_FOLDER+'/wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+'par'+str(fld)+'*/*'+str(filterfile)+'*_cat.txt'
+            	filepaths=REMOTE_FOLDER+'/wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+'par'+str(fld)+'/*'+str(filterfile)+'*_cat.txt'
             	for f in  glob.glob(filepaths): files.append(f)
         print (files)  
         return files

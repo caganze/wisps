@@ -52,7 +52,7 @@ def save_again():
 
 def look_at_all():
 	import wisps
-	df=wisps.datasets['rf_classified']
+	df=pd.read_csv(wisps.LIBRARIES+'/selected_by_rf.csv')
 
 	#remove files where file names exist
 	fnames=np.array([SPECTRA_PATH+'/indices/'+name.replace('-', '_')+'.jpeg' for name in df.grism_id.values])

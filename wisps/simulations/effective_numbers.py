@@ -25,7 +25,7 @@ DISTANCE_LIMITS={}
 for s in SPGRID:
     DISTANCE_LIMITS[s]=dist_arrays[s].mean(axis=0)
 
-def probability_of_selection(vals, method='idx_ft_label'):
+def probability_of_selection(vals, method='rf_label'):
     """
     probablity of selection for a given snr and spt
     """
@@ -91,8 +91,11 @@ def compute_effective_numbers(spts,SPGRID, h):
 
 
     #polynomial relations
-    rels=wisps.POLYNOMIAL_RELATIONS
+    relabsmags=wisps.POLYNOMIAL_RELATIONS['abs_mags']
+    relsnrs=wisps.POLYNOMIAL_RELATIONS['snr']
 
+    print (relabsmags)
+    print (relsnrs)
    
 
     #add pointings
@@ -109,15 +112,15 @@ def compute_effective_numbers(spts,SPGRID, h):
 
     
     #compute magnitudes absolute mags
-    f110s= np.random.normal(rels['sp_F110W'](spts), rels['sigma_sp_F110W'])
-    f140s= np.random.normal(rels['sp_F140W'](spts), rels['sigma_sp_F140W'])
-    f160s= np.random.normal(rels['sp_F160W'](spts), rels['sigma_sp_F160W'])
+    f110s= np.random.normal((relabsmags['F110W'][0])(spts), relabsmags['F110W'][1])
+    f140s= np.random.normal((relabsmags['F140W'][0])(spts), relabsmags['F140W'][1])
+    f160s= np.random.normal((relabsmags['F160W'][0])(spts), relabsmags['F160W'][1])
     #compute apparent magnitudes
     appf140s=f140s+5*np.log10(dists_for_spts/10.0)
     appf110s=f110s+5*np.log10(dists_for_spts/10.0)
     appf160s=f160s+5*np.log10(dists_for_spts/10.0)
     
-    snrjs=10**np.random.normal(np.array(rels['snr_F140W'](appf140s)),rels['sigma_log_f140'])
+    snrjs=10**np.random.normal( (relsnrs['snr_F140W'][0])(appf140s),relsnrs['snr_F140W'][1])
 
     sl= selection_function(spts, snrjs)
 

@@ -1,0 +1,1082 @@
+Traceback (most recent call last):
+  File "effective_numbers.py", line 4, in <module>
+    from .initialize import *
+ImportError: attempted relative import with no known parent package
+Traceback (most recent call last):
+  File "effective_numbers.py", line 4, in <module>
+    from .initialize import *
+ImportError: attempted relative import with no known parent package
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Task exception was never retrieved
+future: <Task finished coro=<_wrap_awaitable() done, defined at /Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py:623> exception=OSError(24, 'Too many open files')>
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+    self.http_server.listen(**http_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/asyncio/tasks.py", line 630, in _wrap_awaitable
+    return (yield from awaitable.__await__())
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+    self.start_http_server(routes, self._dashboard_address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+    self.http_server.listen(**tlz.merge(http_address, {"port": 0}))
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+    sockets = bind_sockets(port, address=address)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+    sock = socket.socket(af, socktype, proto)
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+OSError: [Errno 24] Too many open files
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 232, in start_http_server
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+OSError: [Errno 24] Too many open files
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "run_numbers.py", line 165, in <module>
+  File "run_numbers.py", line 149, in compute_with_dask
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/client.py", line 728, in __init__
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/client.py", line 932, in start
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/utils.py", line 347, in sync
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/utils.py", line 331, in f
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/client.py", line 1001, in _start
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/deploy/spec.py", line 366, in _
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/deploy/spec.py", line 335, in _correct_state_internal
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/worker.py", line 1037, in start
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/node.py", line 235, in start_http_server
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/tcpserver.py", line 151, in listen
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/netutil.py", line 140, in bind_sockets
+  File "/Users/caganze/anaconda3/lib/python3.7/socket.py", line 151, in __init__
+OSError: [Errno 24] Too many open files
+distributed.diskutils - ERROR - Failed to remove '/Users/caganze/research/wisps/wisps/simulations/dask-worker-space/worker-z9kw3haj' (failed in <built-in function scandir>): [Errno 24] Too many open files: '/Users/caganze/research/wisps/wisps/simulations/dask-worker-space/worker-z9kw3haj'
+distributed.diskutils - ERROR - Failed to remove '/Users/caganze/research/wisps/wisps/simulations/dask-worker-space/worker-z9kw3haj' (failed in <built-in function rmdir>): [Errno 66] Directory not empty: '/Users/caganze/research/wisps/wisps/simulations/dask-worker-space/worker-z9kw3haj'
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/Users/caganze/anaconda3/lib/python3.7/contextlib.py", line 130, in __exit__
+    self.gen.throw(type, value, traceback)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/utils.py", line 198, in ignoring
+    yield
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/deploy/spec.py", line 611, in close_clusters
+    cluster.close(timeout=10)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/deploy/cluster.py", line 84, in close
+    return self.sync(self._close, callback_timeout=timeout)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/deploy/cluster.py", line 163, in sync
+    return sync(self.loop, func, *args, **kwargs)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/utils.py", line 347, in sync
+    raise exc.with_traceback(tb)
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/utils.py", line 331, in f
+    result[0] = yield future
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/deploy/spec.py", line 393, in _close
+    assert w.status == "closed", w.status
+AssertionError: None
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6572e650>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6d90>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6ab53290>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6ab53190>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6ed0>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6ab53090>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6f90>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6dd0>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6d50>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6a50>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6990>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6f10>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6a10>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6b50>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6ad0>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6a90>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6ab532d0>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6fd0>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6ab53050>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6c10>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6b10>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6cd0>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6c50>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa69d0>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6b90>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6ab53250>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6ab53210>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6f50>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6e10>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6aaa6d10>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6ab53310>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6ab53110>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6ab530d0>()]>>
+Task was destroyed but it is pending!
+task: <Task pending coro=<InProcListener._listen() running at /Users/caganze/anaconda3/lib/python3.7/site-packages/distributed/comm/inproc.py:250> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x1a6ab53150>()]>>

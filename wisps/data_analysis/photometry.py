@@ -198,6 +198,7 @@ class Source(Spectrum):
     @mags.setter
     def mags(self, new_mags):
         self._mags=new_mags
+        self._calculate_distance()
         
     
     @property
