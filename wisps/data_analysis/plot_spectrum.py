@@ -36,6 +36,7 @@ def plot_image(sp, ax, cmap='inferno'):
         
         image=image_data['data']
         
+        #no cleaning for bright sources
         mask=image<3.*np.nanstd(image)
         vmin, vmax=ZScaleInterval().get_limits( image[mask])
         #norm=matplotlib.colors.Normalize(vmin=vmin, vmax=vmax, clip=False)
@@ -124,13 +125,14 @@ def plot_source(sp, **kwargs):
     ax3.set_ylabel(ylabel, fontsize=18)
     
     #add the 2d spectrum
-    med=np.nanmedian(sp.spectrum_image)
-    stdev=3.*np.nanstd(sp.spectrum_image)
+    #dont subtract/clean up (bad)
+    #med=np.nanmedian(sp.spectrum_image)
+    #stdev=3.*np.nanstd(sp.spectrum_image)
 
-    bools= np.logical_and(abs(sp.spectrum_image) < stdev, abs(sp.spectrum_image)>stdev)
+    #bools= np.logical_and(abs(sp.spectrum_image) < stdev, abs(sp.spectrum_image)>stdev)
 
     img=sp.spectrum_image
-    img[bools]=None
+    #img[bools]=None
     v0, v1=ZScaleInterval().get_limits(img)
     ax2.imshow(img, vmin=v0, vmax=v1, cmap='Greys', aspect='auto')
     ax2.set_xlabel('G141', fontsize=15)

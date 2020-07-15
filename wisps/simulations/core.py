@@ -68,9 +68,10 @@ def get_accurate_relations(x, rel, rel_unc):
 def compute_distance_limits(mag_limits):
     """
     computes distance limits based on limiting mags
+    take the mininum distance of the the three because that incorporates every simulated
     """
     faint_dict={'F110W': (mag_limits['F110'], 0.0), 'F140W': (mag_limits['F140'], 0.0), 'F160W':(mag_limits['F160'], 0.0)}
-    bright_dict={'F110W': (18., 0.0), 'F140W': (16., 0.0), 'F160W': (16., 0.0)}
+    bright_dict={'F110W': (16., 0.0), 'F140W': (16., 0.0), 'F160W': (16., 0.0)}
     distances=[]
     if np.isnan([ x for x in mag_limits.values()]).all():
         return {}
@@ -114,14 +115,14 @@ def get_mag_limit(pnt, key, mags):
         if key=='F110':
             return maglt
 
-    if (len(mags) < 50) or (mags==mags).all():
+    if (len(mags) < 10) or (mags==mags).all():
         magpol=MAG_LIMITS[survey][key][0]
         magsctt=MAG_LIMITS[survey][key][1]
         maglt=np.nanmean(np.random.normal(magpol(np.log10(pnt.exposure_time)), magsctt, 100))
         #maglt=get_max_value(mags)
 
     #use KDEs for more than 50
-    if not  ((len(mags) < 50) or (mags==mags).all()):
+    if not  ((len(mags) < 10) or (mags==mags).all()):
         maglt=get_max_value(mags)
     return maglt
 
@@ -141,6 +142,7 @@ class Pointing(object):
         self.exposure_time=None
         self.exposure_times=None
         self.observation_date=None
+        self.number_of_sources={}
 
         #compute volumes after initialization
         if self.name is not None:
@@ -151,6 +153,7 @@ class Pointing(object):
             for k in ['F110', 'F140', 'F160']:
                 self.mags[k]=df[k].values
                 self.mag_limits[k]= get_mag_limit(self, k, self.mags[k])
+                self.number_of_sources[k]= len(self.mags[k])
 
     def compute_volume(self):
         self.dist_limits=compute_distance_limits(self.mag_limits)

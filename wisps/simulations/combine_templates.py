@@ -29,14 +29,16 @@ def combine_two_spectra(sp10, sp20):
     sp1=sp10.splat_spectrum
     sp2=sp20.splat_spectrum
     
-    absj=(wisps.absolute_magnitude_jh(wisps.make_spt_number(sp10.spectral_type[0]))[0]).flatten()[0]
+    absj0=(wisps.absolute_magnitude_jh(wisps.make_spt_number(sp10.spectral_type[0]))[1]).flatten()[0]
+    absj1=(wisps.absolute_magnitude_jh(wisps.make_spt_number(sp20.spectral_type[0]))[1]).flatten()[0]
+
 
     try:
-        sp1.fluxCalibrate('2MASS J',  absj)
-        sp2.fluxCalibrate('2MASS J',  absj)
+        sp1.fluxCalibrate('2MASS H',  absj0)
+        sp2.fluxCalibrate('2MASS H',  absj1)
         
         sp3=sp1+sp2
-        return {'primary': [sp10.spectral_type[0], sp20.spectral_type[0]], 
+        return {'primary': [sp10.spectral_type, sp20.spectral_type], 
         'system': proper_classification(sp3),
         'spectrum': sp3}
     except:

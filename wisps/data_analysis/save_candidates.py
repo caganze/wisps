@@ -5,6 +5,7 @@ import glob
 from .photometry import Source, get_multiple_sources
 from .spectrum_tools import Spectrum
 from ..utils.tools import get_distance, make_spt_number
+from tqdm import tqdm
 
 
 import numba
@@ -37,7 +38,9 @@ def get_cand_grism_ids():
 	#df=	COMBINED_PHOTO_SPECTRO_DATA
 	#print ((df[df.grism_id.isin(lcands)]).grism_id.values)
 	#df[df.grism_id.isin(lcands)].to_pickle(LIBRARIES+'/candidates.pkl')
-	pd.DataFrame(lcands).to_pickle(LIBRARIES+'/candidates_ids.pkl')
+	df=pd.DataFrame()
+	df['grism_id']=lcands
+	df.to_pickle(LIBRARIES+'/candidates_ids.pkl')
 	return lcands
 
 def save_cands():
@@ -52,7 +55,9 @@ def save_again():
 
 def look_at_all():
 	import wisps
-	df=pd.read_csv(wisps.LIBRARIES+'/selected_by_rf.csv')
+	df=pd.read_csv(wisps.LIBRARIES+'/selected_by_neural.csv')
+	df=df[df.snr1>2.]
+	print (df)
 
 	#remove files where file names exist
 	fnames=np.array([SPECTRA_PATH+'/indices/'+name.replace('-', '_')+'.jpeg' for name in df.grism_id.values])
@@ -63,8 +68,6 @@ def look_at_all():
 	sources=get_multiple_sources(df.grism_id.values[~exist_flag])
 	
 
-	for s, fname in zip(sources, fnames[~exist_flag]):
+	for s, fname in tqdm(zip(sources, fnames[~exist_flag])):
 		if s is not None:
 			s.plot(save=True, filename=fname.strip())
-
-
