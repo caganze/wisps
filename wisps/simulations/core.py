@@ -115,14 +115,14 @@ def get_mag_limit(pnt, key, mags):
         if key=='F110':
             return maglt
 
-    if (len(mags) < 10) or (mags==mags).all():
+    if ((len(mags) < MAG_LIMITS['ncutoff']) or (mags==mags).all()):
         magpol=MAG_LIMITS[survey][key][0]
         magsctt=MAG_LIMITS[survey][key][1]
         maglt=np.nanmean(np.random.normal(magpol(np.log10(pnt.exposure_time)), magsctt, 100))
         #maglt=get_max_value(mags)
 
     #use KDEs for more than 50
-    if not  ((len(mags) < 10) or (mags==mags).all()):
+    if not  ((len(mags) < MAG_LIMITS['ncutoff']) or (mags==mags).all()):
         maglt=get_max_value(mags)
     return maglt
 
