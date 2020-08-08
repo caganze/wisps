@@ -84,6 +84,7 @@ def compute_simulated_numbers(hidx, model='saumon2008', selection='prob'):
     simdf['appF110']=data['appf110']
     simdf['appF160']=data['appf160']
     simdf['pntname']=data['pnt']
+    simdf['dist']=data['d']
     
     simdf['pnt']=simdf.pntname.apply(lambda x: np.array(pnts)[pnt_names.index(x)])
     
@@ -94,6 +95,10 @@ def compute_simulated_numbers(hidx, model='saumon2008', selection='prob'):
     
     
     cutdf=(simdf[flags]).reset_index(drop=True)
+
+    cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample.hdf', key=str(model)+str('h')+str(hidx))
+
+    #save this cutdf dataframe
     NORM = 0.63*(10**-3)/ len(cutdf.teff[np.logical_and(cutdf.teff>=1650, cutdf.teff <=1800)])
     
     NSIM=dict(zip(wispsim.SPGRID,np.zeros(len(wispsim.SPGRID))))

@@ -48,6 +48,7 @@ def sample_distances(nsample=1000, h=300):
     sample the galaxy given a scale height
     
     """
+    #add an option for sampling a uniform distribution for scale-heights
     def logp(l, b, r, z, d, h):
         return np.log((d**2)*wispsim.density_function(r, z, h))
 
@@ -61,6 +62,10 @@ def sample_distances(nsample=1000, h=300):
         y=pm.Deterministic('y', -d*np.cos(b)*np.sin(l))
         r=pm.Deterministic('r', (x**2+y**2)**0.5 )
         z=pm.Deterministic('z', Zsun+ d * np.sin(b))
+
+        #add an option for sampling a uniform distribution
+        #if h=='uniform':
+        #    h=pm.Uniform('h', lower=h_bounds[0], upper=h_bounds[-1])
 
         like = pm.DensityDist('likelihood', logp, observed={'l':l, 'b':b,
                              'r': r, 'z': z, 'd':d, 'h':h})
@@ -120,7 +125,7 @@ def save_all_stuff():
     full_dict={}
 
     for h in wispsim.HS:
-        trace=sample_distances(nsample=2.5e4, h=h)
+        trace=sample_distances(nsample=1.0e4, h=h)
         #save each scale height separetly to avoid overloading the disk
         dists=np.array(trace['d'])
         rs=np.array(trace['r']) 

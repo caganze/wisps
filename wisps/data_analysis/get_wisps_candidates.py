@@ -7,21 +7,18 @@ def dumb_function(x):
 	s=wisps.Source(filename=x)
 	return s
 
-df=pd.read_hdf(wisps.LIBRARIES+'/objects_of_interest.hdf', key='all')
 
-#df_missing=pd.read_pickle(wisps.LIBRARIES+'/candidates_ids.pkl')
+df_missing=pd.read_pickle(wisps.LIBRARIES+'/candidates_ids.pkl')
 
+missing=df_missing.grism_id.replace('g141', 'G141').values
 
-missing=df.grism_id[df.spectra.isna()].values
-print (missing)
 missing_spectra=wisps.get_multiple_sources(missing)
 
 missing_df=pd.DataFrame()
 missing_df['grism_id']=missing
 missing_df['spectra']=missing_spectra
 
-dfn=pd.concat([df, df_missing])
-dfn.to_hdf(wisps.LIBRARIES+'/objects_of_interest.hdf', key='all')
+missing_df.to_hdf(wisps.LIBRARIES+'/objects_of_interest.hdf', key='all')
 
 
 #df=pd.read_pickle(wisps.LIBRARIES+'/candidates_ids.pkl')

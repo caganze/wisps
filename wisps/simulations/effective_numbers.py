@@ -19,13 +19,16 @@ import dask
 
 
 pnts=wisps.OBSERVED_POINTINGS
+
 #some re-arragments because the limiting distance depends on the pointing
 dist_arrays=pd.DataFrame.from_records([x.dist_limits for x in pnts]).applymap(lambda x:np.vstack(x).astype(float))
 DISTANCE_LIMITS={}
+BAYESIAN_DISTANCES_VOLUMES=np.load(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', allow_pickle=True)
+
 for s in SPGRID:
     DISTANCE_LIMITS[s]=dist_arrays[s].mean(axis=0)
 
-def probability_of_selection(vals, method='rf_label'):
+def probability_of_selection(vals, method='tot_label'):
     """
     probablity of selection for a given snr and spt
     """
@@ -34,7 +37,7 @@ def probability_of_selection(vals, method='rf_label'):
     #self.data['spt']=self.data.spt.apply(splat.typeToNum)
     floor=np.floor(spt)
     floor2=np.log10(np.floor(snr))
-    return np.nanmean(ref_df[method][(ref_df.spt==floor) &(ref_df.snr.apply(np.log10).between(floor2, floor2+.3))])
+    return np.nanmean(ref_df[method][(ref_df.spt==floor) &(ref_df.logsnr.between(floor2, floor2+.3))])
 
 @np.vectorize
 def selection_function(spt, snr):
@@ -44,8 +47,7 @@ def compute_effective_numbers(spts,SPGRID, h):
     ##given a distribution of masses, ages, teffss
     ## based on my polynomial relations and my own selection function
     spts=wisps.make_spt_number(spts)
-    BAYESIAN_DISTANCES_VOLUMES=np.load(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', allow_pickle=True)
-    
+
     DISTANCE_WITHIN_LIMITS_BOOLS={}
     #LONGS=(BAYESIAN_DISTANCES_VOLUMES['ls'][h]).flatten()
     #LATS=(BAYESIAN_DISTANCES_VOLUMES['bs'][h]).flatten()
