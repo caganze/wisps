@@ -109,48 +109,6 @@ def compute_simulated_numbers(hidx, model='saumon2008', selection='prob'):
         
     return {model: {hidx:NSIM}}
 
-def plot(NUMBERS, VOLUMES):
-
-    import seaborn as sns
-    #flatui =['#001f3f', '#0074D9', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00']
-    sns.set_palette(sns.color_palette("husl"))
-    #sns.set_palette(sns.color_palette(flatui, len(wispsim.HS)))
-
-
-    # In[ ]:
-    y2=bin_by_spt_bin(wispsim.SPGRID,nobs)
-    dy2=np.sqrt(y2)
-
-    fig, ax=plt.subplots(figsize=(12, 12), ncols=2, nrows=2, sharey=True, sharex=False)
-    for model, a in zip(['saumon2008', 'baraffe2003', 'marley2019', 'phillips2020'], np.concatenate(ax)):
-        
-        for idx, h in enumerate(wispsim.HS):
-            
-            ns=None
-            ns=((NUMBERS[model])[idx])*VOLUMES[idx]
-            
-            a.step(spgrid2, bin_by_spt_bin(wispsim.SPGRID,ns), 
-                         where='mid', label='h={} pc'.format(h))
-        
-        a.set_yscale('log')
-        a.errorbar(spgrid2,y2, yerr=dy2,fmt='o', color='k')
-        a.set_xlabel('SpT',fontsize=18)
-        a.set_ylabel('N',fontsize=18)
-        a.minorticks_on()
-            
-
-
-    ax[0][0].set_title('Model= SM08', fontsize=18)
-    ax[0][1].set_title('Model= B03', fontsize=18)
-    ax[1][0].set_title('Model= Sonora', fontsize=18)
-    ax[1][1].set_title('Model= P20', fontsize=18)
-
-    ax[0][0].errorbar(spgrid2,y2, yerr=dy2,fmt='o', color='k', label='observations')
-    ax[0][0].legend(fontsize=14, loc='upper right')
-    plt.tight_layout()
-    plt.savefig(wisps.OUTPUT_FIGURES+'/oberved_numbers.pdf', bbox_inches='tight')
-
-
 
 def compute_with_dask():
 
@@ -181,8 +139,7 @@ def compute_with_dask():
 if __name__ =='__main__':
 
     ds = compute_with_dask()
-    print (ds)
-
+ 
     NUMBERS = {}
     for k in ['saumon2008', 'marley2019', 'phillips2020', 'baraffe2003']:
         ds0={}
@@ -192,32 +149,12 @@ if __name__ =='__main__':
                 ds0.update({key: [(j[k][key])[yi] for yi in wispsim.SPGRID]})
         NUMBERS[k]=np.vstack([ds0[k] for k in wispsim.HS])
 
-
-    tab['pnt']=tab['grism_id'].apply(get_pointing)
-    tab['spt_val']=np.vstack(tab.spt.values)[:,0]
-    obsmgs=tab[['F140W', 'F110W', 'F160W']].rename(columns={"F110W": "F110", 
-                                                                    "F140W": "F140",
-                                                                    "F160W": "F160"}).to_dict('records')
-    flags=[iswithin_mag_limits(x, y) for x, y in zip(obsmgs, tab.pnt.values)]
-    cdf_to_use=tab[flags]
-    nobs=wisps.custom_histogram(cdf_to_use.spt_val.apply(wisps.make_spt_number), sgrid, 1)
-    spgrid2=['M7-L0', 'L0-L5', 'L5-T0', 'T0-T5', 'T5-Y0']
-    cnorm=Normalize(wispsim.HS[0], wispsim.HS[-1])
-
-    volumes=[]
-    for pnt in pnts:
-        vs=[]
-        for h in wispsim.HS:
-            vsx=[]
-            for g in wispsim.SPGRID:
-                vsx.append((pnt.volumes[h])[g])
-            vs.append(vsx)
-        volumes.append(vs)
-    volumes=np.array(volumes)
-
-    VOLUMES=np.nansum(volumes, axis=0)*4.1*(u.arcmin**2).to(u.radian**2)
-
-    plot(NUMBERS, VOLUMES)
+    #save numbers 
+    import pickle
+    #save the random forest
+    output_file=wisps.OUTPUT_FILES+'/numbers_simulated.pkl'
+    with open(output_file, 'wb') as file:
+        pickle.dump(NUMBERS,file)
 
 
 

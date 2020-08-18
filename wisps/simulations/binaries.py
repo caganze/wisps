@@ -14,7 +14,7 @@ from theano.compile.ops import as_op
 import astropy.units as u
 import numba
 
-BINARY_TABLE=pd.read_pickle(wisps.OUTPUT_FILES+'/binary_lookup_table.pkl')
+BINARY_TABLE=pd.read_pickle(wisps.OUTPUT_FILES+'/binary_lookup_table.pkl.gz')
 BINARY_TABLE_SYS=(BINARY_TABLE['sys']).values
 BINARY_TABLE_PRIM=(BINARY_TABLE['prim']).values
 BINARY_TABLE_SEC=(BINARY_TABLE['sec']).values

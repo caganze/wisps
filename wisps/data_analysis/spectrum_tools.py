@@ -29,7 +29,7 @@ from ..utils.tools import get_distance, make_spt_number
 from ..data_sets import datasets
 
 
-POLYNOMIAL_RELATIONS= pd.read_pickle(OUTPUT_FILES+'/polynomial_relations.pkl')
+POLYNOMIAL_RELATIONS= pd.read_pickle(OUTPUT_FILES+'/polynomial_relations.pkl.gz')
 
 from functools import lru_cache #high performance memoization
 
