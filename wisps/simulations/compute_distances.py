@@ -9,7 +9,7 @@ from astropy.coordinates import SkyCoord
 import theano
 import theano.tensor as tt
 import pandas as pd
-import pymc3 as pm
+#import pymc3 as pm
 import seaborn as sns 
 from matplotlib.colors import Normalize
 import numba
@@ -137,7 +137,7 @@ def save_all_stuff():
     return 
 
 if __name__ =='__main__':
-    save_all_stuff()
+    #save_all_stuff()
     import wisps.simulations.effective_numbers as eff
     eff.simulation_outputs(recompute=True, hs=wispsim.HS)
 

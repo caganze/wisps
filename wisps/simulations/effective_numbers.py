@@ -96,8 +96,8 @@ def compute_effective_numbers(spts,SPGRID, h):
     relabsmags=wisps.POLYNOMIAL_RELATIONS['abs_mags']
     relsnrs=wisps.POLYNOMIAL_RELATIONS['snr']
 
-    print (relabsmags)
-    print (relsnrs)
+    #print (relabsmags)
+    #print (relsnrs)
    
 
     #add pointings
@@ -141,12 +141,13 @@ def get_all_values_from_model(model, **kwargs):
     hs=kwargs.get("hs", HS)
     #comput the rest from the survey
     outdata={}
+    #things that depend on scale height (am I duplicating data?)
+    outdata['spts']=spts
+    #outdata[h]['mass']=syst['system_mass']
+    outdata['teff']=syst['system_teff']
+    outdata['age']=syst['system_age']
     for h in tqdm(hs):
          outdata[h]=compute_effective_numbers(spts,SPGRID, h)
-         outdata[h]['spts']=spts
-         #outdata[h]['mass']=syst['system_mass']
-         outdata[h]['teff']=syst['system_teff']
-
     return outdata
 
 #use dask parallelization for this emberassaingly parallel problem 

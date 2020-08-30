@@ -51,7 +51,7 @@ def simulate_binary(nstuff, mass_range):
         age=pm.Uniform('t', lower=0.1, upper=10) #system age
         like = pm.DensityDist('likelihood', total_likelihood, observed={'m1': prim, 'q': q, 
 	                                                                   'alpha': alpha, 'gamma': gamma})
-        trace = pm.sample(draws=nstuff,  cores=4,  tune=int(nstuff/20), discard_tuned_samples=True, init='advi')
+        trace = pm.sample(draws=nstuff,  cores=4,  tune=int(nstuff/20),  init='advi')
 
     return [trace.m1, trace.m2, trace.t]
 
@@ -121,7 +121,7 @@ def simulate_spts(**kwargs):
     #automatically set maxima and minima to avoid having too many nans
     #mass age and age,  min, max
     acceptable_values={'baraffe2003': [0.0005, 0.1, 0.001, 10.0],
-    'marley2019': [0.0005, 0.08, 0.001, 15.0], 'saumon2008':[0.002, 0.09, 0.003, 15.0], 
+    'marley2019': [0.0005, 0.08, 0.001, 10.0], 'saumon2008':[0.002, 0.09, 0.003, 10.0], 
     'phillips2020':[0.0005, 0.075, 0.001, 10.0 ]}
     
     if recompute:
@@ -129,6 +129,7 @@ def simulate_spts(**kwargs):
         nsim = kwargs.get('nsample', 1e5)
 
         ranges=acceptable_values[model_name]
+        print (ranges)
         
         # masses for singles [this can be done with pymc but nvm]
         m_singles = spsim.simulateMasses(nsim,range=[ranges[0], ranges[1]],distribution='power-law',alpha=0.6)

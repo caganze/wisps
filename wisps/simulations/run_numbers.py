@@ -76,8 +76,9 @@ def compute_simulated_numbers(hidx, model='saumon2008', selection='prob'):
     #df=dd.from_pandas(data, npartitions=3)
 
     simdf=pd.DataFrame()
-    simdf['spt']=data['spts'].flatten()
-    simdf['teff']=data['teff'].flatten()
+    simdf['spt']=(ef.simulation_outputs()[model])['spts'].flatten()
+    simdf['teff']=(ef.simulation_outputs()[model])['teff'].flatten()
+    simdf['age']=(ef.simulation_outputs()[model])['age'].flatten()
     simdf['slprob']=data['sl']
     simdf['snr']=data['snrj']
     simdf['appF140']=data['appf140']
