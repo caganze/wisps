@@ -19,22 +19,23 @@ import splat
 
 
 def measure_all_indices(wave, flux, noise):
+
     wavranges=[[[1.15, 1.20], [1.246, 1.295]],
     [[1.38, 1.43],  [1.15, 1.20]],  
-    [[1.56, 1.61],  [1.15, 1.20]],  
+    [[1.55, 1.60],  [1.15, 1.20]],  
     [[1.62,1.67],   [1.15, 1.20]],  
     [[1.38, 1.43],  [1.246, 1.295]],
-    [[1.56, 1.61],  [1.246, 1.295]],
+    [[1.55, 1.60],  [1.246, 1.295]],
     [[1.62,1.67],   [1.246, 1.295]],
-    [[1.56, 1.61],  [1.38, 1.43]],
+    [[1.55, 1.60],  [1.38, 1.43]],
     [[1.62,1.67],   [1.38, 1.43]],
-    [[1.62,1.67],   [1.56, 1.61]],
+    [[1.62,1.67],   [1.55, 1.60]],
     [[1.38, 1.43],  [1.15, 1.20],   [1.246, 1.295]],
-    [[1.38, 1.43],  [1.15, 1.20],   [1.56, 1.61]],
+    [[1.38, 1.43],  [1.15, 1.20],   [1.55, 1.60]],
     [[1.15, 1.20], [1.62,1.67],  [1.246, 1.295]],
-    [[1.15, 1.20], [1.62,1.67],   [1.56, 1.61]],
+    [[1.15, 1.20], [1.62,1.67],   [1.55, 1.60]],
     [[1.38, 1.43], [1.62,1.67], [1.246, 1.295]],
-    [[1.38, 1.43], [1.62,1.67],   [1.56, 1.61]]]
+    [[1.38, 1.43], [1.62,1.67],   [1.55, 1.60]]]
     
     return dict(zip(wsps.INDEX_NAMES, [measure_median_index(wave, flux, noise, x) for  x in wavranges]))
     
@@ -67,11 +68,12 @@ def measure_median_index(wave, flux, noise, *args):
         return (np.nan, np.nan)
 
 
-def measure_indices(s,**kwargs):
+def measure_indices(sp,**kwargs):
     """
     sp must be a Spectrum object
     roughly similar to splat.measureIndices (github.com/aburgasser/splat) 
     """
-    return  measure_all_indices(sp.wave.value, sp.flux.value, sp.noise.value)
+    sp.normalize()
+    return  measure_all_indices(sp.wave, sp.flux, sp.noise)
 
 

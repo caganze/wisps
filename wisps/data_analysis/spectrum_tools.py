@@ -202,6 +202,12 @@ class Spectrum(object):
         self._spectral_type=new_type
 
     @property
+    def dof(self):
+        #convert to use splat dof 
+        return self.splat_spectrum.dof
+    
+
+    @property
     def empty_flag(self):
         if np.all(self.flux ==-1.0):
             self._empty_flag=True
@@ -222,9 +228,7 @@ class Spectrum(object):
      	
     @property 
     def splat_spectrum(self):
-    	self._splat_spectrum= splat.Spectrum(wave=self._wave, flux=self._flux, noise=self._noise, instrument='WFC3')
-    	return self._splat_spectrum
-
+    	return splat.Spectrum(wave=self._wave, flux=self._flux, noise=self._noise, instrument='WFC3-G141')
     @property
     def best_fit_line(self):
         ##save the best fit line as part of the object
@@ -496,10 +500,10 @@ def f_test(spectrum, **kwargs):
     #calculate f-statistic
     x=spexchi/linechi
     #calculate the f-statistic dfn=2, dfd=1 are areguments
-    f=stats.f.cdf(x, 2, 1, 0, scale=1)
+    f=stats.f.cdf(x,  std.dof+spectrum.dof-1, spectrum.dof-2)
     #return result
     result={'spex_chi':spexchi, 'line_chi':linechi, \
-    'x':x, 'f':f, '_best_fit_line': [line, linechi]}
+    'x':x, 'f':f, '_best_fit_line': [line, linechi], 'df1':std.dof+spectrum.dof-1, 'df2': spectrum.dof-2  }
     return result
 
 def compute_chi_square(flux, noise, model):
@@ -580,6 +584,7 @@ def distance(mags, spt, spt_unc):
         res[str('dist_er')+k]=np.nanstd(dists)
 
     return res
+    
 def kde_statsmodels_m(x, x_grid, **kwargs):
     """
     multivariate kde
