@@ -105,12 +105,13 @@ def _run_search(name):
     if prefix in ['aeg', 'cos', 'uds', 'goo']:
             syls= (name.split('-'))
             str_= REMOTE_FOLDER+'*'+prefix+'*'+'/*'+prefix+ '*'+syls[1]+'*'+'/1D/ASCII/'+prefix+'*'+ syls[1]+ '*'+syls[2]+'*'
+            #print (str_)
             path=glob.glob(str_)[0]
     return path
 
 @memoize_func
 def return_path(name):
-	#print(name)
+	#print(name)wisps
 	if type(name) is list:
 		paths=[]
 		for p in name:

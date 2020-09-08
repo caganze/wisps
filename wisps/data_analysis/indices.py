@@ -37,7 +37,7 @@ def measure_all_indices(wave, flux, noise):
     [[1.38, 1.43], [1.62,1.67], [1.246, 1.295]],
     [[1.38, 1.43], [1.62,1.67],   [1.55, 1.60]]]
     
-    return dict(zip(wsps.INDEX_NAMES, [measure_median_index(wave, flux, noise, x) for  x in wavranges]))
+    return dict(zip(INDEX_NAMES, [measure_median_index(wave, flux, noise, x) for  x in wavranges]))
     
     
 def measure_median_index(wave, flux, noise, *args):

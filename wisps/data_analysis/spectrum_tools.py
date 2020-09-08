@@ -202,6 +202,11 @@ class Spectrum(object):
         self._spectral_type=new_type
 
     @property
+    def index_type(self):
+        return splat.classifyByIndex(self.splat_spectrum, ref='allers')
+
+
+    @property
     def dof(self):
         #convert to use splat dof 
         return self.splat_spectrum.dof
@@ -338,7 +343,7 @@ class Spectrum(object):
         returns a wisp spectrum, given filepath/filename
         """
         #raise error is path does not exist
-        print(new_file_path)
+        #print(new_file_path)
         if not os.path.exists(new_file_path):
             raise NameError('\nCould not find file {}'.format(new_file_path))
         
@@ -491,6 +496,7 @@ def f_test(spectrum, **kwargs):
     if spectrum.spectral_type is None:
         spectrum.classify_by_standard()
     
+    #print (spectrum.spectral_type)
     spt=spectrum.spectral_type[0]
     std=STD_DICTS[splat.typeToNum(spt)]
 

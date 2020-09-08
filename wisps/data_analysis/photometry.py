@@ -70,7 +70,7 @@ class Source(Spectrum):
         if 'mags' in kwargs:
             self.mags=kwargs.get('mags')
             
-        if self._distance is None: self._calculate_distance()
+        if self._distance is None: self.calculate_distance()
         if self._filename is not None: self.name=kwargs.get('filename', self._filename)
 
         self.original = copy.deepcopy(self)
@@ -106,7 +106,7 @@ class Source(Spectrum):
         """
         This must be an astropy skycoord object
         """
-        if self._distance is None: self._calculate_distance()
+        if self._distance is None: self.calculate_distance(use_spt_unc=True)
         return self._coords
         
     @coords.setter
@@ -129,6 +129,7 @@ class Source(Spectrum):
         if new_name.endswith('.ascii'): new_name=new_name.split('.ascii')[0].split('.')[0]
         if  new_name.endswith('.dat'): new_name=new_name.split('.dat')[0]
         if new_name.endswith('.1D'): new_name=new_name.split('.1D')[0]
+        if new_name.startswith('hlsp_wisp'): new_name=new_name.split('wfc3_')[1].split('a_g')[0]
 		
         self.filename=new_name
         #get mags from the photometry catalog
@@ -157,7 +158,7 @@ class Source(Spectrum):
         img.pixels_per_imagep=self.pixels_per_image
         self._image=img
         self.original = copy.deepcopy(self)
-        self._calculate_distance()
+        self.calculate_distance()
     
         
         
@@ -198,20 +199,20 @@ class Source(Spectrum):
     @mags.setter
     def mags(self, new_mags):
         self._mags=new_mags
-        self._calculate_distance()
+        self.calculate_distance()
         
     
-    @property
-    @lru_cache(maxsize=128)
-    def distances(self):
-        """
-        distances measured using absmag/spt relations from Dupuy et al
-        """
-        #return self._distance
-        if self._distance is None:
-            self._calculate_distance()
-            
-        return self._distance
+    #@property
+    #@lru_cache(maxsize=128)
+    #def distances(self):
+    #    """
+    #    distances measured using absmag/spt relations from Dupuy et al
+    #    """
+    #    #return self._distance
+    #    if self._distance is None:
+    #        self.calculate_distance()
+    #        
+    #    return self._distance
     
     @property
     #@lru_cache(maxsize=128)
@@ -221,10 +222,10 @@ class Source(Spectrum):
         """
         #print (self.distances)
         if self._distance is None:
-            self._calculate_distance()
+            self.calculate_distance()
 
-        ds=np.array([self.distances[k] for k in self.distances.keys() if ('dist'  in k) and ('dist_er'  not in k)])
-        ers=np.array([self.distances[k] for k in self.distances.keys() if 'dist_er'  in k])
+        ds=np.array([self._distance[k] for k in self._distance.keys() if ('dist'  in k) and ('dist_er'  not in k)])
+        ers=np.array([self._distance[k] for k in self._distance.keys() if 'dist_er'  in k])
 
         #distance is the weighted mean and std 
         nans=np.isnan(ds)
@@ -258,7 +259,7 @@ class Source(Spectrum):
     def flags(self):
         return self._flags
     
-    def _calculate_distance(self):
+    def calculate_distance(self, use_spt_unc=True, use_index_type=False):
         
         """
         computing a photo-spectrometric distance of the source 
@@ -270,9 +271,22 @@ class Source(Spectrum):
     
         if self.spectral_type is None:
             self.spectral_type = splat.classifyByStandard(self.splat_spectrum, comprange=[[1.2, 1.6]], dwarf=True,subdwarf=False,  statistic='chisqr') [0]
-            
         
-        self._distance= distance(self.mags, self.spectral_type[0],  self.spectral_type[1])
+
+        spt=self.spectral_type[0]
+        spt_unc=0.0
+
+        #whether to use spt unc or to use index classification
+        if use_spt_unc:
+              spt_unc=self.spectral_type[1]
+
+        if use_index_type:
+            spt=float(make_spt_number(self.index_type[0]))
+            if use_spt_unc:
+                spt_unc=float(self.index_type[1])
+
+        self._distance= distance(self.mags, spt, spt_unc )
+
         if self._distance is not None:
             self.coords=SkyCoord(ra=self._ra, dec=self._dec,  distance=self.distance['val'].value*u.pc)
         
