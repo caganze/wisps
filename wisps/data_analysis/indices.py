@@ -17,6 +17,7 @@ from scipy.interpolate import interp1d   #for 1-d interpolation
 import splat
 
 
+#change indices later to 1.50
 
 def measure_all_indices(wave, flux, noise):
 

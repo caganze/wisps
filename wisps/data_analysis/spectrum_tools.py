@@ -506,7 +506,7 @@ def f_test(spectrum, **kwargs):
     #calculate f-statistic
     x=spexchi/linechi
     #calculate the f-statistic dfn=2, dfd=1 are areguments
-    f=stats.f.cdf(x,  std.dof+spectrum.dof-1, spectrum.dof-2)
+    f=stats.f.cdf(x,  spectrum.dof-1, spectrum.dof-2)
     #return result
     result={'spex_chi':spexchi, 'line_chi':linechi, \
     'x':x, 'f':f, '_best_fit_line': [line, linechi], 'df1':std.dof+spectrum.dof-1, 'df2': spectrum.dof-2  }
