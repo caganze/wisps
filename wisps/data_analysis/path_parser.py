@@ -66,8 +66,8 @@ def parse_path(name, version):
 		stamp_image_path=glob.glob(REMOTE_FOLDER+'/wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/'+folder+'*/2dstamp/hlsp_wisp_hst_wfc3*'+name+'*a_g141_v6.2_stamp2d.fits')[0]
 	if survey=='hst3d':
 		spectrum_path=_run_search(name)
-		#print (spectrum_path.split('/1D/ASCII/')[0]+'/2D/'+'FITS/'+name.split('1D')[0]+'*2D.fits')
-		stamp_image_path=glob.glob(spectrum_path.split('/1D/ASCII/')[0]+'/2D/'+'FITS/'+name.split('1D')[0]+'*2D.fits')[0]
+		s= spectrum_path.split('/1D/ASCII/')[0]+'/2D/'+'FITS/'+name.split('1D')[0]+'*2D.fits'
+		stamp_image_path=glob.glob(s.replace('g141', 'G141') )[0]
 		#print ('stamp image',stamp_image_path )
 	#print (survey, spectrum_path, stamp_image_path)
 	#blah
@@ -106,7 +106,7 @@ def _run_search(name):
             syls= (name.split('-'))
             str_= REMOTE_FOLDER+'*'+prefix+'*'+'/*'+prefix+ '*'+syls[1]+'*'+'/1D/ASCII/'+prefix+'*'+ syls[1]+ '*'+syls[2]+'*'
             #print (str_)
-            path=glob.glob(str_)[0]
+            path=glob.glob(str_.replace('g141', 'G141'))[0]
     return path
 
 @memoize_func
