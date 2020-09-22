@@ -13,12 +13,12 @@ from wisps.utils import *
 
 
 import matplotlib as mpl 
+import matplotlib.font_manager as font_manager; font_manager._rebuild() 
 
 ##giving me a hard time
 
 import seaborn
 seaborn.set_style("ticks")
-
 
 #matplotlib defaults
 mpl.rcParams['grid.color'] = 'k'
@@ -42,14 +42,21 @@ mpl.rcParams['ytick.left']=True
 mpl.rcParams['xtick.direction']='in'
 mpl.rcParams['ytick.direction']='in'
 
+mpl.rcParams['font.serif'] = 'Ubuntu'
+#mpl.rcParams['font.monospace'] = 'Ubuntu Mono'
+mpl.rcParams["mathtext.fontset"] = "dejavuserif"
 
+mpl.rcParams['axes.labelsize'] = 18
+mpl.rcParams['xtick.labelsize'] = 18
+mpl.rcParams['ytick.labelsize'] = 18
+mpl.rcParams['legend.fontsize'] = 18
+mpl.rcParams['figure.titlesize'] = 18
 
-mpl.rc('xtick', labelsize=18) 
-mpl.rc('ytick', labelsize=18) 
-font = {'family' : 'Helvetica',
+font = {'family' : 'serif',
         'serif':[],
-        'weight' : 'bold',
+        'weight' : 'heavy',
         'size'   : 18}
 mpl.rc('font', **font)
 mpl.rc('text', usetex=True)
+
 mpl.rcParams['agg.path.chunksize'] = 10000

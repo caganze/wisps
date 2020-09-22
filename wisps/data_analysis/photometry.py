@@ -160,8 +160,6 @@ class Source(Spectrum):
         self.original = copy.deepcopy(self)
         self.calculate_distance()
     
-        
-        
     @property
     def shortname(self):
     #using splat tricks to create shortnames

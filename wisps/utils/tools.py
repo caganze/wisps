@@ -22,7 +22,8 @@ splat.initializeStandards()
 from wisps.utils import memoize_func
 WISP_PATH=os.environ['WISP_CODE_PATH']
 DATA_FILES=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//data//')
-
+kirkpa2019pol={'pol':np.poly1d(np.flip([36.9714, -8.66856, 1.05122 ,-0.0344809])), 
+                    'scatter':.67, 'range':[36, 44]}
 class Annotator(object):
     """
     Contains static method to manipulate index-index tables 
@@ -125,7 +126,8 @@ def make_spt_number(spt):
     else:
         return spt
 
-#pecaut constants
+#def get_abs_mag_contants():
+#need to wrap these into a function to avoid overloading memory
 mamjk=ascii.read(DATA_FILES+'/mamajek_relations.txt').to_pandas().replace('None', np.nan)
 pec_js=mamjk.M_J.apply(float).values
 pec_jminush=mamjk['J-H'].apply(float).values
@@ -134,17 +136,15 @@ pec_spts=mamjk.SpT.apply(make_spt_number).apply(float).values
 pec_hsortedindex=np.argsort(pec_hs)
 pec_jsortedindex=np.argsort(pec_js)
 
-kirkpa2019pol={'pol':np.poly1d(np.flip([36.9714, -8.66856, 1.05122 ,-0.0344809])), 
-                'scatter':.67, 'range':[36, 44]}
 
-#best_dict={'2MASS J': {\
-#            'spt': [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39], \
-#            'values': [10.36,10.77,11.15,11.46,11.76,12.03,12.32,12.77,13.51,13.69,14.18,14.94,14.90,14.46,14.56,15.25,14.54,14.26,13.89,14.94,15.53,16.78,17.18,17.75],\
-#            'rms': [0.30,0.30,0.42,0.34,0.18,0.15,0.21,0.24,0.28,0.25,0.60,0.20,0.13,0.71,0.5,0.12,0.06,0.16,0.36,0.12,0.27,0.76,0.51,0.5]},
-#        '2MASS H': {\
-#            'spt': [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39], \
-#            'values': [9.76,10.14,10.47,10.74,11.00,11.23,11.41,11.82,12.45,12.63,13.19,13.82,13.77,13.39,13.62,14.39,13.73,13.67,13.57,14.76,15.48,16.70,17.09,17.51],\
-#            'rms': [0.30,0.31,0.43,0.35,0.23,0.21,0.25,0.29,0.3,0.30,0.62,0.31,0.20,0.73,0.5,0.18,0.15,0.24,0.40,0.24,0.37,0.78,0.5,0.5]}}
+best_dict={'2MASS J': {\
+            'spt': [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39], \
+            'values': [10.36,10.77,11.15,11.46,11.76,12.03,12.32,12.77,13.51,13.69,14.18,14.94,14.90,14.46,14.56,15.25,14.54,14.26,13.89,14.94,15.53,16.78,17.18,17.75],\
+            'rms': [0.30,0.30,0.42,0.34,0.18,0.15,0.21,0.24,0.28,0.25,0.60,0.20,0.13,0.71,0.5,0.12,0.06,0.16,0.36,0.12,0.27,0.76,0.51,0.5]},
+        '2MASS H': {\
+            'spt': [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39], \
+            'values': [9.76,10.14,10.47,10.74,11.00,11.23,11.41,11.82,12.45,12.63,13.19,13.82,13.77,13.39,13.62,14.39,13.73,13.67,13.57,14.76,15.48,16.70,17.09,17.51],\
+            'rms': [0.30,0.31,0.43,0.35,0.23,0.21,0.25,0.29,0.3,0.30,0.62,0.31,0.20,0.73,0.5,0.18,0.15,0.24,0.40,0.24,0.37,0.78,0.5,0.5]}}
 
 def absolute_mag_kirkpatrick(spt, filt):
     if filt != '2MASS H':
@@ -153,7 +153,7 @@ def absolute_mag_kirkpatrick(spt, filt):
         if (spt > 36) and (spt <44):
             pol=kirkpa2019pol['pol']
             unc=kirkpa2019pol['scatter']
-            return np.random.normal(pol(spt-30), unc)
+            return np.random.normal(pol(spt-30), unc, 1000).mean()
             
         else:
             return np.nan

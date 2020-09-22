@@ -200,6 +200,9 @@ class Spectrum(object):
     @spectral_type.setter
     def spectral_type(self, new_type):
         self._spectral_type=new_type
+        ftest=f_test(self)
+        for key in  ftest.keys():
+            setattr(self, key, ftest[key])
 
     @property
     def index_type(self):
@@ -244,7 +247,7 @@ class Spectrum(object):
         """
         Uses splat.classifyByStandard to classify spectra using spex standards
         """ 
-        self._spectral_type=classify(self, **kwargs)
+        self.spectral_type=classify(self, **kwargs)
 
     def normalize(self, **kwargs):
         """
@@ -256,6 +259,7 @@ class Spectrum(object):
         sp=self.splat_spectrum
 
         #rescale the spectrum for lower stuff 
+        #should I add a normalized contamination?
         if self._wave.min() < 1.17:
             up_wave=np.logical_and(self._wave> 1.17, self._wave<1.17+0.7)
             down_wave=np.logical_and(self._wave> 1.17-0.7, self._wave<1.17)
@@ -319,12 +323,12 @@ class Spectrum(object):
         self._flux =self.flux+(np.random.normal(np.zeros(len(self.noise)), self.noise))
         self._compute_snr()
         self.classify_by_standard()
-        ftest=f_test(self)
+        #ftest=f_test(self)
         ns=kwargs.get('nsample', 100)
         if kwargs.get('recompute_indices', False):
             self._indices=measure_indices(self, return_unc=True, nsamples=ns)
-        for key in  ftest.keys():
-            setattr(self, key, ftest[key])
+        #for key in  ftest.keys():
+        #    setattr(self, key, ftest[key])
 
   
 
@@ -526,7 +530,8 @@ def classify(sp, **kwargs):
     """
     #normalize both spectra
     comprange=kwargs.get('comprange', [1.15, 1.65])
-    dof=169
+
+    dof=kwargs.get('dof', len(sp.wave[np.logical_and(sp.wave>comprange[0], sp.wave <comprange[1] )]))
 
   
     if kwargs.get('stripunits', False):
@@ -536,7 +541,7 @@ def classify(sp, **kwargs):
         wave=sp.wave.value[mask]
         flux=sp.flux.value[mask]
         noise=sp.noise.value[mask]
-        dof=sp.dof
+        #dof=kwargs.get('dof', sp.dof)
 
     else:
         #mask
@@ -545,7 +550,7 @@ def classify(sp, **kwargs):
         wave=sp.wave[mask]
         flux=sp.flux[mask]
         noise=sp.noise[mask]
-        dof=sp.splat_spectrum.dof
+        #dof=kwargs.get('dof', sp.splat_spectrum.dof)
 
 
     chisqrs=[]

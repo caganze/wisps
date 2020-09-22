@@ -34,7 +34,7 @@ def add_noise_to_spectrum(sp, snr):
     sp.reset()
     sp_old=sp.spectral_type
     sp.add_noise(snr, nsample=1, recompute_indices= True)
-    f_test={"f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi, 'spt_new': sp.spectral_type, 'sp_old': sp_old}
+    f_test={"f_test": sp.f_test, 'line_chi': sp.line_chi, 'spex_chi': sp.spex_chi, 'spt_new': sp.spectral_type, 'sp_old': sp_old, 'dof': sp.dof}
     res_dict= {**sp.snr, **sp.indices, **f_test}
     sp.reset()
     return res_dict

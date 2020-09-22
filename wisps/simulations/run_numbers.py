@@ -23,14 +23,14 @@ from matplotlib.colors import Normalize
 import matplotlib as mpl
 import splat.empirical as spe
 import dask
-from dask.distributed import Client, progress
-dask.config.set({'scheduler.work-stealing': True, 'allowed-failures': 999})
-from dask import dataframe as dd 
+#from dask.distributed import Client, progress
+#dask.config.set({'scheduler.work-stealing': True, 'allowed-failures': 999})
+#from dask import dataframe as dd 
 import itertools
 
 pnts=wisps.OBSERVED_POINTINGS
-cands=pd.read_pickle(wisps.LIBRARIES+'/candidates.pkl')
-tab=wisps.Annotator.reformat_table(cands)
+#cands=pd.read_pickle(wisps.LIBRARIES+'/candidates.pkl')
+#tab=wisps.Annotator.reformat_table(cands)
 pnt_names=[x.name for x in pnts]
 sgrid=wispsim.SPGRID
 import multiprocessing 
@@ -48,11 +48,11 @@ def bin_by_spt_bin(sp_types, number):
 def iswithin_mag_limits(mags, pnt):
     #mgs is a dictionary
     flags=[]
-    for k in pnt.mag_limits.keys():
+    for k in wispsim.REDEFINED_MAG_LIMITS.keys():
         if k =='F110' and pnt.survey =='hst3d':
             flags.append(True)
         else:
-            flags.append(mags[k] < pnt.mag_limits[k])
+            flags.append(mags[k] < wispsim.REDEFINED_MAG_LIMITS[k])
     return np.logical_or.reduce(flags)
 
 
@@ -97,7 +97,7 @@ def compute_simulated_numbers(hidx, model='saumon2008', selection='prob'):
     
     cutdf=(simdf[flags]).reset_index(drop=True)
 
-    cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample.hdf', key=str(model)+str('h')+str(hidx))
+    cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample.5', key=str(model)+str('h')+str(hidx))
 
     #save this cutdf dataframe
     NORM = 0.63*(10**-3)/ len(cutdf.teff[np.logical_and(cutdf.teff>=1650, cutdf.teff <=1800)])
@@ -117,7 +117,7 @@ def compute_with_dask():
     #            n_workers=100, memory_limit='2GB',  silence_logs='error')
 
     #lazy_results = []
-    pool = multiprocessing.Pool()
+    pool = multiprocessing.Pool(processes=2)
 
     #Distribute the parameter sets evenly across the cores
     func=lambda x, y: compute_simulated_numbers(y, model=x)

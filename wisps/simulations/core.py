@@ -33,9 +33,15 @@ STARS= (wisps.COMBINED_PHOTO_SPECTRO_DATA[ wisps.COMBINED_PHOTO_SPECTRO_DATA.cla
 STARS['pointing']=STARS.grism_id.apply(get_proper_pointing)
 STARS=STARS[STARS.snr1 >=3.]
 
+
 Rsun=83000.
 Zsun=27.
 HS=[100, 150, 200, 250,300, 350,400]
+
+#redefine magnitude limits by taking into account the scatter for each pointing 
+#use these to compute volumes
+
+REDEFINED_MAG_LIMITS={'F110':    23.054573, 'F140':    23.822972, 'F160' :   23.367867}
 
 #-------------------------------------------
 def density_function(r, z, h=300.):
@@ -70,7 +76,7 @@ def compute_distance_limits(mag_limits):
     computes distance limits based on limiting mags
     take the mininum distance of the the three because that incorporates every simulated
     """
-    faint_dict={'F110W': (mag_limits['F110'], 0.0), 'F140W': (mag_limits['F140'], 0.0), 'F160W':(mag_limits['F160'], 0.0)}
+    faint_dict={'F110W': (REDEFINED_MAG_LIMITS['F110'], 0.0), 'F140W': (REDEFINED_MAG_LIMITS['F140'], 0.0), 'F160W':(REDEFINED_MAG_LIMITS['F160'], 0.0)}
     bright_dict={'F110W': (16., 0.0), 'F140W': (16., 0.0), 'F160W': (16., 0.0)}
     distances=[]
     if np.isnan([ x for x in mag_limits.values()]).all():
