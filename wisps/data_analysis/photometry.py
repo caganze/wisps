@@ -31,6 +31,8 @@ from functools import lru_cache
 from concurrent.futures import ThreadPoolExecutor, wait , ALL_COMPLETED
 from  functools import partial
 
+PHOTOMETRIC_TABLE=get_big_file()[['grism_id', 'F110', 'F140', 'F160', 'RA', 'DEC', 'class_star']]
+
 class Source(Spectrum):
     """
     Source object, inherts from Spectrum but adds photometry and distances
@@ -85,7 +87,7 @@ class Source(Spectrum):
     #for simplicity and elegance?
     @property
     def ra(self):
-        return self._ra*u.degree
+        return self._ra
 	
     @ra.setter
     def ra(self, new_ra):
@@ -94,7 +96,7 @@ class Source(Spectrum):
 	
     @property
     def dec(self):
-        return self._dec*u.degree
+        return self._dec
         
     @dec.setter
     def dec(self, new_dec):
@@ -135,8 +137,10 @@ class Source(Spectrum):
         #get mags from the photometry catalog
         #this is the master table that contains everything i.e after the snr cut 
         # to see how this is created look at pre_processing.py
-        df=COMBINED_PHOTO_SPECTRO_DATA
+        df=PHOTOMETRIC_TABLE
         s=df.loc[df['grism_id'].apply(lambda x: x.lower()).isin([new_name.lower()])].reset_index().iloc[0]
+
+        del df
         
         self._mags={'F110W': (s.F110[0], s.F110[1]), 
                              'F160W': (s.F160[0], s.F160[1]),
@@ -346,7 +350,6 @@ def get_multiple_sources(filenames, **kwargs):
     results=[x for x in futures]
 
     return results
-
 
 
 

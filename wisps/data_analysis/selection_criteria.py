@@ -492,7 +492,7 @@ def crts_from_file(**kwargs):
     """
     loads saved selection criteria
     """
-    filename=kwargs.get('filename',OUTPUT_FILES+'/id_id_spaces_cpl_all_shapes.pkl.gz')
+    filename=kwargs.get('filename',OUTPUT_FILES+'/id_id_spaces_cpl_all_shapes.pkl')
     return pd.read_pickle(filename)
 
 def save_criteria(**kwargs):

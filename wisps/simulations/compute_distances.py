@@ -9,7 +9,7 @@ from astropy.coordinates import SkyCoord
 import theano
 import theano.tensor as tt
 import pandas as pd
-#import pymc3 as pm
+import pymc3 as pm
 import seaborn as sns 
 from matplotlib.colors import Normalize
 import numba
@@ -29,10 +29,10 @@ Zsun=wispsim.Zsun
 spgrid=wispsim.SPGRID
 #-----------------------
 
-#read-in the pointings
-pnts=wisps.OBSERVED_POINTINGS
-print (pnts[0].survey)
-COORDS=SkyCoord([p.coord for p in wisps.OBSERVED_POINTINGS ])
+
+pnts=pd.read_pickle(wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl')
+#print (pnts[0].survey)
+COORDS=SkyCoord([p.coord for p in pnts ])
 galc=COORDS.transform_to('galactic')
 
 LBS=np.vstack([[x.coord.galactic.l.radian,x.coord.galactic.b.radian] for x in pnts ])
@@ -67,11 +67,10 @@ def sample_distances(nsample=1000, h=300):
         #if h=='uniform':
         #    h=pm.Uniform('h', lower=h_bounds[0], upper=h_bounds[-1])
 
-        like = pm.DensityDist('likelihood', logp, observed={'l':l, 'b':b,
-                             'r': r, 'z': z, 'd':d, 'h':h})
+        like = pm.Potential('likelihood', logp(l, b, r, z, d, h))
 
-        trace = pm.sample(draws=int(nsample), cores=4, step=pm.Metropolis(), tune=int(nsample/20), discard_tuned_samples=True)
-
+        trace = pm.sample(draws=int(nsample), cores=4, tune=int(nsample/20),
+            discard_tuned_samples=True, progressbar=True, step=pm.Metropolis())
     return trace
 
 
@@ -122,26 +121,32 @@ def save_all_stuff():
     #sample the galactic structure model
     import pickle
 
-    full_dict={}
 
     for h in wispsim.HS:
+
         trace=sample_distances(nsample=1.0e4, h=h)
         #save each scale height separetly to avoid overloading the disk
         dists=np.array(trace['d'])
         rs=np.array(trace['r']) 
         zs=np.array(trace['z'])
+
+        #append data to dictionary
+        full_dict=pd.read_pickle(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl')
+
         full_dict[h]={ 'distances': dists, 'rs':rs, 'zs': zs}
 
-    with open(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', 'wb') as file:
-               pickle.dump(full_dict,file)
-    return 
+        with open(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', 'wb') as file:
+                   pickle.dump(full_dict,file)
+
+        del full_dict #delete from memory to save space
+        del dists
+        del rs
+        del zs
+        del trace
 
 if __name__ =='__main__':
+    #pass
     #save_all_stuff()
     import wisps.simulations.effective_numbers as eff
     eff.simulation_outputs(recompute=True, hs=wispsim.HS)
-
-    import wisps.simulations as wispsim
-    wispsim.make_pointings()
-
 

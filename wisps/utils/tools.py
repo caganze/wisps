@@ -22,6 +22,7 @@ splat.initializeStandards()
 from wisps.utils import memoize_func
 WISP_PATH=os.environ['WISP_CODE_PATH']
 DATA_FILES=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//data//')
+LIBRARIES=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//libraries//')
 kirkpa2019pol={'pol':np.poly1d(np.flip([36.9714, -8.66856, 1.05122 ,-0.0344809])), 
                     'scatter':.67, 'range':[36, 44]}
 class Annotator(object):
@@ -173,6 +174,32 @@ def absolute_magnitude_jh(spt):
 
     return jval, hval
 
+def k_clip_fit(x, y, sigma_y, sigma = 5, n=6):
+    
+    '''Fit a polynomial to y vs. x, and k-sigma clip until convergence
+    hard-coded, returns mask array
+    '''
+    
+    not_clipped = np.ones_like(y).astype(bool)
+    n_remove = 1
+    
+    #use median sigma
+    #median_sigma= np.nanmedian(sigma_y)
+    
+    while n_remove > 0:
+
+        best_fit = np.poly1d(np.polyfit(x[not_clipped], y[not_clipped], n))
+        
+        norm_res = (np.abs(y - best_fit(x)))/(sigma_y)
+        remove = np.logical_and(norm_res >= sigma, not_clipped == 1)
+        n_remove = sum(remove)
+        not_clipped[remove] = 0   
+        
+    return  not_clipped
+
+def fit_with_nsigma_clipping(x, y, y_unc, n, sigma=3.):
+    not_clipped = k_clip_fit(x, y, y_unc, sigma = sigma)
+    return not_clipped, np.poly1d(np.polyfit(x[not_clipped], y[not_clipped], n))
 
 
 @numba.vectorize("float64(float64, float64)", target='cpu')
@@ -264,9 +291,16 @@ def kernel_density(distr):
     """
     1D-kernel density estimation
     """
-    kernel = stats.gaussian_kde(distr)
+    kernel = stats.gaussian_kde(distr, bw_method='silverman')
     return kernel
 
 
 def dropnans(x):
     return [~np.isnan(x)]
+
+
+def get_big_file():
+    COMBINED_PHOTO_SPECTRO_FILE=LIBRARIES+'/master_dataset.h5'
+    COMBINED_PHOTO_SPECTRO_DATA=pd.read_hdf(COMBINED_PHOTO_SPECTRO_FILE, key='new')
+    #definitions
+    return COMBINED_PHOTO_SPECTRO_DATA

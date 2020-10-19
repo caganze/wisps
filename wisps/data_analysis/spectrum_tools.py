@@ -270,6 +270,13 @@ class Spectrum(object):
         self._wave= sp.wave.value
         self._flux=sp.flux.value
         self._noise=sp.noise.value
+
+        #scale the contamination
+        if not np.isnan(self._contam).all():
+            medflx=np.nanmedian(self._flux[np.logical_and(self.wave>1.2, self.wave<1.6 ) ])
+            scl= medflx/np.nanmedian(self._contam[np.logical_and(self.wave>1.2, self.wave<1.6 ) ])
+            self._contam=self._contam*scl
+
         
         return
 

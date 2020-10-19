@@ -29,19 +29,27 @@ def get_proper_pointing(grism_id):
 
 
 #constants
-STARS= (wisps.COMBINED_PHOTO_SPECTRO_DATA[ wisps.COMBINED_PHOTO_SPECTRO_DATA.class_star !=0]).reset_index(drop=True)
-STARS['pointing']=STARS.grism_id.apply(get_proper_pointing)
-STARS=STARS[STARS.snr1 >=3.]
+big_file=wisps.get_big_file()
+#starswisp=stars[ big_file.class_starstars.grism_id.str.startswith('par')]
+#starshst3d=stars[(~ stars.grism_id.str.startswith('par')) & (stars.star_flags !=2.) ]
+#starshst3d=stars[(~ stars.grism_id.str.startswith('par'))  & ((stars.snr1 > 10 )& (stars.class_star > 0.6))]
+#starshst3d=stars[(~ stars.grism_id.str.startswith('par'))]
 
+STARS= (big_file[ big_file.mstar_flag !=0]).reset_index(drop=True)
+#STARS['pointing']=STARS.grism_id.apply(get_proper_pointing)
+STARS=wisps.Annotator.reformat_table(STARS[STARS.snr1>=3.]).reset_index(drop=True)
+
+
+del big_file
 
 Rsun=83000.
 Zsun=27.
-HS=[100, 150, 200, 250,300, 350,400]
+HS=[150,200,250, 300,350,400, 450, 500]
 
 #redefine magnitude limits by taking into account the scatter for each pointing 
 #use these to compute volumes
 
-REDEFINED_MAG_LIMITS={'F110':    23.054573, 'F140':    23.822972, 'F160' :   23.367867}
+#REDEFINED_MAG_LIMITS={'F110':    23.054573, 'F140':    23.822972, 'F160' :   23.367867}
 
 #-------------------------------------------
 def density_function(r, z, h=300.):
@@ -76,14 +84,24 @@ def compute_distance_limits(mag_limits):
     computes distance limits based on limiting mags
     take the mininum distance of the the three because that incorporates every simulated
     """
-    faint_dict={'F110W': (REDEFINED_MAG_LIMITS['F110'], 0.0), 'F140W': (REDEFINED_MAG_LIMITS['F140'], 0.0), 'F160W':(REDEFINED_MAG_LIMITS['F160'], 0.0)}
-    bright_dict={'F110W': (16., 0.0), 'F140W': (16., 0.0), 'F160W': (16., 0.0)}
+    bright_dict={'F110W': [16., 0.0], 'F140W': [16., 0.0], 'F160W': [16., 0.0]}
     distances=[]
     if np.isnan([ x for x in mag_limits.values()]).all():
         return {}
+    #add new correction term for each subtype
+    corr_pols=wisps.POLYNOMIAL_RELATIONS['mag_limit_corrections'] 
     for s in SPGRID:
+        #add corrections to key but only use F110W corrections
+        #corrt=np.nanmedian([ (corr_pols['F160W'][0])(s),  (corr_pols['F110W'][0])(s),  (corr_pols['F140W'][0])(s)])
+        corrt=(corr_pols['F110W'][0])(s)
+        #corrt=0.0
+        faint_dict={'F110W': [mag_limits['F110']+corrt, 0.0], 
+        'F140W': [mag_limits['F140']+corrt, 0.0],
+        'F160W':[mag_limits['F160']+corrt, 0.0]}
+
         dmaxs=wisps.distance(faint_dict, s, 0.0)
         dmins=wisps.distance(bright_dict, s, 0.0)
+        #just use 
         dmx=np.nanmin([dmaxs['distF110W'],dmaxs['distF140W'], dmaxs['distF160W']])
         dmin=np.nanmin([dmins['distF110W'],dmins['distF140W'], dmins['distF160W']])
         distances.append([dmx, dmin])
@@ -104,33 +122,40 @@ def get_max_value(values):
     values=wisps.drop_nan(values)
     if len(values)<1:
         return np.nan
-    if  np.equal.reduce(values):
-        return  values.mean()
-    if (len(values)>1) and (~np.equal.reduce(values)):
-        kernel = kernel_density(values)
+    if len(values)>=1:
+        kernel = wisps.kernel_density(values)
         height = kernel.pdf(values)
         mode_value = values[np.argmax(height)]
+        print (mode_value)
         return float(mode_value)
+
+
 
 def get_mag_limit(pnt, key, mags):
     #fit for less than 50
-    survey='wisps'
     maglt=np.nan
-    if not pnt.name.lower().startswith('par'): 
+    survey= 'wisps'
+  
+    #3d hst-mag limit is 23.0, and that's that on that
+    if (not pnt.name.lower().startswith('par')): 
         survey='hst3d'
-        if key=='F110':
+        if (key=='F110'): 
             return maglt
-
-    if ((len(mags) < MAG_LIMITS['ncutoff']) or (mags==mags).all()):
+        #else:
+        #    return 23.0
+    #otherwise
+    #else:
+    #things below 50 objects
+    if (len(mags) < MAG_LIMITS['ncutoff']):
         magpol=MAG_LIMITS[survey][key][0]
         magsctt=MAG_LIMITS[survey][key][1]
-        maglt=np.nanmean(np.random.normal(magpol(np.log10(pnt.exposure_time)), magsctt, 100))
-        #maglt=get_max_value(mags)
+        maglt=np.nanmean(np.random.normal(magpol(np.log10(pnt.exposure_time)), magsctt, 1000))
+        return maglt
 
-    #use KDEs for more than 50
-    if not  ((len(mags) < MAG_LIMITS['ncutoff']) or (mags==mags).all()):
+    #things aove 50 objects
+    if (len(mags) >= MAG_LIMITS['ncutoff']): 
         maglt=get_max_value(mags)
-    return maglt
+        return maglt
 
 
 
@@ -148,18 +173,22 @@ class Pointing(object):
         self.exposure_time=None
         self.exposure_times=None
         self.observation_date=None
+        self.snr1=None
         self.number_of_sources={}
 
         #compute volumes after initialization
         if self.name is not None:
-            df=STARS[STARS.pointing==self.name.lower()]
+            df=STARS[STARS.pointing.str.lower()==self.name.lower()]
             self.exposure_time=(df['exposure_time']).values.mean()
             self.exposure_times=(df['exposure_time']).values
             self.observation_date=(df['observation_date']).values
+            self.snr1=df.snr1.values
             for k in ['F110', 'F140', 'F160']:
                 self.mags[k]=df[k].values
                 self.mag_limits[k]= get_mag_limit(self, k, self.mags[k])
                 self.number_of_sources[k]= len(self.mags[k])
+
+            del df
 
     def compute_volume(self):
         self.dist_limits=compute_distance_limits(self.mag_limits)
@@ -189,11 +218,11 @@ def make_pointings():
     decs=obs['dec(deg)']
     surveys=obs.pointing.apply(get_survey)
 
-    pnts=[make_pointing(ra, dec, survey, name) for ra, dec, survey, name in tqdm(zip(ras, decs, surveys, obs.pointing.values))]
+    pnts=[make_pointing(ra, dec, survey, name) for ra, dec, survey, name in zip(ras, decs, surveys, obs.pointing.values)]
     pnts=[x for x in pnts if x.dist_limits]
 
     import pickle
 
-    output_file=wisps.OUTPUT_FILES+'/pointings.pkl'
+    output_file=wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl'
     with open(output_file, 'wb') as file:
         pickle.dump(pnts,file)

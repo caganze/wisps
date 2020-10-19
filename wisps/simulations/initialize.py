@@ -13,3 +13,4 @@ KIRK19_LF=pd.read_csv(wisps.WISP_PATH.split('/wisps')[0]+'/wisps/data/kirkpatric
 MAG_LIMITS=pd.read_pickle(wisps.OUTPUT_FILES+'/magnitude_cutoff.pkl.gz')
 WISP_PATH=os.environ['WISP_CODE_PATH']
 EVOL_MODELS_FOLDER=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'/evmodels//')
+#MAG_LIMITS_BY_HAND=None

@@ -28,7 +28,8 @@ import dask
 #from dask import dataframe as dd 
 import itertools
 
-pnts=wisps.OBSERVED_POINTINGS
+pnts=pd.read_pickle(wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl')
+corr_pols=wisps.POLYNOMIAL_RELATIONS['mag_limit_corrections'] 
 #cands=pd.read_pickle(wisps.LIBRARIES+'/candidates.pkl')
 #tab=wisps.Annotator.reformat_table(cands)
 pnt_names=[x.name for x in pnts]
@@ -45,14 +46,16 @@ def bin_by_spt_bin(sp_types, number):
         numbers.append(np.nansum(number[idx]))
     return numbers
 
-def iswithin_mag_limits(mags, pnt):
+def iswithin_mag_limits(mags, pnt, s):
     #mgs is a dictionary
     flags=[]
-    for k in wispsim.REDEFINED_MAG_LIMITS.keys():
+    for k in pnt.mag_limits.keys():
         if k =='F110' and pnt.survey =='hst3d':
-            flags.append(True)
+            flags.append(False)
         else:
-            flags.append(mags[k] < wispsim.REDEFINED_MAG_LIMITS[k])
+            corrt=(corr_pols['F110W'][0])(s)
+            #corrt=np.nanmedian([ (corr_pols['F160W'][0])(s),  (corr_pols['F110W'][0])(s),  (corr_pols['F140W'][0])(s)])
+            flags.append(mags[k] < pnt.mag_limits[k]+corrt)
     return np.logical_or.reduce(flags)
 
 
@@ -86,30 +89,31 @@ def compute_simulated_numbers(hidx, model='saumon2008', selection='prob'):
     simdf['appF160']=data['appf160']
     simdf['pntname']=data['pnt']
     simdf['dist']=data['d']
+
     
     simdf['pnt']=simdf.pntname.apply(lambda x: np.array(pnts)[pnt_names.index(x)])
     
     simmgs=simdf[['appF140', 'appF110', 'appF160']].rename(columns={"appF110": "F110", 
                                                                     "appF140": "F140",
                                                                     "appF160": "F160"}).to_dict('records')
-    flags=[iswithin_mag_limits(x, y) for x, y in zip(simmgs,  simdf.pnt.values)]
+    flags=[iswithin_mag_limits(x, y, z) for x, y,z in zip(simmgs,  simdf.pnt.values, simdf['spt'].values )]
     
     
     cutdf=(simdf[flags]).reset_index(drop=True)
 
-    cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample.5', key=str(model)+str('h')+str(hidx))
-
+    cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut.h5', key=str(model)+str('h')+str(hidx)+'F110_corrected')
     #save this cutdf dataframe
-    NORM = 0.63*(10**-3)/ len(cutdf.teff[np.logical_and(cutdf.teff>=1650, cutdf.teff <=1800)])
+    #NORM = 0.63*(10**-3)/ len(cutdf.teff[np.logical_and(cutdf.teff>=1650, cutdf.teff <=1800)])
     
-    NSIM=dict(zip(wispsim.SPGRID,np.zeros(len(wispsim.SPGRID))))
+    #NSIM=dict(zip(wispsim.SPGRID,np.zeros(len(wispsim.SPGRID))))
     #rounded spectral type
-    cutdf['spt_r']=cutdf.spt.apply(np.round)
-    for g in cutdf.groupby('spt_r'):
-        NSIM[g[0]]=np.nansum((g[1]).slprob*NORM)
-        
-    return {model: {hidx:NSIM}}
+    #cutdf['spt_r']=cutdf.spt.apply(np.round)
+    #for g in cutdf.groupby('spt_r'):
+    #   NSIM[g[0]]=np.nansum((g[1]).slprob*NORM)
 
+
+        
+    return {}
 
 def compute_with_dask():
 
@@ -117,7 +121,7 @@ def compute_with_dask():
     #            n_workers=100, memory_limit='2GB',  silence_logs='error')
 
     #lazy_results = []
-    pool = multiprocessing.Pool(processes=2)
+    #pool = multiprocessing.Pool(processes=2)
 
     #Distribute the parameter sets evenly across the cores
     func=lambda x, y: compute_simulated_numbers(y, model=x)
@@ -140,25 +144,5 @@ def compute_with_dask():
 if __name__ =='__main__':
 
     ds = compute_with_dask()
- 
-    NUMBERS = {}
-    for k in ['saumon2008', 'marley2019', 'phillips2020', 'baraffe2003']:
-        ds0={}
-        for j in ds:
-            if k in j.keys():
-                key=[x for x in j[k].keys()][0]
-                ds0.update({key: [(j[k][key])[yi] for yi in wispsim.SPGRID]})
-        NUMBERS[k]=np.vstack([ds0[k] for k in wispsim.HS])
-
-    #save numbers 
-    import pickle
-    #save the random forest
-    output_file=wisps.OUTPUT_FILES+'/numbers_simulated.pkl'
-    with open(output_file, 'wb') as file:
-        pickle.dump(NUMBERS,file)
-
-
-
-
 
 

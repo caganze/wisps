@@ -15,13 +15,11 @@ import numba
 import dask
 
 
+POINTINGS=pd.read_pickle(wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl')
 
-
-
-pnts=wisps.OBSERVED_POINTINGS
 
 #some re-arragments because the limiting distance depends on the pointing
-dist_arrays=pd.DataFrame.from_records([x.dist_limits for x in pnts]).applymap(lambda x:np.vstack(x).astype(float))
+dist_arrays=pd.DataFrame.from_records([x.dist_limits for x in POINTINGS]).applymap(lambda x:np.vstack(x).astype(float))
 DISTANCE_LIMITS={}
 BAYESIAN_DISTANCES_VOLUMES=np.load(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', allow_pickle=True)
 
@@ -51,7 +49,6 @@ def compute_effective_numbers(spts,SPGRID, h):
     DISTANCE_WITHIN_LIMITS_BOOLS={}
     #LONGS=(BAYESIAN_DISTANCES_VOLUMES['ls'][h]).flatten()
     #LATS=(BAYESIAN_DISTANCES_VOLUMES['bs'][h]).flatten()
-    POINTINGS=wisps.OBSERVED_POINTINGS
 
     for k in DISTANCE_LIMITS.keys():
         dx=(BAYESIAN_DISTANCES_VOLUMES[h])['distances']
@@ -126,7 +123,7 @@ def compute_effective_numbers(spts,SPGRID, h):
 
     sl= selection_function(spts, snrjs)
 
-
+    #should be saved instead of held
     return {'f110':f110s, 'f140':f140s, 'f160':f160s, 'd':dists_for_spts, 'r':rs, 'z':zs, 'appf140':appf140s,  
     'appf110':appf110s,  'appf160':appf160s, 'snrj':snrjs, 'sl':sl, 'pnt':pnts}
 
@@ -140,17 +137,19 @@ def get_all_values_from_model(model, **kwargs):
     spts=(syst['system_spts']).flatten()
     hs=kwargs.get("hs", HS)
     #comput the rest from the survey
-    outdata={}
-    #things that depend on scale height (am I duplicating data?)
-    outdata['spts']=spts
-    #outdata[h]['mass']=syst['system_mass']
-    outdata['teff']=syst['system_teff']
-    outdata['age']=syst['system_age']
+    dict_values=pd.read_pickle(wisps.OUTPUT_FILES+'/effective_numbers_from_sims')
+    dict_values[model]['spts']=spts
+    dict_values[model]['teff']=syst['system_teff']
+    dict_values[model]['age']=syst['system_age']
     for h in tqdm(hs):
-         outdata[h]=compute_effective_numbers(spts,SPGRID, h)
-    return outdata
+        dict_values[model][h]={}
+        dict_values[model][h].update(compute_effective_numbers(spts,SPGRID, h))
 
-#use dask parallelization for this emberassaingly parallel problem 
+    import pickle
+    with open(wisps.OUTPUT_FILES+'/effective_numbers_from_sims', 'wb') as file:
+            pickle.dump(dict_values,file)
+
+    del dict_values
 
 def simulation_outputs(**kwargs):
     """
@@ -162,13 +161,12 @@ def simulation_outputs(**kwargs):
     models=kwargs.get('models', ['saumon2008', 'baraffe2003', 'marley2019', 'phillips2020'])
 
     if recompute:
-        dict_values={}
-        for model in models: dict_values[model]= get_all_values_from_model(model)
-        import pickle
-        with open(wisps.OUTPUT_FILES+'/effective_numbers_from_sims', 'wb') as file:
-            pickle.dump(dict_values,file)
+        #dict_values={}
+        for model in models: get_all_values_from_model(model)
+        #import pickle
+        #with open(wisps.OUTPUT_FILES+'/effective_numbers_from_sims', 'wb') as file:
+        #    pickle.dump(dict_values,file)
+        return
     else:
         dict_values=pd.read_pickle(wisps.OUTPUT_FILES+'/effective_numbers_from_sims')
-    return dict_values
-
-
+        return dict_values
