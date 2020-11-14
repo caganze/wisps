@@ -149,7 +149,7 @@ def get_mag_limit(pnt, key, mags):
     if (len(mags) < MAG_LIMITS['ncutoff']):
         magpol=MAG_LIMITS[survey][key][0]
         magsctt=MAG_LIMITS[survey][key][1]
-        maglt=np.nanmean(np.random.normal(magpol(np.log10(pnt.exposure_time)), magsctt, 1000))
+        maglt=np.random.normal(magpol(np.log10(pnt.exposure_time)), magsctt)
         return maglt
 
     #things aove 50 objects
@@ -175,6 +175,7 @@ class Pointing(object):
         self.observation_date=None
         self.snr1=None
         self.number_of_sources={}
+        self.mags_unc={}
 
         #compute volumes after initialization
         if self.name is not None:
@@ -185,6 +186,7 @@ class Pointing(object):
             self.snr1=df.snr1.values
             for k in ['F110', 'F140', 'F160']:
                 self.mags[k]=df[k].values
+                self.mags_unc
                 self.mag_limits[k]= get_mag_limit(self, k, self.mags[k])
                 self.number_of_sources[k]= len(self.mags[k])
 

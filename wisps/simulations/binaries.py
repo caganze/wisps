@@ -36,7 +36,7 @@ def total_likelihood(m1, q, alpha, gamma):
     return log_mass_function(m1, alpha)+log_mass_ratio(q, gamma)
 
 
-def simulate_binary(nstuff, mass_range):
+def simulate_binary(nstuff, mass_range, age_range):
     """
     Simulate a distribution of binaries from simple assumptions
     This is much faster than splat
@@ -48,9 +48,8 @@ def simulate_binary(nstuff, mass_range):
         q=pm.Uniform('q', lower=.1, upper=1.)
 
         sec=pm.Deterministic('m2', prim*q)
-        age=pm.Uniform('t', lower=0.1, upper=10) #system age
-        like = pm.DensityDist('likelihood', total_likelihood, observed={'m1': prim, 'q': q, 
-	                                                                   'alpha': alpha, 'gamma': gamma})
+        age=pm.Uniform('t', lower=age_range[0], upper=age_range[-1]) #system age
+        like = pm.Potential('likelihood', total_likelihood(prim, q, alpha, gamma))
         trace = pm.sample(draws=nstuff,  cores=4,  tune=int(nstuff/20),  init='advi')
 
     return [trace.m1, trace.m2, trace.t]
@@ -120,9 +119,10 @@ def simulate_spts(**kwargs):
 
     #automatically set maxima and minima to avoid having too many nans
     #mass age and age,  min, max
-    acceptable_values={'baraffe2003': [0.0005, 0.1, 0.001, 10.0],
-    'marley2019': [0.0005, 0.08, 0.001, 10.0], 'saumon2008':[0.002, 0.09, 0.003, 10.0], 
-    'phillips2020':[0.0005, 0.075, 0.001, 10.0 ]}
+    #all masses should be 0.01
+    acceptable_values={'baraffe2003': [0.01, 0.1, 0.01, 8.0],
+    'marley2019': [0.01, 0.08, 0.001, 8.0], 'saumon2008':[0.01, 0.09, 0.003, 8.0], 
+    'phillips2020':[0.01, 0.075, 0.001, 8.0 ]}
     
     if recompute:
 
@@ -137,7 +137,7 @@ def simulate_spts(**kwargs):
         ages_singles= spsim.simulateAges(nsim,range=[ranges[2], ranges[3]], distribution='uniform')
 
         #parameters for binaries
-        binrs=simulate_binary(int(nsim), [ranges[0], ranges[1]])
+        binrs=simulate_binary(int(nsim), [ranges[0], ranges[1]], [ranges[2], ranges[3]])
 
         #single_evol=spev.modelParameters(mass=m_singles,age=ages_singles, set=model_name, cloud=cloud)
         single_evol=evolutionary_model_interpolator(m_singles, ages_singles, model_name)
@@ -162,7 +162,8 @@ def simulate_spts(**kwargs):
         spt_second=splat_teff_to_spt(teffs_second)
 
         #remove nans 
-        print (spt_primar.shape, spt_second.shape)
+        print ('MAX AGES', np.nanmax(ages_singles))
+        #print ('MAX AGES', np.nanmax())
 
         xy=np.vstack([np.round(np.array(spt_primar), decimals=0), np.round(np.array(spt_second), decimals=0)]).T
 

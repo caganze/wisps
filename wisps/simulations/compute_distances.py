@@ -42,6 +42,11 @@ BS=galc.b.radian
 
 #OBSERVED_DIST=np.concatenate(np.array([v for v in pnts[0].dist_limits.values()]))
 #---------------------------
+def draw_with_cdf(l, b, dmax, nsample):
+    #draw distances using inversion of the cumulative distribution 
+    d=np.logspace(0, np.log10(dmax), int(nsample))
+    cdfvals=np.array([wispsim.custom_volume(l,b,0, dx, h) for dx in d])
+    return wisps.random_draw(d, cdfvals/np.nanmax(cdfvals), nsample)
 
 def sample_distances(nsample=1000, h=300):
     """
@@ -70,8 +75,11 @@ def sample_distances(nsample=1000, h=300):
         like = pm.Potential('likelihood', logp(l, b, r, z, d, h))
 
         trace = pm.sample(draws=int(nsample), cores=4, tune=int(nsample/20),
-            discard_tuned_samples=True, progressbar=True, step=pm.Metropolis())
+            discard_tuned_samples=True, step=pm.Metropolis())
+
     return trace
+
+
 
 
 
@@ -133,7 +141,7 @@ def save_all_stuff():
         #append data to dictionary
         full_dict=pd.read_pickle(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl')
 
-        full_dict[h]={ 'distances': dists, 'rs':rs, 'zs': zs}
+        full_dict[h]={ 'distances': dists.flatten(), 'rs':rs.flatten(), 'zs': zs.flatten()}
 
         with open(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', 'wb') as file:
                    pickle.dump(full_dict,file)
@@ -145,8 +153,8 @@ def save_all_stuff():
         del trace
 
 if __name__ =='__main__':
-    #pass
+    pass
     #save_all_stuff()
-    import wisps.simulations.effective_numbers as eff
-    eff.simulation_outputs(recompute=True, hs=wispsim.HS)
+    #import wisps.simulations.effective_numbers as eff
+    #eff.simulation_outputs(recompute=True, hs=wispsim.HS)
 

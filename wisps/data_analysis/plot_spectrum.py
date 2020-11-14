@@ -100,7 +100,7 @@ def plot_source(sp, **kwargs):
     
     l1,=ax3.step(sp.wave, sp.flux, color='#111111')
     l2,=ax3.plot(sp.wave, sp.noise, '#39CCCC')
-    l4, =ax3.plot(sp.wave, sp.contamination, '#FF4136', linestyle='--')
+    #l4, =ax3.plot(sp.wave, sp.contamination, '#FF4136', linestyle='--')
     
     #print (np.nanmax(sp.flux[(1.25<sp.wave) & (sp.wave<1.6)]))
     #option to overplot the
@@ -109,7 +109,7 @@ def plot_source(sp, **kwargs):
     sp.normalize(range=[1.2, 1.5])
     
     #collect plts
-    plts=[l1, l2, l4]
+    plts=[l1, l2]
     
     #compare to standards
     #if True:
@@ -189,11 +189,11 @@ def plot_source(sp, **kwargs):
 
     spt_label=splat.typeToNum(make_spt_number(sp.spectral_type[0]))
     if  make_spt_number(sp.spectral_type[0]) >39:
-        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+spt_label+') '+'standard'), 
+        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', '('+spt_label+') '+'standard'), 
                loc=(1.01, 0.15), fontsize=15) 
 
     if  make_spt_number(sp.spectral_type[0]) <=39:
-        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', 'contamination', '('+spt_label+') '+'standard'), 
+        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise',  '('+spt_label+') '+'standard'), 
                loc='best', fontsize=15) 
     plt.tight_layout()
     if save: plt.savefig(filename,  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=600)

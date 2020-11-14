@@ -53,7 +53,7 @@ def iswithin_mag_limits(mags, pnt, s):
         if k =='F110' and pnt.survey =='hst3d':
             flags.append(False)
         else:
-            corrt=(corr_pols['F110W'][0])(s)
+            corrt=(corr_pols['F110W'][0])(s)#-0.25
             #corrt=np.nanmedian([ (corr_pols['F160W'][0])(s),  (corr_pols['F110W'][0])(s),  (corr_pols['F140W'][0])(s)])
             flags.append(mags[k] < pnt.mag_limits[k]+corrt)
     return np.logical_or.reduce(flags)

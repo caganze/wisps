@@ -537,28 +537,27 @@ def classify(sp, **kwargs):
     """
     #normalize both spectra
     comprange=kwargs.get('comprange', [1.15, 1.65])
-
-    dof=kwargs.get('dof', len(sp.wave[np.logical_and(sp.wave>comprange[0], sp.wave <comprange[1] )]))
-
-  
-    if kwargs.get('stripunits', False):
-        #mask
-        mask=np.logical_and(sp.wave.value<= comprange[1], sp.wave.value >=comprange[0]  )
-
-        wave=sp.wave.value[mask]
-        flux=sp.flux.value[mask]
-        noise=sp.noise.value[mask]
-        #dof=kwargs.get('dof', sp.dof)
-
-    else:
-        #mask
+    dof=kwargs.get('dof', None)
+    mask=None
+    #check for multiarray mask
+    if len(np.shape(comprange)) <2:
+        dof=len(sp.wave[np.logical_and(sp.wave>comprange[0], sp.wave <comprange[1] )])-1
         mask=np.logical_and(sp.wave <= comprange[1], sp.wave >=comprange[0]  )
 
-        wave=sp.wave[mask]
-        flux=sp.flux[mask]
-        noise=sp.noise[mask]
-        #dof=kwargs.get('dof', sp.splat_spectrum.dof)
+    else:
+        masks=[]
+        dof=0.0
+        for wv in comprange:
+            masks.append(np.logical_and(sp.wave > wv[0], sp.wave < wv[1]))
+            dof += len(sp.wave[np.logical_and(sp.wave > wv[0], sp.wave < wv[1])])-1
+        mask=np.logical_or.reduce(masks)
 
+    #print (mask, dof)
+    #mask
+    wave=sp.wave[mask]
+    flux=sp.flux[mask]
+    noise=sp.noise[mask]
+    #dof=kwargs.get('dof', sp.splat_spectrum.dof)
 
     chisqrs=[]
     for k in splat.STDS_DWARF_SPEX.keys():
@@ -568,6 +567,7 @@ def classify(sp, **kwargs):
 
     #smallest_chi_Square is the clasification
     chisqrs=np.vstack(chisqrs)
+    #print (chisqrs)
     return np.round(splat.weightedMeanVar(make_spt_number(chisqrs[:,1]), chisqrs[:,0], method='ftest',dof=dof))
 
 def distance(mags, spt, spt_unc):

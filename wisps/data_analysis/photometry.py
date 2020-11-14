@@ -31,7 +31,7 @@ from functools import lru_cache
 from concurrent.futures import ThreadPoolExecutor, wait , ALL_COMPLETED
 from  functools import partial
 
-PHOTOMETRIC_TABLE=get_big_file()[['grism_id', 'F110', 'F140', 'F160', 'RA', 'DEC', 'class_star']]
+PHOTOMETRIC_TABLE=get_big_file()[['grism_id', 'F110', 'F140', 'F160', 'RA', 'DEC', 'class_star', 'F110_er', 'F140_er', 'F160_er']]
 
 class Source(Spectrum):
     """
@@ -142,9 +142,9 @@ class Source(Spectrum):
 
         del df
         
-        self._mags={'F110W': (s.F110[0], s.F110[1]), 
-                             'F160W': (s.F160[0], s.F160[1]),
-                             'F140W': (s.F140[0], s.F140[1])}
+        self._mags={'F110W': (s.F110, s.F110_er), 
+                             'F160W': (s.F160, s.F160_er),
+                             'F140W': (s.F140, s.F140_er)}
 
         #replace --99 by nan
         for k, val in self._mags.items():
@@ -350,7 +350,6 @@ def get_multiple_sources(filenames, **kwargs):
     results=[x for x in futures]
 
     return results
-
 
 
 
