@@ -27,7 +27,7 @@ kirkpa2019pol={'pol':np.poly1d(np.flip([36.9714, -8.66856, 1.05122 ,-0.0344809])
                     'scatter':.67, 'range':[36, 44]}
 
 def plot_annotated_heatmap(ax, data, gridpoints, columns, cmap='viridis', 
-                           annotate=False, vmin=0.0, vmax=1.0):
+                           annotate=False, vmin=0.0, vmax=1.0, textsize=14):
     #plot an annotated heatmap
     data= data.dropna()
     xcol, ycol, zcol= columns
@@ -61,10 +61,10 @@ def plot_annotated_heatmap(ax, data, gridpoints, columns, cmap='viridis',
                     values[j][i] = zmedian
                     if annotate == 'third_value':
                         ax.text(xgrid[i]+step1/2., ygrid[j]+step2/2., f'{zmedian:.2f}',
-                                 ha='center', va='center', fontsize=12, color='#111111')
+                                 ha='center', va='center', fontsize=textsize, color='#111111')
                     if annotate== 'number':
                         ax.text(xgrid[i]+step1/2., ygrid[j]+step2/2., f'{lenz:.0f}',
-                                 ha='center', va='center', fontsize=12, color='#111111')
+                                 ha='center', va='center', fontsize=textsize, color='#111111')
                 
     values2 = np.ma.array(values, mask=mask)
     cax = ax.pcolormesh(xgrid, ygrid, values2, vmin=vmin, vmax=vmax, cmap=cmap)

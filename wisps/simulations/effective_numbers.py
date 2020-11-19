@@ -25,27 +25,53 @@ dist_arrays=pd.DataFrame.from_records([x.dist_limits for x in POINTINGS]).applym
 
 #ignore pymc, ignore pre-computed distances
 DISTANCE_LIMITS={}
+POINTING_POINTING_NAMES= dict(zip([x.name for x in POINTINGS], POINTINGS))
 #BAYESIAN_DISTANCES_VOLUMES=np.load(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', allow_pickle=True)
 
-#---------------------------
-def draw_distance_with_cdf(l, b, dmax, nsample, h):
+def interpolated_cdf(pntname, h):
+    pnt= POINTING_POINTING_NAMES[pntname]
+    l, b= pnt.coord.galactic.l.radian, pnt.coord.galactic.b.radian
+    d=np.logspace(0, np.log10(5000), int(1e3))
+    cdfvals=np.array([custom_volume(l,b,0, dx, h) for dx in d])
+    return interp1d(d, cdfvals)
+
+#@numba.jit
+def draw_distance_with_cdf(pntname, dmax, nsample, h):
     #draw distances using inversion of the cumulative distribution 
     #this is to avoid using pymc
     d=np.logspace(0, np.log10(dmax), int(nsample))
-    cdfvals=np.array([custom_volume(l,b,0, dx, h) for dx in d])
+    cdfvals=(INTERPOLATED_CDFS[h][pntname])(d)
     return wisps.random_draw(d, cdfvals/np.nanmax(cdfvals), int(nsample))
 
 
 def draw_distances(pnt, nsample, h):
     #draw distances for each pointing separtely up to a 10000 pc
-    l, b= pnt.coord.galactic.l.radian, pnt.coord.galactic.b.radian,
-    dists=draw_distance_with_cdf(l, b, 4000, nsample, h)
+    l, b= pnt.coord.galactic.l.radian, pnt.coord.galactic.b.radian
+    dists=draw_distance_with_cdf(pnt.name, 4000, nsample, h)
     #get rs and zs
     xs=Rsun-dists*np.cos(b)*np.cos(l)
     ys=-dists*np.cos(b)*np.sin(l)
     rs=(xs**2+ys**2)**0.5 
     zs=Zsun+ dists * np.sin(b)
     return [dists, rs, zs]
+
+#INTERPOLATED_CDFS= {}
+#for h in tqdm(HS):
+#    small_inter={}
+#    for p in POINTINGS:
+#        small_inter.update({p.name: interpolated_cdf(p.name, h)})
+#    INTERPOLATED_CDFS.update({h: small_inter })
+
+#def save_distances():
+#    DISTANCES= dict(zip(HS, [np.vstack([draw_distances(x, 1e4, h) for x in tqdm(POINTINGS)]) for h in HS]))
+#    import pickle
+#    with open(wisps.OUTPUT_FILES+'/cdf_distance_tables.pkl', 'wb') as file:
+#        pickle.dump(DISTANCES,file)
+
+
+
+    #---------------------------
+
 
 for s in SPGRID:
     DISTANCE_LIMITS[s]=dist_arrays[s].mean(axis=0)
@@ -82,6 +108,7 @@ def func_total(x, z, a, c, x0, b):
     return x0+ a*(x**c)+ b*(z)
 
 def compute_effective_numbers(model, h):
+    #DISTANCES=pd.DataFrame(pd.read_pickle(wisps.OUTPUT_FILES+'/cdf_distance_tables.pkl')[h])
     ##given a distribution of masses, ages, teffss
     ## based on my polynomial relations and my own selection function
     syst=make_systems(model_name=model, bfraction=0.2)
@@ -149,7 +176,8 @@ def compute_effective_numbers(model, h):
     #dbools=[DISTANCE_WITHIN_LIMITS_BOOLS[k] for k in spt_r]
 
     #assign distances using cdf-inversion
-    pnt_distances= np.vstack([draw_distances(x, 1e4, h) for x in tqdm(POINTINGS)])
+    pnt_distances=  np.vstack([draw_distances(x, 1e5, h) for x in tqdm(POINTINGS)])
+    #pnt_distances= (DISTANCES[names].values)#np.vstack([draw_distances(x, 1e5, h) for x in tqdm(POINTINGS)])
     #dists_for_spts=np.vstack(BAYESIAN_DISTANCES_VOLUMES[h]['distances']).flatten()[pntindex_to_use]#[dbools]
     #rs=np.vstack(BAYESIAN_DISTANCES_VOLUMES[h]['rs']).flatten()[pntindex_to_use]#[dbools]
     #zs=np.vstack(BAYESIAN_DISTANCES_VOLUMES[h]['zs']).flatten()[pntindex_to_use]#[dbools]
@@ -239,7 +267,7 @@ def simulation_outputs(**kwargs):
     recompute=kwargs.get("recompute", False)
 
     #recompute for different evolutionary models
-    models=kwargs.get('models', ['saumon2008', 'baraffe2003' ,'marley2019', 'phillips2020'])
+    models=kwargs.get('models', ['phillips2020'])
 
     if recompute:
         #dict_values={}
