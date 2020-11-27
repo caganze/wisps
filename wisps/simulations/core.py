@@ -27,7 +27,7 @@ def get_proper_pointing(grism_id):
     else:
         return grism_id.split('-g141')[0]
 
-
+print (MAG_LIMITS)
 #constants
 big_file=wisps.get_big_file()
 #starswisp=stars[ big_file.class_starstars.grism_id.str.startswith('par')]
@@ -122,6 +122,8 @@ def get_max_value(values):
     values=wisps.drop_nan(values)
     if len(values)<1:
         return np.nan
+    if np.equal.reduce(values):
+        return np.nanmean(values)
     if len(values)>=1:
         kernel = wisps.kernel_density(values)
         height = kernel.pdf(values)

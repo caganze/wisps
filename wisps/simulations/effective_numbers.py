@@ -18,7 +18,7 @@ from scipy.interpolate import griddata
 
 POINTINGS=pd.read_pickle(wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl')
 
-
+print (MAG_LIMITS)
 
 #some re-arragments because the limiting distance depends on the pointing
 dist_arrays=pd.DataFrame.from_records([x.dist_limits for x in POINTINGS]).applymap(lambda x:np.vstack(x).astype(float))
@@ -55,12 +55,12 @@ def draw_distances(pnt, nsample, h):
     zs=Zsun+ dists * np.sin(b)
     return [dists, rs, zs]
 
-#INTERPOLATED_CDFS= {}
-#for h in tqdm(HS):
-#    small_inter={}
-#    for p in POINTINGS:
-#        small_inter.update({p.name: interpolated_cdf(p.name, h)})
-#    INTERPOLATED_CDFS.update({h: small_inter })
+INTERPOLATED_CDFS= {}
+for h in tqdm(HS):
+    small_inter={}
+    for p in POINTINGS:
+        small_inter.update({p.name: interpolated_cdf(p.name, h)})
+    INTERPOLATED_CDFS.update({h: small_inter })
 
 #def save_distances():
 #    DISTANCES= dict(zip(HS, [np.vstack([draw_distances(x, 1e4, h) for x in tqdm(POINTINGS)]) for h in HS]))
@@ -106,6 +106,17 @@ def probability_of_selection(spt, snr):
 def func_total(x, z, a, c, x0, b):
     #fit of magnitude and exposure time to get uncertainties
     return x0+ a*(x**c)+ b*(z)
+
+@np.vectorize
+def check_less(m, m0):
+    return m<m0
+
+def final_function_magunc(m, m0, s0, c):
+    unc= np.zeros(len(m))
+    mask=check_less(m, m0)
+    unc[mask]=s0
+    unc[~mask]=s0*((m[~mask]/m0)**c)
+    return unc
 
 def compute_effective_numbers(model, h):
     #DISTANCES=pd.DataFrame(pd.read_pickle(wisps.OUTPUT_FILES+'/cdf_distance_tables.pkl')[h])
@@ -168,7 +179,7 @@ def compute_effective_numbers(model, h):
     exptimes=np.array([np.log10(x.exposure_time) for x in POINTINGS ])
     pntindex_to_use=wisps.random_draw(pntindex, volumes_cdf, nsample=len(spts))
     pnts=names[pntindex_to_use]
-    exps= exptimes[pntindex_to_use]
+    #exps= exptimes[pntindex_to_use]
 
     #get distances withing magnitude limits
     spt_r=np.floor(spts)
@@ -204,20 +215,23 @@ def compute_effective_numbers(model, h):
     appf160s0=f160s+5*np.log10(dists_for_spts/10.0)
     
     #add magnitude uncertainities
-    appf110s= np.random.normal(appf110s0, func_total(appf110s0, exps, *list( MAG_LIMITS['mag_unc_exp']['F110'])))
-    appf140s= np.random.normal(appf140s0, func_total(appf140s0, exps, *list( MAG_LIMITS['mag_unc_exp']['F140'])))
-    appf160s= np.random.normal(appf160s0, func_total(appf160s0, exps, *list( MAG_LIMITS['mag_unc_exp']['F160'])))
+    appf110s= np.random.normal(appf110s0, final_function_magunc(appf110s0,  *list( MAG_LIMITS['mag_unc_exp']['F110'])))
+    appf140s= np.random.normal(appf140s0, final_function_magunc(appf140s0,  *list( MAG_LIMITS['mag_unc_exp']['F140'])))
+    appf160s= np.random.normal(appf160s0, final_function_magunc(appf160s0,  *list( MAG_LIMITS['mag_unc_exp']['F160'])))
 
     snrjs=10**np.random.normal( (relsnrs['snr_F140W'][0])(appf140s),relsnrs['snr_F140W'][1])
 
     sl= probability_of_selection(spts, snrjs)
 
     #comput the rest from the survey
+    #dict_values={model: {h: {}, 'age': None, 'teff': None, 'spts': None}}
     dict_values=pd.read_pickle(wisps.OUTPUT_FILES+'/effective_numbers_from_sims')
-    print (model)
-    print (dict_values.keys())
-    print (np.nanmax(dict_values[model]['age']))
-    print (np.nanmax(syst['system_age'][~np.isnan((syst['system_spts']).flatten())]))
+    dict_values[model]={}
+    dict_values[model][h]={}
+    #print (model)
+    #print (dict_values.keys())
+    #print (np.nanmax(dict_values[model]['age']))
+    #print (np.nanmax(syst['system_age'][~np.isnan((syst['system_spts']).flatten())]))
     #print (model)
     #print 
     dict_values[model]['spts']=wisps.drop_nan((syst['system_spts']).flatten())
@@ -234,6 +248,7 @@ def compute_effective_numbers(model, h):
 
     with open(wisps.OUTPUT_FILES+'/effective_numbers_from_sims', 'wb') as file:
             pickle.dump(dict_values,file)
+    return 
     
 def get_all_values_from_model(model):
     """
@@ -267,15 +282,13 @@ def simulation_outputs(**kwargs):
     recompute=kwargs.get("recompute", False)
 
     #recompute for different evolutionary models
-    models=kwargs.get('models', ['phillips2020'])
+    models=kwargs.get('models', None)
 
     if recompute:
-        #dict_values={}
-        for m in models: 
-            get_all_values_from_model(m)
-        #import pickle
-        #with open(wisps.OUTPUT_FILES+'/effective_numbers_from_sims', 'wb') as file:
-        #    pickle.dump(dict_values,file)
+        #get_all_values_from_model('phillips2020')
+        #get_all_values_from_model('marley2019')
+        get_all_values_from_model('baraffe2003')
+        get_all_values_from_model('saumon2008')
         return
     else:
         dict_values=pd.read_pickle(wisps.OUTPUT_FILES+'/effective_numbers_from_sims')

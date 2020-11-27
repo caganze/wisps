@@ -41,12 +41,7 @@ LS=galc.l.radian
 BS=galc.b.radian
 
 #OBSERVED_DIST=np.concatenate(np.array([v for v in pnts[0].dist_limits.values()]))
-#---------------------------
-def draw_with_cdf(l, b, dmax, nsample):
-    #draw distances using inversion of the cumulative distribution 
-    d=np.logspace(0, np.log10(dmax), int(nsample))
-    cdfvals=np.array([wispsim.custom_volume(l,b,0, dx, h) for dx in d])
-    return wisps.random_draw(d, cdfvals/np.nanmax(cdfvals), nsample)
+
 
 def sample_distances(nsample=1000, h=300):
     """
