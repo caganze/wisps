@@ -42,15 +42,26 @@ BS=galc.b.radian
 
 #OBSERVED_DIST=np.concatenate(np.array([v for v in pnts[0].dist_limits.values()]))
 
+def density_function(r, z, h=300.):
+    
+    """
+    A custom juric density function that only uses numpy arrays for speed
+    All units are in pc
+    """
+    l = 2600. # radial length scale of exponential thin disk 
+    zpart=np.exp(-abs(z-Zsun)/h)
+    rpart=np.exp(-(r-Rsun)/l)
+    return zpart*rpart
 
-def sample_distances(nsample=1000, h=300):
+
+def sample_distances(nsample=1000, h=300, dmin=0, dmax=5000):
     """
     sample the galaxy given a scale height
     
     """
     #add an option for sampling a uniform distribution for scale-heights
     def logp(l, b, r, z, d, h):
-        return np.log((d**2)*wispsim.density_function(r, z, h))
+        return np.log((d**2)*density_function(r, z, h))
 
     with pm.Model() as model:
         l=pm.Uniform('l', lower=-2*np.pi, upper=2*np.pi, testval=np.pi/2, observed=LS)
@@ -123,33 +134,27 @@ def compute_distance_limits(pnt):
 def save_all_stuff():
     #sample the galactic structure model
     import pickle
-
+    #some re-arragments because the limiting distance depends on the pointing
+    dist_arrays=pd.DataFrame.from_records([x.dist_limits for x in pnts]).applymap(lambda x:np.vstack(x).astype(float))
+    DISTANCE_LIMITS={}
+    for s in wispsim.SPGRID:
+        DISTANCE_LIMITS[s]=dist_arrays[s].mean(axis=0)
 
     for h in wispsim.HS:
+        print (h)
+        dis={}
+        for s in DISTANCE_LIMITS.keys():
+            print (s)
+            dlts=np.array(DISTANCE_LIMITS[s]).flatten()
+            dx= sample_distances(nsample=1e3, h=h, dmin=dlts[1]/2, dmax=2*dlts[0])
+            dis.update({s: dx})
+            jbhknj
+        DISTANCE_SAMPLES.update({h: dis})
 
-        trace=sample_distances(nsample=1.0e4, h=h)
-        #save each scale height separetly to avoid overloading the disk
-        dists=np.array(trace['d'])
-        rs=np.array(trace['r']) 
-        zs=np.array(trace['z'])
-
-        #append data to dictionary
-        full_dict=pd.read_pickle(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl')
-
-        full_dict[h]={ 'distances': dists.flatten(), 'rs':rs.flatten(), 'zs': zs.flatten()}
-
-        with open(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', 'wb') as file:
-                   pickle.dump(full_dict,file)
-
-        del full_dict #delete from memory to save space
-        del dists
-        del rs
-        del zs
-        del trace
-
+    with open(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', 'wb') as file:
+                       pickle.dump(DISTANCE_SAMPLES,file)
 if __name__ =='__main__':
-    pass
-    #save_all_stuff()
+    save_all_stuff()
     #import wisps.simulations.effective_numbers as eff
     #eff.simulation_outputs(recompute=True, hs=wispsim.HS)
 

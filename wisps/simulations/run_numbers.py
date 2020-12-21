@@ -18,15 +18,14 @@ from tqdm import tqdm
 import splat.empirical as spem
 import wisps.simulations.effective_numbers as ef 
 import seaborn as sns
-from matplotlib.ticker import MultipleLocator
-from matplotlib.colors import Normalize
-import matplotlib as mpl
+
 import splat.empirical as spe
-import dask
+#import dask
 #from dask.distributed import Client, progress
 #dask.config.set({'scheduler.work-stealing': True, 'allowed-failures': 999})
 #from dask import dataframe as dd 
 import itertools
+from pathos.multiprocessing import ProcessingPool as Pool
 
 pnts=pd.read_pickle(wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl')
 corr_pols=wisps.POLYNOMIAL_RELATIONS['mag_limit_corrections'] 
@@ -72,44 +71,45 @@ def get_pointing(grism_id):
 
 def compute_simulated_numbers(hidx, model='saumon2008', selection='prob'):
     #an index in accordance with the scale height
+    simdf=pd.DataFrame.from_records((ef.simulation_outputs()[model])[hidx]).rename(columns={'dist':'d', 
+        'snrj': 'snr', 'slprob': 'sl', 'spts': 'spt', 'pnt': 'pntname'})
     
-    data=(ef.simulation_outputs()[model])[hidx]
     #print (data)
 
     #df=dd.from_pandas(data, npartitions=3)
 
-    simdf=pd.DataFrame()
-    simdf['spt']=(ef.simulation_outputs()[model])['spts'].flatten()
-    simdf['teff']=(ef.simulation_outputs()[model])['teff'].flatten()
-    simdf['age']=(ef.simulation_outputs()[model])['age'].flatten()
-    simdf['slprob']=data['sl']
-    simdf['snr']=data['snrj']
-    simdf['appF140']=data['appf140']
-    simdf['appF110']=data['appf110']
-    simdf['appF160']=data['appf160']
-    simdf['pntname']=data['pnt']
-    simdf['dist']=data['d']
+    #simdf=pd.DataFrame()
+    #simdf['spt']=data['spts']
+    #simdf['teff']=(ef.simulation_outputs()[model])['teff'].flatten()
+    #simdf['age']=(ef.simulation_outputs()[model])['age'].flatten()
+    #simdf['slprob']=data['sl']
+    #simdf['snr']=data['snrj']
+    #simdf['appF140']=data['appf140']
+    #simdf['appF110']=data['appf110']
+    #simdf['appF160']=data['appf160']
+    #simdf['pntname']=data['pnt']
+    #simdf['dist']=data['d']
 
     
     simdf['pnt']=simdf.pntname.apply(lambda x: np.array(pnts)[pnt_names.index(x)])
     
-    simmgs=simdf[['appF140', 'appF110', 'appF160']].rename(columns={"appF110": "F110", 
-                                                                    "appF140": "F140",
-                                                                    "appF160": "F160"}).to_dict('records')
-    flags=[iswithin_mag_limits(x, y, z) for x, y,z in zip(simmgs,  simdf.pnt.values, simdf['spt'].values )]
-    
-    
-    cutdf=(simdf[flags]).reset_index(drop=True)
+    #simmgs=simdf[['appf140', 'appf110', 'appf160']].rename(columns={"appf110": "F110", 
+    #                                                                "appf140": "F140",
+    #                                                                "appf160": "F160"}).to_dict('records')
+    corrts=(corr_pols['F110W'][0])(simdf.spt)
+
+    mag_limits=pd.DataFrame.from_records(simdf.pnt.apply(lambda x: x.mag_limits).values)
+
+    flags0=simdf.appf110 > mag_limits['F110']+corrts
+    flags1=simdf.appf140 > mag_limits['F140']+corrts
+    flags2=simdf.appf160 > mag_limits['F160']+corrts
+    flags3= simdf.snr <3
+
+    flags=np.logical_or.reduce([flags0,flags1, flags2, flags3])
+
+    cutdf=(simdf[~flags]).reset_index(drop=True)
 
     cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut.h5', key=str(model)+str('h')+str(hidx)+'F110_corrected')
-    #save this cutdf dataframe
-    #NORM = 0.63*(10**-3)/ len(cutdf.teff[np.logical_and(cutdf.teff>=1650, cutdf.teff <=1800)])
-    
-    #NSIM=dict(zip(wispsim.SPGRID,np.zeros(len(wispsim.SPGRID))))
-    #rounded spectral type
-    #cutdf['spt_r']=cutdf.spt.apply(np.round)
-    #for g in cutdf.groupby('spt_r'):
-    #   NSIM[g[0]]=np.nansum((g[1]).slprob*NORM)
 
 
         
@@ -124,10 +124,12 @@ def compute_with_dask():
     #pool = multiprocessing.Pool(processes=2)
 
     #Distribute the parameter sets evenly across the cores
-    func=lambda x, y: compute_simulated_numbers(y, model=x)
+    func=lambda x: compute_simulated_numbers(x[1], model=x[0])
 
-    paramlist=[(i, j)  for i, j in itertools.product(['saumon2008', 'baraffe2003', 'marley2019', 'phillips2020'], wispsim.HS)]
-    res  = [func(x, y) for x,y in tqdm(paramlist)]
+    #paramlist=[(i, j)  for i, j in itertools.product(['saumon2008', 'baraffe2003', 'marley2019', 'phillips2020'], wispsim.HS)]
+    with Pool() as pool:
+         dx=pool.map(func, itertools.product(['saumon2008', 'baraffe2003', 'marley2019', 'phillips2020'], wispsim.HS))
+    #res  = [func(x, y) for x,y in tqdm(paramlist)]
     
     #for model in ['saumon2008', 'baraffe2003', 'marley2019', 'phillips2020']:
     #    for idx, h in enumerate(wispsim.HS):

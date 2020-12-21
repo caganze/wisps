@@ -137,16 +137,20 @@ def simulate_spts(**kwargs):
         ages_singles= spsim.simulateAges(nsim,range=[ranges[2], ranges[3]], distribution='uniform')
 
         #parameters for binaries
-        binrs=simulate_binary(int(nsim), [ranges[0], ranges[1]], [ranges[2], ranges[3]])
+        #binrs=simulate_binary(int(nsim), [ranges[0], ranges[1]], [ranges[2], ranges[3]])
+        qs=spsim.simulateMassRatios(nsim,distribution='power-law',q_range=[0.1,1.0],gamma=4)
+        m_prims = spsim.simulateMasses(nsim,range=[ranges[0], ranges[1]],distribution='power-law',alpha=0.6)
+        m_sec=m_prims*qs
+        ages_bin= spsim.simulateAges(nsim,range=[ranges[2], ranges[3]], distribution='uniform')
 
         #single_evol=spev.modelParameters(mass=m_singles,age=ages_singles, set=model_name, cloud=cloud)
         single_evol=evolutionary_model_interpolator(m_singles, ages_singles, model_name)
 
         #primary_evol=spev.modelParameters(mass=binrs[0],age=binrs[-1], set=model_name, cloud=cloud)
-        primary_evol=evolutionary_model_interpolator(binrs[0],binrs[-1], model_name)
+        primary_evol=evolutionary_model_interpolator(m_prims,ages_bin, model_name)
 
         #secondary_evol=spev.modelParameters(mass=binrs[1],age=binrs[-1], set=model_name, cloud=cloud)
-        secondary_evol=evolutionary_model_interpolator(binrs[1],binrs[-1], model_name)
+        secondary_evol=evolutionary_model_interpolator(m_sec,ages_bin, model_name)
         #save luminosities
 
         #temperatures
@@ -195,16 +199,19 @@ def make_systems(**kwargs):
     model=kwargs.get('model_name', 'baraffe2003')
     binary_fraction=kwargs.get('bfraction', 0.2)
 
-    model_vals=simulate_spts(name=model)
+    model_vals=simulate_spts(name=model, **kwargs)
 
-    nbin= int(len(model_vals['sing_spt'])*binary_fraction) #number of binaries
+
+    #nbin= int(len(model_vals['sing_spt'])*binary_fraction) #number of binaries
+
+    ndraw= int(len(model_vals['sing_spt'])/(1-binary_fraction))
 
 
     nans=np.isnan(model_vals['binary_spt'])
     
-    choices={'spt': np.random.choice(model_vals['binary_spt'][~nans], nbin),
-            'teff': np.random.choice(model_vals['prim_evol']['temperature'].value[~nans], nbin), 
-            'age': np.random.choice(model_vals['prim_evol']['age'].value[~nans],nbin)}
+    choices={'spt': np.random.choice(model_vals['binary_spt'][~nans], ndraw),
+            'teff': np.random.choice(model_vals['prim_evol']['temperature'].value[~nans], ndraw), 
+            'age': np.random.choice(model_vals['prim_evol']['age'].value[~nans],ndraw)}
 
 
     vs={'system_spts': np.concatenate([model_vals['sing_spt'], choices['spt']]), 

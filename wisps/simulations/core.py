@@ -27,7 +27,7 @@ def get_proper_pointing(grism_id):
     else:
         return grism_id.split('-g141')[0]
 
-print (MAG_LIMITS)
+#print (MAG_LIMITS)
 #constants
 big_file=wisps.get_big_file()
 #starswisp=stars[ big_file.class_starstars.grism_id.str.startswith('par')]
@@ -42,7 +42,7 @@ STARS=wisps.Annotator.reformat_table(STARS[STARS.snr1>=3.]).reset_index(drop=Tru
 
 del big_file
 
-Rsun=83000.
+Rsun=8300.
 Zsun=27.
 HS=[150,200,250, 300,350,400, 450, 500]
 
@@ -151,7 +151,7 @@ def get_mag_limit(pnt, key, mags):
     if (len(mags) < MAG_LIMITS['ncutoff']):
         magpol=MAG_LIMITS[survey][key][0]
         magsctt=MAG_LIMITS[survey][key][1]
-        maglt=np.random.normal(magpol(np.log10(pnt.exposure_time)), magsctt)
+        maglt=np.random.normal(magpol(np.log10(pnt.imag_exptime)), magsctt)
         return maglt
 
     #things aove 50 objects
@@ -178,6 +178,7 @@ class Pointing(object):
         self.snr1=None
         self.number_of_sources={}
         self.mags_unc={}
+        self.imag_exptime=None
 
         #compute volumes after initialization
         if self.name is not None:
@@ -186,6 +187,7 @@ class Pointing(object):
             self.exposure_times=(df['exposure_time']).values
             self.observation_date=(df['observation_date']).values
             self.snr1=df.snr1.values
+            self.imag_exptime=np.nanmean(df.expt_f140w.values)
             for k in ['F110', 'F140', 'F160']:
                 self.mags[k]=df[k].values
                 self.mags_unc

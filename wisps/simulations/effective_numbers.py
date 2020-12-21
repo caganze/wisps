@@ -8,13 +8,18 @@ from scipy.interpolate import interp1d
 import wisps
 from .initialize import SELECTION_FUNCTION, SPGRID
 from wisps import drop_nan
+from astropy.coordinates import SkyCoord
+import pymc3 as pm
 
-from .core import  HS, MAG_LIMITS, Rsun, Zsun, custom_volume
+from .core import  HS, MAG_LIMITS, Rsun, Zsun, custom_volume, SPGRID
+import wisps.simulations as wispsim
 from .binaries import make_systems
 import numba
 import dask
 from scipy.interpolate import griddata
-
+import wisps.simulations as wispsim
+import pickle
+from multiprocessing import Pool
 
 POINTINGS=pd.read_pickle(wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl')
 
@@ -24,69 +29,46 @@ print (MAG_LIMITS)
 dist_arrays=pd.DataFrame.from_records([x.dist_limits for x in POINTINGS]).applymap(lambda x:np.vstack(x).astype(float))
 
 #ignore pymc, ignore pre-computed distances
-DISTANCE_LIMITS={}
+ 
 POINTING_POINTING_NAMES= dict(zip([x.name for x in POINTINGS], POINTINGS))
 #BAYESIAN_DISTANCES_VOLUMES=np.load(wisps.OUTPUT_FILES+'/bayesian_pointings.pkl', allow_pickle=True)
+corr_pols=wisps.POLYNOMIAL_RELATIONS['mag_limit_corrections'] 
 
-def interpolated_cdf(pntname, h):
-    pnt= POINTING_POINTING_NAMES[pntname]
-    l, b= pnt.coord.galactic.l.radian, pnt.coord.galactic.b.radian
-    d=np.logspace(0, np.log10(5000), int(1e3))
-    cdfvals=np.array([custom_volume(l,b,0, dx, h) for dx in d])
-    return interp1d(d, cdfvals)
+#imports
+#----------------------
 
-#@numba.jit
-def draw_distance_with_cdf(pntname, dmax, nsample, h):
-    #draw distances using inversion of the cumulative distribution 
-    #this is to avoid using pymc
-    d=np.logspace(0, np.log10(dmax), int(nsample))
-    cdfvals=(INTERPOLATED_CDFS[h][pntname])(d)
-    return wisps.random_draw(d, cdfvals/np.nanmax(cdfvals), int(nsample))
+#constants
+Rsun=wispsim.Rsun
+Zsun=wispsim.Zsun
+
+spgrid=SPGRID
+#-----------------------
 
 
-def draw_distances(pnt, nsample, h):
-    #draw distances for each pointing separtely up to a 10000 pc
-    l, b= pnt.coord.galactic.l.radian, pnt.coord.galactic.b.radian
-    dists=draw_distance_with_cdf(pnt.name, 4000, nsample, h)
-    #get rs and zs
-    xs=Rsun-dists*np.cos(b)*np.cos(l)
-    ys=-dists*np.cos(b)*np.sin(l)
-    rs=(xs**2+ys**2)**0.5 
-    zs=Zsun+ dists * np.sin(b)
-    return [dists, rs, zs]
+PNTS=pd.read_pickle(wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl')
+DISTANCES=pd.read_pickle(wisps.OUTPUT_FILES+'/distance_samples.pkl')
+pnt_names=[x.name for x in  PNTS]
 
-INTERPOLATED_CDFS= {}
-for h in tqdm(HS):
-    small_inter={}
-    for p in POINTINGS:
-        small_inter.update({p.name: interpolated_cdf(p.name, h)})
-    INTERPOLATED_CDFS.update({h: small_inter })
+#print (pnts[0].survey)
+COORDS=SkyCoord([p.coord for p in PNTS ])
+galc=COORDS.transform_to('galactic')
 
-#def save_distances():
-#    DISTANCES= dict(zip(HS, [np.vstack([draw_distances(x, 1e4, h) for x in tqdm(POINTINGS)]) for h in HS]))
-#    import pickle
-#    with open(wisps.OUTPUT_FILES+'/cdf_distance_tables.pkl', 'wb') as file:
-#        pickle.dump(DISTANCES,file)
+LBS=np.vstack([[x.coord.galactic.l.radian,x.coord.galactic.b.radian] for x in PNTS ])
+
+LS=galc.l.radian
+BS=galc.b.radian
 
 
 
-    #---------------------------
+def fit_snr_exptime(ts, mag, params):
+    d, e, f=params
+    return d*mag+e*np.log(ts/np.nanmedian(ts))+f
 
-
-for s in SPGRID:
-    DISTANCE_LIMITS[s]=dist_arrays[s].mean(axis=0)
-
-DISTANCE_LIMITS[42]=[np.nan, np.nan]
-#def probability_of_selection(vals, method='tot_label'):
-#    """
-#    probablity of selection for a given snr and spt
-#    """
-#    ref_df=SELECTION_FUNCTION
-#    spt, snr=vals
-#    #self.data['spt']=self.data.spt.apply(splat.typeToNum)
-#    floor=np.floor(spt)
-#    floor2=np.log10(np.floor(snr))
-#    return np.nanmean(ref_df[method][(ref_df.spt==floor) &(ref_df.logsnr.between(floor2, floor2+.3))])
+def mag_unc_exptime_relation( mag, t, params):
+    sigma_min = 3.e-3
+    tref = 1000.
+    beta, _, m0, alpha= params
+    return sigma_min*((mag-m0)**alpha)*((t/tref)**beta)
 
 
 def probability_of_selection(spt, snr):
@@ -98,42 +80,47 @@ def probability_of_selection(spt, snr):
     interpoints=np.array([ref_df.spt.values, ref_df.logsnr.values]).T
     return griddata(interpoints, ref_df.tot_label.values , (spt, np.log10(snr)), method='linear')
 
-#@np.vectorize
-#def selection_function(spt, snr):
-#    return  probability_of_selection((spt, snr))
 
-#@numba.jit(nopython=True)
-def func_total(x, z, a, c, x0, b):
-    #fit of magnitude and exposure time to get uncertainties
-    return x0+ a*(x**c)+ b*(z)
-
-@np.vectorize
-def check_less(m, m0):
-    return m<m0
-
-def final_function_magunc(m, m0, s0, c):
-    unc= np.zeros(len(m))
-    mask=check_less(m, m0)
-    unc[mask]=s0
-    unc[~mask]=s0*((m[~mask]/m0)**c)
-    return unc
 
 def compute_effective_numbers(model, h):
     #DISTANCES=pd.DataFrame(pd.read_pickle(wisps.OUTPUT_FILES+'/cdf_distance_tables.pkl')[h])
     ##given a distribution of masses, ages, teffss
     ## based on my polynomial relations and my own selection function
-    syst=make_systems(model_name=model, bfraction=0.2)
-    spts=(syst['system_spts']).flatten()
-    spts=wisps.drop_nan(spts)
-    spts=wisps.make_spt_number(spts)
+    DISTANCE_SAMPLES= DISTANCES[h]
 
-    DISTANCE_WITHIN_LIMITS_BOOLS={}
+    volumes=np.vstack([np.nansum(list(x.volumes[h].values())) for x in POINTINGS]).flatten()
+    volumes_cdf=np.cumsum(volumes)/np.nansum(volumes)
+    pntindex=np.arange(0, len(POINTINGS))
+    names=np.array([x.name for x in POINTINGS])
+    exptimes_mag=np.array([x.imag_exptime for x in POINTINGS ])
+    exptime_spec= np.array([x.exposure_time for x in POINTINGS])
+    
+
+    syst=make_systems(model_name=model,  bfraction=0.2, nsample=1e4, recompute=True)
+    
+    #mask_array= np.logical_and(syst['system_spts']).flatten()
+    spts=(syst['system_spts']).flatten()
+    print ('ho many ......... {}'.format(len(spts)))
+    mask= np.logical_and( spts>=17, spts<=41)
+    spts=spts[mask]
+    spt_r=np.round(spts)
+
+    pntindex_to_use=wisps.random_draw(pntindex, volumes_cdf, nsample=len(spts)).astype(int)
+    pnts=np.take(names, pntindex_to_use)
+    exps= np.take(exptimes_mag, pntindex_to_use)
+    exp_grism= np.take(exptime_spec, pntindex_to_use)
+
+   
     #LONGS=(BAYESIAN_DISTANCES_VOLUMES['ls'][h]).flatten()
     #LATS=(BAYESIAN_DISTANCES_VOLUMES['bs'][h]).flatten()
 
-    #for k in DISTANCE_LIMITS.keys():
-    #    dx=(BAYESIAN_DISTANCES_VOLUMES[h])['distances']
-    #    DISTANCE_WITHIN_LIMITS_BOOLS[k]= dx < 10* np.max(DISTANCE_LIMITS[k][0])
+
+    #retrieve key by key, let's see ho long it takes to run
+    spt_r=np.floor(spts).astype(int)
+    dists_for_spts= np.array([np.random.choice(DISTANCE_SAMPLES[k][idx]) for idx, k in zip(pntindex_to_use, spt_r)])
+    #rs= pnt_distances[:,1][pntindex_to_use]
+    #zs= pnt_distances[:,2][pntindex_to_use]
+
 
 
     #@np.vectorize
@@ -172,30 +159,19 @@ def compute_effective_numbers(model, h):
    
 
     #add pointings
-    volumes=np.vstack([np.nansum(list(x.volumes[h].values())) for x in POINTINGS]).flatten()
-    volumes_cdf=np.cumsum(volumes)/np.nansum(volumes)
-    pntindex=np.arange(0, len(POINTINGS))
-    names=np.array([x.name for x in POINTINGS])
-    exptimes=np.array([np.log10(x.exposure_time) for x in POINTINGS ])
-    pntindex_to_use=wisps.random_draw(pntindex, volumes_cdf, nsample=len(spts))
-    pnts=names[pntindex_to_use]
-    #exps= exptimes[pntindex_to_use]
+  
 
     #get distances withing magnitude limits
-    spt_r=np.floor(spts)
 
     #dbools=[DISTANCE_WITHIN_LIMITS_BOOLS[k] for k in spt_r]
 
     #assign distances using cdf-inversion
-    pnt_distances=  np.vstack([draw_distances(x, 1e5, h) for x in tqdm(POINTINGS)])
+    #pnt_distances=  np.vstack([draw_distances(x, 1e5, h) for x in tqdm(POINTINGS)])
     #pnt_distances= (DISTANCES[names].values)#np.vstack([draw_distances(x, 1e5, h) for x in tqdm(POINTINGS)])
     #dists_for_spts=np.vstack(BAYESIAN_DISTANCES_VOLUMES[h]['distances']).flatten()[pntindex_to_use]#[dbools]
     #rs=np.vstack(BAYESIAN_DISTANCES_VOLUMES[h]['rs']).flatten()[pntindex_to_use]#[dbools]
     #zs=np.vstack(BAYESIAN_DISTANCES_VOLUMES[h]['zs']).flatten()[pntindex_to_use]#[dbools]
-    dists_for_spts= pnt_distances[:,0][pntindex_to_use]
-    rs= pnt_distances[:,1][pntindex_to_use]
-    zs= pnt_distances[:,2][pntindex_to_use]
-
+    
 
 
     #distance_index= np.random.choice(np.arange(len(dist_array), len(spts)))
@@ -213,42 +189,79 @@ def compute_effective_numbers(model, h):
     appf140s0=f140s+5*np.log10(dists_for_spts/10.0)
     appf110s0=f110s+5*np.log10(dists_for_spts/10.0)
     appf160s0=f160s+5*np.log10(dists_for_spts/10.0)
+
+    print ('shape .....{}'.format(exps))
     
     #add magnitude uncertainities
-    appf110s= np.random.normal(appf110s0, final_function_magunc(appf110s0,  *list( MAG_LIMITS['mag_unc_exp']['F110'])))
-    appf140s= np.random.normal(appf140s0, final_function_magunc(appf140s0,  *list( MAG_LIMITS['mag_unc_exp']['F140'])))
-    appf160s= np.random.normal(appf160s0, final_function_magunc(appf160s0,  *list( MAG_LIMITS['mag_unc_exp']['F160'])))
+    appf110s= np.random.normal(appf110s0, mag_unc_exptime_relation(appf110s0, exps, list( MAG_LIMITS['mag_unc_exp']['F110'])))
+    appf140s= np.random.normal(appf140s0, mag_unc_exptime_relation(appf140s0, exps, list( MAG_LIMITS['mag_unc_exp']['F140'])))
+    appf160s= np.random.normal(appf160s0, mag_unc_exptime_relation(appf160s0, exps, list( MAG_LIMITS['mag_unc_exp']['F160'])))
 
-    snrjs=10**np.random.normal( (relsnrs['snr_F140W'][0])(appf140s),relsnrs['snr_F140W'][1])
+    #snrjs=10**np.random.normal( (relsnrs['snr_F140W'][0])(appf140s),relsnrs['snr_F140W'][1])
+    print (exp_grism)
+    snrjs= np.exp(fit_snr_exptime(  exp_grism, appf140s, list(MAG_LIMITS['snr_exp'])))
 
     sl= probability_of_selection(spts, snrjs)
 
     #comput the rest from the survey
     #dict_values={model: {h: {}, 'age': None, 'teff': None, 'spts': None}}
-    dict_values=pd.read_pickle(wisps.OUTPUT_FILES+'/effective_numbers_from_sims')
-    dict_values[model]={}
-    dict_values[model][h]={}
+    #dict_values=pd.read_pickle(wisps.OUTPUT_FILES+'/effective_numbers_from_sims')
+    #dict_values[model][h]={}
+    #dict_values[model]={}
+    #dict_values.update({model: {h:{}}})
     #print (model)
     #print (dict_values.keys())
     #print (np.nanmax(dict_values[model]['age']))
     #print (np.nanmax(syst['system_age'][~np.isnan((syst['system_spts']).flatten())]))
     #print (model)
     #print 
-    dict_values[model]['spts']=wisps.drop_nan((syst['system_spts']).flatten())
-    dict_values[model]['teff']=syst['system_teff'][~np.isnan((syst['system_spts']).flatten())]
-    dict_values[model]['age']=syst['system_age'][~np.isnan((syst['system_spts']).flatten())]
+    #dict_values[model]['spts']=spts
+    #dict_values[model]['teff']=syst['system_teff'][mask]
+    #dict_values[model]['age']=
 
-    morevals={'f110':f110s, 'f140':f140s, 'f160':f160s, 'd':dists_for_spts, 'r':rs, 'z':zs, 'appf140':appf140s,  
-    'appf110':appf110s,  'appf160':appf160s, 'snrj':snrjs, 'sl':sl, 'pnt':pnts}
+    morevals={'f110':f110s, 'f140':f140s, 'f160':f160s, 'd':dists_for_spts,  'appf140':appf140s,  
+    'appf110':appf110s,  'appf160':appf160s, 'snrj':snrjs, 'sl':sl, 'pnt':pnts, 'age':syst['system_age'][mask],
+    'teff': syst['system_teff'][mask], 'spts': spts}
 
-    dict_values[model][h].update(morevals)
 
-   
-    import pickle
+    #assert len(spts) == len(pnts)
+    #assert len(f110s) == len(pnts)
 
-    with open(wisps.OUTPUT_FILES+'/effective_numbers_from_sims', 'wb') as file:
-            pickle.dump(dict_values,file)
-    return 
+    #dict_values[model][h].update(morevals)
+
+
+    simdf=pd.DataFrame.from_records(morevals).rename(columns={'dist':'d', 
+        'snrj': 'snr', 'slprob': 'sl', 'spts': 'spt', 'pnt': 'pntname'})
+    
+    
+    
+    simdf['pnt']=simdf.pntname.apply(lambda x: np.array(PNTS)[pnt_names.index(x)])
+    
+    
+    corrts=(corr_pols['F110W'][0])(simdf.spt)
+
+    mag_limits=pd.DataFrame.from_records(simdf.pnt.apply(lambda x: x.mag_limits).values)
+
+    flags0=simdf.appf110 > mag_limits['F110']+corrts
+    flags1=simdf.appf140 > mag_limits['F140']+corrts
+    flags2=simdf.appf160 > mag_limits['F160']+corrts
+    flags3= simdf.snr <3
+
+    flags=np.logical_or.reduce([flags0,flags1, flags2, flags3])
+
+    flags=np.zeros(len(simdf)).astype(bool)
+
+    cutdf=(simdf[~flags]).reset_index(drop=True)
+
+    cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut.h5', key=str(model)+str('h')+str(h)+'F110_corrected')
+
+
+
+    #import pickle
+
+    #with open(wisps.OUTPUT_FILES+'/effective_numbers_from_sims', 'wb') as file:
+    #        pickle.dump(dict_values,file)
+    #return 
     
 def get_all_values_from_model(model):
     """
@@ -282,14 +295,5 @@ def simulation_outputs(**kwargs):
     recompute=kwargs.get("recompute", False)
 
     #recompute for different evolutionary models
-    models=kwargs.get('models', None)
 
-    if recompute:
-        #get_all_values_from_model('phillips2020')
-        #get_all_values_from_model('marley2019')
-        get_all_values_from_model('baraffe2003')
-        get_all_values_from_model('saumon2008')
-        return
-    else:
-        dict_values=pd.read_pickle(wisps.OUTPUT_FILES+'/effective_numbers_from_sims')
-        return dict_values
+    get_all_values_from_model('baraffe2003')

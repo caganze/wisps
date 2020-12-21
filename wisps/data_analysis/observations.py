@@ -14,7 +14,7 @@ import glob
 
 def get_paths():
     """
-    gets paths for all pointings in both surveys
+    gets paths for all pointings in both surveys 
     """
    
     #a script that loops through the folder and reads in the fits images to extract
@@ -28,9 +28,43 @@ def get_paths():
     #ppaths.extend(glob.glob(wisp_path+'/par*/hlsp_wisp_hst_wfc3_*-80mas_f*w_v6.2_drz.fits')) #actually we 
     #nly care about grism_observations
     ppaths.extend(glob.glob(wisp_path+'par*/hlsp_wisp_hst_wfc3_*g141*_drz.fits'))
-    ppaths.extend(glob.glob(path+'goods*'+'*F1*0W_drz_sci.fits'))
+    #ppaths.extend(glob.glob(path+'goods*'+'*F1*0W_drz_sci.fits'))
 
     return ppaths
+
+def get_phot_exposure_time(name, flter):
+    """
+    obtain pointing exposure time 
+    """
+    path=REMOTE_FOLDER
+    name=name.lower()
+    wisp_path=path+'/wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2//'
+    if name.lower().startswith('par'):
+        p=  wisp_path+name+'/hlsp_wisp_hst_wfc3_*-80mas_f*w_v6.2_drz.fits'
+        path=glob.glob(p)
+    else:
+        survey= name.split('-')[0]
+        if name.startswith('goods'):
+            survey='goods'
+        p= path+survey+'//'+ name+ '//*'+flter.upper()+'*_drz_sci.fits'
+        path= glob.glob(path+survey+'//'+ name+ '//*'+flter.upper()+'*_drz_sci.fits')
+    print (path)
+    return path
+
+def get_all_imaging_exptimes(name):
+    ###get all exposure times
+    vals=[]
+    fltrs=['F110w', 'F140w', 'F160w']
+    for flt in fltrs:
+        pths=get_phot_exposure_time(name, flt.upper())
+        if len(pths) ==0:
+            vals.append(np.nan)
+        else:
+            f= pths[0]
+            d=fits.open(f)[0]
+            vals.append(np.round(d.header['EXPTIME']))
+    keys=['expt_F110w'.upper(), 'expt_F140w'.upper(), 'expt_F160w'.upper()]
+    return pd.Series(dict(zip(keys, vals)))
 
 def create_logs():
 
@@ -43,6 +77,7 @@ def create_logs():
     decs=[]
     obs_ts=[]
     exp_ts=[]
+
     fields=[]
     ppaths=get_paths()
     for ppath in ppaths:
@@ -80,9 +115,10 @@ def create_logs():
     hst_data['EXPOSURE (s)']=np.round(exp_ts)
     hst_data['OBSERVATION DATE (UT)']=obs_ts
     hst_data['POINTING']=fields
+    hst_data_final= hst_data.join(hst_data.POINTING.apply(get_all_imaging_exptimes))
 
-    hst_data.to_latex(OUTPUT_FILES+'/observation_log.tex', index=False)
-    hst_data.to_csv(OUTPUT_FILES+'/observation_log.csv')
+    hst_data_final.to_latex(OUTPUT_FILES+'/observation_log.tex', index=False)
+    hst_data_final.to_csv(OUTPUT_FILES+'/observation_log.csv')
 
     print (hst_data)
     return hst_data
