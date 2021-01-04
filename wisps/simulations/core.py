@@ -18,6 +18,7 @@ from tqdm import tqdm
 import splat.simulate as spsim
 import splat.evolve as spev
 import wisps
+from scipy import stats
 
 #proper pointing name
 def get_proper_pointing(grism_id):
@@ -44,7 +45,7 @@ del big_file
 
 Rsun=8300.
 Zsun=27.
-HS=[150,200,250, 300,350,400, 450, 500]
+HS=[150,200,250, 300,350, 400, 450, 500, 550, 700, 1000]
 
 #redefine magnitude limits by taking into account the scatter for each pointing 
 #use these to compute volumes
@@ -95,9 +96,9 @@ def compute_distance_limits(mag_limits):
         #corrt=np.nanmedian([ (corr_pols['F160W'][0])(s),  (corr_pols['F110W'][0])(s),  (corr_pols['F140W'][0])(s)])
         corrt=(corr_pols['F110W'][0])(s)
         #corrt=0.0
-        faint_dict={'F110W': [mag_limits['F110']+corrt, 0.0], 
-        'F140W': [mag_limits['F140']+corrt, 0.0],
-        'F160W':[mag_limits['F160']+corrt, 0.0]}
+        faint_dict={'F110W': [mag_limits['F110']+corrt+0.5, 0.0], 
+        'F140W': [mag_limits['F140']+corrt+0.5, 0.0],
+        'F160W':[mag_limits['F160']+corrt+0.5, 0.0]}
 
         dmaxs=wisps.distance(faint_dict, s, 0.0)
         dmins=wisps.distance(bright_dict, s, 0.0)
@@ -119,14 +120,21 @@ def computer_volume(pnt, h):
         return volumes
 
 def get_max_value(values):
+    #make a mask
+    #mask=np.logical_or.reduce([np.isnan(values), values <15, values >25])
     values=wisps.drop_nan(values)
+    #values=values[~mask]
     if len(values)<1:
         return np.nan
     if np.equal.reduce(values):
         return np.nanmean(values)
     if len(values)>=1:
-        kernel = wisps.kernel_density(values)
-        height = kernel.pdf(values)
+        #kernel = wisps.kernel_density(values)
+        #kernel= stats.gaussian_kde(distr, bw_method=0.35)
+        #height = kernel.pdf(values)
+        #kernel = wisps.kernel_density(values)
+        kernel= stats.gaussian_kde(distr, bw_method=0.2)
+        height = kernel.pdf(np.linspace(19, 25, 100))
         mode_value = values[np.argmax(height)]
         print (mode_value)
         return float(mode_value)
@@ -138,27 +146,29 @@ def get_mag_limit(pnt, key, mags):
     maglt=np.nan
     survey= 'wisps'
   
-    #3d hst-mag limit is 23.0, and that's that on that
+    #leave 3d hst alone
     if (not pnt.name.lower().startswith('par')): 
-        survey='hst3d'
+        #survey='hst3d'
         if (key=='F110'): 
             return maglt
-        #else:
-        #    return 23.0
-    #otherwise
-    #else:
-    #things below 50 objects
-    if (len(mags) < MAG_LIMITS['ncutoff']):
-        magpol=MAG_LIMITS[survey][key][0]
-        magsctt=MAG_LIMITS[survey][key][1]
-        maglt=np.random.normal(magpol(np.log10(pnt.imag_exptime)), magsctt)
+        else:
+            return 23.0
+    #things above 50 objects
+    if (pnt.name.lower().startswith('par')): 
+        if (len(mags) >= MAG_LIMITS['ncutoff']): 
+            maglt=get_max_value(mags)
+
+        #if (pnt.name.lower().startswith('par')): 
+        #also fits things brighter than 12
+        if (len(mags) < MAG_LIMITS['ncutoff']) or (maglt <12) :
+            print (maglt)
+            magpol=MAG_LIMITS[survey][key][0]
+            magsctt=MAG_LIMITS[survey][key][1]
+            maglt=np.random.normal(magpol(np.log10(pnt.imag_exptime)), magsctt)
+
         return maglt
 
-    #things aove 50 objects
-    if (len(mags) >= MAG_LIMITS['ncutoff']): 
-        maglt=get_max_value(mags)
-        return maglt
-
+   
 
 
 class Pointing(object):
@@ -207,6 +217,7 @@ def make_pointings():
     obs=pd.read_csv(wisps.OUTPUT_FILES+'/observation_log.csv')
     obs=obs.drop(columns=['Unnamed: 0']).drop_duplicates(subset='POINTING').reindex()
     obs.columns=[x.lower() for x in obs.columns]
+    print (len(obs))
 
     def make_pointing(ra, dec, survey, name):
         coord=SkyCoord(ra=ra*u.deg,dec=dec*u.deg )
@@ -225,10 +236,14 @@ def make_pointings():
     surveys=obs.pointing.apply(get_survey)
 
     pnts=[make_pointing(ra, dec, survey, name) for ra, dec, survey, name in zip(ras, decs, surveys, obs.pointing.values)]
+    #if 
+    print ('missing magnitude limits' , [x.name for x in pnts if not x.dist_limits])
     pnts=[x for x in pnts if x.dist_limits]
+
+    #assert len(pnts)==533
 
     import pickle
 
-    output_file=wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl'
+    output_file=(wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl')
     with open(output_file, 'wb') as file:
         pickle.dump(pnts,file)

@@ -9,7 +9,7 @@ import wisps
 from .initialize import SELECTION_FUNCTION, SPGRID
 from wisps import drop_nan
 from astropy.coordinates import SkyCoord
-import pymc3 as pm
+#import pymc3 as pm
 
 from .core import  HS, MAG_LIMITS, Rsun, Zsun, custom_volume, SPGRID
 import wisps.simulations as wispsim
@@ -23,7 +23,6 @@ from multiprocessing import Pool
 
 POINTINGS=pd.read_pickle(wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl')
 
-print (MAG_LIMITS)
 
 #some re-arragments because the limiting distance depends on the pointing
 dist_arrays=pd.DataFrame.from_records([x.dist_limits for x in POINTINGS]).applymap(lambda x:np.vstack(x).astype(float))
@@ -46,7 +45,6 @@ spgrid=SPGRID
 
 
 PNTS=pd.read_pickle(wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl')
-DISTANCES=pd.read_pickle(wisps.OUTPUT_FILES+'/distance_samples.pkl')
 pnt_names=[x.name for x in  PNTS]
 
 #print (pnts[0].survey)
@@ -58,18 +56,17 @@ LBS=np.vstack([[x.coord.galactic.l.radian,x.coord.galactic.b.radian] for x in PN
 LS=galc.l.radian
 BS=galc.b.radian
 
+#wispsim.make_pointings()
+@numba.jit(nopython=True)
+def fit_snr_exptime(ts, mag, d, e, f):
+    return d*mag+e*np.log(ts/1000)+f
 
-
-def fit_snr_exptime(ts, mag, params):
-    d, e, f=params
-    return d*mag+e*np.log(ts/np.nanmedian(ts))+f
-
-def mag_unc_exptime_relation( mag, t, params):
+@numba.jit(nopython=True)
+def mag_unc_exptime_relation( mag, t, m0, beta, a, b):
     sigma_min = 3.e-3
     tref = 1000.
-    beta, _, m0, alpha= params
-    return sigma_min*((mag-m0)**alpha)*((t/tref)**beta)
-
+    #m0, beta, a, b= params
+    return ((t/tref)**-beta)*(10**(a*(mag-m0)+b))
 
 def probability_of_selection(spt, snr):
     """
@@ -86,8 +83,8 @@ def compute_effective_numbers(model, h):
     #DISTANCES=pd.DataFrame(pd.read_pickle(wisps.OUTPUT_FILES+'/cdf_distance_tables.pkl')[h])
     ##given a distribution of masses, ages, teffss
     ## based on my polynomial relations and my own selection function
-    DISTANCE_SAMPLES= DISTANCES[h]
-
+    DISTANCE_SAMPLES=pd.read_pickle(wisps.OUTPUT_FILES+'/distance_samples{}'.format(h))
+    
     volumes=np.vstack([np.nansum(list(x.volumes[h].values())) for x in POINTINGS]).flatten()
     volumes_cdf=np.cumsum(volumes)/np.nansum(volumes)
     pntindex=np.arange(0, len(POINTINGS))
@@ -96,11 +93,14 @@ def compute_effective_numbers(model, h):
     exptime_spec= np.array([x.exposure_time for x in POINTINGS])
     
 
-    syst=make_systems(model_name=model,  bfraction=0.2, nsample=1e4, recompute=True)
+    syst=make_systems(model_name=model,  bfraction=0.2, nsample=5e4, recompute=True)
+
     
     #mask_array= np.logical_and(syst['system_spts']).flatten()
     spts=(syst['system_spts']).flatten()
-    print ('ho many ......... {}'.format(len(spts)))
+    print ('----------------------------')
+    print (model, h)
+    print ('how many ......... {}'.format(len(spts)))
     mask= np.logical_and( spts>=17, spts<=41)
     spts=spts[mask]
     spt_r=np.round(spts)
@@ -190,16 +190,24 @@ def compute_effective_numbers(model, h):
     appf110s0=f110s+5*np.log10(dists_for_spts/10.0)
     appf160s0=f160s+5*np.log10(dists_for_spts/10.0)
 
-    print ('shape .....{}'.format(exps))
+    #print ('shape .....{}'.format(exps))
     
     #add magnitude uncertainities
-    appf110s= np.random.normal(appf110s0, mag_unc_exptime_relation(appf110s0, exps, list( MAG_LIMITS['mag_unc_exp']['F110'])))
-    appf140s= np.random.normal(appf140s0, mag_unc_exptime_relation(appf140s0, exps, list( MAG_LIMITS['mag_unc_exp']['F140'])))
-    appf160s= np.random.normal(appf160s0, mag_unc_exptime_relation(appf160s0, exps, list( MAG_LIMITS['mag_unc_exp']['F160'])))
+    f110_ers=  mag_unc_exptime_relation(appf110s0, exps, *list( MAG_LIMITS['mag_unc_exp']['F110']))
+    f140_ers=  mag_unc_exptime_relation(appf140s0, exps, *list( MAG_LIMITS['mag_unc_exp']['F140']))
+    f160_ers=  mag_unc_exptime_relation(appf160s0, exps, *list( MAG_LIMITS['mag_unc_exp']['F160']))
+
+    appf110s= np.random.normal(appf110s0, f110_ers)
+    appf140s= np.random.normal(appf140s0, f140_ers)
+    appf160s= np.random.normal(appf160s0, f160_ers)
 
     #snrjs=10**np.random.normal( (relsnrs['snr_F140W'][0])(appf140s),relsnrs['snr_F140W'][1])
-    print (exp_grism)
-    snrjs= np.exp(fit_snr_exptime(  exp_grism, appf140s, list(MAG_LIMITS['snr_exp'])))
+    #print (exp_grism)
+    snrjs110= 10**(fit_snr_exptime(  exp_grism, appf110s, *list(MAG_LIMITS['snr_exp']['F110'])))
+    snrjs140= 10**(fit_snr_exptime(  exp_grism, appf140s, *list(MAG_LIMITS['snr_exp']['F140'])))
+    snrjs160= 10**(fit_snr_exptime(  exp_grism, appf160s, *list(MAG_LIMITS['snr_exp']['F160'])))
+
+    snrjs= np.nanmin(np.vstack([snrjs110, snrjs140, snrjs160]), axis=0)
 
     sl= probability_of_selection(spts, snrjs)
 
@@ -220,8 +228,10 @@ def compute_effective_numbers(model, h):
     #dict_values[model]['age']=
 
     morevals={'f110':f110s, 'f140':f140s, 'f160':f160s, 'd':dists_for_spts,  'appf140':appf140s,  
-    'appf110':appf110s,  'appf160':appf160s, 'snrj':snrjs, 'sl':sl, 'pnt':pnts, 'age':syst['system_age'][mask],
-    'teff': syst['system_teff'][mask], 'spts': spts}
+    'appf110':appf110s,  'appf160':appf160s, 'sl':sl, 'pnt':pnts, 'age':syst['system_age'][mask],
+    'teff': syst['system_teff'][mask], 'spts': spts, 'f110_unc':  f110_ers, 'f140_unc':  f140_ers, 'f160_unc':  f160_ers,
+    'snrj110':  snrjs110, 'snrj140':  snrjs140, 'snrj160':  snrjs160, 'snrj': snrjs} 
+
 
 
     #assert len(spts) == len(pnts)
@@ -238,21 +248,24 @@ def compute_effective_numbers(model, h):
     simdf['pnt']=simdf.pntname.apply(lambda x: np.array(PNTS)[pnt_names.index(x)])
     
     
-    corrts=(corr_pols['F110W'][0])(simdf.spt)
+    #corrts0=
 
     mag_limits=pd.DataFrame.from_records(simdf.pnt.apply(lambda x: x.mag_limits).values)
 
-    flags0=simdf.appf110 > mag_limits['F110']+corrts
-    flags1=simdf.appf140 > mag_limits['F140']+corrts
-    flags2=simdf.appf160 > mag_limits['F160']+corrts
-    flags3= simdf.snr <3
+    assert len(mag_limits)==len(appf140s0)
+
+
+    flags0=simdf.appf110 >= mag_limits['F110']+(corr_pols['F110W'][0])(simdf.spt)
+    flags1=simdf.appf140 >= mag_limits['F140']+(corr_pols['F110W'][0])(simdf.spt)
+    flags2=simdf.appf160 >= mag_limits['F160']+(corr_pols['F110W'][0])(simdf.spt)
+    flags3= simdf.snr <3.
 
     flags=np.logical_or.reduce([flags0,flags1, flags2, flags3])
 
-    flags=np.zeros(len(simdf)).astype(bool)
-
     cutdf=(simdf[~flags]).reset_index(drop=True)
-
+    #cutdf=simdf
+    print ('Before cut {}'.format(len(simdf)))
+    print ('After cut {}'.format(len(cutdf)))
     cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut.h5', key=str(model)+str('h')+str(h)+'F110_corrected')
 
 
@@ -263,12 +276,12 @@ def compute_effective_numbers(model, h):
     #        pickle.dump(dict_values,file)
     #return 
     
-def get_all_values_from_model(model):
+def get_all_values_from_model(model, hs):
     """
     For a given set of evolutionary models obtain survey values
     """
     #obtain spectral types from modelss
-    for h in HS:
+    for h in hs:
         compute_effective_numbers(model, h)
 
     #syst=make_systems(model_name=model, bfraction=0.2)
@@ -293,7 +306,11 @@ def simulation_outputs(**kwargs):
     Purpose:compute number densities
     """
     recompute=kwargs.get("recompute", False)
+    hs=kwargs.get("hs", wispsim.HS)
 
     #recompute for different evolutionary models
 
-    get_all_values_from_model('baraffe2003')
+    get_all_values_from_model('baraffe2003', hs)
+    get_all_values_from_model('saumon2008', hs)
+    get_all_values_from_model('marley2019', hs)
+    get_all_values_from_model('phillips2020', hs)

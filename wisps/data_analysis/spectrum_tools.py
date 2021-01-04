@@ -29,7 +29,7 @@ from ..utils.tools import get_distance, make_spt_number
 from ..data_sets import datasets
 
 
-POLYNOMIAL_RELATIONS= pd.read_pickle(OUTPUT_FILES+'/polynomial_relations.pkl.gz')
+POLYNOMIAL_RELATIONS= pd.read_pickle(OUTPUT_FILES+'/polynomial_relations.pkl')
 
 from functools import lru_cache #high performance memoization
 
@@ -59,7 +59,8 @@ def interpolated_standards():
     for k in stds.keys():
         s=stds[k]
         s.normalize()
-        interpstds[k]=interpolate.interp1d(s.wave.value, s.flux.value)
+        #s.toInstrument('WFC3-G141')
+        interpstds[k]=(interpolate.interp1d(s.wave.value, s.flux.value), interpolate.interp1d(s.wave.value, s.noise.value))
     return interpstds
 
 
@@ -237,6 +238,7 @@ class Spectrum(object):
     @property 
     def splat_spectrum(self):
     	return splat.Spectrum(wave=self._wave, flux=self._flux, noise=self._noise, instrument='WFC3-G141')
+        
     @property
     def best_fit_line(self):
         ##save the best fit line as part of the object
@@ -524,7 +526,7 @@ def f_test(spectrum, **kwargs):
     return result
 
 def compute_chi_square(flux, noise, model):
-    if (noise==0.0).all(): noise=1.
+    if (noise==0.0).all(): noise=1e-3
     scale=np.nansum((flux*model)/noise**2)/np.nansum(model**2/noise**2)
     return float(np.nansum((flux-scale*model)**2/(noise**2)))
 
@@ -561,14 +563,60 @@ def classify(sp, **kwargs):
 
     chisqrs=[]
     for k in splat.STDS_DWARF_SPEX.keys():
-        model_f=INTERPOLATED_STANDARD_DICT[k]
+        model_f, model_n=INTERPOLATED_STANDARD_DICT[k]
         model=model_f(wave)
+        model_noise= model_n(wave)
+        #tot_noise= (noise**2 +  model_noise**2)**0.5
         chisqrs.append([compute_chi_square(flux, noise, model), float(make_spt_number(k))])
 
     #smallest_chi_Square is the clasification
     chisqrs=np.vstack(chisqrs)
     #print (chisqrs)
     return np.round(splat.weightedMeanVar(make_spt_number(chisqrs[:,1]), chisqrs[:,0], method='ftest',dof=dof))
+
+
+def classify_by_templates(sp, **kwargs):
+    #my hack versions of classifying by templates
+    """
+    """
+    #normalize both spectra
+    comprange=kwargs.get('comprange', [1.15, 1.65])
+    dof=kwargs.get('dof', None)
+    mask=None
+    #check for multiarray mask
+    if len(np.shape(comprange)) <2:
+        dof=len(sp.wave[np.logical_and(sp.wave>comprange[0], sp.wave <comprange[1] )])-1
+        mask=np.logical_and(sp.wave <= comprange[1], sp.wave >=comprange[0]  )
+
+    else:
+        masks=[]
+        dof=0.0
+        for wv in comprange:
+            masks.append(np.logical_and(sp.wave > wv[0], sp.wave < wv[1]))
+            dof += len(sp.wave[np.logical_and(sp.wave > wv[0], sp.wave < wv[1])])-1
+        mask=np.logical_or.reduce(masks)
+
+    #print (mask, dof)
+    #mask
+    wave=sp.wave[mask]
+    flux=sp.flux[mask]
+    noise=sp.noise[mask]
+    #dof=kwargs.get('dof', sp.splat_spectrum.dof)
+
+    #
+    tmpls=pd.read_pickle(OUTPUT_FILES+'/validated_templates.pkl')
+    chisqrs=[]
+    for _, row in tmpls.iterrows():
+        model=row.interp(wave)
+        #model_noise= model_n(wave)
+        #tot_noise= (noise**2 +  model_noise**2)**0.5
+        chisqrs.append([compute_chi_square(flux, noise, model), float(row.spt)])
+     #smallest_chi_Square is the clasification
+    chisqrs=np.vstack(chisqrs)
+    #print (chisqrs)
+    return np.round(splat.weightedMeanVar(make_spt_number(chisqrs[:,1]), chisqrs[:,0], method='ftest',dof=dof))
+
+
 
 def distance(mags, spt, spt_unc):
     """

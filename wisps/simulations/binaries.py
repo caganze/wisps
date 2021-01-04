@@ -7,10 +7,10 @@ import splat.simulate as spsim
 import splat.evolve as spev
 import splat.empirical as spe
 import wisps
-import pymc3 as pm
+#import pymc3 as pm
 from scipy.interpolate import griddata
-import theano.tensor as tt
-from theano.compile.ops import as_op
+#import theano.tensor as tt
+#from theano.compile.ops import as_op
 import astropy.units as u
 import numba
 
@@ -129,7 +129,6 @@ def simulate_spts(**kwargs):
         nsim = kwargs.get('nsample', 1e5)
 
         ranges=acceptable_values[model_name]
-        print (ranges)
         
         # masses for singles [this can be done with pymc but nvm]
         m_singles = spsim.simulateMasses(nsim,range=[ranges[0], ranges[1]],distribution='power-law',alpha=0.6)
@@ -203,8 +202,7 @@ def make_systems(**kwargs):
 
 
     #nbin= int(len(model_vals['sing_spt'])*binary_fraction) #number of binaries
-
-    ndraw= int(len(model_vals['sing_spt'])/(1-binary_fraction))
+    ndraw= int(len(model_vals['sing_spt'])/(1-binary_fraction))-int(len(model_vals['sing_spt']))
 
 
     nans=np.isnan(model_vals['binary_spt'])
