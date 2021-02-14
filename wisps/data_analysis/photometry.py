@@ -231,10 +231,18 @@ class Source(Spectrum):
 
         #distance is the weighted mean and std 
         nans=np.isnan(ds)
-        val, unc=spl.weightedMeanVar(ds[~nans], ers[~nans])
+        #val, unc=spl.weightedMeanVar(ds[~nans], ers[~nans])
+        #assymetric error bars
         #dont forget the other uncertainties
-        unc_tot=(unc**2+(ers[~nans]**2).sum())**0.5
-        return {'val':val*u.pc, 'er':unc_tot*u.pc}
+        #unc_tot=(unc**2+(ers[~nans]**2).sum())**0.5
+        #print (np.shape(ds), np.shape(ers))
+
+        dsx= np.random.normal(loc=ds.flatten(), scale=ers.flatten(), size=(1000, len(ds.flatten())))
+
+        val = np.nanmedian(ds)
+        erx= np.array([np.nanpercentile(dsx, 86)-val, val-np.nanpercentile(dsx, 14)])
+
+        return {'val':val*u.pc, 'er':erx*u.pc}
     
     @property
     #@lru_cache(maxsize=128)
@@ -286,6 +294,7 @@ class Source(Spectrum):
             spt=float(make_spt_number(self.index_type[0]))
             if use_spt_unc:
                 spt_unc=float(self.index_type[1])
+        #
 
         self._distance= distance(self.mags, spt, spt_unc )
 

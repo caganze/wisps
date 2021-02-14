@@ -93,7 +93,7 @@ def compute_effective_numbers(model, h):
     exptime_spec= np.array([x.exposure_time for x in POINTINGS])
     
 
-    syst=make_systems(model_name=model,  bfraction=0.2, nsample=5e4, recompute=True)
+    syst=make_systems(model_name=model,  bfraction=0.2, nsample=5e5, recompute=True)
 
     
     #mask_array= np.logical_and(syst['system_spts']).flatten()
@@ -256,8 +256,8 @@ def compute_effective_numbers(model, h):
 
 
     flags0=simdf.appf110 >= mag_limits['F110']+(corr_pols['F110W'][0])(simdf.spt)
-    flags1=simdf.appf140 >= mag_limits['F140']+(corr_pols['F110W'][0])(simdf.spt)
-    flags2=simdf.appf160 >= mag_limits['F160']+(corr_pols['F110W'][0])(simdf.spt)
+    flags1=simdf.appf140 >= mag_limits['F140']+(corr_pols['F140W'][0])(simdf.spt)
+    flags2=simdf.appf160 >= mag_limits['F160']+(corr_pols['F160W'][0])(simdf.spt)
     flags3= simdf.snr <3.
 
     flags=np.logical_or.reduce([flags0,flags1, flags2, flags3])
@@ -313,4 +313,5 @@ def simulation_outputs(**kwargs):
     get_all_values_from_model('baraffe2003', hs)
     get_all_values_from_model('saumon2008', hs)
     get_all_values_from_model('marley2019', hs)
+    
     get_all_values_from_model('phillips2020', hs)

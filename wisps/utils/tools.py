@@ -60,7 +60,7 @@ def plot_annotated_heatmap(ax, data, gridpoints, columns, cmap='viridis',
                 else:
                     values[j][i] = zmedian
                     if annotate == 'third_value':
-                        ax.text(xgrid[i]+step1/2., ygrid[j]+step2/2., f'{zmedian:.2f}',
+                        ax.text(xgrid[i]+step1/2., ygrid[j]+step2/2., f'{zmedian:.0f}',
                                  ha='center', va='center', fontsize=textsize, color='#111111')
                     if annotate== 'number':
                         ax.text(xgrid[i]+step1/2., ygrid[j]+step2/2., f'{lenz:.0f}',
@@ -338,11 +338,11 @@ def fit_polynomial(x, y, n=2, y_unc=None, sigma_clip=False, sigma=None):
         p=np.poly1d(np.polyfit(x[~nany],y[~nany], n, w=1./y_unc[~nany]))
     return p
 
-def kernel_density(distr):
+def kernel_density(distr, **kwargs):
     """
     1D-kernel density estimation
     """
-    kernel = stats.gaussian_kde(distr, bw_method='silverman')
+    kernel = stats.gaussian_kde(distr, **kwargs)
     return kernel
 
 

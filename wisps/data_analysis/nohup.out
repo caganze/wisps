@@ -1,2 +1,393 @@
-yikes .....  goodsn-36-G141_22694
-yikes .....  goodsn-36-g141_24221
+findfont: Font family ['serif'] not found. Falling back to DejaVu Sans.
+Adding 145 sources from /Users/caganze/research/splat//resources/Spectra/Public/LRIS-RED/ to spectral database
+Adding 89 sources from /Users/caganze/research/splat//resources/Spectra/Public/MAGE/ to spectral database
+Adding 2404 sources from /Users/caganze/research/splat//resources/Spectra/Public/SPEX-PRISM/ to spectral database
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum0.pdf
+Traceback (most recent call last):
+  File "save_ucds_figures.py", line 23, in <module>
+    s.plot(save=True, filename=filename)
+  File "/Users/caganze/research/wisps/wisps/data_analysis/photometry.py", line 318, in plot
+    plot_source(self, **kwargs)
+  File "/Users/caganze/research/wisps/wisps/data_analysis/plot_spectrum.py", line 134, in plot_source
+    img=sp.spectrum_image
+  File "/Users/caganze/research/wisps/wisps/data_analysis/spectrum_tools.py", line 455, in spectrum_image
+    with fits.open(self._spectrum_image_path, memmap=False) as imghdu:
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/hdu/hdulist.py", line 163, in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/hdu/hdulist.py", line 400, in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/hdu/hdulist.py", line 1051, in _readfrom
+    fileobj = _File(fileobj, mode=mode, memmap=memmap, cache=cache)
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/utils/decorators.py", line 535, in wrapper
+    return function(*args, **kwargs)
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/file.py", line 175, in __init__
+    self._open_filename(fileobj, mode, overwrite)
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/file.py", line 564, in _open_filename
+    self._file = fileobj_open(self.name, IO_FITS_MODES[mode])
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/util.py", line 397, in fileobj_open
+    return open(filename, mode, buffering=0)
+FileNotFoundError: [Errno 2] No such file or directory: '/volumes/burgasserlab/Surveys///wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/par240/2dstamp/hlsp_wisp_hst_wfc3_par240-00076a_g141_v6.2_stamp2d.fits'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "save_ucds_figures.py", line 26, in <module>
+    s=wisps.Source(filename=row.grism_id.replace('g141', 'G141'),is_ucd=False )
+  File "/Users/caganze/research/wisps/wisps/data_analysis/photometry.py", line 70, in __init__
+    super().__init__(**kwargs)
+  File "/Users/caganze/research/wisps/wisps/data_analysis/spectrum_tools.py", line 124, in __init__
+    self.filename=self._filename
+  File "/Users/caganze/research/wisps/wisps/data_analysis/spectrum_tools.py", line 441, in filename
+    survey, spectrum_path, stamp_image_path=parse_path(new_filename, 'v5')
+  File "/Users/caganze/research/wisps/wisps/utils/perfomance.py", line 40, in memoized_func
+    result = func(*args)
+  File "/Users/caganze/research/wisps/wisps/data_analysis/path_parser.py", line 63, in parse_path
+    spectrum_path=_run_search(name)
+  File "/Users/caganze/research/wisps/wisps/utils/perfomance.py", line 40, in memoized_func
+    result = func(*args)
+  File "/Users/caganze/research/wisps/wisps/data_analysis/path_parser.py", line 95, in _run_search
+    path=glob.glob(path1)[0]
+IndexError: list index out of range
+Adding 2404 sources from /Users/caganze/research/splat//resources/Spectra/Public/SPEX-PRISM/ to spectral database
+Adding 89 sources from /Users/caganze/research/splat//resources/Spectra/Public/MAGE/ to spectral database
+Adding 145 sources from /Users/caganze/research/splat//resources/Spectra/Public/LRIS-RED/ to spectral database
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum0.pdf
+Traceback (most recent call last):
+  File "save_ucds_figures.py", line 23, in <module>
+    s.plot(save=True, filename=filename)
+  File "/Users/caganze/research/wisps/wisps/data_analysis/photometry.py", line 318, in plot
+    plot_source(self, **kwargs)
+  File "/Users/caganze/research/wisps/wisps/data_analysis/plot_spectrum.py", line 134, in plot_source
+    img=sp.spectrum_image
+  File "/Users/caganze/research/wisps/wisps/data_analysis/spectrum_tools.py", line 455, in spectrum_image
+    with fits.open(self._spectrum_image_path, memmap=False) as imghdu:
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/hdu/hdulist.py", line 163, in fitsopen
+    return HDUList.fromfile(name, mode, memmap, save_backup, cache,
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/hdu/hdulist.py", line 400, in fromfile
+    return cls._readfrom(fileobj=fileobj, mode=mode, memmap=memmap,
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/hdu/hdulist.py", line 1051, in _readfrom
+    fileobj = _File(fileobj, mode=mode, memmap=memmap, cache=cache)
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/utils/decorators.py", line 535, in wrapper
+    return function(*args, **kwargs)
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/file.py", line 175, in __init__
+    self._open_filename(fileobj, mode, overwrite)
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/file.py", line 564, in _open_filename
+    self._file = fileobj_open(self.name, IO_FITS_MODES[mode])
+  File "/Users/caganze/opt/anaconda3/lib/python3.8/site-packages/astropy/io/fits/util.py", line 397, in fileobj_open
+    return open(filename, mode, buffering=0)
+FileNotFoundError: [Errno 2] No such file or directory: '/volumes/burgasserlab/Surveys///wisps/archive.stsci.edu/missions/hlsp/wisp/v6.2/par240/2dstamp/hlsp_wisp_hst_wfc3_par240-00076a_g141_v6.2_stamp2d.fits'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "save_ucds_figures.py", line 26, in <module>
+    s=wisps.Source(filename=row.grism_id.replace('g141', 'G141'),is_ucd=False )
+  File "/Users/caganze/research/wisps/wisps/data_analysis/photometry.py", line 70, in __init__
+    super().__init__(**kwargs)
+  File "/Users/caganze/research/wisps/wisps/data_analysis/spectrum_tools.py", line 124, in __init__
+    self.filename=self._filename
+  File "/Users/caganze/research/wisps/wisps/data_analysis/spectrum_tools.py", line 441, in filename
+    survey, spectrum_path, stamp_image_path=parse_path(new_filename, 'v5')
+  File "/Users/caganze/research/wisps/wisps/utils/perfomance.py", line 40, in memoized_func
+    result = func(*args)
+  File "/Users/caganze/research/wisps/wisps/data_analysis/path_parser.py", line 63, in parse_path
+    spectrum_path=_run_search(name)
+  File "/Users/caganze/research/wisps/wisps/utils/perfomance.py", line 40, in memoized_func
+    result = func(*args)
+  File "/Users/caganze/research/wisps/wisps/data_analysis/path_parser.py", line 95, in _run_search
+    path=glob.glob(path1)[0]
+IndexError: list index out of range
+findfont: Font family ['serif'] not found. Falling back to DejaVu Sans.
+Adding 145 sources from /Users/caganze/research/splat//resources/Spectra/Public/LRIS-RED/ to spectral database
+Adding 89 sources from /Users/caganze/research/splat//resources/Spectra/Public/MAGE/ to spectral database
+Adding 2404 sources from /Users/caganze/research/splat//resources/Spectra/Public/SPEX-PRISM/ to spectral database
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+
+Warning: spectrum object has a flux vector of zero length - maybe empty?
+
+Warning: normalize is attempting to divide by nan; ignoring
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum0.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum1.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum2.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum3.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum4.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum5.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum6.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum7.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum8.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum9.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum10.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum11.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum12.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum13.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum14.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum15.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum16.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum17.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum18.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum19.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum20.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum21.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum22.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum23.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum24.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum25.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum26.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum26.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum27.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum28.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum29.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum30.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum31.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum32.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum33.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum34.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum35.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum36.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum37.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum38.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum39.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum40.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum41.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum42.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum43.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum44.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum45.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum46.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum47.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum48.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum49.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum50.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum51.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum52.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum53.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum54.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum55.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum56.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum57.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum58.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum59.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum60.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum61.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum62.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum63.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum64.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum65.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum66.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum67.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum68.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum69.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum70.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum71.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum72.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum73.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum74.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum75.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum76.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum77.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum78.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum78.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum79.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum80.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum81.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum82.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum83.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum84.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum85.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum85.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum86.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum87.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum88.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum89.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum90.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum91.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum92.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum93.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum94.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum95.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum96.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum97.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum98.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum99.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum100.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum101.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum102.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum103.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum104.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum105.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum106.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum107.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum108.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum109.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum110.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum111.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum112.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum113.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum114.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum115.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum116.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum117.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum118.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum119.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum120.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum121.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum122.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum123.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum124.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum125.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum126.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum127.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum128.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum129.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum130.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum131.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum132.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum133.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum134.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum135.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum136.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum137.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum138.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum139.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum140.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum141.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum141.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum142.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum143.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum144.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum145.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum146.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum147.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum148.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum149.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum150.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum151.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum152.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum153.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum154.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum155.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum156.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum157.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum158.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum159.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum160.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum161.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum162.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum163.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum164.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum165.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum166.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum167.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum168.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum169.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum170.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum171.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum172.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum173.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum174.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum175.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum176.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum177.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum177.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum178.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum179.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum180.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum181.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum182.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum183.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum184.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum185.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum186.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum187.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum188.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum189.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum190.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum191.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum191.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum192.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum193.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum193.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum194.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum195.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum196.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum197.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum198.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum199.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum200.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum201.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum202.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum203.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum204.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum205.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum206.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum207.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum208.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum208.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum209.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum210.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum211.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum212.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum212.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum213.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum214.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum215.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum216.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum217.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum218.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum219.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum220.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum221.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum222.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum223.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum224.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum225.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum226.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum227.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum228.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum229.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum230.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum231.pdf
+/Users/caganze/research/wisps/figures/ltwarfs/spectrum232.pdf

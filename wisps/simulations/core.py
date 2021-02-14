@@ -94,17 +94,19 @@ def compute_distance_limits(mag_limits):
     for s in SPGRID:
         #add corrections to key but only use F110W corrections
         #corrt=np.nanmedian([ (corr_pols['F160W'][0])(s),  (corr_pols['F110W'][0])(s),  (corr_pols['F140W'][0])(s)])
-        corrt=(corr_pols['F110W'][0])(s)
+        corrt0=(corr_pols['F110W'][0])(s)#+0.5
+        corrt1=(corr_pols['F140W'][0])(s)#+0.5
+        corrt2=(corr_pols['F160W'][0])(s)#+0.5
         #corrt=0.0
-        faint_dict={'F110W': [mag_limits['F110']+corrt+0.5, 0.0], 
-        'F140W': [mag_limits['F140']+corrt+0.5, 0.0],
-        'F160W':[mag_limits['F160']+corrt+0.5, 0.0]}
+        faint_dict={'F110W': [mag_limits['F110']+corrt0, 0.0], 
+        'F140W': [mag_limits['F140']+corrt1, 0.0],
+        'F160W':[mag_limits['F160']+corrt2, 0.0]}
 
         dmaxs=wisps.distance(faint_dict, s, 0.0)
         dmins=wisps.distance(bright_dict, s, 0.0)
-        #just use 
-        dmx=np.nanmin([dmaxs['distF110W'],dmaxs['distF140W'], dmaxs['distF160W']])
-        dmin=np.nanmin([dmins['distF110W'],dmins['distF140W'], dmins['distF160W']])
+        #just use minimum
+        dmx=np.nanmedian([dmaxs['distF110W'],dmaxs['distF140W'], dmaxs['distF160W']])
+        dmin=np.nanmedian([dmins['distF110W'],dmins['distF140W'], dmins['distF160W']])
         distances.append([dmx, dmin])
     return  dict(zip(SPGRID, distances))
     
@@ -133,8 +135,8 @@ def get_max_value(values):
         #kernel= stats.gaussian_kde(distr, bw_method=0.35)
         #height = kernel.pdf(values)
         #kernel = wisps.kernel_density(values)
-        kernel= stats.gaussian_kde(distr, bw_method=0.2)
-        height = kernel.pdf(np.linspace(19, 25, 100))
+        kernel= stats.gaussian_kde(distr, bw_method=0.1)
+        height = kernel.pdf(np.linspace(10, 30, 1000))
         mode_value = values[np.argmax(height)]
         print (mode_value)
         return float(mode_value)
@@ -151,22 +153,26 @@ def get_mag_limit(pnt, key, mags):
         #survey='hst3d'
         if (key=='F110'): 
             return maglt
+
         else:
-            return 23.0
+            if pnt.imag_exptime<800:
+                maglt= 22.5
+            else:
+                maglt= 23.0
     #things above 50 objects
-    if (pnt.name.lower().startswith('par')): 
-        if (len(mags) >= MAG_LIMITS['ncutoff']): 
-            maglt=get_max_value(mags)
 
-        #if (pnt.name.lower().startswith('par')): 
-        #also fits things brighter than 12
-        if (len(mags) < MAG_LIMITS['ncutoff']) or (maglt <12) :
-            print (maglt)
-            magpol=MAG_LIMITS[survey][key][0]
-            magsctt=MAG_LIMITS[survey][key][1]
-            maglt=np.random.normal(magpol(np.log10(pnt.imag_exptime)), magsctt)
+    if (len(mags) >= MAG_LIMITS['ncutoff']): 
+        maglt=get_max_value(mags)
 
-        return maglt
+    #if (pnt.name.lower().startswith('par')): 
+    #also fits things brighter than 12
+    if ((len(mags) < MAG_LIMITS['ncutoff']) or (maglt <12)) & (pnt.name.lower().startswith('par')):
+        #print (maglt)
+        magpol=MAG_LIMITS['mag_limits'][survey][key][0]
+        magsctt=MAG_LIMITS['mag_limits'][survey][key][1]
+        maglt=np.random.normal(magpol(np.log10(pnt.imag_exptime)), magsctt)
+
+    return maglt
 
    
 

@@ -59,8 +59,12 @@ def interpolated_standards():
     for k in stds.keys():
         s=stds[k]
         s.normalize()
+        #mask where flux is less than zero
+        wv= s.wave.value
+        fl= s.flux.value
+        fl[fl < 0.0]=np.nan
         #s.toInstrument('WFC3-G141')
-        interpstds[k]=(interpolate.interp1d(s.wave.value, s.flux.value), interpolate.interp1d(s.wave.value, s.noise.value))
+        interpstds[k]=interpolate.interp1d(wv, fl, bounds_error=False,fill_value=0.)
     return interpstds
 
 
@@ -526,7 +530,9 @@ def f_test(spectrum, **kwargs):
     return result
 
 def compute_chi_square(flux, noise, model):
-    if (noise==0.0).all(): noise=1e-3
+    if (noise==0.0).all(): noise=flux*1e-3
+    #mask out less than zero flux
+    flux[flux<0.0]=np.nan
     scale=np.nansum((flux*model)/noise**2)/np.nansum(model**2/noise**2)
     return float(np.nansum((flux-scale*model)**2/(noise**2)))
 
@@ -563,16 +569,17 @@ def classify(sp, **kwargs):
 
     chisqrs=[]
     for k in splat.STDS_DWARF_SPEX.keys():
-        model_f, model_n=INTERPOLATED_STANDARD_DICT[k]
+        model_f=INTERPOLATED_STANDARD_DICT[k]
         model=model_f(wave)
-        model_noise= model_n(wave)
+        #model_noise= model_n(wave)
         #tot_noise= (noise**2 +  model_noise**2)**0.5
         chisqrs.append([compute_chi_square(flux, noise, model), float(make_spt_number(k))])
 
     #smallest_chi_Square is the clasification
     chisqrs=np.vstack(chisqrs)
-    #print (chisqrs)
-    return np.round(splat.weightedMeanVar(make_spt_number(chisqrs[:,1]), chisqrs[:,0], method='ftest',dof=dof))
+    mean, var= np.round(splat.weightedMeanVar(make_spt_number(chisqrs[:,1]), chisqrs[:,0], method='ftest',dof=dof))
+    #unc_sys = 0.5
+    return mean, (0.5**2+var**2)**0.5    
 
 
 def classify_by_templates(sp, **kwargs):
@@ -613,8 +620,12 @@ def classify_by_templates(sp, **kwargs):
         chisqrs.append([compute_chi_square(flux, noise, model), float(row.spt)])
      #smallest_chi_Square is the clasification
     chisqrs=np.vstack(chisqrs)
-    #print (chisqrs)
-    return np.round(splat.weightedMeanVar(make_spt_number(chisqrs[:,1]), chisqrs[:,0], method='ftest',dof=dof))
+
+    mean, var= np.round(splat.weightedMeanVar(make_spt_number(chisqrs[:,1]), chisqrs[:,0], method='ftest',dof=dof))
+   
+    return mean, (0.5**2+var**2.0)**0.5    
+
+
 
 
 
