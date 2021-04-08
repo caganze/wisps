@@ -17,7 +17,7 @@ DISTANCE_LIMITS=[]
 SPGRID=wispsim.SPGRID
 Rsun=8300.
 Zsun=27.
-HS=[250, 300, 350, 400, 450]
+HS=[1000]
 dist_arrays=pd.DataFrame.from_records([x.dist_limits for x in POINTINGS]).applymap(lambda x:np.vstack(x).astype(float))
 DISTANCE_LIMITS={}
 for s in SPGRID:
@@ -31,7 +31,7 @@ for s in SPGRID:
 #-------------------------------------------
 def density_function(r, z, h=300.):
     
-    """
+    """pw4observer
     A custom juric density function that only uses numpy arrays for speed
     All units are in pc
     """
@@ -42,7 +42,7 @@ def density_function(r, z, h=300.):
 
 
 def custom_volume(l,b,dmin, dmax, h):
-    nsamp=1000
+    nsamp=10000
     ds = np.linspace(dmin,dmax,nsamp)
     rd=np.sqrt( (ds * np.cos( b ) )**2 + Rsun * (Rsun - 2 * ds * np.cos( b ) * np.cos( l ) ) )
     zd=Zsun+ ds * np.sin( b - np.arctan( Zsun / Rsun) )
@@ -58,25 +58,27 @@ def interpolated_cdf(pnt, h):
 	cdfvals= cdfvals/np.nanmax(cdfvals)
 	return interp1d(d, cdfvals)
 
-def draw_distance_with_cdf(pntname, dmin, dmax, nsample, h):
+def draw_distance_with_cdf(pntname, dmin, dmax, nsample, h, interpolated_cdfs):
     #draw distances using inversion of the cumulative distribution 
 	d=np.logspace(np.log10(dmin), np.log10(dmax), int(nsample))
 	#print (d, dmin, dmax)
-	cdfvals=(INTERPOLATED_CDFS[h][pntname])(d)
+	cdfvals=(interpolated_cdfs[pntname])(d)
 	return wisps.random_draw(d, cdfvals/np.nanmax(cdfvals), int(nsample))
 
-INTERPOLATED_CDFS= {}
-for h in HS:
-            small_inter={}
-            for p in POINTINGS:
-                small_inter.update({p.name: interpolated_cdf(p, h)})
-            INTERPOLATED_CDFS.update({h: small_inter })
-#for k in INTERPOLATED_CDFS[150].keys(): print ((INTERPOLATED_CDFS[150][k])(3000))
-#print (DISTANCE_LIMITS.flatten(axis=0))
-#print ('above interpolation range? ', (INTERPOLATED_CDFS[150][POINTINGS[0].name])(3000))
-#print ( draw_distance_with_cdf(POINTINGS[0].name, 0.5*(DISTANCE_LIMITS[17].flatten())[1], 2*(DISTANCE_LIMITS[17].flatten())[0], int(1e3), 150))
-#fghj
-def paralle_sample():
+
+def load_interpolated_cdfs(h, recompute=False):
+    if recompute:
+        small_inter={}
+        for p in tqdm(POINTINGS):
+            small_inter.update({p.name: interpolated_cdf(p, h)})
+         
+        fl=wisps.OUTPUT_FILES+'/distance_sample_interpolations{}'.format(h)
+        with open(fl, 'wb') as file: pickle.dump(small_inter,file, protocol=pickle.HIGHEST_PROTOCOL)
+        return 
+    else:
+        return pd.read_pickle(wisps.OUTPUT_FILES+'/distance_sample_interpolations{}'.format(h))
+
+def paralle_sample(recompute=False):
 	#INTERPOLATED_CDFS= {}
 	#for h in HS:
 	#    small_inter={}
@@ -85,15 +87,12 @@ def paralle_sample():
 	#    INTERPOLATED_CDFS.update({h: small_inter })
 	DISTANCE_SAMPLES={}
 	PNTAMES=[x.name for x in POINTINGS]
-	print (PNTAMES)
-	#print (DISTANCE_LIMITS)
-	#for h in HS:
-	#print (h)
 	dis={}
 	for h in HS:
 		for s in tqdm(DISTANCE_LIMITS.keys()):
+			cdf=load_interpolated_cdfs(h, recompute=recompute)
 			dlts=np.array(DISTANCE_LIMITS[s]).flatten()
-			fx= lambda x: draw_distance_with_cdf(x, 1., 2*dlts[0], int(1e4), h)
+			fx= lambda x: draw_distance_with_cdf(x, 1., 2*dlts[0], int(1e4), h, cdf)
 			with Pool() as pool:
 				dx=pool.map(fx, PNTAMES)
 				dis.update({s: dx})
@@ -103,4 +102,6 @@ def paralle_sample():
 		fl=wisps.OUTPUT_FILES+'/distance_samples{}'.format(h)
 		with open(fl, 'wb') as file: pickle.dump(DISTANCE_SAMPLES[h],file, protocol=pickle.HIGHEST_PROTOCOL)
 if __name__ =='__main__':
-	paralle_sample()
+	for h in HS:
+		_=load_interpolated_cdfs(h, recompute=True)
+	paralle_sample(recompute=False)

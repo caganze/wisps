@@ -217,6 +217,7 @@ def absolute_magnitude_jh(spt):
     must probably sort spt if spt is a list bfeore passing it through the interpolator
     """ 
     jval, hval=(np.nan, np.nan)
+    #[SHOULD ADD VEGA TO AB CONVERSION FACTOR]
     if spt <=37:
         hval=np.interp(spt,  pec_spts[pec_hsortedindex], pec_hs[pec_hsortedindex])
         jval=np.interp(spt,  pec_spts[pec_jsortedindex], pec_js[pec_jsortedindex])

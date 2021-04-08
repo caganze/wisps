@@ -122,7 +122,7 @@ def simulate_spts(**kwargs):
     #all masses should be 0.01
     acceptable_values={'baraffe2003': [0.01, 0.1, 0.01, 8.0],
     'marley2019': [0.01, 0.08, 0.001, 8.0], 'saumon2008':[0.01, 0.09, 0.003, 8.0], 
-    'phillips2020':[0.01, 0.075, 0.001, 8.0 ]}
+    'phillips2020':[0.01, 0.075, 0.001, 8.0 ], 'burrows2001':[0.01, 0.1, 0.01, 8.0]}
     
     if recompute:
 
@@ -209,11 +209,13 @@ def make_systems(**kwargs):
     
     choices={'spt': np.random.choice(model_vals['binary_spt'][~nans], ndraw),
             'teff': np.random.choice(model_vals['prim_evol']['temperature'].value[~nans], ndraw), 
-            'age': np.random.choice(model_vals['prim_evol']['age'].value[~nans],ndraw)}
+            'age': np.random.choice(model_vals['prim_evol']['age'].value[~nans],ndraw),
+            'mass': np.random.choice(model_vals['prim_evol']['mass'].value[~nans]+model_vals['prim_evol']['mass'].value[~nans],ndraw)}
 
 
     vs={'system_spts': np.concatenate([model_vals['sing_spt'], choices['spt']]), 
             'system_teff':  np.concatenate([(model_vals['sing_evol']['temperature']).value, choices['teff']]),
-            'system_age':  np.concatenate([(model_vals['sing_evol']['age']).value,  choices['age']])}
+            'system_age':  np.concatenate([(model_vals['sing_evol']['age']).value,  choices['age']]),
+            'system_mass': np.concatenate([(model_vals['sing_evol']['mass']).value,  choices['mass']])}
 
     return vs

@@ -117,8 +117,10 @@ def plot_source(sp, **kwargs):
     std.normalize(range=[1.2, 1.5])
     chi, scale=splat.compareSpectra(sp.splat_spectrum, std,  comprange=[[1.2, 1.5]], statistic='chisqr', scale=True) 
     std.scale(scale)
-    l3,=ax3.step(std.wave, std.flux, color='y')
-    plts.append(l3)
+    #only plot the standard when needed
+    if compare_to_std:
+        l3,=ax3.step(std.wave, std.flux, color='y')
+        plts.append(l3)
     
     #ax3.set_xlim(xlim)
     ax3.set_xlabel(xlabel, fontsize=18)
@@ -188,15 +190,18 @@ def plot_source(sp, **kwargs):
             ax3.text(wrng[0], 0.05,wlabel, {'fontsize':14} )
 
     spt_label=splat.typeToNum(make_spt_number(sp.spectral_type[0]))
-    if  make_spt_number(sp.spectral_type[0]) >39:
+    
+    if  compare_to_std: 
         lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', '('+spt_label+') '+'standard'), 
-               loc=(1.01, 0.15), fontsize=15) 
-
-    if  make_spt_number(sp.spectral_type[0]) <=39:
-        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise',  '('+spt_label+') '+'standard'), 
                loc='best', fontsize=15) 
+
+    if not  compare_to_std:
+        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise'), 
+               loc='best', fontsize=15)
+
     plt.tight_layout()
-    if save: plt.savefig(filename,  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=600)
+    if save: plt.savefig(filename,  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=kwargs.get('dpi', 300),  
+        facecolor='white', transparent=False)
     
     #plt.close()
     #fig.close()
