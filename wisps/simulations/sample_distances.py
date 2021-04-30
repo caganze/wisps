@@ -17,7 +17,9 @@ DISTANCE_LIMITS=[]
 SPGRID=wispsim.SPGRID
 Rsun=8300.
 Zsun=27.
-HS=[1000]
+
+HS=[100, 150,200,250, 300,350, 400, 450, 500, 600, 700, 800, 1000]
+
 dist_arrays=pd.DataFrame.from_records([x.dist_limits for x in POINTINGS]).applymap(lambda x:np.vstack(x).astype(float))
 DISTANCE_LIMITS={}
 for s in SPGRID:
@@ -92,7 +94,7 @@ def paralle_sample(recompute=False):
 		for s in tqdm(DISTANCE_LIMITS.keys()):
 			cdf=load_interpolated_cdfs(h, recompute=recompute)
 			dlts=np.array(DISTANCE_LIMITS[s]).flatten()
-			fx= lambda x: draw_distance_with_cdf(x, 1., 2*dlts[0], int(1e4), h, cdf)
+			fx= lambda x: draw_distance_with_cdf(x, 1., 2*dlts[0], int(5e4), h, cdf)
 			with Pool() as pool:
 				dx=pool.map(fx, PNTAMES)
 				dis.update({s: dx})
@@ -102,6 +104,6 @@ def paralle_sample(recompute=False):
 		fl=wisps.OUTPUT_FILES+'/distance_samples{}'.format(h)
 		with open(fl, 'wb') as file: pickle.dump(DISTANCE_SAMPLES[h],file, protocol=pickle.HIGHEST_PROTOCOL)
 if __name__ =='__main__':
-	for h in HS:
-		_=load_interpolated_cdfs(h, recompute=True)
+	#for h in HS:
+	#	_=load_interpolated_cdfs(h, recompute=True)
 	paralle_sample(recompute=False)

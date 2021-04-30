@@ -93,7 +93,7 @@ def compute_effective_numbers(model, h):
     exptime_spec= np.array([x.exposure_time for x in POINTINGS])
     
 
-    syst=make_systems(model_name=model,  bfraction=0.2, nsample=5e4, recompute=True)
+    syst=make_systems(model_name=model,  bfraction=0.2, nsample=5e5, recompute=True)
 
     
     #mask_array= np.logical_and(syst['system_spts']).flatten()
