@@ -164,7 +164,7 @@ class IndexSpace(object):
         self._calc_completeness(annotated_df)
     
     #@classmethod   
-    def add_box(self, df, name, color, coeff):
+    def add_box(self, df, name, color, coeff, xshift=0.15):
         """
         Adds a box to the selection criteria
         """
@@ -187,6 +187,7 @@ class IndexSpace(object):
         box.color=color
         box.shape_name=name
         box.edgecolor='#2ECC40'
+        box.xshift=xshift
         #print (ddf.values.T, name)
         box.data=np.array(ddf.values.T)
         #add this to the existing 
@@ -210,7 +211,7 @@ class IndexSpace(object):
                 #print('name of the group ...{} length ... {}'.format(name, len(group)))
                 to_use=df[[self.xkey, self.ykey]]
                 to_use.columns=['x', 'y']
-                self.add_box(to_use, name, '#0074D9', 3.5)
+                self.add_box(to_use, name, '#0074D9', 5., xshift=0.3)
 
 
         #add an extra box of late ts from manjavacas et al

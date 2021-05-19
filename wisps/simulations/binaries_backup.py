@@ -14,7 +14,7 @@ from scipy.interpolate import griddata
 import astropy.units as u
 import numba
 
-BINARY_TABLE=pd.read_pickle(wisps.OUTPUT_FILES+'/binary_lookup_table.pkl.gz')
+BINARY_TABLE=pd.read_pickle(DATA_FOLDER+'/binary_lookup_table.pkl.gz')
 BINARY_TABLE_SYS=(BINARY_TABLE['sys']).values
 BINARY_TABLE_PRIM=(BINARY_TABLE['prim']).values
 BINARY_TABLE_SEC=(BINARY_TABLE['sec']).values
@@ -120,9 +120,9 @@ def simulate_spts(**kwargs):
     #automatically set maxima and minima to avoid having too many nans
     #mass age and age,  min, max
     #all masses should be 0.01
-    acceptable_values={'baraffe2003': [0.01, 0.1, 0.01, 8.0],
+    acceptable_values={'baraffe2003': [0.01, 0.1, 0.001, 8.0],
     'marley2019': [0.01, 0.08, 0.001, 8.0], 'saumon2008':[0.01, 0.09, 0.003, 8.0], 
-    'phillips2020':[0.01, 0.075, 0.001, 8.0 ], 'burrows2001':[0.01, 0.1, 0.01, 8.0]}
+    'phillips2020':[0.01, 0.075, 0.001, 8.0 ], 'burrows2001':[0.01, 0.1, 0.001, 8.0]}
     
     if recompute:
 
@@ -207,7 +207,7 @@ def make_systems(**kwargs):
 
     nans=np.isnan(model_vals['binary_spt'])
     
-    choices={'spt': np.random.choice(model_vals['binary_spt'][~nans], ndraw),
+    bins={'spt': np.random.choice(model_vals['binary_spt'][~nans], ndraw),
             'teff': np.random.choice(model_vals['prim_evol']['temperature'].value[~nans], ndraw), 
             'age': np.random.choice(model_vals['prim_evol']['age'].value[~nans],ndraw),
             'mass': np.random.choice(model_vals['prim_evol']['mass'].value[~nans]+model_vals['prim_evol']['mass'].value[~nans],ndraw)}

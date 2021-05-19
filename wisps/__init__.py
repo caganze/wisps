@@ -54,9 +54,9 @@ mpl.rcParams['figure.titlesize'] = 18
 
 font = {'family' : 'serif',
         'serif':[],
-        'weight' : 'heavy',
+        'weight' : 'normal',
         'size'   : 18}
 mpl.rc('font', **font)
-mpl.rc('text', usetex=True)
+#mpl.rc('text', usetex=True)
 
-mpl.rcParams['agg.path.chunksize'] = 10000
+#mpl.rcParams['agg.path.chunksize'] = 10000

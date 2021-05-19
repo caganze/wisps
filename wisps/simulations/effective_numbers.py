@@ -13,12 +13,13 @@ from astropy.coordinates import SkyCoord
 
 from .core import  HS, MAG_LIMITS, Rsun, Zsun, custom_volume, SPGRID
 import wisps.simulations as wispsim
-from .binaries import make_systems
+#from .binaries import make_systems
 import numba
 import dask
 from scipy.interpolate import griddata
 import wisps.simulations as wispsim
 import pickle
+import popsims
 from multiprocessing import Pool
 
 POINTINGS=pd.read_pickle(wisps.OUTPUT_FILES+'/pointings_correctedf110.pkl')
@@ -78,8 +79,144 @@ def probability_of_selection(spt, snr):
     return griddata(interpoints, ref_df.tot_label.values , (spt, np.log10(snr)), method='linear')
 
 
+def get_distances_and_pointings(df, h):
+
+    DISTANCE_SAMPLES=pd.read_pickle(wisps.OUTPUT_FILES+'/distance_samples{}.gz'.format(h))
+    volumes=np.vstack([np.nansum(list(x.volumes[h].values())) for x in POINTINGS]).flatten()
+    volumes_cdf=np.cumsum(volumes)/np.nansum(volumes)
+    pntindex=np.arange(0, len(POINTINGS))
+    names=np.array([x.name for x in POINTINGS])
+    exptimes_mag=np.array([x.imag_exptime for x in POINTINGS ])
+    exptime_spec= np.array([x.exposure_time for x in POINTINGS])
+
+
+    spt_r=np.round(df.spt.values)
+
+    pntindex_to_use=wisps.random_draw(pntindex, volumes_cdf, nsample=len(spt_r)).astype(int)
+
+    
+    pnts=np.take(names, pntindex_to_use)
+    pntings=np.take( np.array(POINTINGS),   pntindex_to_use)
+    exps= np.take(exptimes_mag, pntindex_to_use)
+    exp_grism= np.take(exptime_spec, pntindex_to_use)
+
+    spt_r=np.floor(df.spt.values).astype(int)
+    dists_for_spts= np.array([np.random.choice(DISTANCE_SAMPLES[k][idx]) for idx, k in zip(pntindex_to_use, spt_r)])
+
+    df['dist']=  dists_for_spts
+    df['pntname']= pnts
+    df['pnt']=pntings#df.pntname.apply(lambda x: np.array(PNTS)[pnt_names.index(x)])
+    df['exp_image']= exps
+    df['exp_grism']=exp_grism
+
+
+def get_snr_and_selection_prob(df):
+
+    snrjs110= 10**(fit_snr_exptime(df['exp_grism'].values, df['appF110'].values, *list(MAG_LIMITS['snr_exp']['F110'])))
+    snrjs140= 10**(fit_snr_exptime(df['exp_grism'].values, df['appF140'].values, *list(MAG_LIMITS['snr_exp']['F140'])))
+    snrjs160= 10**(fit_snr_exptime(df['exp_grism'].values, df['appF160'].values, *list(MAG_LIMITS['snr_exp']['F160'])))
+
+    df['snrj110']=snrjs110
+    df['snrj140']= snrjs140
+    df['snrjs160']= snrjs160
+
+    df['snrj']=np.nanmin(np.vstack([snrjs110, snrjs140, snrjs160]), axis=0)
+    df['slprob']=probability_of_selection(df.spt.values,  df['snrj'].values)
+    
+
+def get_absmags_hst_filters(df, mag_key):
+    """
+    get abs_mag
+
+    """
+    #load relations 
+    relabsmags=wisps.POLYNOMIAL_RELATIONS['abs_mags']
+    relcolors=wisps.POLYNOMIAL_RELATIONS['colors']
+    binary_flag=df.is_binary.values
+
+    #compute absolue magnitudes for singles
+    res=np.ones_like(df.spt.values)*np.nan
+    abs_mags_singles=np.random.normal((relabsmags[mag_key+'W'][0])(df.spt.values), relabsmags[mag_key+'W'][1])
+
+
+    #for binaries, base this on their absolute J and H mag
+    color_key='j_'+mag_key.lower()
+    #if mag_key=='F160':
+    #    color_key='h_f160'
+
+    #colors=np.random.normal((relcolors[color_key][0])(df.spt.values), relcolors[color_key][1])
+    #abs_mags_binaries=df['abs_2MASS_J']-colors
+    abs_mag_primaries=np.random.normal((relabsmags[mag_key+'W'][0])(df.prim_spt.values) , relabsmags[mag_key+'W'][1])
+    abs_mag_secondaries=np.random.normal((relabsmags[mag_key+'W'][0])(df.sec_spt.values) , relabsmags[mag_key+'W'][1])
+
+    abs_mags_binaries=-2.5*np.log10(10**(-0.4* abs_mag_primaries)+10**(-0.4* abs_mag_secondaries))
+
+    np.place(res, ~binary_flag, abs_mags_singles[~binary_flag])
+    np.place(res, binary_flag, abs_mags_binaries[binary_flag])
+
+
+    #absolute mag
+    df['abs{}'.format(mag_key)]=res
+    df['prim_abs{}'.format(mag_key)]=abs_mag_primaries
+    df['sec_abs{}'.format(mag_key)]= abs_mag_secondaries
+    #df['abs{}'.format(mag_key)]=abs_mags_singles
+
+    #apparent mag
+    app=res+5*np.log10(df.dist/10.0)
+    app_er=  mag_unc_exptime_relation(app.values, df['exp_image'].values, *list( MAG_LIMITS['mag_unc_exp'][mag_key]))
+
+    df['app{}'.format(mag_key)]= np.random.normal(app, app_er)
+    df['app{}'.format(mag_key)+'er']=app_er
+
 
 def compute_effective_numbers(model, h):
+    """
+    model: evol model
+    h : scaleheights
+    """
+    df0=popsims.make_systems(model=model,  bfraction=0.2, nsample=1e6, recompute=False)
+    #print (df0.keys())
+
+    #drop nans in spt
+    df0=(df0[~df0.spt.isna()]).reset_index(drop=True)
+    mask= np.logical_and(df0.spt>=17, df0.spt<=41)
+    df0=(df0[mask]).reset_index(drop=True)
+
+    #assign distances and poiunts
+    get_distances_and_pointings(df0, h)
+
+
+
+    #assign absolute mags
+    get_absmags_hst_filters(df0, 'F110')
+    get_absmags_hst_filters(df0, 'F140')
+    get_absmags_hst_filters(df0, 'F160')
+    #print(df0.keys())
+
+    #add snr and selection probability
+    get_snr_and_selection_prob(df0)
+
+    mag_limits=pd.DataFrame.from_records(df0.pnt.apply(lambda x: x.mag_limits).values)
+
+
+    #make cuts
+    flags0=df0.appF110 >= mag_limits['F110']+(corr_pols['F110W'][0])(df0.spt)
+    flags1=df0.appF140 >= mag_limits['F140']+(corr_pols['F140W'][0])(df0.spt)
+    flags2=df0.appF160 >= mag_limits['F160']+(corr_pols['F160W'][0])(df0.spt)
+    flags3= df0.snrj <3.
+
+    flags=np.logical_or.reduce([flags0,flags1, flags2, flags3])
+
+    df0['is_cut']=flags
+
+    df0.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut_binaries.h5', key=str(model)+str(h)+str('spt_abs_mag'))
+
+
+
+
+
+    #cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut.h5', key=str(model)+str('h'))
+def compute_effective_numbers_old(model, h):
     #DISTANCES=pd.DataFrame(pd.read_pickle(wisps.OUTPUT_FILES+'/cdf_distance_tables.pkl')[h])
     ##given a distribution of masses, ages, teffss
     ## based on my polynomial relations and my own selection function
@@ -93,7 +230,8 @@ def compute_effective_numbers(model, h):
     exptime_spec= np.array([x.exposure_time for x in POINTINGS])
     
 
-    syst=make_systems(model_name=model,  bfraction=0.2, nsample=5e5, recompute=True)
+    syst=make_systems_nocombined_light(model_name=model,  bfraction=0.2, nsample=5e3, recompute=False)
+    print (len(syst))
 
     
     #mask_array= np.logical_and(syst['system_spts']).flatten()
@@ -264,9 +402,11 @@ def compute_effective_numbers(model, h):
 
     cutdf=(simdf[~flags]).reset_index(drop=True)
     #cutdf=simdf
-    print ('Before cut {}'.format(len(simdf)))
-    print ('After cut {}'.format(len(cutdf)))
-    cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut.h5', key=str(model)+str('h')+str(h)+'F110_corrected')
+    #print ('Before cut {}'.format(len(simdf)))
+    #print ('After cut {}'.format(len(cutdf)))
+
+
+    cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut.h5', key=str(model)+str(h)+str(h)+'F110_corrected')
 
 
 
@@ -281,7 +421,7 @@ def get_all_values_from_model(model, hs):
     For a given set of evolutionary models obtain survey values
     """
     #obtain spectral types from modelss
-    for h in hs:
+    for h in tqdm(hs):
         compute_effective_numbers(model, h)
 
     #syst=make_systems(model_name=model, bfraction=0.2)
@@ -310,7 +450,7 @@ def simulation_outputs(**kwargs):
 
     #recompute for different evolutionary models
     get_all_values_from_model('burrows2001', hs)
-    get_all_values_from_model('baraffe2003', hs)
+    get_all_values_from_model('baraffe2003', hs)#
     get_all_values_from_model('saumon2008', hs)
     get_all_values_from_model('marley2019', hs)
     get_all_values_from_model('phillips2020', hs)
