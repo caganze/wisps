@@ -262,16 +262,16 @@ class Spectrum(object):
         :ouput:
         :Example:
         """
-        sp=self.splat_spectrum
+   
 
         #rescale the spectrum for lower stuff 
         #should I add a normalized contamination?
         if self._wave.min() < 1.17:
-            up_wave=np.logical_and(self._wave> 1.17, self._wave<1.17+0.7)
-            down_wave=np.logical_and(self._wave> 1.17-0.7, self._wave<1.17)
+            up_wave=np.logical_and(self._wave> 1.2, self._wave<1.35)
+            down_wave=np.logical_and(self._wave> 0.9, self._wave<1.12)
             scale=np.nanmedian(self._flux[up_wave])/np.nanmedian(self._flux[down_wave])
             self._flux[self._wave< 1.17]=(self._flux[self._wave< 1.17])*scale
-
+        sp=self.splat_spectrum
         sp.normalize(**kwargs)
         self._wave= sp.wave.value
         self._flux=sp.flux.value

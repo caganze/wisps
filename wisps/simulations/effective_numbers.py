@@ -174,7 +174,9 @@ def compute_effective_numbers(model, h):
     model: evol model
     h : scaleheights
     """
+
     df0=popsims.make_systems(model=model,  bfraction=0.2, nsample=1e6, recompute=False)
+
     #print (df0.keys())
 
     #drop nans in spt
@@ -450,7 +452,7 @@ def simulation_outputs(**kwargs):
 
     #recompute for different evolutionary models
     get_all_values_from_model('burrows2001', hs)
-    get_all_values_from_model('baraffe2003', hs)#
-    get_all_values_from_model('saumon2008', hs)
-    get_all_values_from_model('marley2019', hs)
-    get_all_values_from_model('phillips2020', hs)
+    #get_all_values_from_model('baraffe2003', hs)#
+    #get_all_values_from_model('saumon2008', hs)
+    #get_all_values_from_model('marley2019', hs)
+    # get_all_values_from_model('phillips2020', hs)

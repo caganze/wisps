@@ -3,7 +3,7 @@ import pandas as pd
 import splat
 import numpy as np
 
-ucds=pd.read_pickle(wisps.LIBRARIES+'/real_ucds.pkl')
+ucds=pd.read_pickle(wisps.LIBRARIES+'/new_real_ucds.pkl')
 ucds['f_test']=ucds.spectra.apply(lambda x: x.f_test)
 ucds['dof']=ucds.spectra.apply(lambda x: x.dof)
 ucds['line_chi']=ucds.spectra.apply(lambda x: x.line_chi)

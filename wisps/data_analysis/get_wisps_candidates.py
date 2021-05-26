@@ -3,22 +3,24 @@
 import wisps
 import pandas as pd 
 def dumb_function(x):
-	print (x)
 	s=wisps.Source(filename=x)
 	return s
+#resave spectra 
+#cands=#read in the data
+cands=pd.read_hdf(wisps.LIBRARIES+'/objects_of_interest.hdf', key='all')
+cands['spectra']=wisps.get_multiple_sources(cands.grism_id.replace('g141', 'G141').values)
+cands.to_hdf(wisps.LIBRARIES+'/objects_of_interest.hdf', key='all')
 
+#df_missing=pd.read_pickle(wisps.LIBRARIES+'/candidates_ids.pkl')
 
-df_missing=pd.read_pickle(wisps.LIBRARIES+'/candidates_ids.pkl')
+#missing=df_missing.grism_id.replace('g141', 'G141').values
 
-missing=df_missing.grism_id.replace('g141', 'G141').values
+#missing_spectra=wisps.get_multiple_sources(missing)
 
-missing_spectra=wisps.get_multiple_sources(missing)
+#missing_df['grism_id']=missing
+#missing_df['spectra']=missing_spectra
 
-missing_df=pd.DataFrame()
-missing_df['grism_id']=missing
-missing_df['spectra']=missing_spectra
-
-missing_df.to_hdf(wisps.LIBRARIES+'/objects_of_interest.hdf', key='all')
+#missing_df.to_hdf(wisps.LIBRARIES+'/objects_of_interest.hdf', key='all')
 
 
 #df=pd.read_pickle(wisps.LIBRARIES+'/candidates_ids.pkl')
