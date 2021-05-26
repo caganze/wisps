@@ -191,13 +191,13 @@ def make_spt_number(spt):
 
 #def get_abs_mag_contants():
 #need to wrap these into a function to avoid overloading memory
-mamjk=ascii.read(DATA_FILES+'/mamajek_relations.txt').to_pandas().replace('None', np.nan)
-pec_js=mamjk.M_J.apply(float).values
-pec_jminush=mamjk['J-H'].apply(float).values
-pec_hs=pec_js-pec_jminush
-pec_spts=mamjk.SpT.apply(make_spt_number).apply(float).values
-pec_hsortedindex=np.argsort(pec_hs)
-pec_jsortedindex=np.argsort(pec_js)
+#mamjk=ascii.read(DATA_FILES+'/mamajek_relations.txt').to_pandas().replace('None', np.nan)
+#pec_js=mamjk.M_J.apply(float).values
+#pec_jminush=mamjk['J-H'].apply(float).values
+#pec_hs=pec_js-pec_jminush
+#pec_spts=mamjk.SpT.apply(make_spt_number).apply(float).values
+#pec_hsortedindex=np.argsort(pec_hs)
+#pec_jsortedindex=np.argsort(pec_js)
 
 
 best_dict={'2MASS J': {\
