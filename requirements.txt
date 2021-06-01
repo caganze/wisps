@@ -216,7 +216,7 @@ Twisted==17.5.0
 typed-ast==1.1.0
 typing==3.6.4
 unicodecsv==0.14.1
-urllib3==1.23
+urllib3==1.26.5
 urlmatch==1.0.1
 virtualenv==16.1.0
 wcwidth==0.1.7
