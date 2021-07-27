@@ -34,8 +34,8 @@ else:
     OUTPUT_FIGURES=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//figures//')
     OUTPUT_TABLES=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//tables//')
     #LIBRARIES=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//libraries//')
-    LIBRARIES='/volumes/TOSHIBA/wispsdata/libraries/'
-    OUTPUT_FILES='/volumes/TOSHIBA/wispsdata/db/'
+    LIBRARIES='/volumes/LaCie/wispsdata/libraries/'
+    OUTPUT_FILES='/volumes/LaCie/wispsdata/db/'
     #read in the photometry
     #PHOTOMETRY_FILE= OUTPUT_FILES+'/combined_wisp_hst3_photometry.pkl'
     #PHOTOMETRY_DATA=pd.read_pickle(PHOTOMETRY_FILE)

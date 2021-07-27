@@ -266,7 +266,8 @@ class Spectrum(object):
 
         #rescale the spectrum for lower stuff 
         #should I add a normalized contamination?
-        if self._wave.min() < 1.17:
+
+        if kwargs.get('rescale_wisp', False):
             up_wave=np.logical_and(self._wave> 1.2, self._wave<1.35)
             down_wave=np.logical_and(self._wave> 0.9, self._wave<1.12)
             scale=np.nanmedian(self._flux[up_wave])/np.nanmedian(self._flux[down_wave])
@@ -650,13 +651,15 @@ def distance(mags, spt, spt_unc):
 
         absmag_scatter=relations[k][1]
         spts=np.random.normal(spt, spt_unc, nsample)
-        absmags=(relations[k][0])(spts)
+        #trim out spectral types outside range of validitiy
+        mask=(spts<15)  & (spts >40)
+        absmags=(relations[k][0])(spts)[~mask] 
 
         #total_uncertainty
         mag_unc=(absmag_scatter**2+mags[k][1]**2)**0.5
-
-        relmags=np.random.normal(mags[k][0], mag_unc, nsample)
+        relmags=np.random.normal(mags[k][0], mag_unc, nsample)[~mask]
         dists=get_distance(absmags, relmags)
+        
         res[str('dist')+k]=np.nanmedian(dists)
         res[str('dist_er')+k]=np.nanstd(dists)
 

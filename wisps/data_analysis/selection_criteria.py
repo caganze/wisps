@@ -160,6 +160,9 @@ class IndexSpace(object):
             annotated_df=Annotator.group_by_spt(df, add_subdwarfs=True, subdwarfs=self._subdwarfs)
         else:
             annotated_df=Annotator.group_by_spt(df)
+
+        print (self._subdwarfs)
+        print (annotated_df)
         
         self._calc_completeness(annotated_df)
     
@@ -173,7 +176,12 @@ class IndexSpace(object):
         x=np.array([*list(df.x.values)])
         y=np.array([*list(df.y.values)])
 
-        ddf=pd.DataFrame([x[:,0], y[:,0]]).transpose().dropna()
+        #ddf=df[['x', 'y']]
+        print (df)
+
+
+        #ddf=pd.DataFrame([x, y]).transpose().dropna()
+        ddf=df
 
 
         #if name =='Y dwarfs':
@@ -504,19 +512,23 @@ def save_criteria(**kwargs):
     #load templates (will return spectral type and 10 indices for each object
     #completeness =kwargs.get('completeness', 0.9)
     all_spex=datasets['spex']
+    all_sds=datasets['subd'].rename(columns={'designation': 'Names', 'spex_type': 'Spts'})
     all_spex=all_spex[all_spex.snr1>10]
-    
     all_spex['Spts']=np.vstack(all_spex.spt.apply(make_spt_number).values)[:,0]
     all_spex['Names']=all_spex.data_file
+
+    #print (all_spex.head(5))
 
     sd_bools=(all_spex['metallicity_class']=='sd') | (all_spex['metallicity_class']=='d/sd')
 
     tpl_ids=all_spex[~sd_bools]
+
+    #print (tpl_ids.head(5))
     #templates['data_type']= 'templates'
-    sd_ids=all_spex[sd_bools]
+    #sd_ids=all_spex[sd_bools]
     #subdwarfs['data_type']= 'subdwarf
 
-    print (tpl_ids.shape, sd_ids.shape)
+    #print (tpl_ids.shape, sd_ids.shape)
 
     #work in log space
     #tpl_ids[INDEX_NAMES]=(Annotator.reformat_table(tpl_ids[INDEX_NAMES]).applymap(float)+.1).applymap(np.log10)
@@ -532,7 +544,9 @@ def save_criteria(**kwargs):
         #print (idspace.name)
         #print (idspace.xkey, idspace.ykey)
         #pass subdwarfs first 
-        idspace.subdwarfs=sd_ids[[x_key, y_key, 'Names', 'Spts']]
+        #print (all_sds[[x_key, y_key, 'Names', 'Spts']])
+        #print (tpl_ids[[x_key, y_key, 'Names', 'Spts']])
+        idspace.subdwarfs=all_sds[[x_key, y_key, 'Names', 'Spts']]
         idspace.templates=tpl_ids[[x_key, y_key, 'Names', 'Spts']]
         #idspace._spex_sample=tpl_ids
         #annotated_df=Annotator.group_by_spt(tpl_ids)

@@ -62,7 +62,7 @@ def make_data(spectra, **kwargs):
     with ThreadPoolExecutor(max_workers=100) as executor:
         futures=list(executor.map( method, *iterables, timeout=None, chunksize=10))
 
-    results=[x for x in futures]
+    results=np.array([x for x in futures]).flatten()
 
     return pd.DataFrame.from_records(results)
 

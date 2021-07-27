@@ -4,6 +4,7 @@ from wisps.data_analysis.initialize import  *
 
 datasets=dict()
 datasets['spex']=pd.read_pickle(LIBRARIES+'/spex_data_set_table.pkl')
+datasets['subd']=pd.read_pickle(LIBRARIES+'/subd_templates.pkl')
 #datasets['stars']=COMBINED_PHOTO_SPECTRO_DATA
 #datasets['highsnr']=pd.read_pickle(LIBRARIES+'/highsnr_obejcts.pkl')
 #datasets['lowsnr']=pd.read_pickle(LIBRARIES+'/lowsnr_obejcts.pkl')

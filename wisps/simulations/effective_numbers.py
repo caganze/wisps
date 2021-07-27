@@ -64,7 +64,6 @@ def fit_snr_exptime(ts, mag, d, e, f):
 
 @numba.jit(nopython=True)
 def mag_unc_exptime_relation( mag, t, m0, beta, a, b):
-    sigma_min = 3.e-3
     tref = 1000.
     #m0, beta, a, b= params
     return ((t/tref)**-beta)*(10**(a*(mag-m0)+b))
@@ -81,7 +80,7 @@ def probability_of_selection(spt, snr):
 
 def get_distances_and_pointings(df, h):
 
-    DISTANCE_SAMPLES=pd.read_pickle(wisps.OUTPUT_FILES+'/distance_samples{}.gz'.format(h))
+    DISTANCE_SAMPLES=pd.read_pickle(wisps.OUTPUT_FILES+'/distance_samples{}'.format(h))
     volumes=np.vstack([np.nansum(list(x.volumes[h].values())) for x in POINTINGS]).flatten()
     volumes_cdf=np.cumsum(volumes)/np.nansum(volumes)
     pntindex=np.arange(0, len(POINTINGS))
@@ -175,8 +174,7 @@ def compute_effective_numbers(model, h):
     h : scaleheights
     """
 
-    df0=popsims.make_systems(model=model,  bfraction=0.2, nsample=1e6, recompute=False)
-
+    df0=popsims.make_systems(model=model,  bfraction=0.2, nsample=1e6, recompute=True)
     #print (df0.keys())
 
     #drop nans in spt
@@ -232,7 +230,7 @@ def compute_effective_numbers_old(model, h):
     exptime_spec= np.array([x.exposure_time for x in POINTINGS])
     
 
-    syst=make_systems_nocombined_light(model_name=model,  bfraction=0.2, nsample=5e3, recompute=False)
+    syst=make_systems_nocombined_light(model_name=model,  bfraction=0.2, nsample=5e3, recompute=True)
     print (len(syst))
 
     
@@ -447,12 +445,13 @@ def simulation_outputs(**kwargs):
     """
     Purpose:compute number densities
     """
-    recompute=kwargs.get("recompute", False)
+    recompute=kwargs.get("recompute", True)
     hs=kwargs.get("hs", wispsim.HS)
 
     #recompute for different evolutionary models
+    get_all_values_from_model('burrows1997', hs)
     get_all_values_from_model('burrows2001', hs)
-    #get_all_values_from_model('baraffe2003', hs)#
-    #get_all_values_from_model('saumon2008', hs)
-    #get_all_values_from_model('marley2019', hs)
-    # get_all_values_from_model('phillips2020', hs)
+    get_all_values_from_model('baraffe2003', hs)
+    get_all_values_from_model('saumon2008', hs)
+    get_all_values_from_model('marley2019', hs)
+    get_all_values_from_model('phillips2020', hs)

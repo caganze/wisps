@@ -200,7 +200,7 @@ def plot_source(sp, **kwargs):
                loc='best', fontsize=15)
 
     plt.tight_layout()
-    if save: plt.savefig(filename,  bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=kwargs.get('dpi', 300),  
+    if save: plt.savefig(filename,  bbox_extra_artists=(lgd,), bbox_inches='tight', rasterized=True, dpi=kwargs.get('dpi', 300),  
         facecolor='white', transparent=False)
     
     #plt.close()

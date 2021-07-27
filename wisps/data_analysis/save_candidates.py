@@ -56,12 +56,14 @@ def save_again():
 
 def look_at_all():
 	import wisps
-	df=pd.read_csv(wisps.LIBRARIES+'/selected_by_neural.csv')
-	df=df[df.snr1>2.]
-	print (df)
+	#df=pd.read_csv(wisps.LIBRARIES+'/selected_by_neural.csv')
+	df=pd.read_csv(wisps.LIBRARIES+'/subdarfs_rf_preds.csv')
+
+	#df=df[df.snr1>2.]
+	#print (df)
 
 	#remove files where file names exist
-	fnames=np.array([SPECTRA_PATH+'/indices/'+name.replace('-', '_')+'.jpeg' for name in df.grism_id.values])
+	fnames=np.array([SPECTRA_PATH+'/sdcandidates/'+name.replace('-', '_')+'.jpeg' for name in df.grism_id.values])
 
 	exist_flag=np.array([os.path.isfile(fname) for fname in fnames])
 

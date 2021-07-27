@@ -45,7 +45,7 @@ del big_file
 
 Rsun=8300.
 Zsun=27.
-HS=[100, 150,200,250, 300,350, 400, 450, 500, 600, 700, 800, 1000]
+HS=[100, 150,200, 250, 300, 350, 400, 450, 500, 600,800, 1000]
 
 #redefine magnitude limits by taking into account the scatter for each pointing 
 #use these to compute volumes

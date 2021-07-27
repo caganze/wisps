@@ -22,7 +22,7 @@ splat.initializeStandards()
 from wisps.utils import memoize_func
 WISP_PATH=os.environ['WISP_CODE_PATH']
 DATA_FILES=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//data//')
-LIBRARIES=os.path.dirname(WISP_PATH.split('wisps')[0]+('wisps')+'//libraries//')
+LIBRARIES='/volumes/LaCie/wispsdata/libraries/'
 kirkpa2019pol={'pol':np.poly1d(np.flip([36.9714, -8.66856, 1.05122 ,-0.0344809])), 
                     'scatter':.67, 'range':[36, 44]}
 
