@@ -35,7 +35,12 @@ for idx, row in ucds.iterrows():
         s=row.spectra
         filename=fold+'spectrum'+str(idx)+'.pdf'
         s.pixels_per_image=100
-        s.plot(save=True, filename=filename, dpi=160)
+        #DON'T FIT SD TO T TYPES
+        if  wisps.make_spt_number(s.spectral_type[0])<30:
+            s.plot(compare_to_sds=True, comprange=[[1.15, 1.6]], save=True, filename=filename, dpi=160)
+        else:
+            s.plot(compare_to_sds=False, comprange=[[1.15, 1.6]], save=True, filename=filename, dpi=160)
+
     except:
         s=wisps.Source(filename=row.grism_id.replace('g141', 'G141'),is_ucd=False)
         s=reclassify(s)
@@ -45,4 +50,7 @@ for idx, row in ucds.iterrows():
         s.pixels_per_image=100
         #filename=fold+'spectrum'+str(s.designation)+'.pdf'
         filename=fold+'spectrum'+str(idx)+'.pdf'
-        s.plot(save=True, filename=filename, dpi=160)
+        if  wisps.make_spt_number(s.spectral_type[0])<30:
+            s.plot(compare_to_sds=True, comprange=[[1.15, 1.6]], save=True, filename=filename, dpi=160)
+        else:
+            s.plot(compare_to_sds=False, comprange=[[1.15, 1.6]], save=True, filename=filename, dpi=160)

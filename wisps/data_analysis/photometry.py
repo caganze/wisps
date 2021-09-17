@@ -226,20 +226,21 @@ class Source(Spectrum):
         if self._distance is None:
             self.calculate_distance()
 
-        ds=np.array([self._distance[k] for k in self._distance.keys() if ('dist'  in k) and ('dist_er'  not in k)])
-        ers=np.array([self._distance[k] for k in self._distance.keys() if 'dist_er'  in k])
+        dsx=np.array([self._distance[k] for k in self._distance.keys() if ('dist'  in k) and ('dist_er'  not in k)]).flatten()
+        #print (dsx)
+        #ers=np.array([self._distance[k] for k in self._distance.keys() if 'dist_er'  in k])
 
         #distance is the weighted mean and std 
-        nans=np.isnan(ds)
+        #nans=np.isnan(ds)
         #val, unc=spl.weightedMeanVar(ds[~nans], ers[~nans])
         #assymetric error bars
         #dont forget the other uncertainties
         #unc_tot=(unc**2+(ers[~nans]**2).sum())**0.5
         #print (np.shape(ds), np.shape(ers))
 
-        dsx= np.random.normal(loc=ds.flatten(), scale=ers.flatten(), size=(1000, len(ds.flatten())))
+        #dsx= np.random.normal(loc=ds.flatten(), scale=ers.flatten(), size=(1000, len(ds.flatten())))
 
-        val = np.nanmedian(ds)
+        val = np.nanmedian(dsx)
         erx= np.array([np.nanpercentile(dsx, 86)-val, val-np.nanpercentile(dsx, 14)])
 
         return {'val':val*u.pc, 'er':erx*u.pc}

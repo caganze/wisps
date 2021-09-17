@@ -1,17 +1,17 @@
 
 ##adds survey parameters such as magnitude etc. to things
 
-from .initialize import *
+#from .initialize import *
 from tqdm import tqdm
 from scipy.interpolate import interp1d
-
+import pandas as pd
+import numpy as np
 import wisps
-from .initialize import SELECTION_FUNCTION, SPGRID
 from wisps import drop_nan
 from astropy.coordinates import SkyCoord
 #import pymc3 as pm
 
-from .core import  HS, MAG_LIMITS, Rsun, Zsun, custom_volume, SPGRID
+from wisps.simulations import  HS, MAG_LIMITS, Rsun, Zsun, custom_volume, SELECTION_FUNCTION, SPGRID
 import wisps.simulations as wispsim
 #from .binaries import make_systems
 import numba
@@ -59,8 +59,8 @@ BS=galc.b.radian
 
 #wispsim.make_pointings()
 @numba.jit(nopython=True)
-def fit_snr_exptime(ts, mag, d, e, f):
-    return d*mag+e*np.log(ts/1000)+f
+def fit_snr_exptime(ts, mag, d, e, f, m0):
+    return d*(mag-m0)+e*np.log10(ts/1000)+f
 
 @numba.jit(nopython=True)
 def mag_unc_exptime_relation( mag, t, m0, beta, a, b):
@@ -441,17 +441,17 @@ def get_all_values_from_model(model, hs):
 
     #del dict_values
 
-def simulation_outputs(**kwargs):
-    """
+if __name__=='__main__':
+    """c
     Purpose:compute number densities
     """
-    recompute=kwargs.get("recompute", True)
-    hs=kwargs.get("hs", wispsim.HS)
+    #recompute=kwargs.get("recompute", True)
+    #hs=kwargs.get("hs", )
 
     #recompute for different evolutionary models
-    get_all_values_from_model('burrows1997', hs)
-    get_all_values_from_model('burrows2001', hs)
-    get_all_values_from_model('baraffe2003', hs)
-    get_all_values_from_model('saumon2008', hs)
-    get_all_values_from_model('marley2019', hs)
-    get_all_values_from_model('phillips2020', hs)
+    #get_all_values_from_model('burrows1997', wispsim.HS)
+    #get_all_values_from_model('burrows2001',  wispsim.HS)
+    #get_all_values_from_model('baraffe2003',  wispsim.HS)
+    get_all_values_from_model('saumon2008',  wispsim.HS)
+    get_all_values_from_model('marley2019',  wispsim.HS)
+    get_all_values_from_model('phillips2020',  wispsim.HS)

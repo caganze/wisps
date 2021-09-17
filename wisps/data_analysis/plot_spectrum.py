@@ -51,6 +51,47 @@ def plot_image(sp, ax, cmap='inferno'):
 
         ax.set_xlabel("{} = {}".format(img_mag_to_use, np.round(sp.mags[img_mag_to_use][0], 1)), fontsize=15)
 
+def show_sd_standards(s, ax, comp_range):
+    """
+    plot sd standards on the same axis
+    s must be a spectrum object
+
+    """
+    
+    #std=splat.STDS_DWARF_SPEX[spt]
+    #_, scale=splat.compareSpectra(s.splat_spectrum, std,  comprange=[[0.8, 1.3]], statistic='chisqr', scale=True) 
+    #std.scale(scale)
+    #xlim=[0.8, 2.5 ]
+    #mask= np.logical_and(s.wave>xlim[0],  s.wave<xlim[-1])
+    #a.plot(s.wave, s.flux, label=shortname,linewidth=3, c='k')
+    #a.plot(std.wave.value, std.flux.value, linestyle='--', label='{} std'.format(spt),\
+    #       alpha=0.5)
+    #sd_std=None
+    legend_list=[]
+    try:
+        sd_type, _= splat.classifyByStandard(s.splat_spectrum, comprange=comp_range, sd=True)
+        sd_std=splat.STDS_SD_SPEX[sd_type]
+        _, sd_scale=splat.compareSpectra(s.splat_spectrum, sd_std,  comprange=comp_range, statistic='chisqr', scale=True) 
+        sd_std.scale(sd_scale)
+        l=ax.step(sd_std.wave.value, sd_std.flux.value, linestyle='dashed', label='{}  STD'.format(sd_type),\
+           alpha=1., color='#0074D9')
+        #legend_list.append(l)
+    except KeyError:
+        pass
+    
+    d_sd_std=None
+    try:
+        dsd_type, _= splat.classifyByStandard(s.splat_spectrum, comprange=comp_range, dsd=True)
+        d_sd_std=splat.STDS_DSD_SPEX[dsd_type]
+        _, d_sd_scale=splat.compareSpectra(s.splat_spectrum, d_sd_std,  comprange=comp_range, statistic='chisqr', scale=True) 
+        d_sd_std.scale(d_sd_scale)
+        l=ax.step(d_sd_std.wave.value, d_sd_std.flux.value, linestyle='dotted', label='{} STD'.format(dsd_type),\
+           alpha=1., color='#B10DC9')
+        legend_list.append(l)
+    except KeyError:
+        pass
+    return legend_list
+    
 def plot_source(sp, **kwargs):
     
     """
@@ -65,8 +106,10 @@ def plot_source(sp, **kwargs):
     #flags
     cmap=kwargs.get('cmap', 'inferno')
     compare_to_std=kwargs.get('compare_to_std', True)
+    compare_to_sds=kwargs.get('compare_to_sds', False)
     save=kwargs.get('save', False)
     filt=kwargs.get('filter', 'F140W')
+    comprange=kwargs.get('comprange', [[1.2, 1.6]])
     
     #esthetiques
     xlim= kwargs.get('xlim', [1.15, 1.65])
@@ -98,8 +141,8 @@ def plot_source(sp, **kwargs):
     ax3.tick_params(axis='both', which='major', labelsize=15)
     
     
-    l1,=ax3.step(sp.wave, sp.flux, color='#111111')
-    l2,=ax3.plot(sp.wave, sp.noise, '#39CCCC')
+    l1,=ax3.step(sp.wave, sp.flux, color='#111111', label=sp.shortname.replace('WISP', 'WISPS'))
+    l2,=ax3.plot(sp.wave, sp.noise, '#39CCCC', label='Noise')
     #l4, =ax3.plot(sp.wave, sp.contamination, '#FF4136', linestyle='--')
     
     #print (np.nanmax(sp.flux[(1.25<sp.wave) & (sp.wave<1.6)]))
@@ -115,12 +158,16 @@ def plot_source(sp, **kwargs):
     #if True:
     std=splat.getStandard(sp.spectral_type[0])
     std.normalize(range=[1.2, 1.5])
-    chi, scale=splat.compareSpectra(sp.splat_spectrum, std,  comprange=[[1.2, 1.5]], statistic='chisqr', scale=True) 
+    chi, scale=splat.compareSpectra(sp.splat_spectrum, std,  comprange=comprange, statistic='chisqr', scale=True) 
     std.scale(scale)
     #only plot the standard when needed
     if compare_to_std:
-        l3,=ax3.step(std.wave, std.flux, color='y')
+        l3,=ax3.step(std.wave, std.flux, color='y', label='{} STD'.format(splat.typeToNum(sp.spectral_type[0]) ))
         plts.append(l3)
+    if  compare_to_sds:
+        _=show_sd_standards(sp, ax3, comprange)
+        #print
+        #plts=np.concatenate([plts, l4s])
     
     #ax3.set_xlim(xlim)
     ax3.set_xlabel(xlabel, fontsize=18)
@@ -191,16 +238,17 @@ def plot_source(sp, **kwargs):
 
     spt_label=splat.typeToNum(make_spt_number(sp.spectral_type[0]))
     
-    if  compare_to_std: 
-        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', '('+spt_label+') '+'standard'), 
-               loc='best', fontsize=15) 
+    #if  compare_to_std: 
+    #    lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise', '('+spt_label+') '+'standard'), 
+    #           loc='best', fontsize=15) 
+    #if not  compare_to_std:
+    #    lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise'), 
+    #           loc='best', fontsize=15)
 
-    if not  compare_to_std:
-        lgd=ax3.legend(tuple(plts), (sp.shortname, 'Noise'), 
-               loc='best', fontsize=15)
+    ax3.legend(fontsize=14)
 
     plt.tight_layout()
-    if save: plt.savefig(filename,  bbox_extra_artists=(lgd,), bbox_inches='tight', rasterized=True, dpi=kwargs.get('dpi', 300),  
+    if save: plt.savefig(filename,  bbox_inches='tight', rasterized=True, dpi=kwargs.get('dpi', 300),  
         facecolor='white', transparent=False)
     
     #plt.close()

@@ -660,8 +660,9 @@ def distance(mags, spt, spt_unc):
         relmags=np.random.normal(mags[k][0], mag_unc, nsample)[~mask]
         dists=get_distance(absmags, relmags)
         
-        res[str('dist')+k]=np.nanmedian(dists)
-        res[str('dist_er')+k]=np.nanstd(dists)
+        #res[str('dist')+k]=np.nanmedian(dists)
+        #res[str('dist_er')+k]=np.nanstd(dists)
+        res['dist'+k]=dists
 
     return res
     

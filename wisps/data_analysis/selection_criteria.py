@@ -161,13 +161,13 @@ class IndexSpace(object):
         else:
             annotated_df=Annotator.group_by_spt(df)
 
-        print (self._subdwarfs)
-        print (annotated_df)
+        #print (self._subdwarfs)
+        #print (annotated_df)
         
         self._calc_completeness(annotated_df)
     
     #@classmethod   
-    def add_box(self, df, name, color, coeff, xshift=0.15):
+    def add_box(self, df, name, color, coeff, xshift=0.0):
         """
         Adds a box to the selection criteria
         """
@@ -176,14 +176,8 @@ class IndexSpace(object):
         x=np.array([*list(df.x.values)])
         y=np.array([*list(df.y.values)])
 
-        #ddf=df[['x', 'y']]
-        print (df)
-
-
         #ddf=pd.DataFrame([x, y]).transpose().dropna()
-        ddf=df
-
-
+        #ddf=df
         #if name =='Y dwarfs':
         #    print ()
         #create a box
@@ -197,7 +191,9 @@ class IndexSpace(object):
         box.edgecolor='#2ECC40'
         box.xshift=xshift
         #print (ddf.values.T, name)
-        box.data=np.array(ddf.values.T)
+
+        #box.data=np.array(ddf.values.T)
+        box.data=np.array([x[:,0], y[:,0]])
         #add this to the existing 
         self._shapes.append(box)
         self._completeness[name]=box.efficiency
@@ -219,7 +215,7 @@ class IndexSpace(object):
                 #print('name of the group ...{} length ... {}'.format(name, len(group)))
                 to_use=df[[self.xkey, self.ykey]]
                 to_use.columns=['x', 'y']
-                self.add_box(to_use, name, '#0074D9', 5., xshift=0.3)
+                self.add_box(to_use, name, '#0074D9', 3., xshift=0.0)
 
 
         #add an extra box of late ts from manjavacas et al
@@ -513,15 +509,17 @@ def save_criteria(**kwargs):
     #completeness =kwargs.get('completeness', 0.9)
     all_spex=datasets['spex']
     all_sds=datasets['subd'].rename(columns={'designation': 'Names', 'spex_type': 'Spts'})
-    all_spex=all_spex[all_spex.snr1>10]
+    print ('...........{} sds '.format(len(all_sds)))
     all_spex['Spts']=np.vstack(all_spex.spt.apply(make_spt_number).values)[:,0]
+    all_spex=all_spex[np.logical_and(all_spex.snr1>10, all_spex.Spts >=17.)]
     all_spex['Names']=all_spex.data_file
 
     #print (all_spex.head(5))
-
     sd_bools=(all_spex['metallicity_class']=='sd') | (all_spex['metallicity_class']=='d/sd')
 
     tpl_ids=all_spex[~sd_bools]
+    print ('.............{} templates'.format(len(tpl_ids)))
+
 
     #print (tpl_ids.head(5))
     #templates['data_type']= 'templates'
