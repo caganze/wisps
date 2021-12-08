@@ -345,7 +345,16 @@ def compute_effective_numbers_old(model, h):
     snrjs140= 10**(fit_snr_exptime(  exp_grism, appf140s, *list(MAG_LIMITS['snr_exp']['F140'])))
     snrjs160= 10**(fit_snr_exptime(  exp_grism, appf160s, *list(MAG_LIMITS['snr_exp']['F160'])))
 
+    #assign upper and lo limits 
+    snr_bool_up= np.logical_or.reduce([ appf110s >25,  appf140s >25,  appf160s>24])
+    snr_bool_do= np.logical_or.reduce([ appf110s <15,  appf140s <15,  appf160s>15])
+
+
     snrjs= np.nanmin(np.vstack([snrjs110, snrjs140, snrjs160]), axis=0)
+
+    #replace by 1000 or 1
+    snrjs[snr_bool_up]=10**2.7
+    snrjs[snr_bool_do]=1.
 
     sl= probability_of_selection(spts, snrjs)
 
@@ -407,6 +416,7 @@ def compute_effective_numbers_old(model, h):
 
 
     cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut.h5', key=str(model)+str(h)+str(h)+'F110_corrected')
+    del cutdf
 
 
 
@@ -414,7 +424,7 @@ def compute_effective_numbers_old(model, h):
 
     #with open(wisps.OUTPUT_FILES+'/effective_numbers_from_sims', 'wb') as file:
     #        pickle.dump(dict_values,file)
-    #return 
+    return 
     
 def get_all_values_from_model(model, hs):
     """
@@ -422,7 +432,7 @@ def get_all_values_from_model(model, hs):
     """
     #obtain spectral types from modelss
     for h in tqdm(hs):
-        compute_effective_numbers(model, h)
+        _= compute_effective_numbers(model, h)
 
     #syst=make_systems(model_name=model, bfraction=0.2)
     #spts=(syst['system_spts']).flatten()
@@ -450,8 +460,8 @@ if __name__=='__main__':
 
     #recompute for different evolutionary models
     #get_all_values_from_model('burrows1997', wispsim.HS)
-    #get_all_values_from_model('burrows2001',  wispsim.HS)
-    #get_all_values_from_model('baraffe2003',  wispsim.HS)
+    get_all_values_from_model('burrows2001',  wispsim.HS)
+    get_all_values_from_model('baraffe2003',  wispsim.HS)
     get_all_values_from_model('saumon2008',  wispsim.HS)
     get_all_values_from_model('marley2019',  wispsim.HS)
     get_all_values_from_model('phillips2020',  wispsim.HS)

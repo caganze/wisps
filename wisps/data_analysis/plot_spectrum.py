@@ -68,17 +68,6 @@ def show_sd_standards(s, ax, comp_range):
     #       alpha=0.5)
     #sd_std=None
     legend_list=[]
-    try:
-        sd_type, _= splat.classifyByStandard(s.splat_spectrum, comprange=comp_range, sd=True)
-        sd_std=splat.STDS_SD_SPEX[sd_type]
-        _, sd_scale=splat.compareSpectra(s.splat_spectrum, sd_std,  comprange=comp_range, statistic='chisqr', scale=True) 
-        sd_std.scale(sd_scale)
-        l=ax.step(sd_std.wave.value, sd_std.flux.value, linestyle='dashed', label='{}  STD'.format(sd_type),\
-           alpha=1., color='#0074D9')
-        #legend_list.append(l)
-    except KeyError:
-        pass
-    
     d_sd_std=None
     try:
         dsd_type, _= splat.classifyByStandard(s.splat_spectrum, comprange=comp_range, dsd=True)
@@ -90,6 +79,19 @@ def show_sd_standards(s, ax, comp_range):
         legend_list.append(l)
     except KeyError:
         pass
+        
+    try:
+        sd_type, _= splat.classifyByStandard(s.splat_spectrum, comprange=comp_range, sd=True)
+        sd_std=splat.STDS_SD_SPEX[sd_type]
+        _, sd_scale=splat.compareSpectra(s.splat_spectrum, sd_std,  comprange=comp_range, statistic='chisqr', scale=True) 
+        sd_std.scale(sd_scale)
+        l=ax.step(sd_std.wave.value, sd_std.flux.value, linestyle='dashed', label='{}  STD'.format(sd_type),\
+           alpha=1., color='#0074D9')
+        #legend_list.append(l)
+    except KeyError:
+        pass
+    
+    
     return legend_list
     
 def plot_source(sp, **kwargs):
@@ -141,7 +143,7 @@ def plot_source(sp, **kwargs):
     ax3.tick_params(axis='both', which='major', labelsize=15)
     
     
-    l1,=ax3.step(sp.wave, sp.flux, color='#111111', label=sp.shortname.replace('WISP', 'WISPS'))
+    l1,=ax3.step(sp.wave, sp.flux, color='#FFFFFF', label=sp.shortname.replace('WISP', 'WISPS'))
     l2,=ax3.plot(sp.wave, sp.noise, '#39CCCC', label='Noise')
     #l4, =ax3.plot(sp.wave, sp.contamination, '#FF4136', linestyle='--')
     
@@ -249,7 +251,7 @@ def plot_source(sp, **kwargs):
 
     plt.tight_layout()
     if save: plt.savefig(filename,  bbox_inches='tight', rasterized=True, dpi=kwargs.get('dpi', 300),  
-        facecolor='white', transparent=False)
+        facecolor='black', transparent=False)
     
     #plt.close()
     #fig.close()
