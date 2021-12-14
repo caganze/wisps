@@ -142,9 +142,10 @@ def get_galactic_quantities():
             volumes[s][p.name] = popsims.volume_calc(p.coord.galactic.l.radian,\
                                    p.coord.galactic.b.radian,
                                     distance_limits[s][-1], distance_limits[s][0],scaleH, scaleL, \
-                                   kind='disk')
+                                   kind='exp')
             distances[s][p.name]= p.draw_distances(distance_limits[s][1]*0.5, 2*distance_limits[s][0], \
                 scaleH, scaleL, nsample=1000)
+            
     import pickle
     
     with open(wisps.OUTPUT_FILES+'/thick_disk_volumes.pkl', 'wb') as file:
