@@ -13,7 +13,7 @@ from wisps.utils import *
 
 
 import matplotlib as mpl 
-import matplotlib.font_manager as font_manager; font_manager._rebuild() 
+import matplotlib.font_manager as font_manager 
 
 ##giving me a hard time
 

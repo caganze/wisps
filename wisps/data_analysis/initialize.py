@@ -24,8 +24,8 @@ if os.environ.get('READTHEDOCS') == 'True' :
 else:
     WISP_PATH=os.environ['WISP_CODE_PATH']
     REMOTE_FOLDER=os.environ['WISP_SURVEY_DATA']
-    INDICES=os.environ['WISP_INDICES_DATA']
-    REMOTE_PHOT_CATALOGS=INDICES.split('Indices')[0]+'/catalogs//'
+    #INDICES=os.environ['WISP_INDICES_DATA']
+    #REMOTE_PHOT_CATALOGS=INDICES.split('Indices')[0]+'/catalogs//'
     #units
     F_UNITS=u.erg/(u.cm**2 * u.s * u.micron) #default units for wavelength and flux
     W_UNITS=u.micron
