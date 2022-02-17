@@ -8,6 +8,7 @@ from tqdm import tqdm
 import astropy.units as u
 import numba
 from scipy.interpolate import griddata
+from popsims import galaxy
 
 
 def probability_of_selection(spt, snr):
@@ -128,7 +129,7 @@ def get_galactic_quantities():
     pnt_names=[x.name for x in  thin_points]
 
 
-    points=[popsims.Pointing(coord=p.coord, name=p.name) for p in tqdm(thin_points)]
+    points=[galaxy.Pointing(coord=p.coord, name=p.name) for p in tqdm(thin_points)]
 
  
     volumes={}
@@ -139,7 +140,7 @@ def get_galactic_quantities():
         volumes[s]={}
         distances[s]={}
         for p in tqdm(points):
-            volumes[s][p.name] = popsims.volume_calc(p.coord.galactic.l.radian,\
+            volumes[s][p.name] = galaxy.volume_calc(p.coord.galactic.l.radian,\
                                    p.coord.galactic.b.radian,
                                     distance_limits[s][-1], distance_limits[s][0],scaleH, scaleL, \
                                    kind='exp')
@@ -171,10 +172,10 @@ def run_all():
     volumes_cdf= np.cumsum( tot_volumes_by_pointing)/np.nansum(   tot_volumes_by_pointing)
 
     #load in data from evolutionary models
-    data=popsims.make_systems(model='baraffe2003', bfraction=0.2,\
+    data=popsims.make_systems(model_name='baraffe2003', bfraction=0.2,\
                             mass_age_range= [0.01, 0.15, 8., 13.0],\
-                                nsample=1e6,
-                                recompute=True)
+                                nsample=int(1e6),
+                                save=True)
 
     #remove early types 
     spts= (data['spt'].values).flatten()
@@ -248,7 +249,7 @@ def run_all():
     return 
 
 if __name__=='__main__':
-    get_galactic_quantities()
+    #get_galactic_quantities()
     run_all()
 
 
