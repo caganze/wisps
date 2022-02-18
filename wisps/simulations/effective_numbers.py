@@ -90,12 +90,12 @@ def get_distances_and_pointings(df, h):
 
 
     spt_r=np.round(df.spt.values)
-
     pntindex_to_use=wisps.random_draw(pntindex, volumes_cdf, nsample=len(spt_r)).astype(int)
 
     
     pnts=np.take(names, pntindex_to_use)
     pntings=np.take( np.array(POINTINGS),   pntindex_to_use)
+    print (  pntings)
     exps= np.take(exptimes_mag, pntindex_to_use)
     exp_grism= np.take(exptime_spec, pntindex_to_use)
 
@@ -107,6 +107,8 @@ def get_distances_and_pointings(df, h):
     df['pnt']=pntings#df.pntname.apply(lambda x: np.array(PNTS)[pnt_names.index(x)])
     df['exp_image']= exps
     df['exp_grism']=exp_grism
+
+    return df
 
 
 def get_snr_and_selection_prob(df):
@@ -121,6 +123,8 @@ def get_snr_and_selection_prob(df):
 
     df['snrj']=np.nanmin(np.vstack([snrjs110, snrjs140, snrjs160]), axis=0)
     df['slprob']=probability_of_selection(df.spt.values,  df['snrj'].values)
+
+    return df
     
 
 def get_absmags_hst_filters(df, mag_key):
@@ -166,6 +170,7 @@ def get_absmags_hst_filters(df, mag_key):
 
     df['app{}'.format(mag_key)]= np.random.normal(app, app_er)
     df['app{}'.format(mag_key)+'er']=app_er
+    return df
 
 
 def compute_effective_numbers(model, h):
@@ -174,8 +179,10 @@ def compute_effective_numbers(model, h):
     h : scaleheights
     """
 
-    df0=popsims.make_systems(model=model,  bfraction=0.2, nsample=1e6, recompute=True)
-    #print (df0.keys())
+    df0=popsims.make_systems(model_name=model, bfraction=0.2,\
+                            mass_age_range= [0.01, 0.15, 0.1, 8.0],\
+                                nsample=int(1e6),
+                                save=True)
 
     #drop nans in spt
     df0=(df0[~df0.spt.isna()]).reset_index(drop=True)
@@ -183,19 +190,18 @@ def compute_effective_numbers(model, h):
     df0=(df0[mask]).reset_index(drop=True)
 
     #assign distances and poiunts
-    get_distances_and_pointings(df0, h)
+    df0=get_distances_and_pointings(df0, h)
 
 
 
     #assign absolute mags
-    get_absmags_hst_filters(df0, 'F110')
-    get_absmags_hst_filters(df0, 'F140')
-    get_absmags_hst_filters(df0, 'F160')
-    #print(df0.keys())
-
+    df0=get_absmags_hst_filters(df0, 'F110')
+    df0=get_absmags_hst_filters(df0, 'F140')
+    df0=get_absmags_hst_filters(df0, 'F160')
+    
+    print(df0.keys())
     #add snr and selection probability
-    get_snr_and_selection_prob(df0)
-
+    df0=get_snr_and_selection_prob(df0)
     mag_limits=pd.DataFrame.from_records(df0.pnt.apply(lambda x: x.mag_limits).values)
 
 
@@ -209,13 +215,14 @@ def compute_effective_numbers(model, h):
 
     df0['is_cut']=flags
 
-    df0.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut_binaries.h5', key=str(model)+str(h)+str('spt_abs_mag'))
+    df0.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut_binaries_updatedrelations.h5', key=str(model)+str(h)+str('spt_abs_mag'))
 
 
 
 
 
     #cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut.h5', key=str(model)+str('h'))
+
 def compute_effective_numbers_old(model, h):
     #DISTANCES=pd.DataFrame(pd.read_pickle(wisps.OUTPUT_FILES+'/cdf_distance_tables.pkl')[h])
     ##given a distribution of masses, ages, teffss
@@ -393,6 +400,8 @@ def compute_effective_numbers_old(model, h):
     
     
     simdf['pnt']=simdf.pntname.apply(lambda x: np.array(PNTS)[pnt_names.index(x)])
+
+
     
     
     #corrts0=
