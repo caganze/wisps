@@ -468,9 +468,9 @@ if __name__=='__main__':
     #hs=kwargs.get("hs", )
 
     #recompute for different evolutionary models
-    #get_all_values_from_model('burrows1997', wispsim.HS)
-    get_all_values_from_model('burrows2001',  wispsim.HS)
-    get_all_values_from_model('baraffe2003',  wispsim.HS)
-    get_all_values_from_model('saumon2008',  wispsim.HS)
-    get_all_values_from_model('marley2019',  wispsim.HS)
-    get_all_values_from_model('phillips2020',  wispsim.HS)
+    get_all_values_from_model('burrows1997', wispsim.HS)
+    #get_all_values_from_model('burrows2001',  wispsim.HS)
+    #get_all_values_from_model('baraffe2003',  wispsim.HS)
+    #get_all_values_from_model('saumon2008',  wispsim.HS)
+    #get_all_values_from_model('marley2019',  wispsim.HS)
+    #get_all_values_from_model('phillips2020',  wispsim.HS)
