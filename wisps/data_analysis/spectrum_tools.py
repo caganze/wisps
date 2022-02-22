@@ -112,6 +112,7 @@ class Spectrum(object):
         self._spectral_type=kwargs.get('spt',None)
         self._best_fit_line=None
         self.is_ucd=kwargs.get('is_ucd', False) #flag for UCD candidates
+        self._dof=129 #PLACE HOLDER
 
         #load spectrum if given filename 
         
@@ -134,6 +135,7 @@ class Spectrum(object):
             for key in  ftest.keys(): 
                 setattr(self, key, ftest[key])
             self.normalize()
+            self._dof=len(self._wave)
 
         if self._spectral_type is not None:
             self.spectral_type=self._spectral_type
@@ -143,6 +145,7 @@ class Spectrum(object):
         if (self._wave is None ) and self.is_ucd:
             row=(UCD_SPECTRA[UCD_SPECTRA.grism_id==self._filename]).iloc[0]
             self._wave=row.wave
+            self._dof=len(self._wave)
             self._flux=row.flux
             self._noise=row.noise
             self._contam=row.contam
@@ -217,7 +220,11 @@ class Spectrum(object):
     @property
     def dof(self):
         #convert to use splat dof 
-        return self.splat_spectrum.dof
+        return self._dof
+
+    @dof.setter
+    def dof(self, new_dof):
+        self._dof= new_dof
     
 
     @property
@@ -277,6 +284,7 @@ class Spectrum(object):
         self._wave= sp.wave.value
         self._flux=sp.flux.value
         self._noise=sp.noise.value
+        self._dof=len(self._wave)
 
         #scale the contamination
         if not np.isnan(self._contam).all():
@@ -392,6 +400,7 @@ class Spectrum(object):
         
         self._noise=np.array(noise)
         self._contam=np.array(contam)
+        self._dof=len(self._wave)
 
         # subtract the contamination as prescribed by wisps people
         self._flux=np.array(flux)-np.array(contam)
@@ -524,10 +533,11 @@ def f_test(spectrum, **kwargs):
     #calculate f-statistic
     x=spexchi/linechi
     #calculate the f-statistic dfn=2, dfd=1 are areguments
-    f=stats.f.cdf(x,  spectrum.dof-1, spectrum.dof-2)
+    dof=129
+    f=stats.f.cdf(x,  dof-1, dof-2)
     #return result
     result={'spex_chi':spexchi, 'line_chi':linechi, \
-    'x':x, 'f':f, '_best_fit_line': [line, linechi], 'df1':std.dof+spectrum.dof-1, 'df2': spectrum.dof-2  }
+    'x':x, 'f':f, '_best_fit_line': [line, linechi], 'df1':dof+dof-1, 'df2': dof-2  }
     return result
 
 def compute_chi_square(flux, noise, model):

@@ -8,7 +8,7 @@ import numpy as np
 from itertools import combinations
 from tqdm import tqdm
 import splat.empirical as spe
-
+import popsims
 
 from concurrent.futures import ThreadPoolExecutor, wait , ALL_COMPLETED
 from  functools import partial
@@ -20,6 +20,15 @@ def proper_classification(sp):
     val=wisps.classify(sp, stripunits=True)
     return val
 
+def get_absolute_mag_h2mass(sptype):
+    spt=wisps.make_spt_number(sptype)
+    mag=None
+    if spt >20:
+        mag=absolute_mag_h(spt, ref='kirkpatrick2021', syst='2mass')[0]
+    else:
+        mag=absolute_mag_h(spt, ref='dupuy2012', syst='2mass')[0]
+     return mag
+
 def combine_two_spectra(sp10, sp20):
     """
     sp1 and sp2 are splat objects
@@ -29,8 +38,13 @@ def combine_two_spectra(sp10, sp20):
     sp1=sp10.splat_spectrum
     sp2=sp20.splat_spectrum
     
-    absj0=(wisps.absolute_magnitude_jh(wisps.make_spt_number(sp10.spectral_type[0]))[1]).flatten()[0]
-    absj1=(wisps.absolute_magnitude_jh(wisps.make_spt_number(sp20.spectral_type[0]))[1]).flatten()[0]
+    #absj0=(wisps.absolute_magnitude_jh(wisps.make_spt_number(sp10.spectral_type[0]))[1]).flatten()[0]
+    #absj1=(wisps.absolute_magnitude_jh(wisps.make_spt_number(sp20.spectral_type[0]))[1]).flatten()[0]
+
+    #using kirkpatrick relations
+    absj0=get_absolute_mag_h2mass(sp10.spectral_type)
+    absj1=get_absolute_mag_h2mass(sp20.spectral_type)
+
 
 
     try:
