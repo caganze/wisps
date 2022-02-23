@@ -95,7 +95,7 @@ def get_distances_and_pointings(df, h):
     
     pnts=np.take(names, pntindex_to_use)
     pntings=np.take( np.array(POINTINGS),   pntindex_to_use)
-    print (  pntings)
+    #print (  pntings)
     exps= np.take(exptimes_mag, pntindex_to_use)
     exp_grism= np.take(exptime_spec, pntindex_to_use)
 
@@ -469,8 +469,8 @@ if __name__=='__main__':
 
     #recompute for different evolutionary models
     get_all_values_from_model('burrows1997', wispsim.HS)
-    #get_all_values_from_model('burrows2001',  wispsim.HS)
-    #get_all_values_from_model('baraffe2003',  wispsim.HS)
-    #get_all_values_from_model('saumon2008',  wispsim.HS)
-    #get_all_values_from_model('marley2019',  wispsim.HS)
-    #get_all_values_from_model('phillips2020',  wispsim.HS)
+    get_all_values_from_model('burrows2001',  wispsim.HS)
+    get_all_values_from_model('baraffe2003',  wispsim.HS)
+    get_all_values_from_model('saumon2008',  wispsim.HS)
+    get_all_values_from_model('marley2019',  wispsim.HS)
+    get_all_values_from_model('phillips2020',  wispsim.HS)
