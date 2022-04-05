@@ -172,7 +172,7 @@ def run_all():
     volumes_cdf= np.cumsum( tot_volumes_by_pointing)/np.nansum(   tot_volumes_by_pointing)
 
     #load in data from evolutionary models
-    data=popsims.make_systems(model_name='baraffe2003', bfraction=0.2,\
+    data=popsims.make_systems(model_name='burrows1997', bfraction=0.2,\
                             mass_age_range= [0.01, 0.15, 8., 13.0],\
                                 nsample=int(1e6),
                                 save=True)
@@ -242,7 +242,7 @@ def run_all():
     cutdf=(df[~flags]).reset_index(drop=True)
     #save
     cutdf.to_hdf(wisps.OUTPUT_FILES+'/final_simulated_sample_cut_thick_disk.h5',\
-     key=str('baraffe2003')+'F110_corrected')
+     key=str('burrows1997')+'F110_corrected')
     del cutdf
 
     
